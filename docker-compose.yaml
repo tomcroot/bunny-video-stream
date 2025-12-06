@@ -46,8 +46,6 @@ services:
       MAIL_FROM_ADDRESS: '${MAIL_FROM_ADDRESS}'
       MAIL_FROM_NAME: '${MAIL_FROM_NAME}'
       VITE_APP_NAME: '${APP_NAME}'
-    ports:
-      - '8000:8080'
     depends_on:
       - postgres
 
