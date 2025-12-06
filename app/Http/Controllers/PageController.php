@@ -13,10 +13,10 @@ class PageController extends Controller
 {
     public function index()
     {
-        $banners = Banner::orderBy('sort_order')->get();
-        $castCrew = CastCrew::orderBy('sort_order')->get();
-        $gallery = Gallery::orderBy('sort_order')->get();
-        $reviews = Review::orderBy('sort_order')->get();
+        $banners = Banner::orderBy('display_order')->get();
+        $castCrew = CastCrew::orderBy('display_order')->get();
+        $gallery = Gallery::orderBy('display_order')->get();
+        $reviews = Review::orderBy('display_order')->get();
         $pageContent = PageContent::where('page', 'home')->first();
         $paid = auth()->check() ? auth()->user()->hasSuccessfulPayment() : false;
 
@@ -54,7 +54,7 @@ class PageController extends Controller
 
     public function gallery()
     {
-        $gallery = Gallery::orderBy('sort_order')->get();
+        $gallery = Gallery::orderBy('display_order')->get();
         $pageContent = PageContent::where('page', 'gallery')->first();
 
         return Inertia::render('Gallery', [
@@ -65,7 +65,7 @@ class PageController extends Controller
 
     public function credits()
     {
-        $castCrew = CastCrew::orderBy('sort_order')->get();
+        $castCrew = CastCrew::orderBy('display_order')->get();
         $pageContent = PageContent::where('page', 'credits')->first();
 
         return Inertia::render('Credits', [
