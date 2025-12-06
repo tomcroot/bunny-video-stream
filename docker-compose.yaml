@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   app:
-    image: 'ammezie/laravel-coolify:latest'
+    build:
+      context: .
+      dockerfile: DockerFile
     volumes:
       - '.:/var/www/html'
     environment:
@@ -52,7 +54,9 @@ services:
       - postgres
 
   worker:
-    image: 'ammezie/laravel-coolify:latest'
+    build:
+      context: .
+      dockerfile: DockerFile
     command: ["php", "/var/www/html/artisan", "queue:work", "--tries=3"]
     volumes:
       - '.:/var/www/html'
