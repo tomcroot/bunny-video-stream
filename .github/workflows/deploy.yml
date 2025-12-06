@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to VPS
+      - name: Setup & Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -19,4 +19,5 @@ jobs:
           port: 22022
           script: |
             cd /var/www/acrazydayinaccra
+            ./setup.sh
             ./deploy.sh
