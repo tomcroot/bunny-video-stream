@@ -7,11 +7,16 @@ PHP_VERSION=8.4
 DOMAIN=acrazydayinaccra.com
 WWW_DOMAIN=www.acrazydayinaccra.com
 
-echo "🚀 Running full VPS setup for $DOMAIN"
+echo "🚀 Running FULL VPS setup for $DOMAIN"
 
 # ---------------- SYSTEM ----------------
 sudo apt update -y
-sudo apt install -y software-properties-common ca-certificates lsb-release apt-transport-https curl unzip git supervisor nginx cron redis-server
+sudo apt install -y software-properties-common ca-certificates lsb-release apt-transport-https curl unzip git supervisor nginx cron redis-server ufw
+
+# ---------------- FIREWALL ----------------
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw reload
 
 # ---------------- PHP 8.4 ----------------
 if ! php -v | grep -q "8.4"; then
@@ -31,7 +36,7 @@ sudo mkdir -p $APP_DIR
 sudo chown -R $USER:www-data $APP_DIR
 sudo chmod -R 775 $APP_DIR
 
-# ---------------- NGINX ----------------
+# ---------------- BASE NGINX (PORT 80 ONLY) ----------------
 if [ ! -f /etc/nginx/sites-available/$APP_NAME ]; then
   sudo tee /etc/nginx/sites-available/$APP_NAME > /dev/null <<EOF
 server {
@@ -47,7 +52,7 @@ server {
 
     location ~ \.php\$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+        fastcgi_pass unix:/run/php/php$PHP_VERSION-fpm.sock;
     }
 
     location ~ /\.ht {
@@ -55,13 +60,13 @@ server {
     }
 }
 EOF
-
-  sudo ln -s /etc/nginx/sites-available/$APP_NAME /etc/nginx/sites-enabled/
 fi
 
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo ln -sf /etc/nginx/sites-available/$APP_NAME /etc/nginx/sites-enabled/$APP_NAME
+
 sudo nginx -t
-sudo systemctl reload nginx
-sudo systemctl enable nginx php8.4-fpm supervisor redis-server cron
+sudo systemctl restart nginx
 
 # ---------------- MYSQL ----------------
 if ! command -v mysql &> /dev/null; then
@@ -142,4 +147,41 @@ fi
 sudo systemctl enable certbot.timer
 sudo systemctl start certbot.timer
 
-echo "✅ FULL SERVER SETUP COMPLETE WITH SSL"
+# ---------------- FINAL HTTPS NGINX ENFORCE ----------------
+sudo tee /etc/nginx/sites-available/$APP_NAME > /dev/null <<EOF
+server {
+    listen 80;
+    server_name $DOMAIN $WWW_DOMAIN;
+    return 301 https://\$host\$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name $DOMAIN $WWW_DOMAIN;
+
+    ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+
+    root $APP_DIR/public;
+    index index.php;
+
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+
+    location ~ \.php\$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php$PHP_VERSION-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+EOF
+
+sudo nginx -t
+sudo systemctl restart nginx
+
+echo "✅ ✅ FULL SERVER SETUP COMPLETE WITH SSL + FIREWALL + MYSQL + WORKER"
+echo "👉 Deploy your Laravel app by cloning into $APP_DIR and running migrations."

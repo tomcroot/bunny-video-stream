@@ -20,7 +20,6 @@ jobs:
           script: |
             cd /var/www/acrazydayinaccra
 
-            # ✅ Force permissions every time
             sudo chmod +x setup.sh deploy.sh
 
             ./setup.sh
