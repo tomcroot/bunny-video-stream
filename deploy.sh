@@ -3,7 +3,10 @@ set -e
 
 cd /var/www/acrazydayinaccra || exit
 
-git pull origin main
+# Force server to exactly match GitHub
+git fetch origin main
+git reset --hard origin/main
+
 composer install --no-dev --optimize-autoloader
 
 php artisan migrate --force
