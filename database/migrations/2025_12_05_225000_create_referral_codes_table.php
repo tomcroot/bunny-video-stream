@@ -12,16 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('referral_codes', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('code')->unique(); // Uppercase coupon/referral code (e.g., "SAVE20")
             $table->text('description')->nullable(); // Purpose/description of the code
             $table->decimal('discount_percentage', 5, 2)->default(0); // 0-100 discount %
             $table->boolean('is_active')->default(true); // Active/inactive toggle
-            $table->uuid('created_by'); // Admin user who created the code
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
-
-            // Foreign keys
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

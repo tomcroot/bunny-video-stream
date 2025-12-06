@@ -1,10 +1,6 @@
-version: '3.8'
-
 services:
   app:
-    build:
-      context: .
-      dockerfile: DockerFile
+    image: 'serversideup/php:8.4-fpm-nginx'
     volumes:
       - '.:/var/www/html'
     environment:
@@ -50,13 +46,13 @@ services:
       MAIL_FROM_ADDRESS: '${MAIL_FROM_ADDRESS}'
       MAIL_FROM_NAME: '${MAIL_FROM_NAME}'
       VITE_APP_NAME: '${APP_NAME}'
+    ports:
+      - '8000:8080'
     depends_on:
       - postgres
 
   worker:
-    build:
-      context: .
-      dockerfile: DockerFile
+    image: 'serversideup/php:8.4-fpm-nginx'
     command: ["php", "/var/www/html/artisan", "queue:work", "--tries=3"]
     volumes:
       - '.:/var/www/html'
