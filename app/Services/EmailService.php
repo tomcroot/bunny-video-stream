@@ -8,6 +8,8 @@ use App\Notifications\EmailVerificationNotification;
 use App\Notifications\PasswordResetNotification;
 use Hofmannsven\Brevo\Facades\Brevo;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class EmailService
 {
@@ -21,7 +23,7 @@ class EmailService
 
             return true;
         } catch (\Exception $e) {
-            \Log::error('Failed to send login email notification', [
+            Log::error('Failed to send login email notification', [
                 'user_id' => $user->id,
                 'ip_address' => $ipAddress,
                 'error' => $e->getMessage(),
@@ -41,7 +43,7 @@ class EmailService
 
             return true;
         } catch (\Exception $e) {
-            \Log::error('Failed to send password reset email', [
+            Log::error('Failed to send password reset email', [
                 'user_id' => $user->id,
                 'error' => $e->getMessage(),
             ]);
@@ -60,7 +62,7 @@ class EmailService
 
             return true;
         } catch (\Exception $e) {
-            \Log::error('Failed to send email verification', [
+            Log::error('Failed to send email verification', [
                 'user_id' => $user->id,
                 'error' => $e->getMessage(),
             ]);
@@ -100,7 +102,7 @@ class EmailService
                 'recipients_count' => count($emailAddresses),
             ];
         } catch (\Exception $e) {
-            \Log::warning('Brevo API failed, falling back to SMTP', [
+            Log::warning('Brevo API failed, falling back to SMTP', [
                 'emails' => $emailAddresses,
                 'subject' => $subject,
                 'error' => $e->getMessage(),
@@ -123,7 +125,7 @@ class EmailService
 
             foreach ($emailAddresses as $email) {
                 try {
-                    \Mail::html($htmlContent, function ($message) use ($email, $subject) {
+                    Mail::html($htmlContent, function ($message) use ($email, $subject) {
                         $message->to($email)
                             ->subject($subject)
                             ->from('info@acrazydayinaccra.com', 'Promise - A Crazy Day in Accra');
@@ -144,7 +146,7 @@ class EmailService
                 'recipients_count' => count($emailAddresses),
             ];
         } catch (\Exception $e) {
-            \Log::error('SMTP fallback also failed', [
+            Log::error('SMTP fallback also failed', [
                 'emails' => $emailAddresses,
                 'subject' => $subject,
                 'error' => $e->getMessage(),
@@ -191,7 +193,7 @@ class EmailService
             // You could also send a separate welcome email here if needed
             return true;
         } catch (\Exception $e) {
-            \Log::error('Failed to send welcome email', [
+            Log::error('Failed to send welcome email', [
                 'user_id' => $user->id,
                 'error' => $e->getMessage(),
             ]);

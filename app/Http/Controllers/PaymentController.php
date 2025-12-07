@@ -32,7 +32,7 @@ class PaymentController extends Controller
                 'email' => ['sometimes', 'email'],
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            \Log::error('Payment validation failed', [
+            Log::error('Payment validation failed', [
                 'errors' => $e->errors(),
                 'request_data' => $request->all(),
                 'user_id' => $user->id,
@@ -92,13 +92,15 @@ class PaymentController extends Controller
             preg_match('/\.local(domain)?$/i', $email);
 
         if ($invalid($billingEmail)) {
-            Log::warning('Billing email rejected; using fallback', [
+            Log::warning('Invalid billing email provided, using fallback', [
                 'user_id' => $user->id,
                 'provided_email' => $billingEmail,
             ]);
 
-            $billingEmail = config('custom.fallback_billing_email')
-                ?: (config('mail.from.address') ?? 'billing@acrazydayinaccra.com');
+            $billingEmail = config('custom.fallback_billing_email', config('mail.from.address'))
+                ?? $payment->user->email
+                ?? config('mail.from.address')
+                ?? 'billing@acrazydayinaccra.com';
         }
 
         $payload = [

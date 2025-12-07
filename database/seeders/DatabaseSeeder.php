@@ -31,19 +31,22 @@ class DatabaseSeeder extends Seeder
             ['email' => 'info@acrazydayinaccra.com'],
             [
                 'name' => 'Admin',
-                'password' => bcrypt('password'), // Change this in production
+                'password' => bcrypt(env('ADMIN_PASSWORD', 'ChangeMe123!')), // Use environment variable for production
                 'email_verified_at' => now(),
+                'is_admin' => true,
             ]
         );
 
-        // Create test user if it doesn't exist
-        User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            [
-                'name' => 'Test User',
-                'password' => bcrypt('password'),
-            ]
-        );
+        // Create test user if it doesn't exist (only in non-production)
+        if (app()->environment('local', 'testing')) {
+            User::firstOrCreate(
+                ['email' => 'test@example.com'],
+                [
+                    'name' => 'Test User',
+                    'password' => bcrypt('password'),
+                ]
+            );
+        }
 
         // Create sample banner
         Banner::create([
@@ -166,7 +169,7 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'page' => 'information',
+                'page' => 'details',
                 'section' => 'main',
                 'key' => 'content',
                 'value' => '<h1>About the Film</h1><p>A Crazy Day in Accra is a thrilling cinematic experience that captures the essence of modern Ghanaian storytelling.</p>',

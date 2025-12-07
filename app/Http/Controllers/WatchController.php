@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\PageContent;
 use App\Services\BunnyVideoService;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class WatchController extends Controller
@@ -34,7 +35,7 @@ class WatchController extends Controller
         } catch (\Throwable $e) {
             // Last resort: public playlist
             $fallbackVideoUrl = "https://vz-6024b712-a89.b-cdn.net/{$videoId}/playlist.m3u8";
-            \Log::warning('Bunny signed HLS fallback unavailable', [
+            Log::warning('Bunny signed HLS fallback unavailable', [
                 'error' => $e->getMessage(),
             ]);
         }

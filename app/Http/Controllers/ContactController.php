@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,7 +60,7 @@ class ContactController extends Controller
                     ');
             });
         } catch (\Exception $e) {
-            \Log::error('Contact form email error: '.$e->getMessage());
+            Log::error('Contact form email error: '.$e->getMessage());
             // Continue even if email fails - we've saved the contact
         }
 

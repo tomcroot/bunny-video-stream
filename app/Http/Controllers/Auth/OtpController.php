@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use libphonenumber\PhoneNumberFormat;
@@ -17,148 +18,133 @@ use libphonenumber\PhoneNumberUtil;
 class OtpController extends Controller
 {
     /**
-     * Send an OTP to the provided phone number using mNotify.
+     * Normalize phone number to E.164
      */
-    public function send(Request $request)
+    protected function normalizePhone(string $raw): string
     {
-        $request->validate([
-            'phone' => ['required', 'string'],
-        ]);
-
-        $raw = $request->input('phone');
         $phone = preg_replace('/[^0-9+]/', '', $raw);
 
-        // Prefer libphonenumber if available for robust parsing/formatting
         try {
             if (class_exists(PhoneNumberUtil::class)) {
                 $phoneUtil = PhoneNumberUtil::getInstance();
-                // try parsing with an assumed region of GH if no + present
-                if (Str::startsWith($phone, '+')) {
-                    $numberProto = $phoneUtil->parse($phone, null);
-                } else {
-                    $numberProto = $phoneUtil->parse($phone, 'GH');
-                }
+
+                $numberProto = Str::startsWith($phone, '+')
+                    ? $phoneUtil->parse($phone, null)
+                    : $phoneUtil->parse($phone, 'GH');
 
                 if (! $phoneUtil->isValidNumber($numberProto)) {
-                    return response()->json(['success' => false, 'message' => 'Invalid phone number.'], 422);
+                    throw new \Exception('Invalid phone');
                 }
 
-                $phone = $phoneUtil->format($numberProto, PhoneNumberFormat::E164);
-            } else {
-                // Basic E.164 normalization for common cases (Ghana-focused)
-                if (Str::startsWith($phone, '0')) {
-                    $phone = preg_replace('/^0+/', '', $phone);
-                    $phone = '+233'.$phone;
-                } elseif (preg_match('/^233[0-9]+$/', $phone)) {
-                    $phone = '+'.$phone;
-                }
+                return $phoneUtil->format($numberProto, PhoneNumberFormat::E164);
             }
         } catch (\Throwable $e) {
-            \Log::warning('libphonenumber parsing failed, falling back', ['phone' => $raw, 'error' => $e->getMessage()]);
-            if (Str::startsWith($phone, '0')) {
-                $phone = preg_replace('/^0+/', '', $phone);
-                $phone = '+233'.$phone;
-            } elseif (preg_match('/^233[0-9]+$/', $phone)) {
-                $phone = '+'.$phone;
-            }
+            Log::warning('libphonenumber failed, falling back', ['phone' => $raw]);
         }
 
-        // generate a 6-digit code
+        if (Str::startsWith($phone, '0')) {
+            return '+233'.preg_replace('/^0+/', '', $phone);
+        }
+
+        if (preg_match('/^233[0-9]+$/', $phone)) {
+            return '+'.$phone;
+        }
+
+        return $phone;
+    }
+
+    /**
+     * Send OTP
+     */
+    public function send(Request $request)
+    {
+        $validated = $request->validate([
+            'phone' => ['required', 'string'],
+        ]);
+
+        $phone = $this->normalizePhone($validated['phone']);
+
+        $limitKey = 'otp-send:'.$phone;
+
+        if (RateLimiter::tooManyAttempts($limitKey, 3)) {
+            return redirect()->back()
+                ->withErrors(['phone' => 'Too many OTP requests. Try again shortly.']);
+        }
+
         $code = random_int(100000, 999999);
 
-        // store in cache for 5 minutes
         Cache::put('otp:'.$phone, $code, now()->addMinutes(5));
 
-        // check rate limit per phone (3 sends per 15 minutes)
-        $limitKey = 'otp-send:'.$phone;
-        $maxAttempts = 3;
-        $decaySeconds = 900; // 15 minutes
-
-        if (RateLimiter::tooManyAttempts($limitKey, $maxAttempts)) {
-            $available = RateLimiter::availableIn($limitKey);
-
-            return response()->json(['success' => false, 'message' => 'Too many requests. Try again later.', 'retry_after' => $available], 429);
-        }
-
-        // send via mNotify
         try {
             $mnotify = new \Arhinful\LaravelMnotify\MNotify;
             $mnotify->setAPIKey(config('mnotify.api_key'));
             $mnotify->setSender(config('mnotify.sender_id'));
+
             $message = "Your Promise Films login code: {$code}";
             $mnotify->sendQuickSMS([$phone], $message);
 
-            // record a successful send attempt
-            RateLimiter::hit($limitKey, $decaySeconds);
+            RateLimiter::hit($limitKey, 900);
         } catch (\Throwable $e) {
-            \Log::error('OTP send failed', ['phone' => $phone, 'error' => $e->getMessage()]);
+            Log::error('OTP send failed', ['phone' => $phone, 'error' => $e->getMessage()]);
 
-            return response()->json(['success' => false, 'message' => 'Failed to send OTP.'], 500);
+            return redirect()->back()
+                ->withErrors(['phone' => 'Failed to send OTP. Try again.']);
         }
 
-        return response()->json(['success' => true, 'message' => 'OTP sent']);
+        return redirect()->back()->with('success', 'OTP sent successfully.');
     }
 
     /**
-     * Verify OTP and log the user in (create if necessary).
+     * Verify OTP and login (auto-create if needed)
      */
     public function verify(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'phone' => ['required', 'string'],
             'code' => ['required', 'string'],
         ]);
 
-        $raw = $request->input('phone');
-        $phone = preg_replace('/[^0-9+]/', '', $raw);
-        if (Str::startsWith($phone, '0')) {
-            $phone = preg_replace('/^0+/', '', $phone);
-            $phone = '+233'.$phone;
-        } elseif (preg_match('/^233[0-9]+$/', $phone)) {
-            $phone = '+'.$phone;
-        }
-        $code = $request->input('code');
-
+        $phone = $this->normalizePhone($validated['phone']);
         $cached = Cache::get('otp:'.$phone);
 
-        if (! $cached || (string) $cached !== (string) $code) {
-            return response()->json(['success' => false, 'message' => 'Invalid or expired code.'], 422);
+        if (! $cached || (string) $cached !== (string) $validated['code']) {
+            return redirect()->back()
+                ->withErrors(['code' => 'Invalid or expired OTP.']);
         }
 
-        // find or create user by phone
         $user = User::where('phone_number', $phone)->first();
 
         if (! $user) {
-            $fakeEmail = sprintf('%s@promiselandfilms.local', preg_replace('/[^0-9]/', '', $phone));
+            $fakeEmail = preg_replace('/[^0-9]/', '', $phone).'@promiselandfilms.local';
+
             $user = User::create([
                 'name' => $phone,
                 'email' => $fakeEmail,
                 'password' => Str::random(40),
                 'phone_number' => $phone,
             ]);
-            // If the app has EmailService and BREVO configured, send a welcome + verification
+
             try {
                 if (app()->bound(EmailService::class)) {
                     app(EmailService::class)->sendWelcomeEmail($user);
                 }
             } catch (\Throwable $e) {
-                \Log::warning('Failed to send welcome/verification email', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+                Log::warning('Welcome email failed', ['user_id' => $user->id]);
             }
         }
 
         Auth::login($user);
-
         Cache::forget('otp:'.$phone);
 
-        return response()->json(['success' => true, 'message' => 'Authenticated']);
+        return redirect()->intended('/dashboard');
     }
 
     /**
-     * Verify OTP and register a new user with provided credentials.
+     * Verify OTP + full user registration
      */
     public function verifyRegister(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'phone' => ['required', 'string'],
             'code' => ['required', 'string'],
             'name' => ['required', 'string', 'max:255'],
@@ -166,54 +152,45 @@ class OtpController extends Controller
             'password' => ['required', 'string', 'min:8'],
         ]);
 
-        $raw = $request->input('phone');
-        $phone = preg_replace('/[^0-9+]/', '', $raw);
-        if (Str::startsWith($phone, '0')) {
-            $phone = preg_replace('/^0+/', '', $phone);
-            $phone = '+233'.$phone;
-        } elseif (preg_match('/^233[0-9]+$/', $phone)) {
-            $phone = '+'.$phone;
-        }
-        $code = $request->input('code');
-
+        $phone = $this->normalizePhone($validated['phone']);
         $cached = Cache::get('otp:'.$phone);
 
-        if (! $cached || (string) $cached !== (string) $code) {
-            return response()->json(['success' => false, 'message' => 'Invalid or expired code.'], 422);
+        if (! $cached || (string) $cached !== (string) $validated['code']) {
+            return redirect()->back()
+                ->withErrors(['code' => 'Invalid or expired OTP.']);
         }
 
-        // Check if user already exists
-        $existingUser = User::where('phone_number', $phone)->orWhere('email', $request->input('email'))->first();
-        if ($existingUser) {
-            return response()->json(['success' => false, 'message' => 'Phone or email already in use.'], 422);
+        if (
+            User::where('phone_number', $phone)
+                ->orWhere('email', $validated['email'])
+                ->exists()
+        ) {
+            return redirect()->back()
+                ->withErrors(['phone' => 'Phone number or email already in use.']);
         }
 
-        // Create new user with provided credentials
-        $email = $request->input('email');
-        if (! $email) {
-            $email = sprintf('%s@promiselandfilms.local', preg_replace('/[^0-9]/', '', $phone));
-        }
+        $email = $validated['email']
+            ?? preg_replace('/[^0-9]/', '', $phone).'@promiselandfilms.local';
 
         $user = User::create([
-            'name' => $request->input('name'),
+            'name' => $validated['name'],
             'email' => $email,
-            'password' => Hash::make($request->input('password')),
+            'password' => Hash::make($validated['password']),
             'phone_number' => $phone,
         ]);
 
-        // Send welcome email if configured
         try {
             if (app()->bound(EmailService::class)) {
                 app(EmailService::class)->sendWelcomeEmail($user);
             }
         } catch (\Throwable $e) {
-            \Log::warning('Failed to send welcome email', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+            Log::warning('Welcome email failed', ['user_id' => $user->id]);
         }
 
         Auth::login($user);
-
         Cache::forget('otp:'.$phone);
 
-        return response()->json(['success' => true, 'message' => 'Account created and authenticated']);
+        return redirect()->intended('/dashboard')
+            ->with('success', 'Account created successfully.');
     }
 }

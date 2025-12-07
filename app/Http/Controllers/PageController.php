@@ -7,6 +7,8 @@ use App\Models\CastCrew;
 use App\Models\Gallery;
 use App\Models\PageContent;
 use App\Models\Review;
+use App\Models\SiteSettings;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PageController extends Controller
@@ -18,7 +20,8 @@ class PageController extends Controller
         $gallery = Gallery::orderBy('display_order')->get();
         $reviews = Review::orderBy('display_order')->get();
         $pageContent = PageContent::where('page', 'home')->first();
-        $paid = auth()->check() ? auth()->user()->hasSuccessfulPayment() : false;
+        $paid = Auth::check() ? Auth::user()->hasSuccessfulPayment() : false;
+        $premiereDate = SiteSettings::getSetting('premiere_date', '2025-12-10T06:00:00Z');
 
         return Inertia::render('Index', [
             'banners' => $banners,
@@ -27,6 +30,7 @@ class PageController extends Controller
             'reviews' => $reviews,
             'pageContent' => $pageContent,
             'paid' => $paid,
+            'premiereDate' => $premiereDate,
         ]);
     }
 

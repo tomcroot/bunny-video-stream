@@ -1,269 +1,261 @@
 <template>
-  <div
-    class="min-h-screen bg-background text-foreground flex flex-col select-none"
-    @contextmenu.prevent
-    @dragstart.prevent
-    @copy.prevent
-    @cut.prevent
-  >
-    <div class="bg-card border-b border-border px-6 py-4 flex items-center justify-between">
-      <h1 class="text-xl font-bold">{{ videoTitle }}</h1>
-      <Link href="/" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
-        Back Home
-      </Link>
-    </div>
-    <div class="flex-1 flex items-center justify-center p-6">
-      <div class="w-full max-w-5xl">
-        <div class="aspect-video bg-black rounded-lg overflow-hidden shadow-lg relative">
-          <!-- Primary: Bunny Embed iframe (DRM-protected) -->
-          <iframe
-            v-if="embedUrl && !useEmbedFallback"
-            :src="embedUrl"
-            class="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullscreen
-            loading="lazy"
-            @error="switchToVideoFallback"
-            @load="() => { isLoading = false }"
-          ></iframe>
+  <div class="relative min-h-screen bg-black text-white overflow-hidden">
 
-          <!-- Fallback: HTML5 video with signed HLS or MP4 -->
-          <video
-            v-if="useEmbedFallback || !embedUrl"
-            ref="videoPlayer"
-            class="w-full h-full"
-            controls
-            controlsList="nodownload noremoteplayback"
-            disablePictureInPicture
-            playsinline
-            :poster="banner?.image_url"
-            @error="handleVideoError"
-          >
-            <source v-if="fallbackVideoUrl && !useHls" :src="fallbackVideoUrl" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+    <!-- CINEMA OVERLAY -->
+    <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black via-black/40 to-black z-10"></div>
 
-          <!-- Error message -->
-          <div
-            v-if="errorMessage"
-            class="absolute inset-0 flex items-center justify-center bg-black/80 text-white p-6"
-          >
-            <div class="text-center">
-              <p class="text-lg font-semibold mb-2">{{ errorMessage }}</p>
-              <button
-                @click="retryLoad"
-                class="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors mt-4"
-              >
-                Retry
-              </button>
-            </div>
-          </div>
+    <!-- VIDEO PLAYER -->
+    <div
+      class="relative w-full h-screen flex items-center justify-center bg-black"
+      @contextmenu.prevent
+    >
+      <video
+        ref="player"
+        class="w-full h-full object-contain"
+        playsinline
+        autoplay
+        muted
+        preload="auto"
+        controls
+        controlsList="nodownload noplaybackrate noremoteplayback"
+        disablePictureInPicture
+      />
 
-          <!-- Loading state -->
-          <div
-            v-if="isLoading"
-            class="absolute inset-0 flex items-center justify-center bg-black/50"
-          >
-            <div class="text-white">
-              <svg class="animate-spin h-12 w-12 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <p class="text-sm">Loading video...</p>
-            </div>
-          </div>
+      <!-- CINEMA TITLE OVERLAY -->
+      <div class="absolute bottom-24 left-12 z-20 max-w-xl">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-3 drop-shadow-lg">
+          {{ videoTitle }}
+        </h1>
+
+        <div class="flex items-center gap-4 text-sm mb-4 text-gray-300">
+          <span class="px-2 py-1 bg-red-600 rounded">18+</span>
+          <span>1h 42m</span>
+          <span>Action • Comedy • Thriller</span>
+          <span class="text-green-400 font-semibold">{{ videoQuality }}</span>
         </div>
 
-        <div v-if="pageContent" class="mt-6 prose prose-invert max-w-none">
-          <div v-html="pageContent.content"></div>
-        </div>
-
-        <p v-else class="mt-6 text-center text-sm text-muted-foreground">
-          Enjoy your unlimited access. Thank you for your support!
+        <p class="text-gray-300 leading-relaxed">
+          One wild day. One city. Infinite chaos. A fast-paced Accra adventure like never before.
         </p>
       </div>
+
+      <!-- LOADING OVERLAY -->
+      <div v-if="isLoading" class="absolute inset-0 flex items-center justify-center bg-black/70 z-30">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p class="text-white text-lg">Loading video...</p>
+        </div>
+      </div>
+
+      <!-- ERROR OVERLAY -->
+      <div v-if="errorMessage" class="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
+        <div class="text-center max-w-md px-6">
+          <svg class="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          <p class="text-white text-lg mb-4">{{ errorMessage }}</p>
+          <button
+            @click="() => { errorMessage = ''; isLoading = true; window.location.reload() }"
+            class="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-md text-white font-semibold"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+
+      <!-- WATERMARK (ANTI-RECORDING DETERRENT) -->
+      <div class="absolute top-6 right-6 z-20 text-xs text-white/40 tracking-widest select-none">
+        PROMISE FILMS • {{ watermarkId }}
+      </div>
     </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
-import Hls from 'hls.js';
+import { ref, onMounted, onUnmounted } from 'vue'
+import Hls from 'hls.js'
+import PublicLayout from '@/Layouts/PublicLayout.vue'
+
+defineOptions({
+  layout: PublicLayout,
+})
 
 const props = defineProps({
-  banner: Object,
-  pageContent: Object,
-  embedUrl: String,
-  fallbackVideoUrl: String,
+  fallbackVideoUrl: {
+    type: String,
+    required: true,
+  },
   videoTitle: {
     type: String,
-    default: 'A Crazy Day In Accra'
-  }
-});
+    default: 'A Crazy Day in Accra',
+  },
+  banner: {
+    type: Object,
+    default: null,
+  },
+})
 
-const videoPlayer = ref(null);
-const hlsInstance = ref(null);
-const errorMessage = ref('');
-const isLoading = ref(true);
-const useEmbedFallback = ref(false);
-let keyguardListener = null;
+const player = ref(null)
+const hls = ref(null)
+const watermarkId = Math.random().toString(36).slice(2, 12).toUpperCase()
+const isLoading = ref(true)
+const errorMessage = ref('')
+const videoQuality = ref('HD')
+let progressInterval = null
 
-// Check if we need to use HLS.js (for .m3u8 files) - only for fallback
-const useHls = computed(() => {
-  return useEmbedFallback.value && props.fallbackVideoUrl?.includes('.m3u8');
-});
-
-const handleVideoError = (e) => {
-  console.error('Video error:', e);
-  isLoading.value = false;
-  errorMessage.value = 'Unable to load video. Please check your connection and try again.';
-};
-
-const switchToVideoFallback = (e) => {
-  console.warn('Embed iframe failed, falling back to video player', e);
-  useEmbedFallback.value = true;
-  errorMessage.value = '';
-  isLoading.value = true;
-  setTimeout(() => initPlayer(), 100);
-};
-
-const retryLoad = () => {
-  errorMessage.value = '';
-  isLoading.value = true;
-  initPlayer();
-};
-
-const initPlayer = () => {
-  if (!props.fallbackVideoUrl || !videoPlayer.value) {
-    errorMessage.value = 'No video available. Please contact support.';
-    isLoading.value = false;
-    return;
+/* ✅ ✅ HLS LOGIC (BULLETPROOF) */
+onMounted(async () => {
+  const video = player.value
+  if (!video || !props.fallbackVideoUrl) {
+    errorMessage.value = 'No video source available'
+    isLoading.value = false
+    return
   }
 
-  // If it's an HLS stream (.m3u8) in fallback mode
-  if (useHls.value) {
-    if (Hls.isSupported()) {
-      // Clean up existing HLS instance
-      if (hlsInstance.value) {
-        hlsInstance.value.destroy();
-      }
+  // Load previous watch progress if user is authenticated
+  const videoId = new URL(props.fallbackVideoUrl).pathname.split('/')[1]
+  try {
+    const response = await fetch(`/api/watch-progress/${videoId}`)
+    const data = await response.json()
+    if (data.current_time > 0) {
+      video.currentTime = data.current_time
+    }
+  } catch (err) {
+    console.log('No previous progress found')
+  }
 
-      hlsInstance.value = new Hls({
-        enableWorker: true,
-        lowLatencyMode: false,
-        backBufferLength: 90,
-        // Buffer configuration to reduce stalls
-        maxBufferLength: 30,
-        maxMaxBufferLength: 600,
-        maxBufferSize: 60 * 1000 * 1000,
-        maxBufferHole: 0.5,
-        // Fragment loading configuration
-        maxFragLookUpTolerance: 0.25,
-        startFragPrefetch: true,
-        // Error recovery
-        fragLoadingTimeOut: 20000,
-        fragLoadingMaxRetry: 3,
-        fragLoadingRetryDelay: 1000,
-        // Reduce seeking issues
-        nudgeOffset: 0.1,
-        nudgeMaxRetry: 3
-      });
+  // Disable keyboard shortcuts for capture tools
+  window.addEventListener('keydown', blockKeys)
 
-      hlsInstance.value.loadSource(props.fallbackVideoUrl);
-      hlsInstance.value.attachMedia(videoPlayer.value);
+  if (Hls.isSupported()) {
+    hls.value = new Hls({
+      autoStartLoad: true,
+      enableWorker: true,
+      lowLatencyMode: true,
+      maxBufferLength: 30,
+      maxMaxBufferLength: 600,
+    })
 
-      hlsInstance.value.on(Hls.Events.MANIFEST_PARSED, () => {
-        isLoading.value = false;
-        console.log('HLS manifest loaded successfully');
-      });
+    hls.value.loadSource(props.fallbackVideoUrl)
+    hls.value.attachMedia(video)
 
-      hlsInstance.value.on(Hls.Events.ERROR, (event, data) => {
-        // Only log fatal errors and handle non-fatal ones silently
-        if (data.fatal) {
-          console.error('HLS fatal error:', data);
-          isLoading.value = false;
-          switch (data.type) {
-            case Hls.ErrorTypes.NETWORK_ERROR:
-              errorMessage.value = 'Network error. Please check your connection.';
-              // Try to recover from network error
-              setTimeout(() => {
-                if (hlsInstance.value) {
-                  hlsInstance.value.startLoad();
-                }
-              }, 1000);
-              break;
-            case Hls.ErrorTypes.MEDIA_ERROR:
-              errorMessage.value = 'Media error. Attempting to recover...';
-              hlsInstance.value.recoverMediaError();
-              // Clear error message after attempting recovery
-              setTimeout(() => {
-                if (!data.fatal) {
-                  errorMessage.value = '';
-                }
-              }, 2000);
-              break;
-            default:
-              errorMessage.value = 'Unable to load video. Please try again later.';
-              break;
-          }
-        } else {
-          // Non-fatal errors (buffer stalls, seeks) are handled automatically by HLS.js
-          // Only log them in development for debugging
-          if (import.meta.env.DEV) {
-            console.log('HLS non-fatal error (auto-recovering):', data.details);
-          }
+    hls.value.on(Hls.Events.MANIFEST_PARSED, () => {
+      isLoading.value = false
+      video.muted = false
+      video.play().catch(err => {
+        console.error('Playback failed:', err)
+        errorMessage.value = 'Auto-play blocked. Please click play.'
+      })
+    })
+
+    hls.value.on(Hls.Events.ERROR, (event, data) => {
+      if (data.fatal) {
+        isLoading.value = false
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            errorMessage.value = 'Network error. Check your connection.'
+            setTimeout(() => hls.value?.startLoad(), 2000)
+            break
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            errorMessage.value = 'Media error. Recovering...'
+            hls.value.recoverMediaError()
+            break
+          default:
+            errorMessage.value = 'Playback error. Please refresh.'
+            break
         }
-      });
-    } else if (videoPlayer.value.canPlayType('application/vnd.apple.mpegurl')) {
-      // Native HLS support (Safari)
-      videoPlayer.value.src = props.fallbackVideoUrl;
-      videoPlayer.value.addEventListener('loadedmetadata', () => {
-        isLoading.value = false;
-      });
-    } else {
-      errorMessage.value = 'HLS is not supported in this browser.';
-      isLoading.value = false;
-    }
+      }
+    })
+
+    // Track quality changes
+    hls.value.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+      const level = hls.value.levels[data.level]
+      videoQuality.value = level.height >= 1080 ? 'Ultra HD' : level.height >= 720 ? 'HD' : 'SD'
+    })
+  }
+  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = props.fallbackVideoUrl
+    video.addEventListener('loadedmetadata', () => {
+      isLoading.value = false
+      video.muted = false
+      video.play().catch(err => {
+        console.error('Playback failed:', err)
+        errorMessage.value = 'Auto-play blocked. Please click play.'
+      })
+    })
   } else {
-    // Regular MP4 or other video format
-    isLoading.value = false;
+    errorMessage.value = 'HLS not supported in this browser'
+    isLoading.value = false
   }
-};
 
-onMounted(() => {
-  initPlayer();
-  // Block common download/inspect shortcuts (best-effort deterrent)
-  keyguardListener = (e) => {
-    const ctrl = e.ctrlKey || e.metaKey;
-    const shift = e.shiftKey;
-    const key = e.key.toLowerCase();
-    if (
-      key === 'f12' ||
-      (ctrl && (key === 's' || key === 'p' || key === 'u')) ||
-      (ctrl && shift && (key === 'i' || key === 'j' || key === 'c'))
-    ) {
-      e.preventDefault();
-      e.stopPropagation();
+  // 🔒 Disable native download hotkeys
+  video.addEventListener('contextmenu', e => e.preventDefault())
+  video.addEventListener('loadeddata', () => isLoading.value = false)
+  video.addEventListener('error', () => {
+    isLoading.value = false
+    errorMessage.value = 'Failed to load video'
+  })
+
+  // 💾 Save progress every 10 seconds
+  progressInterval = setInterval(async () => {
+    if (!video.paused && video.duration > 0) {
+      const videoId = new URL(props.fallbackVideoUrl).pathname.split('/')[1]
+      try {
+        await fetch(`/api/watch-progress/${videoId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            current_time: Math.floor(video.currentTime),
+            total_duration: Math.floor(video.duration),
+            video_title: props.videoTitle,
+          }),
+        })
+      } catch (err) {
+        console.error('Failed to save progress:', err)
+      }
     }
-  };
-  window.addEventListener('keydown', keyguardListener, { capture: true });
+  }, 10000)
+})
 
-  // Handle video loaded
-  if (videoPlayer.value) {
-    videoPlayer.value.addEventListener('loadeddata', () => {
-      isLoading.value = false;
-    });
-  }
-});
+onUnmounted(() => {
+  if (hls.value) hls.value.destroy()
+  if (progressInterval) clearInterval(progressInterval)
+  window.removeEventListener('keydown', blockKeys)
+})
 
-onBeforeUnmount(() => {
-  if (hlsInstance.value) {
-    hlsInstance.value.destroy();
+/* ✅ ✅ BLOCK RECORDING HOTKEYS (DETERRENT) */
+function blockKeys(e) {
+  // Windows Snip, PrintScreen, DevTools
+  if (
+    e.key === 'PrintScreen' ||
+    e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key) ||
+    e.ctrlKey && ['U','S'].includes(e.key)
+  ) {
+    e.preventDefault()
+    return false
   }
-  if (keyguardListener) {
-    window.removeEventListener('keydown', keyguardListener, { capture: true });
-    keyguardListener = null;
-  }
-});
+}
 </script>
+
+<style scoped>
+/* ✅ Hide video download & pip buttons */
+video::-webkit-media-controls-enclosure {
+  overflow: hidden;
+}
+
+video::-webkit-media-controls-panel {
+  width: calc(100% + 30px);
+}
+
+/* ✅ Block text/image selection */
+* {
+  user-select: none;
+}
+
+/* ✅ Anti-drag */
+img, video {
+  pointer-events: auto;
+  -webkit-user-drag: none;
+}
+</style>

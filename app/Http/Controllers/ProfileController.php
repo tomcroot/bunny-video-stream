@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
@@ -12,7 +13,7 @@ class ProfileController extends Controller
     public function edit()
     {
         return Inertia::render('Profile/Edit', [
-            'user' => auth()->user(),
+            'user' => Auth::user(),
         ]);
     }
 
@@ -53,7 +54,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        auth()->logout();
+        Auth::logout();
 
         $user->delete();
 

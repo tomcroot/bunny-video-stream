@@ -7,7 +7,7 @@ use Inertia\Inertia;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
-Route::get('/information', [PageController::class, 'information'])->name('information');
+Route::get('/details', [PageController::class, 'information'])->name('details');
 Route::post('/reviews', [\App\Http\Controllers\ReviewSubmissionController::class, 'store'])->name('reviews.store');
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
@@ -98,6 +98,14 @@ Route::middleware(['auth'])->group(function () {
 
         // SMS & Email routes disabled - automated emails/SMS triggered on payment events instead
         // See BulkSmsService and PaymentSuccessEmail for automation
+
+        // Analytics Dashboard
+        Route::get('analytics', [\App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('analytics');
+
+        // Settings Management
+        Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
+        Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
+        Route::post('settings/{key}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSingle'])->name('settings.update-single');
     });
 
     // Streamer Dashboard
@@ -119,6 +127,13 @@ Route::middleware(['auth'])->group(function () {
     // Protected routes will go here
     // Payments: initialize transaction (requires authenticated user)
     Route::post('/payments/init', [PaymentController::class, 'init'])->name('payments.init');
+
+    // Watch progress tracking (for resume functionality)
+    Route::prefix('api/watch-progress')->controller(\App\Http\Controllers\WatchProgressController::class)->group(function () {
+        Route::get('/{videoId}', 'show');
+        Route::post('/{videoId}', 'update');
+        Route::get('/', 'getContinueWatching');
+    });
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

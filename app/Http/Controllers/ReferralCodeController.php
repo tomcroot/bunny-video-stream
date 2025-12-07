@@ -5,157 +5,107 @@ namespace App\Http\Controllers;
 use App\Models\ReferralCode;
 use App\Services\ReferralService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ReferralCodeController extends Controller
 {
-    public function __construct(private ReferralService $referralService) {}
+    use AuthorizesRequests;
+
+    public function __construct(
+        private readonly ReferralService $referralService
+    ) {}
 
     /**
-     * Get all active referral codes (public endpoint).
-     * GET /api/referral-codes
+     * Public page: Show all active referral codes (optional UI page)
      */
-    public function index(): JsonResponse
+    public function index(): Response
     {
         $codes = $this->referralService->getActiveCodesList();
 
-        return response()->json([
-            'success' => true,
-            'data' => $codes->map(function ($code) {
-                return [
-                    'code' => $code->code,
-                    'description' => $code->description,
-                    'discount_percentage' => (float) $code->discount_percentage,
-                ];
-            }),
+        return Inertia::render('Referrals/Index', [
+            'codes' => $codes->map(fn ($code) => [
+                'code' => $code->code,
+                'description' => $code->description,
+                'discount_percentage' => (float) $code->discount_percentage,
+            ]),
         ]);
     }
 
     /**
-     * Validate a referral code and get discount percentage.
-     * POST /api/referral-codes/validate
-     *
-     * Request body:
-     * {
-     *   "code": "SAVE20"
-     * }
+     * Validate a referral code (FORM POST from Vue)
      */
-    public function validate(Request $request): JsonResponse
+    public function validateCode(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'code' => 'required|string|max:50',
         ]);
 
         try {
-            $discountPercentage = $this->referralService->validateCode($request->input('code'));
+            $discountPercentage = $this->referralService
+                ->validateCode($validated['code']);
 
-            return response()->json([
+            return redirect()->back()->with([
                 'success' => true,
                 'discount_percentage' => $discountPercentage,
             ]);
         } catch (ModelNotFoundException) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid or inactive referral code',
-            ], 404);
+            return redirect()->back()
+                ->withErrors(['code' => 'Invalid or inactive referral code'])
+                ->withInput();
         }
     }
 
     /**
-     * Calculate discount for a given price and code.
-     * POST /api/referral-codes/calculate-discount
-     *
-     * Request body:
-     * {
-     *   "price": 50.00,
-     *   "code": "SAVE20"
-     * }
+     * Validate code + calculate discount (Checkout use case)
      */
-    public function calculateDiscount(Request $request): JsonResponse
+    public function calculateDiscount(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'price' => 'required|numeric|min:0.01',
             'code' => 'required|string|max:50',
         ]);
-
-        $discount = $this->referralService->calculateDiscount(
-            (float) $request->input('price'),
-            $request->input('code')
-        );
-
-        return response()->json([
-            'success' => true,
-            'data' => $discount,
-        ]);
-    }
-
-    /**
-     * Validate referral code and calculate discount (for Inertia/Vue form or AJAX).
-     * POST /referral/validate-discount
-     */
-    public function validateDiscount(Request $request)
-    {
-        $request->validate([
-            'code' => 'required|string|max:50',
-            'price' => 'required|numeric|min:0.01',
-        ]);
-
-        $discount = $this->referralService->calculateDiscount(
-            (float) $request->input('price'),
-            $request->input('code')
-        );
-
-        // If AJAX, return JSON
-        if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'data' => $discount,
-            ]);
-        }
-
-        // Otherwise, redirect back with flash data (for Inertia form)
-        return redirect()->back()->with('discount', $discount);
-    }
-
-    /**
-     * Get statistics for a referral code (admin only).
-     * GET /api/referral-codes/{code}/stats
-     */
-    public function stats(string $code): JsonResponse
-    {
-        // Authorization check (admin only)
-        $this->authorize('viewAdmin', ReferralCode::class);
 
         try {
-            $stats = $this->referralService->getCodeStats($code);
+            $discount = $this->referralService->calculateDiscount(
+                (float) $validated['price'],
+                $validated['code']
+            );
 
-            return response()->json([
-                'success' => true,
-                'data' => $stats,
+            return redirect()->back()->with([
+                'discount' => $discount,
             ]);
         } catch (ModelNotFoundException) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Referral code not found',
-            ], 404);
+            return redirect()->back()
+                ->withErrors(['code' => 'Invalid or inactive referral code'])
+                ->withInput();
         }
     }
 
     /**
-     * Create a new referral code (admin only).
-     * POST /api/referral-codes
-     *
-     * Request body:
-     * {
-     *   "code": "SAVE20",
-     *   "discount_percentage": 20,
-     *   "description": "20% off for early supporters"
-     * }
+     * Admin page: Show referral stats
      */
-    public function store(Request $request): JsonResponse
+    public function stats(string $code): Response
     {
-        // Authorization check (admin only)
+        $referralCode = ReferralCode::whereCode($code)->firstOrFail();
+        $this->authorize('viewAdmin', $referralCode);
+
+        $stats = $this->referralService->getCodeStats($code);
+
+        return Inertia::render('Admin/Referrals/Stats', [
+            'code' => $referralCode->code,
+            'stats' => $stats,
+        ]);
+    }
+
+    /**
+     * Admin: Create referral code
+     */
+    public function store(Request $request)
+    {
         $this->authorize('create', ReferralCode::class);
 
         $validated = $request->validate([
@@ -164,77 +114,39 @@ class ReferralCodeController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        try {
-            $code = $this->referralService->createCode(
-                $validated['code'],
-                $validated['discount_percentage'],
-                auth()->user(),
-                $validated['description'] ?? null
-            );
+        $this->referralService->createCode(
+            $validated['code'],
+            $validated['discount_percentage'],
+            Auth::user(),
+            $validated['description'] ?? null
+        );
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Referral code created successfully',
-                'data' => [
-                    'id' => $code->id,
-                    'code' => $code->code,
-                    'discount_percentage' => (float) $code->discount_percentage,
-                ],
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create referral code',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+        return redirect()->back()->with('success', 'Referral code created successfully.');
     }
 
     /**
-     * Deactivate a referral code (admin only).
-     * PATCH /api/referral-codes/{code}/deactivate
+     * Admin: Deactivate referral code
      */
-    public function deactivate(string $code): JsonResponse
+    public function deactivate(string $code)
     {
-        // Authorization check (admin only)
-        $this->authorize('update', ReferralCode::class);
+        $referralCode = ReferralCode::whereCode($code)->firstOrFail();
+        $this->authorize('update', $referralCode);
 
-        try {
-            $this->referralService->deactivateCode($code);
+        $this->referralService->deactivateCode($code);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Referral code deactivated',
-            ]);
-        } catch (ModelNotFoundException) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Referral code not found',
-            ], 404);
-        }
+        return redirect()->back()->with('success', 'Referral code deactivated.');
     }
 
     /**
-     * Activate a referral code (admin only).
-     * PATCH /api/referral-codes/{code}/activate
+     * Admin: Activate referral code
      */
-    public function activate(string $code): JsonResponse
+    public function activate(string $code)
     {
-        // Authorization check (admin only)
-        $this->authorize('update', ReferralCode::class);
+        $referralCode = ReferralCode::whereCode($code)->firstOrFail();
+        $this->authorize('update', $referralCode);
 
-        try {
-            $this->referralService->activateCode($code);
+        $this->referralService->activateCode($code);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Referral code activated',
-            ]);
-        } catch (ModelNotFoundException) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Referral code not found',
-            ], 404);
-        }
+        return redirect()->back()->with('success', 'Referral code activated.');
     }
 }

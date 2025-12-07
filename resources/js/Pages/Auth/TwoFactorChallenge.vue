@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 
 const activeTab = ref('authenticator')
@@ -113,11 +113,28 @@ const recoveryForm = useForm({
   recovery_code: ''
 })
 
+// Auto-focus when switching tabs
+watch(activeTab, async () => {
+  await nextTick()
+  document.querySelector('input:visible')?.focus()
+})
+
+// Normalize recovery code before submit
 const submitAuthenticator = () => {
+  recoveryForm.reset()
   form.post('/two-factor-challenge')
 }
 
 const submitRecovery = () => {
+  form.reset()
+
+  recoveryForm.recovery_code = recoveryForm.recovery_code
+    .replace(/\s+/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .replace(/(.{4})/g, '$1-')
+    .replace(/-$/, '')
+
   recoveryForm.post('/two-factor-challenge')
 }
 </script>
+

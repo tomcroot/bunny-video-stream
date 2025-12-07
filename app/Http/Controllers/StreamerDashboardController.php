@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class StreamerDashboardController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Get featured content (banners/movies)
         $featured = Banner::where('is_active', true)

@@ -1,0 +1,128 @@
+# Laravel
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/storage/framework/cache/
+/storage/framework/sessions/
+/storage/framework/views/
+/bootstrap/cache/
+.env
+.env.backup
+.env.local
+.env.*.local
+phpunit.xml
+
+# IDE & Editors
+.vscode/
+.idea/
+*.sublime-*
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# OS
+.AppleDouble
+.LSOverride
+*.swp
+*.swo
+*~
+.env.*.php
+
+# Composer
+composer.lock
+vendor/
+
+# NPM & Yarn
+package-lock.json
+yarn.lock
+.npm
+.yarn
+
+# Build artifacts
+/public/build/
+/public/mix-manifest.json
+
+# Logs & Temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env.lock
+
+# ================================================
+# DOCUMENTATION & DEV FILES (DO NOT DEPLOY)
+# ================================================
+
+# Analysis & Audit Documents
+ADMIN_STRUCTURE_ANALYSIS.md
+OTP_SYSTEM_AUDIT_REPORT.md
+OTP_FIX_SUMMARY.md
+OTP_VERIFICATION_ERROR_FIX.md
+OTP_DIAGNOSTIC_REPORT.md
+EMAIL_RESET_DIAGNOSTIC.md
+NEW_NUMBER_OTP_AUDIT.md
+NEW_NUMBER_OTP_COMPLETE_AUDIT.md
+NEW_NUMBER_OTP_DIAGNOSTIC.md
+NEW_NUMBER_OTP_RESOLUTION.md
+SEND_OTP_IMPROVEMENTS.md
+TEST_NEW_NUMBER_OTP.md
+test-otp-flow.md
+
+# Deployment & Setup Guides
+DEPLOYMENT_CHECKLIST_OTP_SEND.md
+PASSWORD_RESET_DEPLOYMENT.md
+ENV_SETUP.md
+LOVABLE_DEPLOYMENT_NOTES.md
+PROJECT_DOCUMENTATION.md
+
+# Admin & Feature Guides
+ADMIN_SETTINGS_GUIDE.md
+
+# Temporary Test & Helper Scripts
+list_admin.php
+list_pages.php
+find_admin_files.sh
+find_index.sh
+
+# Issues, Changelogs & Database Utils
+Issues.md
+CHANGELOG.md
+CLEAR_RATE_LIMITS.sql
+
+# Dev Configuration Files
+.babelrc
+.eslintignore
+.prettierignore
+
+# Coverage & Testing
+coverage/
+.nyc_output/
+
+# Promise subfolder (if separate project, keep separate .gitignore)
+promise/node_modules/
+promise/dist/
+promise/build/
+
+# ================================================
+# PRODUCTION ESSENTIALS - KEEP EVERYTHING ELSE
+# ================================================
+#
+# DO NOT ADD these directories/files to .gitignore:
+# - app/ (Laravel controllers, models, middleware, etc.)
+# - routes/ (web.php, api.php, console.php)
+# - database/ (migrations, seeders, factories)
+# - resources/js/ (Vue components, pages)
+# - resources/css/ (stylesheets)
+# - resources/views/ (Blade templates)
+# - config/ (application configuration)
+# - bootstrap/ (app.php, providers.php)
+# - public/ (index.php, images, fonts)
+# - src/ (any custom source)
+# - tests/ (test files)
+# - artisan (Laravel CLI)
+# - vite.config.js (build config)
+# - tsconfig.json (TypeScript config)
+# - composer.json (PHP dependencies)
+# - package.json (Node dependencies)
+# - .env.example (environment template for developers)

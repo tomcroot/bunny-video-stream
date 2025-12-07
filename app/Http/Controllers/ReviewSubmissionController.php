@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,7 +67,7 @@ class ReviewSubmissionController extends Controller
                     ');
             });
         } catch (\Exception $e) {
-            \Log::error('Review notification email error: '.$e->getMessage());
+            Log::error('Review notification email error: '.$e->getMessage());
         }
 
         return back()->with('success', 'Thank you for your review! It will be published after approval.');

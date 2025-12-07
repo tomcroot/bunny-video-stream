@@ -7,6 +7,7 @@ use App\Notifications\PaymentSuccessfulNotification;
 use App\Notifications\RenewalReminderNotification;
 use Arhinful\LaravelMNotify\MNotify;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class BulkSmsService
 {
@@ -20,7 +21,7 @@ class BulkSmsService
 
             return true;
         } catch (\Exception $e) {
-            \Log::error('Failed to send payment SMS notification', [
+            Log::error('Failed to send payment SMS notification', [
                 'user_id' => $user->id,
                 'movie_title' => $movieTitle,
                 'amount' => $amount,
@@ -41,7 +42,7 @@ class BulkSmsService
 
             return true;
         } catch (\Exception $e) {
-            \Log::error('Failed to send renewal reminder SMS', [
+            Log::error('Failed to send renewal reminder SMS', [
                 'user_id' => $user->id,
                 'movie_title' => $movieTitle,
                 'days_remaining' => $daysRemaining,
@@ -116,7 +117,7 @@ class BulkSmsService
                 'recipients_count' => count($phoneNumbers),
             ];
         } catch (\Exception $e) {
-            \Log::error('Failed to send bulk SMS', [
+            Log::error('Failed to send bulk SMS', [
                 'phone_numbers' => $phoneNumbers,
                 'message' => $message,
                 'error' => $e->getMessage(),
