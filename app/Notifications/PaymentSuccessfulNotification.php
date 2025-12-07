@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use Arhinful\LaravelMNotify\MNotifyMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -38,10 +37,17 @@ class PaymentSuccessfulNotification extends Notification implements ShouldQueue
     /**
      * Get the mNotify SMS representation of the notification.
      */
-    public function toMNotify(object $notifiable): MNotifyMessage
+    public function toMNotify(object $notifiable)
     {
-        return (new MNotifyMessage)
-            ->message("Payment successful! Your access to '{$this->movieTitle}' has been activated. Amount: ₵{$this->amount}");
+        if (class_exists('\\Arhinful\\LaravelMNotify\\MNotifyMessage')) {
+            return (new \Arhinful\LaravelMNotify\MNotifyMessage)
+                ->message("Payment successful! Your access to '{$this->movieTitle}' has been activated. Amount: ₵{$this->amount}");
+        }
+
+        return (new MailMessage)
+            ->subject('Payment Successful!')
+            ->line("Your payment of ₵{$this->amount} for '{$this->movieTitle}' has been processed successfully.")
+            ->action('Watch Now', url('/watch'));
     }
 
     /**

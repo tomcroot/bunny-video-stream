@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use Arhinful\LaravelMNotify\MNotifyMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -38,10 +37,17 @@ class RenewalReminderNotification extends Notification implements ShouldQueue
     /**
      * Get the mNotify SMS representation of the notification.
      */
-    public function toMNotify(object $notifiable): MNotifyMessage
+    public function toMNotify(object $notifiable)
     {
-        return (new MNotifyMessage)
-            ->message("Reminder: Your access to '{$this->movieTitle}' expires in {$this->daysRemaining} days. Renew now to continue watching!");
+        if (class_exists('\\Arhinful\\LaravelMNotify\\MNotifyMessage')) {
+            return (new \Arhinful\LaravelMNotify\MNotifyMessage)
+                ->message("Reminder: Your access to '{$this->movieTitle}' expires in {$this->daysRemaining} days. Renew now to continue watching!");
+        }
+
+        return (new MailMessage)
+            ->subject('Access Expiring Soon')
+            ->line("Your access to '{$this->movieTitle}' will expire in {$this->daysRemaining} days.")
+            ->action('Renew Now', url('/renew'));
     }
 
     /**

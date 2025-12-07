@@ -41,14 +41,15 @@ class TwoFactorAuthenticationController extends Controller
         }
 
         // Generate and save secret
+        if (! method_exists($provider, 'generate')) {
+            return redirect()->back()->withErrors(['two_factor' => 'Two-factor provider not available.']);
+        }
         $provider->generate($user);
 
         // Generate QR code
-        $qrCode = $provider->qrCode(
-            config('app.name'),
-            $user->email,
-            decrypt($user->two_factor_secret)
-        );
+        $qrCode = method_exists($provider, 'qrCode')
+            ? $provider->qrCode(config('app.name'), $user->email, decrypt($user->two_factor_secret))
+            : null;
 
         return redirect()->back()->with([
             'two_factor_qr' => $qrCode,

@@ -1,7 +1,7 @@
 <script setup>
-import PublicHeader from '@/Components/PublicHeader.vue'
-import PublicFooter from '@/Components/PublicFooter.vue'
-import ContactBubble from '@/Components/ContactBubble.vue'
+import PublicHeader from '@/components/PublicHeader.vue'
+import PublicFooter from '@/components/PublicFooter.vue'
+import ContactBubble from '@/components/ContactBubble.vue'
 </script>
 
 <template>

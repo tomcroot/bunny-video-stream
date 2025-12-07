@@ -6,6 +6,7 @@ use App\Models\CastCrew;
 use App\Models\Review;
 use App\Services\BunnyVideoService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class HomeController extends Controller

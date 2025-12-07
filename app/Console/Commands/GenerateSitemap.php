@@ -38,6 +38,7 @@ class GenerateSitemap extends Command
         }
 
         // 2️⃣ Dynamic Film pages (if model exists)
+        // Add dynamic film URLs if model exists; skip otherwise
         if (class_exists(\App\Models\Film::class)) {
             foreach (\App\Models\Film::all() as $film) {
                 $sitemap->add(

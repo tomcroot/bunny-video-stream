@@ -30,7 +30,7 @@
             <div class="bg-card border border-border rounded-lg p-6">
               <h2 class="text-lg font-semibold text-foreground mb-4">Movie Details</h2>
               <div class="flex gap-6">
-                <div v-if="movie?.image_url" class="flex-shrink-0 w-24 h-32">
+                <div v-if="movie?.image_url" class="shrink-0 w-24 h-32">
                   <img
                     :src="movie.image_url"
                     :alt="movie.title"

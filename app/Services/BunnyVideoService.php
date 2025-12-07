@@ -32,7 +32,17 @@ class BunnyVideoService
         $libId = $libraryId ?? $this->libraryId;
 
         try {
-            return $this->streamClient->library()->byLibraryId($libId)->get();
+            // Updated SDK may expose list() instead of get(); fallback to request
+            $library = $this->streamClient->library()->byLibraryId($libId);
+            if (is_callable([$library, 'list'])) {
+                return $library->list();
+            }
+            if (is_callable([$library, 'get'])) {
+                return $library->get();
+            }
+
+            // Fallback: return empty collection when SDK shape changes
+            return [];
         } catch (Exception $e) {
             throw new Exception('Failed to get library: '.$e->getMessage());
         }
@@ -79,7 +89,20 @@ class BunnyVideoService
                 'title' => $title ?? basename($filePath),
             ];
 
-            $video = $this->streamClient->library()->byLibraryId($libId)->videos()->post($videoData);
+            $videos = $this->streamClient->library()->byLibraryId($libId)->videos();
+
+            // Prefer strongly-typed creation if available
+            if (is_callable([$videos, 'post'])) {
+                // Attempt to build VideoCreate if factory exists
+                $payload = $videoData;
+                if (method_exists($this->streamClient, 'newVideoCreate')) {
+                    $payload = $this->streamClient->newVideoCreate($videoData);
+                }
+
+                return $videos->post($payload);
+            }
+
+            return null;
 
             // Then upload the actual file
             // Note: File upload implementation depends on Bunny's API

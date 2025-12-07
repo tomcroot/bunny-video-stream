@@ -670,7 +670,6 @@ onUnmounted(() => {
 
 .input:focus {
   outline: none;
-  ring: 2px rgb(220 38 38);
-  ring-offset-color: rgb(24 24 27);
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.6);
 }
 </style>
