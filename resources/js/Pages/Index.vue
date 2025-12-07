@@ -235,8 +235,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Hls from 'hls.js'
-import PurchaseButton from '@/Components/PurchaseButton.vue'
-import ShareButton from '@/Components/ShareButton.vue'
+import PurchaseButton from '@/components/PurchaseButton.vue'
+import ShareButton from '@/components/ShareButton.vue'
 import PublicLayout from '@/Layouts/PublicLayout.vue'
 
 defineOptions({ layout: PublicLayout })
