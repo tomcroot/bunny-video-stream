@@ -178,7 +178,7 @@ const initPlayer = () => {
         console.log('HLS manifest loaded successfully');
       });
 
-      hls.value.on(Hls.Events.ERROR, (event, data) => {
+      hlsInstance.value.on(Hls.Events.ERROR, (event, data) => {
         // Only log fatal errors and handle non-fatal ones silently
         if (data.fatal) {
           console.error('HLS fatal error:', data);
