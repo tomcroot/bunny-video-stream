@@ -98,7 +98,7 @@ const props = defineProps({
   fallbackVideoUrl: String,
   videoTitle: {
     type: String,
-    default: 'Promise Land'
+    default: 'A Crazy Day In Accra'
   }
 });
 
