@@ -307,7 +307,7 @@
 import { ref, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { Star, Film, BookOpen, Target, MessageCircle, Send, User } from 'lucide-vue-next'
-import { Button } from '@/Components/ui/button'
+import { Button } from '@/components/ui/button'
 import PublicLayout from '@/Layouts/PublicLayout.vue'
 defineOptions({ layout: PublicLayout })
 
