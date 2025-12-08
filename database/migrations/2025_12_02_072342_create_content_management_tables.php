@@ -54,6 +54,7 @@ return new class extends Migration
         // Page content table for movie details
         Schema::create('page_content', function (Blueprint $table) {
             $table->id();
+            $table->string('page')->unique(); // 'home', 'about', etc.
             $table->string('title')->nullable();
             $table->string('poster')->nullable();
             $table->string('backdrop')->nullable();

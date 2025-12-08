@@ -20,7 +20,14 @@ class PageController extends Controller
         $castCrew = CastCrew::orderBy('display_order')->get();
         $gallery = Gallery::orderBy('display_order')->get();
         $reviews = Review::orderBy('display_order')->get();
-        $pageContent = PageContent::where('page', 'home')->first();
+
+        // Try to get page content, but don't fail if column doesn't exist
+        try {
+            $pageContent = PageContent::where('page', 'home')->first();
+        } catch (\Exception $e) {
+            $pageContent = null;
+        }
+
         $paid = Auth::check() ? Auth::user()->hasSuccessfulPayment() : false;
         $premiereDate = SiteSettings::getSetting('premiere_date', '2025-12-10T06:00:00Z');
 
@@ -56,41 +63,29 @@ class PageController extends Controller
 
     public function contact()
     {
-        $pageContent = PageContent::where('page', 'contact')->first();
-
-        return Inertia::render('Contact', [
-            'pageContent' => $pageContent,
-        ]);
+        return Inertia::render('Contact');
     }
 
     public function gallery()
     {
         $gallery = Gallery::orderBy('display_order')->get();
-        $pageContent = PageContent::where('page', 'gallery')->first();
 
         return Inertia::render('Gallery', [
             'gallery' => $gallery,
-            'pageContent' => $pageContent,
         ]);
     }
 
     public function credits()
     {
         $castCrew = CastCrew::orderBy('display_order')->get();
-        $pageContent = PageContent::where('page', 'credits')->first();
 
         return Inertia::render('Credits', [
             'castCrew' => $castCrew,
-            'pageContent' => $pageContent,
         ]);
     }
 
     public function terms()
     {
-        $pageContent = PageContent::where('page', 'terms')->first();
-
-        return Inertia::render('Terms', [
-            'pageContent' => $pageContent,
-        ]);
+        return Inertia::render('Terms');
     }
 }
