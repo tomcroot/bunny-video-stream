@@ -51,18 +51,21 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Page content table for dynamic content
+        // Page content table for movie details
         Schema::create('page_content', function (Blueprint $table) {
             $table->id();
-            $table->string('page'); // 'home', 'information', 'about', etc.
-            $table->string('section'); // section identifier
-            $table->string('key'); // content key
-            $table->text('value')->nullable(); // content value
+            $table->string('title')->nullable();
+            $table->string('poster')->nullable();
+            $table->string('backdrop')->nullable();
+            $table->text('synopsis')->nullable();
+            $table->text('logline')->nullable();
+            $table->string('rating')->nullable(); // '16+', 'PG-13', etc.
+            $table->string('runtime')->nullable(); // '1h 45m'
+            $table->string('year')->nullable(); // '2025'
+            $table->json('genres')->nullable(); // ['Thriller', 'Drama', 'Comedy']
             $table->json('metadata')->nullable(); // additional data
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-
-            $table->unique(['page', 'section', 'key']);
         });
 
         // Reviews table

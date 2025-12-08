@@ -36,7 +36,11 @@ class PageController extends Controller
 
     public function information()
     {
-        $pageContent = PageContent::where('page', 'information')->first();
+        // Fetch the latest movie details from PageContent
+        $pageContent = PageContent::where('is_active', true)
+            ->latest()
+            ->first();
+
         $reviews = Review::where('is_approved', true)
             ->latest()
             ->get();

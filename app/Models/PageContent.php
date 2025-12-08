@@ -9,15 +9,21 @@ class PageContent extends Model
     protected $table = 'page_content';
 
     protected $fillable = [
-        'page',
-        'section',
-        'key',
-        'value',
+        'title',
+        'poster',
+        'backdrop',
+        'synopsis',
+        'logline',
+        'rating',
+        'runtime',
+        'year',
+        'genres',
         'metadata',
         'is_active',
     ];
 
     protected $casts = [
+        'genres' => 'array',
         'metadata' => 'array',
         'is_active' => 'boolean',
     ];

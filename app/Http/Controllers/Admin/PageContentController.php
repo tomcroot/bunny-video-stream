@@ -14,11 +14,7 @@ class PageContentController extends Controller
      */
     public function index()
     {
-        $content = PageContent::orderBy('page')
-            ->orderBy('section')
-            ->orderBy('key')
-            ->get()
-            ->groupBy(['page', 'section']);
+        $content = PageContent::orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Admin/PageContent/Index', [
             'content' => $content,
@@ -39,17 +35,22 @@ class PageContentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'page' => 'required|string|max:255',
-            'section' => 'required|string|max:255',
-            'key' => 'required|string|max:255',
-            'value' => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'poster' => 'nullable|string',
+            'backdrop' => 'nullable|string',
+            'synopsis' => 'nullable|string',
+            'logline' => 'nullable|string',
+            'rating' => 'nullable|string|max:255',
+            'runtime' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:4',
+            'genres' => 'nullable|array',
             'metadata' => 'nullable|array',
             'is_active' => 'boolean',
         ]);
 
         PageContent::create($validated);
 
-        return redirect()->route('admin.page-content.index')->with('success', 'Page content created successfully.');
+        return redirect()->route('admin.page-content.index')->with('success', 'Movie details created successfully.');
     }
 
     /**
@@ -78,17 +79,22 @@ class PageContentController extends Controller
     public function update(Request $request, PageContent $pageContent)
     {
         $validated = $request->validate([
-            'page' => 'required|string|max:255',
-            'section' => 'required|string|max:255',
-            'key' => 'required|string|max:255',
-            'value' => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'poster' => 'nullable|string',
+            'backdrop' => 'nullable|string',
+            'synopsis' => 'nullable|string',
+            'logline' => 'nullable|string',
+            'rating' => 'nullable|string|max:255',
+            'runtime' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:4',
+            'genres' => 'nullable|array',
             'metadata' => 'nullable|array',
             'is_active' => 'boolean',
         ]);
 
         $pageContent->update($validated);
 
-        return redirect()->route('admin.page-content.index')->with('success', 'Page content updated successfully.');
+        return redirect()->route('admin.page-content.index')->with('success', 'Movie details updated successfully.');
     }
 
     /**
@@ -98,6 +104,6 @@ class PageContentController extends Controller
     {
         $pageContent->delete();
 
-        return redirect()->route('admin.page-content.index')->with('success', 'Page content deleted successfully.');
+        return redirect()->route('admin.page-content.index')->with('success', 'Movie details deleted successfully.');
     }
 }

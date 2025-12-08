@@ -5,12 +5,12 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
           <div>
-            <h1 class="text-2xl font-bold text-foreground">Page Content Details</h1>
-            <p class="text-muted-foreground">View content information</p>
+            <h1 class="text-2xl font-bold text-foreground">{{ content.title }}</h1>
+            <p class="text-muted-foreground">Movie details</p>
           </div>
           <div class="flex space-x-2">
             <Link
-              :href="`/admin/page-content/${pageContent.id}/edit`"
+              :href="`/admin/page-content/${content.id}/edit`"
               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
               <Edit class="h-4 w-4 mr-2" />
@@ -21,7 +21,7 @@
               class="inline-flex items-center px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors"
             >
               <ArrowLeft class="h-4 w-4 mr-2" />
-              Back to Page Content
+              Back to Movies
             </Link>
           </div>
         </div>
@@ -29,60 +29,106 @@
     </div>
 
     <!-- Content -->
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="bg-card rounded-lg shadow p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Basic Information -->
-          <div>
-            <h3 class="text-lg font-semibold text-foreground mb-4">Content Information</h3>
-            <dl class="space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <!-- Poster -->
+          <div class="md:col-span-1">
+            <h3 class="text-lg font-semibold text-foreground mb-4">Poster</h3>
+            <img
+              v-if="content.poster"
+              :src="content.poster"
+              :alt="content.title"
+              class="w-full h-auto rounded-lg shadow-lg"
+            />
+            <div v-else class="w-full h-96 bg-muted rounded-lg flex items-center justify-center">
+              <p class="text-muted-foreground">No poster image</p>
+            </div>
+          </div>
+
+          <!-- Basic Info -->
+          <div class="md:col-span-2">
+            <h3 class="text-lg font-semibold text-foreground mb-4">Basic Information</h3>
+            <dl class="space-y-4">
               <div>
                 <dt class="text-sm font-medium text-muted-foreground">Title</dt>
-                <dd class="text-foreground">{{ pageContent.title }}</dd>
+                <dd class="text-foreground text-lg font-semibold">{{ content.title }}</dd>
               </div>
-              <div>
-                <dt class="text-sm font-medium text-muted-foreground">Page</dt>
-                <dd class="text-foreground capitalize">{{ pageContent.page }}</dd>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <dt class="text-sm font-medium text-muted-foreground">Release Year</dt>
+                  <dd class="text-foreground">{{ content.year || 'N/A' }}</dd>
+                </div>
+                <div>
+                  <dt class="text-sm font-medium text-muted-foreground">Rating</dt>
+                  <dd class="text-foreground">{{ content.rating || 'N/A' }}</dd>
+                </div>
+                <div>
+                  <dt class="text-sm font-medium text-muted-foreground">Runtime</dt>
+                  <dd class="text-foreground">{{ content.runtime || 'N/A' }}</dd>
+                </div>
+                <div>
+                  <dt class="text-sm font-medium text-muted-foreground">Status</dt>
+                  <dd>
+                    <span :class="['px-2 py-1 text-xs rounded-full', content.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
+                      {{ content.is_active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </dd>
+                </div>
               </div>
-              <div>
-                <dt class="text-sm font-medium text-muted-foreground">Section</dt>
-                <dd class="text-foreground">{{ pageContent.section }}</dd>
-              </div>
-              <div>
-                <dt class="text-sm font-medium text-muted-foreground">Status</dt>
-                <dd>
-                  <span :class="['px-2 py-1 text-xs rounded-full', pageContent.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
-                    {{ pageContent.is_active ? 'Active' : 'Inactive' }}
+
+              <div v-if="content.genres && content.genres.length">
+                <dt class="text-sm font-medium text-muted-foreground mb-2">Genres</dt>
+                <dd class="flex flex-wrap gap-2">
+                  <span
+                    v-for="genre in content.genres"
+                    :key="genre"
+                    class="px-3 py-1 text-xs bg-purple-100 text-purple-800 rounded-full"
+                  >
+                    {{ genre }}
                   </span>
                 </dd>
               </div>
-              <div>
-                <dt class="text-sm font-medium text-muted-foreground">Display Order</dt>
-                <dd class="text-foreground">{{ pageContent.display_order }}</dd>
-              </div>
             </dl>
           </div>
+        </div>
 
-          <!-- Content -->
-          <div>
-            <h3 class="text-lg font-semibold text-foreground mb-4">Content</h3>
-            <div class="bg-muted p-4 rounded-md">
-              <div class="prose prose-sm max-w-none text-foreground" v-html="pageContent.content"></div>
-            </div>
+        <!-- Backdrop -->
+        <div v-if="content.backdrop" class="mb-8">
+          <h3 class="text-lg font-semibold text-foreground mb-4">Backdrop</h3>
+          <div class="rounded-lg overflow-hidden">
+            <img :src="content.backdrop" :alt="content.title + ' backdrop'" class="w-full h-auto" />
+          </div>
+        </div>
+
+        <!-- Logline -->
+        <div v-if="content.logline" class="mb-8">
+          <h3 class="text-lg font-semibold text-foreground mb-4">Logline</h3>
+          <div class="bg-muted p-4 rounded-lg">
+            <p class="text-foreground">{{ content.logline }}</p>
+          </div>
+        </div>
+
+        <!-- Synopsis -->
+        <div v-if="content.synopsis" class="mb-8">
+          <h3 class="text-lg font-semibold text-foreground mb-4">Synopsis</h3>
+          <div class="bg-muted p-4 rounded-lg">
+            <p class="text-foreground whitespace-pre-wrap">{{ content.synopsis }}</p>
           </div>
         </div>
 
         <!-- Timestamps -->
-        <div class="mt-8 pt-6 border-t border-border">
+        <div class="pt-6 border-t border-border">
           <h3 class="text-lg font-semibold text-foreground mb-4">Timestamps</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <dt class="text-sm font-medium text-muted-foreground">Created</dt>
-              <dd class="text-foreground">{{ formatDate(pageContent.created_at) }}</dd>
+              <dd class="text-foreground">{{ formatDate(content.created_at) }}</dd>
             </div>
             <div>
               <dt class="text-sm font-medium text-muted-foreground">Last Updated</dt>
-              <dd class="text-foreground">{{ formatDate(pageContent.updated_at) }}</dd>
+              <dd class="text-foreground">{{ formatDate(content.updated_at) }}</dd>
             </div>
           </div>
         </div>
@@ -96,7 +142,7 @@ import { Link } from '@inertiajs/vue3'
 import { ArrowLeft, Edit } from 'lucide-vue-next'
 
 defineProps({
-  pageContent: Object
+  content: Object
 })
 
 const formatDate = (dateString) => {

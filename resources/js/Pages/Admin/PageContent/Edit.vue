@@ -5,15 +5,15 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
           <div>
-            <h1 class="text-2xl font-bold text-foreground">Edit Page Content</h1>
-            <p class="text-muted-foreground">Update content details</p>
+            <h1 class="text-2xl font-bold text-foreground">Edit Movie Details</h1>
+            <p class="text-muted-foreground">Update movie information</p>
           </div>
           <Link
             href="/admin/page-content"
             class="inline-flex items-center px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors"
           >
             <ArrowLeft class="h-4 w-4 mr-2" />
-            Back to Page Content
+            Back to Movie Details
           </Link>
         </div>
       </div>
@@ -27,13 +27,14 @@
             <!-- Title -->
             <div>
               <label for="title" class="block text-sm font-medium text-foreground mb-2">
-                Title *
+                Movie Title *
               </label>
               <input
                 id="title"
                 v-model="form.title"
                 type="text"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., A Crazy Day in Accra"
                 required
               />
               <div v-if="form.errors.title" class="mt-1 text-sm text-red-600">
@@ -41,79 +42,144 @@
               </div>
             </div>
 
-            <!-- Page -->
+            <!-- Poster URL -->
             <div>
-              <label for="page" class="block text-sm font-medium text-foreground mb-2">
-                Page *
-              </label>
-              <select
-                id="page"
-                v-model="form.page"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                required
-              >
-                <option value="">Select page</option>
-                <option value="home">Home</option>
-                <option value="about">About</option>
-                <option value="contact">Contact</option>
-                <option value="gallery">Gallery</option>
-                <option value="credits">Credits</option>
-              </select>
-              <div v-if="form.errors.page" class="mt-1 text-sm text-red-600">
-                {{ form.errors.page }}
-              </div>
-            </div>
-
-            <!-- Section -->
-            <div>
-              <label for="section" class="block text-sm font-medium text-foreground mb-2">
-                Section *
+              <label for="poster" class="block text-sm font-medium text-foreground mb-2">
+                Poster URL
               </label>
               <input
-                id="section"
-                v-model="form.section"
-                type="text"
+                id="poster"
+                v-model="form.poster"
+                type="url"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="e.g., hero, about, footer"
-                required
+                placeholder="/movie_poster.jpg"
               />
-              <div v-if="form.errors.section" class="mt-1 text-sm text-red-600">
-                {{ form.errors.section }}
+              <div v-if="form.errors.poster" class="mt-1 text-sm text-red-600">
+                {{ form.errors.poster }}
               </div>
             </div>
 
-            <!-- Content -->
+            <!-- Backdrop URL -->
             <div>
-              <label for="content" class="block text-sm font-medium text-foreground mb-2">
-                Content *
+              <label for="backdrop" class="block text-sm font-medium text-foreground mb-2">
+                Backdrop URL
+              </label>
+              <input
+                id="backdrop"
+                v-model="form.backdrop"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="/movie_poster_2.jpg"
+              />
+              <div v-if="form.errors.backdrop" class="mt-1 text-sm text-red-600">
+                {{ form.errors.backdrop }}
+              </div>
+            </div>
+
+            <!-- Logline -->
+            <div>
+              <label for="logline" class="block text-sm font-medium text-foreground mb-2">
+                Logline
               </label>
               <textarea
-                id="content"
-                v-model="form.content"
-                rows="6"
+                id="logline"
+                v-model="form.logline"
+                rows="2"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Enter the content for this section"
-                required
+                placeholder="A one-line summary of the film"
               ></textarea>
-              <div v-if="form.errors.content" class="mt-1 text-sm text-red-600">
-                {{ form.errors.content }}
+              <div v-if="form.errors.logline" class="mt-1 text-sm text-red-600">
+                {{ form.errors.logline }}
               </div>
             </div>
 
-            <!-- Display Order -->
+            <!-- Synopsis -->
             <div>
-              <label for="display_order" class="block text-sm font-medium text-foreground mb-2">
-                Display Order
+              <label for="synopsis" class="block text-sm font-medium text-foreground mb-2">
+                Synopsis
+              </label>
+              <textarea
+                id="synopsis"
+                v-model="form.synopsis"
+                rows="5"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Full description of the film"
+              ></textarea>
+              <div v-if="form.errors.synopsis" class="mt-1 text-sm text-red-600">
+                {{ form.errors.synopsis }}
+              </div>
+            </div>
+
+            <!-- Rating -->
+            <div>
+              <label for="rating" class="block text-sm font-medium text-foreground mb-2">
+                Rating
+              </label>
+              <select
+                id="rating"
+                v-model="form.rating"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">Select rating</option>
+                <option value="G">G</option>
+                <option value="PG">PG</option>
+                <option value="PG-13">PG-13</option>
+                <option value="16+">16+</option>
+                <option value="18+">18+</option>
+              </select>
+              <div v-if="form.errors.rating" class="mt-1 text-sm text-red-600">
+                {{ form.errors.rating }}
+              </div>
+            </div>
+
+            <!-- Runtime -->
+            <div>
+              <label for="runtime" class="block text-sm font-medium text-foreground mb-2">
+                Runtime
               </label>
               <input
-                id="display_order"
-                v-model.number="form.display_order"
-                type="number"
-                min="0"
+                id="runtime"
+                v-model="form.runtime"
+                type="text"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., 1h 45m"
               />
-              <div v-if="form.errors.display_order" class="mt-1 text-sm text-red-600">
-                {{ form.errors.display_order }}
+              <div v-if="form.errors.runtime" class="mt-1 text-sm text-red-600">
+                {{ form.errors.runtime }}
+              </div>
+            </div>
+
+            <!-- Year -->
+            <div>
+              <label for="year" class="block text-sm font-medium text-foreground mb-2">
+                Release Year
+              </label>
+              <input
+                id="year"
+                v-model="form.year"
+                type="text"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="2025"
+              />
+              <div v-if="form.errors.year" class="mt-1 text-sm text-red-600">
+                {{ form.errors.year }}
+              </div>
+            </div>
+
+            <!-- Genres -->
+            <div>
+              <label for="genres" class="block text-sm font-medium text-foreground mb-2">
+                Genres (comma-separated)
+              </label>
+              <input
+                id="genres"
+                v-model="genresInput"
+                type="text"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Thriller, Drama, Comedy"
+              />
+              <div v-if="form.errors.genres" class="mt-1 text-sm text-red-600">
+                {{ form.errors.genres }}
               </div>
             </div>
 
@@ -126,7 +192,7 @@
                 class="h-4 w-4 text-primary focus:ring-primary border-border rounded"
               />
               <label for="is_active" class="ml-2 block text-sm text-foreground">
-                Active (visible on the website)
+                Active (visible on the information page)
               </label>
             </div>
 
@@ -144,7 +210,7 @@
                 class="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
                 <span v-if="form.processing">Updating...</span>
-                <span v-else>Update Content</span>
+                <span v-else>Update Movie Details</span>
               </button>
             </div>
           </div>
@@ -157,22 +223,34 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
-  pageContent: { type: Object, default: () => ({}) }
+  content: { type: Object, default: () => ({}) }
 })
 
+const genresInput = ref((props.content.genres || []).join(', '))
+
 const form = useForm({
-  title: props.pageContent.title || '',
-  page: props.pageContent.page || '',
-  section: props.pageContent.section || '',
-  content: props.pageContent.content || '',
-  display_order: props.pageContent.display_order || 0,
-  is_active: props.pageContent.is_active ?? true
+  title: props.content.title || '',
+  poster: props.content.poster || '',
+  backdrop: props.content.backdrop || '',
+  synopsis: props.content.synopsis || '',
+  logline: props.content.logline || '',
+  rating: props.content.rating || '',
+  runtime: props.content.runtime || '',
+  year: props.content.year || '',
+  genres: props.content.genres || [],
+  is_active: props.content.is_active ?? true
+})
+
+// Convert comma-separated string to array
+watch(genresInput, (newVal) => {
+  form.genres = newVal.split(',').map(g => g.trim()).filter(g => g)
 })
 
 const submit = () => {
-  if (!props.pageContent?.id) return
-  form.put(`/admin/page-content/${props.pageContent.id}`)
+  if (!props.content?.id) return
+  form.put(`/admin/page-content/${props.content.id}`)
 }
 </script>

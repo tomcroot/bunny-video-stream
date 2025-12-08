@@ -173,53 +173,27 @@ class DatabaseSeeder extends Seeder
             Gallery::create($image);
         }
 
-        // Create sample page content
+        // Create sample movie details
         $pageContents = [
             [
-                'page' => 'home',
-                'section' => 'hero',
-                'key' => 'tagline',
-                'value' => 'A gripping thriller set in the vibrant streets of Accra, where one man\'s desperate quest for survival uncovers the dark underbelly of corruption and justice.',
-                'is_active' => true,
-            ],
-            [
-                'page' => 'details',
-                'section' => 'main',
-                'key' => 'content',
-                'value' => '<h1>About the Film</h1><p>A Crazy Day in Accra is a thrilling cinematic experience that captures the essence of modern Ghanaian storytelling.</p>',
-                'is_active' => true,
-            ],
-            [
-                'page' => 'contact',
-                'section' => 'main',
-                'key' => 'content',
-                'value' => '<h1>Contact Us</h1><p>Get in touch with the production team.</p>',
-                'is_active' => true,
-            ],
-            [
-                'page' => 'gallery',
-                'section' => 'main',
-                'key' => 'content',
-                'value' => '<h1>Gallery</h1><p>Explore behind-the-scenes photos and production stills.</p>',
-                'is_active' => true,
-            ],
-            [
-                'page' => 'credits',
-                'section' => 'main',
-                'key' => 'content',
-                'value' => '<h1>Credits</h1><p>Meet the talented cast and crew who brought this story to life.</p>',
-                'is_active' => true,
-            ],
-            [
-                'page' => 'terms',
-                'section' => 'main',
-                'key' => 'content',
-                'value' => '<h1>Terms of Service</h1><p>Please read our terms and conditions carefully.</p>',
+                'title' => 'A Crazy Day in Accra',
+                'poster' => '/movie_poster.jpg',
+                'backdrop' => '/movie_poster_2.jpg',
+                'logline' => 'Jason arrives at a high-stakes pitch meeting in Accra and walks straight into a setup—framed for murder, hunted across the city, and forced to uncover a conspiracy before the day ends.',
+                'synopsis' => 'A gripping thriller set in the vibrant streets of Accra, where one man\'s desperate quest for survival uncovers the dark underbelly of corruption and justice. Follow Jason as he navigates through the city\'s bustling markets, shadowy alleyways, and powerful institutions in a race against time.',
+                'rating' => '16+',
+                'runtime' => '1h 45m',
+                'year' => '2025',
+                'genres' => json_encode(['Thriller', 'Drama', 'Comedy']),
                 'is_active' => true,
             ],
         ];
 
         foreach ($pageContents as $content) {
+            // Decode genres if it's JSON encoded
+            if (isset($content['genres']) && is_string($content['genres'])) {
+                $content['genres'] = json_decode($content['genres'], true);
+            }
             PageContent::create($content);
         }
 
