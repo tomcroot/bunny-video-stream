@@ -29,16 +29,16 @@ class SecurityHeaders
         // Referrer Policy
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-        // Content Security Policy - tightened to reduce attack surface
+        // Content Security Policy - tightened but allows Paystack + Bunny
         $csp = "default-src 'self'; ";
-        $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; ";
+        $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://js.paystack.co; ";
         $csp .= "style-src 'self' 'unsafe-inline' https://fonts.bunny.net; ";
         $csp .= "font-src 'self' https://fonts.bunny.net; ";
         $csp .= "img-src 'self' https: data: blob:; ";
         $csp .= "media-src 'self' blob: https://vz-6024b712-a89.b-cdn.net https://iframe.mediadelivery.net; ";
-        $csp .= "frame-src 'self' https://iframe.mediadelivery.net https://checkout.paystack.com; "; // Allow Bunny embed iframe and Paystack
-        $csp .= "connect-src 'self' https: wss:; ";
-        $csp .= "frame-ancestors 'none'; "; // Prevent any iframe embedding of our site
+        $csp .= "frame-src 'self' https://iframe.mediadelivery.net https://checkout.paystack.com; ";
+        $csp .= "connect-src 'self' https: wss: https://api.paystack.co; ";
+        $csp .= "frame-ancestors 'none'; ";
         $csp .= "base-uri 'self'; ";
         $csp .= "form-action 'self';";
 

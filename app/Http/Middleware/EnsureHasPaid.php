@@ -14,8 +14,15 @@ class EnsureHasPaid
         if (! $user) {
             return redirect()->route('login')->with('status', 'Please sign in first.');
         }
-        if (! $user->hasSuccessfulPayment()) {
-            return redirect('/')->with('status', 'Purchase required to access content.');
+
+        // Admins get free access to watch page
+        if ($user->hasRole('admin')) {
+            return $next($request);
+        }
+
+        // Non-admin users must have successful payment or active subscription
+        if (! $user->hasSuccessfulPayment() && ! $user->hasActiveSubscription()) {
+            return redirect()->route('payment.checkout')->with('status', 'Complete your payment to watch the movie.');
         }
 
         return $next($request);

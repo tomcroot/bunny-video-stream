@@ -18,9 +18,19 @@ class PaymentHistoryController extends Controller
 
         $hasAccess = $user->hasSuccessfulPayment();
 
+        // Get active subscription info
+        $activeSubscription = $user->subscriptions()
+            ->where('expires_at', '>', now())
+            ->latest()
+            ->first();
+
         return Inertia::render('Profile/Payments', [
             'payments' => $payments,
             'hasAccess' => $hasAccess,
+            'activeSubscription' => $activeSubscription ? [
+                'expires_at' => $activeSubscription->expires_at,
+                'days_left' => now()->diffInDays($activeSubscription->expires_at, false),
+            ] : null,
         ]);
     }
 }

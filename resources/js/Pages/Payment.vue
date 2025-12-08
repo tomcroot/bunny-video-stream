@@ -21,249 +21,180 @@
     </div>
 
     <!-- Main Content -->
-    <div v-else class="flex-1 flex items-center justify-center p-6">
+    <div v-else class="flex-1 flex items-center justify-center p-4 sm:p-6">
       <div class="w-full max-w-4xl">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           <!-- Payment Form -->
-          <div class="lg:col-span-2 space-y-8">
+          <div class="lg:col-span-2 space-y-6 lg:space-y-8">
+            <!-- Validation Errors -->
+            <div v-if="Object.keys(validationErrors).length > 0" class="bg-red-50 border border-red-200 rounded-lg p-4">
+              <h3 class="font-semibold text-red-900 mb-2">Please fix the following errors:</h3>
+              <ul class="space-y-1">
+                <li v-for="(errors, field) in validationErrors" :key="field" class="text-sm text-red-700">
+                  <strong>{{ field }}:</strong> {{ Array.isArray(errors) ? errors.join(', ') : errors }}
+                </li>
+              </ul>
+            </div>
+
             <!-- Movie Details -->
-            <div class="bg-card border border-border rounded-lg p-6">
+            <div class="bg-card border border-border rounded-lg p-4 sm:p-6">
               <h2 class="text-lg font-semibold text-foreground mb-4">Movie Details</h2>
-              <div class="flex gap-6">
-                <div v-if="movie?.image_url" class="shrink-0 w-24 h-32">
-                  <img
-                    :src="movie.image_url"
-                    :alt="movie.title"
-                    class="w-full h-full object-cover rounded-lg"
-                  />
+              <div class="flex flex-col sm:flex-row gap-4">
+                <div v-if="movie?.image_url" class="shrink-0 w-24 h-32 mx-auto sm:mx-0">
+                  <img :src="movie.image_url" :alt="movie.title" class="w-full h-full object-cover rounded-lg" />
                 </div>
                 <div class="flex-1">
                   <h3 class="text-xl font-bold text-foreground mb-2">{{ movie?.title || 'A Crazy Day in Accra' }}</h3>
                   <p class="text-muted-foreground mb-4">{{ movie?.description || 'Unlimited streaming access to this film.' }}</p>
                   <div class="space-y-2 text-sm">
-                    <div class="flex justify-between">
-                      <span class="text-muted-foreground">Duration:</span>
-                      <span class="font-medium">Unlimited Access</span>
-                    </div>
-                    <div class="flex justify-between">
-                      <span class="text-muted-foreground">Available on:</span>
-                      <span class="font-medium">All Devices</span>
-                    </div>
+                    <div class="flex justify-between"><span class="text-muted-foreground">Access:</span><span class="font-medium">Unlimited Streaming</span></div>
+                    <div class="flex justify-between"><span class="text-muted-foreground">Availability:</span><span class="font-medium">All Devices</span></div>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Payment Method Selection -->
-            <div class="bg-card border border-border rounded-lg p-6">
+            <div class="bg-card border border-border rounded-lg p-4 sm:p-6">
               <h2 class="text-lg font-semibold text-foreground mb-4">Payment Method</h2>
               <div class="space-y-3">
-                <label class="flex items-center p-4 border-2 border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors" :class="{ 'border-primary bg-primary/5': paymentChannel === 'card' }">
-                  <input v-model="paymentChannel" type="radio" value="card" class="h-4 w-4 text-primary cursor-pointer" />
-                  <span class="ml-3 flex-1">
-                    <span class="font-medium">Card Payment</span>
-                    <p class="text-sm text-muted-foreground">Visa, Mastercard, American Express</p>
-                  </span>
-                </label>
-
-                <label class="flex items-center p-4 border-2 border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors" :class="{ 'border-primary bg-primary/5': paymentChannel === 'mobile_money' }">
+                <label class="flex items-center p-3 sm:p-4 border-2 border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors" :class="{ 'border-primary bg-primary/5': paymentChannel === 'mobile_money' }">
                   <input v-model="paymentChannel" type="radio" value="mobile_money" class="h-4 w-4 text-primary cursor-pointer" />
-                  <span class="ml-3 flex-1">
-                    <span class="font-medium">Mobile Money</span>
-                    <p class="text-sm text-muted-foreground">MTN, Vodafone, Tigo</p>
-                  </span>
+                  <span class="ml-3 flex-1"><span class="font-medium block">Mobile Money (Recommended)</span><p class="text-sm text-muted-foreground">MTN, Vodafone, AirtelTigo – fast and reliable.</p></span>
+                </label>
+
+                <label class="flex items-center p-3 sm:p-4 border-2 border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors" :class="{ 'border-primary bg-primary/5': paymentChannel === 'card' }">
+                  <input v-model="paymentChannel" type="radio" value="card" class="h-4 w-4 text-primary cursor-pointer" />
+                  <span class="ml-3 flex-1"><span class="font-medium block">Card Payment</span><p class="text-sm text-muted-foreground">Visa & Mastercard via Paystack.</p></span>
                 </label>
               </div>
             </div>
 
-            <!-- Coupon Code (Optional) -->
-            <div class="bg-card border border-border rounded-lg p-6">
+            <!-- Promo Code -->
+            <div class="bg-card border border-border rounded-lg p-4 sm:p-6">
               <h2 class="text-lg font-semibold text-foreground mb-4">Promo Code</h2>
-              <div class="flex gap-2">
-                <input
-                  v-model="couponCode"
-                  type="text"
-                  placeholder="Enter promo code (optional)"
-                  class="flex-1 px-3 py-2 border border-border rounded-lg bg-muted/50 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <button
-                  @click="validateCoupon"
-                  :disabled="validatingCoupon || !couponCode"
-                  class="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <span v-if="validatingCoupon">Checking...</span>
-                  <span v-else>Apply</span>
-                </button>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input v-model="couponCode" type="text" placeholder="Enter promo/referral code (optional)" class="flex-1 px-3 py-2 border border-border rounded-lg bg-muted/50 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
+                <button @click="validateCoupon" :disabled="validatingCoupon || !couponCode" class="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors disabled:opacity-50">{{ validatingCoupon ? 'Checking...' : 'Apply' }}</button>
               </div>
-              <p v-if="discount > 0" class="text-sm text-green-600 mt-2">
-                ✓ Discount applied: {{ discount }}%
-              </p>
+              <p v-if="discount > 0" class="text-sm text-green-600 mt-2">✓ Discount applied: {{ discount }}%</p>
             </div>
 
-            <!-- Payment Email (for guests) -->
-            <div v-if="!user && showEmailPrompt" class="bg-card border border-border rounded-lg p-6">
-              <h2 class="text-lg font-semibold text-foreground mb-4">Billing Email</h2>
-              <input
-                v-model="billingEmail"
-                type="email"
-                placeholder="your@email.com"
-                class="w-full px-3 py-2 border border-border rounded-lg bg-muted/50 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                required
-              />
-              <p class="text-sm text-muted-foreground mt-2">We'll send your receipt and access details here.</p>
+            <!-- Billing Email -->
+            <div v-if="showEmailPrompt" class="bg-card border border-border rounded-lg p-4 sm:p-6">
+              <h2 class="text-lg font-semibold text-foreground mb-4">Billing Email (Optional)</h2>
+              <input v-model="billingEmail" type="email" placeholder="your@email.com (optional)" class="w-full px-3 py-2 border border-border rounded-lg bg-muted/50 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
+              <p class="text-sm text-muted-foreground mt-2">Leave empty to use your phone number as default email.</p>
             </div>
           </div>
 
-          <!-- Order Summary (Sidebar) -->
+          <!-- Order Summary -->
           <div class="lg:col-span-1">
-            <div class="bg-card border border-border rounded-lg p-6 sticky top-6">
+            <div class="bg-card border border-border rounded-lg p-4 sm:p-6 lg:sticky lg:top-6">
               <h2 class="text-lg font-semibold text-foreground mb-4">Order Summary</h2>
-
               <div class="space-y-3 pb-4 border-b border-border">
-                <div class="flex justify-between text-sm">
-                  <span class="text-muted-foreground">Subtotal</span>
-                  <span class="font-medium">₵{{ (amount / 100).toFixed(2) }}</span>
-                </div>
-                <div v-if="discount > 0" class="flex justify-between text-sm text-green-600">
-                  <span>Discount ({{ discount }}%)</span>
-                  <span>-₵{{ ((amount * discount) / 100 / 100).toFixed(2) }}</span>
-                </div>
+                <div class="flex justify-between text-sm"><span class="text-muted-foreground">Subtotal</span><span class="font-medium">₵{{ (amount / 100).toFixed(2) }}</span></div>
+                <div v-if="discount > 0" class="flex justify-between text-sm text-green-600"><span>Discount ({{ discount }}%)</span><span>-₵{{ ((amount * discount) / 100 / 100).toFixed(2) }}</span></div>
               </div>
-
-              <div class="flex justify-between text-lg font-bold pt-4 mb-6">
-                <span>Total</span>
-                <span>₵{{ finalAmount.toFixed(2) }}</span>
-              </div>
-
-              <button
-                @click="initiatePayment"
-                :disabled="processing || (showEmailPrompt && !billingEmail)"
-                class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <span v-if="processing">Processing...</span>
-                <span v-else>
-                  Proceed to Payment
-                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </button>
-
-              <p class="text-xs text-muted-foreground text-center mt-4">
-                Secured by Paystack. Your payment information is encrypted.
-              </p>
+              <div class="flex justify-between text-lg font-bold pt-4 mb-6"><span>Total</span><span>₵{{ finalAmount.toFixed(2) }}</span></div>
+              <button @click="initiatePayment" :disabled="processing" class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50">{{ processing ? 'Processing...' : 'Pay Securely with Paystack' }}</button>
+              <p class="text-xs text-muted-foreground text-center mt-4">Secured by Paystack.</p>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Status Overlay -->
+    <div v-if="statusOverlay.visible" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm flex items-center justify-center px-6">
+      <div class="max-w-md w-full bg-card border border-border rounded-2xl p-6 text-center">
+        <div class="mb-4 flex justify-center"><div class="h-10 w-10 rounded-full border-2 border-primary border-t-transparent animate-spin"></div></div>
+        <h2 class="text-lg font-semibold mb-2">{{ statusOverlay.title }}</h2>
+        <p class="text-sm text-muted-foreground">{{ statusOverlay.message }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { Link, usePage } from '@inertiajs/vue3'
-
-const page = usePage()
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { Link } from '@inertiajs/vue3'
 
 const props = defineProps({
   user: Object,
   movie: Object,
-  amount: {
-    type: Number,
-    default: 1500 // pesewas (₵15)
-  }
+  amount: { type: Number, default: 1500 }
 })
 
 const loading = ref(true)
-const paymentChannel = ref('card')
+const paymentChannel = ref('mobile_money')
 const couponCode = ref('')
 const discount = ref(0)
 const validatingCoupon = ref(false)
 const billingEmail = ref('')
 const showEmailPrompt = ref(!props.user)
 const processing = ref(false)
+const validationErrors = ref({})
 
-const finalAmount = computed(() => {
-  return (props.amount / 100) * (1 - discount.value / 100)
-})
+const finalAmount = computed(() => (props.amount / 100) * (1 - discount.value / 100))
+
+const statusOverlay = ref({ visible: false, title: '', message: '' })
+const showStatusOverlay = (t, m) => (statusOverlay.value = { visible: true, title: t, message: m })
+const hideStatusOverlay = () => (statusOverlay.value.visible = false)
 
 const validateCoupon = async () => {
-  if (!couponCode.value) return
-
   validatingCoupon.value = true
   try {
-    const response = await fetch('/referral/validate-discount', {
+    const res = await fetch('/referral/validate-discount', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content || ''
-      },
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content || '' },
       body: JSON.stringify({ code: couponCode.value })
     })
-
-    const data = await response.json()
-
-    if (response.ok && data.success) {
-      discount.value = data.discount_percentage
-    } else {
-      alert(data.message || 'Invalid or inactive referral code')
-      discount.value = 0
-    }
-  } catch (error) {
-    console.error('Coupon validation failed:', error)
-    alert('Failed to validate referral code. Please try again.')
-    discount.value = 0
-  } finally {
-    validatingCoupon.value = false
-  }
+    const data = await res.json()
+    discount.value = res.ok && data.success ? data.discount_percentage : 0
+  } finally { validatingCoupon.value = false }
 }
 
 const initiatePayment = async () => {
-  if (!billingEmail.value && showEmailPrompt.value) {
-    alert('Please enter your email address')
-    return
-  }
-
   processing.value = true
+  validationErrors.value = {}
+  showStatusOverlay('Redirecting to Paystack', 'Opening secure checkout...')
 
   try {
     const movieId = new URLSearchParams(window.location.search).get('movieId')
-
-    const response = await fetch('/payments/init', {
+    const res = await fetch('/payments/init', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content
-      },
-      body: JSON.stringify({
-        amount: props.amount, // Already in pesewas (minor units)
-        currency: 'GHS',
-        movie_id: movieId,
-        referral_code: couponCode.value || null // Include referral code if provided
-      })
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content },
+      body: JSON.stringify({ amount: props.amount, currency: 'GHS', movie_id: movieId, referral_code: couponCode.value || null, email: billingEmail.value || null, channel: paymentChannel.value })
     })
 
-    const data = await response.json()
+    const data = await res.json().catch(() => ({}))
 
-    if (data.authorization_url) {
-      // Redirect to Paystack payment page
-      window.location.href = data.authorization_url
-    } else {
-      alert('Failed to initialize payment. Please try again.')
+    // Handle validation errors (422)
+    if (res.status === 422 && data.errors) {
+      validationErrors.value = data.errors
+      hideStatusOverlay()
       processing.value = false
+      console.error('Validation errors:', data.errors)
+      return
     }
-  } catch (error) {
-    console.error('Payment initialization failed:', error)
-    alert('An error occurred. Please try again.')
+
+    if (!res.ok || !data.authorization_url) {
+      console.error('Payment init failed:', res.status, data)
+      hideStatusOverlay()
+      processing.value = false
+      return alert(data.message || 'Payment failed to start')
+    }
+
+    window.location.href = data.authorization_url
+  } catch (e) {
+    hideStatusOverlay()
+    console.error('Network error:', e)
+    alert('Network error starting payment')
     processing.value = false
   }
 }
 
-onMounted(() => {
-  // Simulate loading movie details
-  setTimeout(() => {
-    loading.value = false
-  }, 500)
-})
+onMounted(() => setTimeout(() => (loading.value = false), 400))
+onUnmounted(() => {})
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\PageContent;
+use App\Models\Subscription;
 use App\Services\BunnyVideoService;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -12,6 +13,8 @@ class WatchController extends Controller
 {
     public function index(BunnyVideoService $bunny)
     {
+        $user = auth()->user();
+
         // Get the active banner with video URL
         $banner = Banner::where('is_active', true)
             ->whereNotNull('video_url')
@@ -22,6 +25,15 @@ class WatchController extends Controller
         $pageContent = PageContent::where('page', 'watch')
             ->where('is_active', true)
             ->first();
+
+        // Get user's active subscription
+        $subscription = null;
+        if ($user) {
+            $subscription = $user->subscriptions()
+                ->where('expires_at', '>', now())
+                ->latest()
+                ->first();
+        }
 
         // Check if user wants trailer or full movie
         $type = request()->query('type', 'movie');
@@ -56,6 +68,13 @@ class WatchController extends Controller
             'fallbackVideoUrl' => $fallbackVideoUrl,
             'videoTitle' => $videoTitle,
             'videoType' => $type,
+            'user' => $user,
+            'subscription' => $subscription ? [
+                'id' => $subscription->id,
+                'movie_id' => $subscription->movie_id,
+                'expires_at' => $subscription->expires_at,
+                'days_left' => now()->diffInDays($subscription->expires_at, false),
+            ] : null,
         ]);
     }
 }

@@ -47,8 +47,8 @@
                   <dd class="text-foreground">{{ banner.title }}</dd>
                 </div>
                 <div>
-                  <dt class="text-sm font-medium text-muted-foreground">Description</dt>
-                  <dd class="text-foreground">{{ banner.description || 'No description' }}</dd>
+                  <dt class="text-sm font-medium text-muted-foreground">Message</dt>
+                  <dd class="text-foreground">{{ banner.message || 'No message' }}</dd>
                 </div>
                 <div>
                   <dt class="text-sm font-medium text-muted-foreground">Status</dt>
@@ -62,6 +62,10 @@
                   <dt class="text-sm font-medium text-muted-foreground">Display Order</dt>
                   <dd class="text-foreground">{{ banner.display_order }}</dd>
                 </div>
+                <div>
+                  <dt class="text-sm font-medium text-muted-foreground">Target Date</dt>
+                  <dd class="text-foreground">{{ banner.target_date || 'Not set' }}</dd>
+                </div>
               </dl>
             </div>
 
@@ -71,24 +75,43 @@
               <dl class="space-y-3">
                 <div>
                   <dt class="text-sm font-medium text-muted-foreground">Button Text</dt>
-                  <dd class="text-foreground">{{ banner.button_text || 'No button text' }}</dd>
+                  <dd class="text-foreground">{{ banner.cta_text || 'No button text' }}</dd>
                 </div>
                 <div>
                   <dt class="text-sm font-medium text-muted-foreground">Button URL</dt>
                   <dd class="text-foreground">
                     <a
-                      v-if="banner.button_url"
-                      :href="banner.button_url"
+                      v-if="banner.cta_url"
+                      :href="banner.cta_url"
                       target="_blank"
                       rel="noopener noreferrer"
                       class="text-blue-600 hover:text-blue-800 underline"
                     >
-                      {{ banner.button_url }}
+                      {{ banner.cta_url }}
                     </a>
                     <span v-else>No button URL</span>
                   </dd>
                 </div>
               </dl>
+            </div>
+          </div>
+
+          <!-- Media Links -->
+          <div class="mt-8 pt-6 border-t border-border">
+            <h3 class="text-lg font-semibold text-foreground mb-4">Media Links</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <dt class="text-sm font-medium text-muted-foreground">Trailer HLS URL</dt>
+                <dd class="text-foreground break-words">{{ banner.trailer_url || 'Not set' }}</dd>
+              </div>
+              <div>
+                <dt class="text-sm font-medium text-muted-foreground">Thumbnail URL</dt>
+                <dd class="text-foreground break-words">{{ banner.thumbnail_url || 'Not set' }}</dd>
+              </div>
+              <div>
+                <dt class="text-sm font-medium text-muted-foreground">Video URL</dt>
+                <dd class="text-foreground break-words">{{ banner.video_url || 'Not set' }}</dd>
+              </div>
             </div>
           </div>
 

@@ -10,9 +10,10 @@ use App\Services\PaystackService;
 use App\Services\ReferralService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\RateLimiter;
 
 class PaymentController extends Controller
 {
@@ -27,9 +28,10 @@ class PaymentController extends Controller
             $validated = $request->validate([
                 'amount' => ['required', 'integer', 'min:100'], // minor units (e.g., 100 pesewas = 1.00)
                 'currency' => ['sometimes', 'string', 'size:3'],
-                'movie_id' => ['sometimes'],
-                'referral_code' => ['sometimes', 'string', 'max:50'], // optional referral code
-                'email' => ['sometimes', 'email'],
+                'movie_id' => ['nullable'],
+                'referral_code' => ['nullable', 'string', 'max:50'], // optional referral code
+                'email' => ['nullable', 'email'], // optional - use default if not provided
+                'channel' => ['sometimes', 'string', 'max:50'], // card / mobile_money (for logging / future use)
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Payment validation failed', [
@@ -37,125 +39,124 @@ class PaymentController extends Controller
                 'request_data' => $request->all(),
                 'user_id' => $user->id,
             ]);
-            throw $e;
-        }
 
-        // Apply referral discount if code is provided
-        $finalAmount = (int) $validated['amount'];
-        $discountPercentage = 0;
-        $referralCodeId = null;
-
-        if (! empty($validated['referral_code'])) {
-            try {
-                $discountPercentage = $referralService->validateCode($validated['referral_code']);
-                $finalAmount = (int) ($finalAmount * (1 - $discountPercentage / 100));
-
-                // Get the referral code ID for logging usage
-                $referralCode = \App\Models\ReferralCode::where('code', $validated['referral_code'])->active()->first();
-                $referralCodeId = $referralCode?->id;
-            } catch (\Exception $e) {
-                Log::warning('Referral code validation failed during payment', [
-                    'code' => $validated['referral_code'],
-                    'user_id' => $user->id,
-                    'error' => $e->getMessage(),
-                ]);
-                // Continue without discount if code is invalid
-            }
-        }
-
-        $reference = $paystack->generateReference();
-
-        $payment = Payment::create([
-            'user_id' => $user->id,
-            'reference' => $reference,
-            'amount' => $finalAmount, // Store the discounted amount
-            'currency' => $validated['currency'] ?? config('paystack.currency'),
-            'status' => 'initialized',
-            'meta' => [
-                'movie_id' => $validated['movie_id'] ?? null,
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'referral_code' => $validated['referral_code'] ?? null,
-                'discount_percentage' => $discountPercentage,
-                'original_amount' => $validated['amount'],
-            ],
-        ]);
-
-        // Ensure a valid email is sent to Paystack; fallback to configured safe default for invalid inputs
-        $billingEmail = trim((string) ($validated['email'] ?? $user->email ?? ''));
-
-        // Reject emails that Paystack does not accept
-        $invalid = fn ($email) => ! filter_var($email, FILTER_VALIDATE_EMAIL) ||
-            Str::endsWith($email, ['.local', '.test', '.invalid']) ||
-            Str::contains($email, ['@example.', '@localhost']) ||
-            Str::contains($email, ['@test']) ||
-            preg_match('/\.local(domain)?$/i', $email);
-
-        if ($invalid($billingEmail)) {
-            Log::warning('Invalid billing email provided, using fallback', [
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Payment initialization error', [
+                'error' => $e->getMessage(),
                 'user_id' => $user->id,
-                'provided_email' => $billingEmail,
-            ]);
-
-            $billingEmail = config('custom.fallback_billing_email', config('mail.from.address'))
-                ?? $payment->user->email
-                ?? config('mail.from.address')
-                ?? 'billing@acrazydayinaccra.com';
-        }
-
-        $payload = [
-            'email' => $billingEmail,
-            'amount' => $payment->amount,
-            'currency' => $payment->currency,
-            'reference' => $payment->reference,
-            'callback_url' => config('paystack.callback_url'),
-            'metadata' => [
-                'user_id' => $user->id,
-                'payment_id' => $payment->id,
-                'movie_id' => $payment->meta['movie_id'] ?? null,
-                'discount_percentage' => $discountPercentage,
-            ],
-        ];
-
-        Log::info('Paystack initialization request', [
-            'payment_id' => $payment->id,
-            'user_id' => $user->id,
-            'billing_email' => $billingEmail,
-        ]);
-
-        $resp = $paystack->initialize($payload);
-
-        Log::info('Paystack initialization response', [
-            'status' => $resp['status'] ?? null,
-            'ok' => $resp['ok'] ?? null,
-            'body' => $resp['body'] ?? null,
-            'discount_applied' => $discountPercentage,
-        ]);
-
-        if (! $resp['ok'] || empty($resp['body']['status'])) {
-            $payment->update(['status' => 'failed']);
-
-            Log::error('Payment initialization failed', [
-                'payment_id' => $payment->id,
-                'response' => $resp,
             ]);
 
             return response()->json([
-                'message' => 'Unable to initialize payment',
-                'details' => $resp['body'] ?? null,
-            ], 422);
+                'message' => 'An error occurred during payment initialization. Please try again.',
+            ], 500);
         }
 
-        $data = $resp['body']['data'] ?? [];
-        if (! isset($data['authorization_url'])) {
-            $payment->update(['status' => 'failed']);
+        // ✅ PREVENT DUPLICATE ACCESS: user already has a successful payment / subscription
+        $movieId = $validated['movie_id'] ?? null;
 
-            return response()->json(['message' => 'Initialization response incomplete'], 422);
+        $alreadyPaid = Subscription::where('user_id', $user->id)
+            ->when($movieId, fn ($q) => $q->where('movie_id', $movieId))
+            ->where('expires_at', '>', now())
+            ->exists();
+
+        if ($alreadyPaid) {
+            return response()->json([
+                'already_paid' => true,
+                'message' => 'You already have access to this movie.',
+                'redirect_url' => url('/watch'),
+            ], 200);
+        }
+
+        // ✅ Velocity limiting (anti-fraud)
+        $key = 'pay-init:'.$user->id;
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            return response()->json(['message' => 'Too many attempts. Slow down.'], 429);
+        }
+        RateLimiter::hit($key, 60);
+
+        // ✅ Idempotency / Anti-replay
+        $lock = Cache::lock('payment-init-'.$user->id, 10);
+        if (! $lock->get()) {
+            return response()->json(['message' => 'Duplicate payment attempt blocked'], 409);
+        }
+
+        try {
+            $finalAmount = (int) $validated['amount'];
+            $discountPercentage = 0;
+
+            if (! empty($validated['referral_code'])) {
+                $discountPercentage = $referralService->validateCode($validated['referral_code']);
+                $finalAmount = (int) ($finalAmount * (1 - $discountPercentage / 100));
+            }
+
+            // Use default email if not provided
+            $email = $validated['email'] ?? $user->phone_number.'@acrazydayinaccra.com';
+
+            $reference = $paystack->generateReference();
+
+            $payment = Payment::create([
+                'user_id' => $user->id,
+                'reference' => $reference,
+                'amount' => $finalAmount,
+                'currency' => $validated['currency'] ?? 'GHS',
+                'status' => 'initialized',
+                'meta' => [
+                    'movie_id' => $validated['movie_id'] ?? null,
+                    'referral_code' => $validated['referral_code'] ?? null,
+                ],
+            ]);
+
+            $payload = [
+                'email' => $email,
+                'amount' => $payment->amount,
+                'currency' => $payment->currency,
+                'reference' => $payment->reference,
+                'callback_url' => config('paystack.callback_url'),
+                'metadata' => [
+                    'user_id' => $user->id,
+                    'payment_id' => $payment->id,
+                    'movie_id' => $payment->meta['movie_id'],
+                ],
+            ];
+
+            $resp = $paystack->initialize($payload);
+
+            if (! $resp['ok']) {
+                $payment->update(['status' => 'failed']);
+
+                return response()->json(['message' => 'Paystack init failed'], 422);
+            }
+
+            return response()->json([
+                'authorization_url' => $resp['body']['data']['authorization_url'],
+                'reference' => $payment->reference,
+            ]);
+        } finally {
+            optional($lock)->release();
+        }
+    }
+
+    public function status(string $reference)
+    {
+        $payment = Payment::where('reference', $reference)->first();
+
+        if (! $payment) {
+            return response()->json([
+                'status' => 'not_found',
+                'message' => 'Payment not found.',
+            ], 404);
         }
 
         return response()->json([
-            'authorization_url' => $data['authorization_url'],
-            'reference' => $payment->reference,
+            'status' => $payment->status,        // initialized | success | failed | abandoned
+            'paid_at' => $payment->paid_at,
+            'amount' => $payment->amount,
+            'currency' => $payment->currency,
+            'redirect_url' => $payment->status === 'success' ? url('/watch') : null,
         ]);
     }
 
@@ -187,14 +188,42 @@ class PaymentController extends Controller
                 $payment->paid_at = $payment->paid_at ?: now();
                 $payment->save();
 
-                return redirect('/')->with('status', 'Payment successful');
+                // Create subscription with 365-day expiry
+                $movieId = $payment->meta['movie_id'] ?? null;
+                if ($movieId) {
+                    $subscription = Subscription::updateOrCreate(
+                        [
+                            'user_id' => $payment->user_id,
+                            'movie_id' => $movieId,
+                        ],
+                        [
+                            'payment_id' => $payment->id,
+                            'expires_at' => now()->addDays(365),
+                        ]
+                    );
+
+                    try {
+                        Mail::send(new PaymentSuccessEmail($payment, $subscription));
+                        Log::info('Payment success email sent', [
+                            'payment_id' => $payment->id,
+                            'user_id' => $payment->user_id,
+                        ]);
+                    } catch (\Exception $e) {
+                        Log::error('Failed to send payment success email', [
+                            'payment_id' => $payment->id,
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
+                }
+
+                return redirect('/watch')->with('status', 'Payment successful! Enjoy your movie.');
             }
         }
 
         $payment->status = 'failed';
         $payment->save();
 
-        return redirect('/')->with('status', 'Payment failed');
+        return redirect('/')->with('status', 'Payment verification failed. Please contact support if you were charged.');
     }
 
     public function webhook(Request $request, PaystackService $paystack)
@@ -208,6 +237,11 @@ class PaymentController extends Controller
 
         $payload = $request->json()->all();
         $event = $payload['event'] ?? null;
+
+        if ($event !== 'charge.success') {
+            return response()->json(['ok' => true]);
+        }
+
         $reference = $payload['data']['reference'] ?? null;
 
         if (! $reference) {
@@ -236,23 +270,17 @@ class PaymentController extends Controller
                 $payment->paid_at = $payment->paid_at ?: now();
                 $payment->save();
 
-                // Record referral code usage if a discount was applied
+                // Record referral usage (idempotent)
                 if (! empty($payment->meta['referral_code'])) {
                     try {
-                        $referralCode = \App\Models\ReferralCode::where('code', $payment->meta['referral_code'])->active()->first();
-                        if ($referralCode) {
-                            ReferralUsage::create([
-                                'referral_code_id' => $referralCode->id,
-                                'user_id' => $payment->user_id,
-                                'discount_applied' => ($payment->meta['original_amount'] - $payment->amount) / 100, // Convert from pesewas to cedis
-                            ]);
-
-                            Log::info('Referral usage recorded', [
+                        ReferralUsage::firstOrCreate(
+                            ['payment_id' => $payment->id],
+                            [
                                 'referral_code' => $payment->meta['referral_code'],
                                 'user_id' => $payment->user_id,
                                 'discount_amount' => ($payment->meta['original_amount'] - $payment->amount) / 100,
-                            ]);
-                        }
+                            ]
+                        );
                     } catch (\Exception $e) {
                         Log::error('Failed to record referral usage', [
                             'payment_id' => $payment->id,

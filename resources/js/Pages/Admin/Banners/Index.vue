@@ -43,7 +43,7 @@
                 </div>
                 <div>
                   <h3 class="font-medium text-foreground">{{ banner.title }}</h3>
-                  <p class="text-sm text-muted-foreground">{{ banner.description }}</p>
+                  <p class="text-sm text-muted-foreground">{{ banner.message }}</p>
                   <div class="flex items-center space-x-2 mt-1">
                     <span :class="['px-2 py-1 text-xs rounded-full', banner.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
                       {{ banner.is_active ? 'Active' : 'Inactive' }}
@@ -51,6 +51,7 @@
                     <span class="text-xs text-muted-foreground">
                       Order: {{ banner.display_order }}
                     </span>
+                    <span v-if="banner.trailer_url" class="text-xs text-blue-600">Trailer set</span>
                   </div>
                 </div>
               </div>

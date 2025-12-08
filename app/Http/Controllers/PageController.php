@@ -16,6 +16,7 @@ class PageController extends Controller
     public function index()
     {
         $banners = Banner::orderBy('display_order')->get();
+        $heroBanner = $banners->firstWhere('is_active', true);
         $castCrew = CastCrew::orderBy('display_order')->get();
         $gallery = Gallery::orderBy('display_order')->get();
         $reviews = Review::orderBy('display_order')->get();
@@ -25,12 +26,14 @@ class PageController extends Controller
 
         return Inertia::render('Index', [
             'banners' => $banners,
+            'heroBanner' => $heroBanner,
             'castCrew' => $castCrew,
             'gallery' => $gallery,
             'reviews' => $reviews,
             'pageContent' => $pageContent,
             'paid' => $paid,
             'premiereDate' => $premiereDate,
+            'trailerUrl' => $heroBanner?->trailer_url,
         ]);
     }
 

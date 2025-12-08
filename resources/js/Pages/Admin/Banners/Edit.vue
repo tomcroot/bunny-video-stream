@@ -41,19 +41,20 @@
               </div>
             </div>
 
-            <!-- Description -->
+            <!-- Message / Description -->
             <div>
-              <label for="description" class="block text-sm font-medium text-foreground mb-2">
-                Description
+              <label for="message" class="block text-sm font-medium text-foreground mb-2">
+                Message
               </label>
               <textarea
-                id="description"
-                v-model="form.description"
+                id="message"
+                v-model="form.message"
                 rows="3"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Short copy shown on the hero"
               ></textarea>
-              <div v-if="form.errors.description" class="mt-1 text-sm text-red-600">
-                {{ form.errors.description }}
+              <div v-if="form.errors.message" class="mt-1 text-sm text-red-600">
+                {{ form.errors.message }}
               </div>
             </div>
 
@@ -74,37 +75,105 @@
               </div>
             </div>
 
+            <!-- Hero Trailer URL (HLS) -->
+            <div>
+              <label for="trailer_url" class="block text-sm font-medium text-foreground mb-2">
+                Trailer HLS URL
+              </label>
+              <input
+                id="trailer_url"
+                v-model="form.trailer_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="https://.../playlist.m3u8"
+              />
+              <p class="mt-1 text-xs text-muted-foreground">Bunny CDN HLS playlist for the trailer.</p>
+              <div v-if="form.errors.trailer_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.trailer_url }}
+              </div>
+            </div>
+
+            <!-- Thumbnail URL -->
+            <div>
+              <label for="thumbnail_url" class="block text-sm font-medium text-foreground mb-2">
+                Thumbnail URL
+              </label>
+              <input
+                id="thumbnail_url"
+                v-model="form.thumbnail_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="https://.../thumb.jpg"
+              />
+              <div v-if="form.errors.thumbnail_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.thumbnail_url }}
+              </div>
+            </div>
+
+            <!-- Legacy Video URL (optional) -->
+            <div>
+              <label for="video_url" class="block text-sm font-medium text-foreground mb-2">
+                Video URL
+              </label>
+              <input
+                id="video_url"
+                v-model="form.video_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Optional legacy video link"
+              />
+              <div v-if="form.errors.video_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.video_url }}
+              </div>
+            </div>
+
             <!-- Button Text -->
             <div>
-              <label for="button_text" class="block text-sm font-medium text-foreground mb-2">
+              <label for="cta_text" class="block text-sm font-medium text-foreground mb-2">
                 Button Text
               </label>
               <input
-                id="button_text"
-                v-model="form.button_text"
+                id="cta_text"
+                v-model="form.cta_text"
                 type="text"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Watch Now"
               />
-              <div v-if="form.errors.button_text" class="mt-1 text-sm text-red-600">
-                {{ form.errors.button_text }}
+              <div v-if="form.errors.cta_text" class="mt-1 text-sm text-red-600">
+                {{ form.errors.cta_text }}
               </div>
             </div>
 
             <!-- Button URL -->
             <div>
-              <label for="button_url" class="block text-sm font-medium text-foreground mb-2">
+              <label for="cta_url" class="block text-sm font-medium text-foreground mb-2">
                 Button URL
               </label>
               <input
-                id="button_url"
-                v-model="form.button_url"
+                id="cta_url"
+                v-model="form.cta_url"
                 type="url"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://example.com"
               />
-              <div v-if="form.errors.button_url" class="mt-1 text-sm text-red-600">
-                {{ form.errors.button_url }}
+              <div v-if="form.errors.cta_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.cta_url }}
+              </div>
+            </div>
+
+            <!-- Target Date -->
+            <div>
+              <label for="target_date" class="block text-sm font-medium text-foreground mb-2">
+                Target Date
+              </label>
+              <input
+                id="target_date"
+                v-model="form.target_date"
+                type="datetime-local"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <div v-if="form.errors.target_date" class="mt-1 text-sm text-red-600">
+                {{ form.errors.target_date }}
               </div>
             </div>
 
@@ -172,10 +241,14 @@ const props = defineProps({
 
 const form = useForm({
   title: props.banner.title || '',
-  description: props.banner.description || '',
+  message: props.banner.message || '',
   image_url: props.banner.image_url || '',
-  button_text: props.banner.button_text || '',
-  button_url: props.banner.button_url || '',
+  video_url: props.banner.video_url || '',
+  trailer_url: props.banner.trailer_url || '',
+  thumbnail_url: props.banner.thumbnail_url || '',
+  cta_text: props.banner.cta_text || '',
+  cta_url: props.banner.cta_url || '',
+  target_date: props.banner.target_date ? props.banner.target_date.replace(' ', 'T') : '',
   display_order: props.banner.display_order || 0,
   is_active: props.banner.is_active ?? true
 })

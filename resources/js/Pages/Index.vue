@@ -11,7 +11,7 @@
           :style="{ opacity: showHeroContent ? 0.3 : 1, transition: 'opacity 1s ease-out' }"
         >
           <video
-            v-if="trailerUrl"
+            v-if="resolvedTrailerUrl"
             ref="trailerVideo"
             class="w-full h-full object-cover"
             playsinline
@@ -25,7 +25,7 @@
 
           <!-- Volume Control -->
           <button
-            v-if="trailerUrl"
+            v-if="resolvedTrailerUrl"
             @click="toggleMute"
             class="absolute bottom-6 right-6 z-20 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 border border-white/30 flex items-center justify-center transition-all hover:scale-110"
             title="Toggle sound"
@@ -49,7 +49,7 @@
 
         <!-- Small watermark deterrent -->
         <div
-          v-if="trailerUrl"
+          v-if="resolvedTrailerUrl"
           class="absolute top-4 right-6 z-20 text-xs text-white/35 tracking-widest select-none pointer-events-none"
         >
           PROMISE FILMS • PREVIEW
@@ -77,7 +77,7 @@
             Promise Films Original
           </p>
           <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-xl leading-tight">
-            A Crazy Day in Accra
+            {{ heroTitle }}
           </h1>
 
           <!-- Meta row -->
@@ -121,24 +121,23 @@
           </div>
 
           <p class="text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
-            One city. One insane day. A high-energy Ghanaian thriller packed with chaos, humor, and heart.
+            {{ heroMessage }}
           </p>
 
           <!-- CTAs change based on premiere -->
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
             <!-- BEFORE PREMIERE: Watch Trailer / Remind Me -->
             <button
-              v-if="!countdown.isPast"
               class="px-10 py-4 bg-red-600 hover:bg-red-700 rounded-full font-bold text-lg shadow-xl transition-all flex items-center gap-3 hero-cta"
-              @click="playTrailerFromStart"
+              @click="handlePrimaryCta"
             >
               <span class="inline-flex h-8 w-8 rounded-full bg-white/15 items-center justify-center">
                 ▶
               </span>
-              <span>Watch Trailer</span>
+              <span>{{ heroCtaLabel }}</span>
             </button>
             <button
-              v-if="!countdown.isPast"
+              v-if="!countdown.isPast && !heroCtaUrl"
               @click="notifyPremiere"
               class="px-10 py-4 border border-white/30 rounded-full font-semibold text-lg hover:bg-white/10 hover:border-white/60 transition-all flex items-center gap-2"
               :disabled="notifyState.loading"
@@ -147,26 +146,6 @@
               <span>
                 {{ notifyState.success ? 'Reminded' : (notifyState.loading ? 'Please wait...' : 'Remind Me') }}
               </span>
-            </button>
-
-            <!-- AFTER PREMIERE: Watch Now / Replay Trailer -->
-            <button
-              v-else-if="countdown.isPast"
-              class="px-10 py-4 bg-red-600 hover:bg-red-700 rounded-full font-bold text-lg shadow-xl transition-all flex items-center gap-3 hero-cta"
-              @click="watchMovie"
-            >
-              <span class="inline-flex h-8 w-8 rounded-full bg-white/15 items-center justify-center">
-                ▶
-              </span>
-              <span>Watch Now</span>
-            </button>
-            <button
-              v-else
-              @click="playTrailerFromStart"
-              class="px-10 py-4 border border-white/30 rounded-full font-semibold text-lg hover:bg-white/10 hover:border-white/60 transition-all flex items-center gap-2"
-            >
-              <span class="h-2 w-2 rounded-full bg-red-500 animate-ping-slow" />
-              <span>Replay Trailer</span>
             </button>
           </div>
 
@@ -219,7 +198,7 @@
                   class="w-full h-[160px] object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                
+
                 <!-- Play button overlay -->
                 <div class="absolute inset-0 flex items-center justify-center">
                   <div class="w-16 h-16 rounded-full bg-red-600/80 flex items-center justify-center group-hover:bg-red-600 group-hover:scale-110 transition-all">
@@ -249,7 +228,7 @@
                   class="w-full h-[160px] object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                
+
                 <!-- Play button overlay -->
                 <div class="absolute inset-0 flex items-center justify-center">
                   <div class="w-16 h-16 rounded-full bg-red-600/80 flex items-center justify-center group-hover:bg-red-600 group-hover:scale-110 transition-all">
@@ -371,7 +350,7 @@
         <div class="relative rounded-lg overflow-hidden shadow-2xl border border-gray-700 bg-black">
           <div class="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-black/50 pointer-events-none" />
           <video
-            v-if="trailerUrl"
+            v-if="resolvedTrailerUrl"
             ref="trailerVideoSection"
             class="w-full h-[260px] md:h-[480px] bg-black"
             controls
@@ -463,6 +442,14 @@ defineOptions({
 })
 
 const props = defineProps({
+  heroBanner: {
+    type: Object,
+    default: null,
+  },
+  banners: {
+    type: Array,
+    default: () => [],
+  },
   trailerUrl: {
     type: String,
     default: 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/playlist.m3u8',
@@ -486,6 +473,21 @@ const props = defineProps({
   },
 })
 
+const activeBanner = computed(() => {
+  if (props.heroBanner) return props.heroBanner
+  return props.banners.find((banner) => banner.is_active) || null
+})
+
+const resolvedTrailerUrl = computed(() => activeBanner.value?.trailer_url || props.trailerUrl)
+const heroTitle = computed(() => activeBanner.value?.title || 'A Crazy Day in Accra')
+const heroMessage = computed(
+  () =>
+    activeBanner.value?.message ||
+    'One city. One insane day. A high-energy Ghanaian thriller packed with chaos, humor, and heart.'
+)
+const heroFallbackImage = computed(() => activeBanner.value?.thumbnail_url || activeBanner.value?.image_url || null)
+const heroCtaUrl = computed(() => activeBanner.value?.cta_url || '')
+
 // Hero video
 const heroSection = ref(null)
 const trailerVideo = ref(null)
@@ -494,7 +496,9 @@ const heroHlsInstance = ref(null)
 const trailerHlsInstance = ref(null)
 const showHeroContent = ref(false)
 const heroBgStyle = computed(() => ({
-  backgroundImage: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)",
+  backgroundImage: heroFallbackImage.value
+    ? `linear-gradient(135deg, #0f0f0f 0%, #1f1f1f 35%, #0f0f0f 100%), url(${heroFallbackImage.value})`
+    : 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
 }))
@@ -571,6 +575,10 @@ const countdown = computed(() => {
   return { days, hours, minutes, seconds, isPast: false }
 })
 
+const heroCtaLabel = computed(() =>
+  activeBanner.value?.cta_text || (!countdown.value.isPast ? 'Watch Trailer' : 'Watch Now')
+)
+
 const premiereLabel = computed(() => {
   return premiereAt.toUTCString().replace('GMT', 'GMT')
 })
@@ -600,7 +608,7 @@ const blockKeys = (e) => {
 }
 
 const setupHls = (videoEl, hlsRef, { autoplay = false, muted = true } = {}) => {
-  if (!videoEl || !props.trailerUrl) return
+  if (!videoEl || !resolvedTrailerUrl.value) return
 
   videoEl.muted = muted
 
@@ -610,7 +618,7 @@ const setupHls = (videoEl, hlsRef, { autoplay = false, muted = true } = {}) => {
       enableWorker: true,
       lowLatencyMode: true,
     })
-    hlsRef.value.loadSource(props.trailerUrl)
+    hlsRef.value.loadSource(resolvedTrailerUrl.value)
     hlsRef.value.attachMedia(videoEl)
 
     hlsRef.value.on(Hls.Events.MANIFEST_PARSED, () => {
@@ -619,7 +627,7 @@ const setupHls = (videoEl, hlsRef, { autoplay = false, muted = true } = {}) => {
       }
     })
   } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
-    videoEl.src = props.trailerUrl
+    videoEl.src = resolvedTrailerUrl.value
     videoEl.addEventListener('loadedmetadata', () => {
       if (autoplay) {
         videoEl.play().catch(() => {})
@@ -630,7 +638,7 @@ const setupHls = (videoEl, hlsRef, { autoplay = false, muted = true } = {}) => {
 
 onMounted(async () => {
   // Hero Video (HLS, autoplay, background)
-  if (props.trailerUrl && trailerVideo.value) {
+  if (resolvedTrailerUrl.value && trailerVideo.value) {
     const video = trailerVideo.value
     video.addEventListener('contextmenu', (e) => e.preventDefault())
     setupHls(video, heroHlsInstance, { autoplay: true, muted: true })
@@ -638,7 +646,7 @@ onMounted(async () => {
   }
 
   // Trailer section player (HLS with controls)
-  if (props.trailerUrl && trailerVideoSection.value) {
+  if (resolvedTrailerUrl.value && trailerVideoSection.value) {
     const video = trailerVideoSection.value
     video.setAttribute('controlsList', 'nodownload noplaybackrate noremoteplayback')
     video.setAttribute('disablePictureInPicture', true)
@@ -735,6 +743,19 @@ const playTrailerFromStart = () => {
     trailerVideo.value.currentTime = 0
     trailerVideo.value.play().catch(() => {})
     showHeroContent.value = false
+  }
+}
+
+const handlePrimaryCta = () => {
+  if (heroCtaUrl.value) {
+    router.visit(heroCtaUrl.value)
+    return
+  }
+
+  if (!countdown.value.isPast) {
+    playTrailerFromStart()
+  } else {
+    watchMovie()
   }
 }
 

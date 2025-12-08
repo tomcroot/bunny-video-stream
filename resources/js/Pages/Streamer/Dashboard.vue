@@ -87,24 +87,46 @@
         </div>
       </div>
 
-      <!-- Profile Management -->
-      <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
-        <h3 class="text-lg font-semibold text-foreground mb-4">Account Settings</h3>
-        <div class="space-y-4">
-          <Link
-            href="/profile"
-            class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
-          >
-            <p class="font-medium text-foreground">Edit Profile</p>
-            <p class="text-sm text-muted-foreground">Update your personal information</p>
-          </Link>
-          <Link
-            href="/profile/payments"
-            class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
-          >
-            <p class="font-medium text-foreground">Payment History</p>
-            <p class="text-sm text-muted-foreground">View your transactions</p>
-          </Link>
+      <!-- Watch & Account Management -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Watch Movie -->
+        <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-foreground mb-4">Watch Movie</h3>
+          <div class="space-y-3">
+            <Link
+              href="/watch"
+              class="block p-4 border border-primary rounded-lg hover:bg-primary/10 transition-colors bg-primary/5"
+            >
+              <p class="font-semibold text-primary flex items-center gap-2">
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                Watch Full Movie
+              </p>
+              <p class="text-sm text-muted-foreground mt-1">Stream 'A Crazy Day in Accra' now</p>
+            </Link>
+          </div>
+        </div>
+
+        <!-- Account Settings -->
+        <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-foreground mb-4">Account Settings</h3>
+          <div class="space-y-3">
+            <Link
+              href="/profile"
+              class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+            >
+              <p class="font-medium text-foreground">Edit Profile</p>
+              <p class="text-sm text-muted-foreground">Update your personal information</p>
+            </Link>
+            <Link
+              href="/profile/payments"
+              class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+            >
+              <p class="font-medium text-foreground">Payment History</p>
+              <p class="text-sm text-muted-foreground">View your transactions</p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -140,7 +162,7 @@ const formatDate = (date) => {
 }
 
 const watchItem = (item) => {
-  // For now, redirect to home. In full implementation, this would check payment status
-  window.location.href = `/?featured=${item.id}`
+  // Redirect to watch page
+  window.location.href = '/watch'
 }
 </script>

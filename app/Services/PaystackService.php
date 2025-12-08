@@ -11,8 +11,8 @@ class PaystackService
 
     public function initialize(array $payload): array
     {
-        $secret = config('paystack.secret_key');
-        $response = Http::withToken($secret)
+        $response = Http::withToken(config('paystack.secret_key'))
+            ->retry(2, 500)
             ->post($this->baseUrl.'/transaction/initialize', $payload);
 
         return [
@@ -24,8 +24,8 @@ class PaystackService
 
     public function verify(string $reference): array
     {
-        $secret = config('paystack.secret_key');
-        $response = Http::withToken($secret)
+        $response = Http::withToken(config('paystack.secret_key'))
+            ->retry(2, 500)
             ->get($this->baseUrl.'/transaction/verify/'.urlencode($reference));
 
         return [
@@ -37,18 +37,17 @@ class PaystackService
 
     public function validWebhookSignature(string $rawBody, ?string $signature): bool
     {
-        // Paystack uses SHA512 HMAC: x-paystack-signature header matches hash_hmac('sha512', body, secret)
-        $secret = config('paystack.secret_key');
-        if (! $signature || ! $secret) {
+        if (! $signature || ! config('paystack.secret_key')) {
             return false;
         }
-        $computed = hash_hmac('sha512', $rawBody, $secret);
+
+        $computed = hash_hmac('sha512', $rawBody, config('paystack.secret_key'));
 
         return hash_equals($computed, $signature);
     }
 
     public function generateReference(string $prefix = 'PS_'): string
     {
-        return $prefix.Str::uuid()->toString();
+        return $prefix.Str::uuid();
     }
 }

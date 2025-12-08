@@ -106,6 +106,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
         Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
         Route::post('settings/{key}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSingle'])->name('settings.update-single');
+
+        // Subscribers
+        Route::get('subscribers', [\App\Http\Controllers\Admin\SubscribersController::class, 'index'])->name('subscribers.index');
+        Route::get('subscribers/export', [\App\Http\Controllers\Admin\SubscribersController::class, 'export'])->name('subscribers.export');
     });
 
     // Streamer Dashboard
@@ -127,7 +131,8 @@ Route::middleware(['auth'])->group(function () {
     // Protected routes will go here
     // Payments: initialize transaction (requires authenticated user)
     Route::post('/payments/init', [PaymentController::class, 'init'])->name('payments.init');
-
+    Route::get('/payments/status/{reference}', [PaymentController::class, 'status'])
+        ->name('payments.status');
     // Watch progress tracking (for resume functionality)
     Route::prefix('api/watch-progress')->controller(\App\Http\Controllers\WatchProgressController::class)->group(function () {
         Route::get('/{videoId}', 'show');
@@ -158,9 +163,7 @@ Route::get('/{id}', function ($id) {
 Route::get('/payment', [PaymentController::class, 'callback'])->name('payments.callback');
 
 // Payment page (accessible to guests and authenticated users)
-Route::get('/payment/checkout', function () {
-    return Inertia::render('Payment');
-})->name('payment.checkout');
+Route::get('/payment/checkout', [\App\Http\Controllers\PaymentCheckoutController::class, 'index'])->name('payment.checkout');
 
 // Referral Code endpoints (public - can be used by anyone)
 Route::prefix('api/referral')->name('referral.')->controller(\App\Http\Controllers\ReferralCodeController::class)->group(function () {

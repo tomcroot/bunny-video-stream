@@ -39,8 +39,12 @@ class BannerController extends Controller
             'message' => 'nullable|string',
             'cta_text' => 'nullable|string|max:255',
             'cta_url' => 'nullable|url',
+            'image_url' => 'nullable|url',
+            'video_url' => 'nullable|url',
+            'trailer_url' => 'nullable|url',
+            'thumbnail_url' => 'nullable|url',
             'target_date' => 'required|date',
-            'display_order' => 'integer',
+            'display_order' => 'integer|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -79,8 +83,12 @@ class BannerController extends Controller
             'message' => 'nullable|string',
             'cta_text' => 'nullable|string|max:255',
             'cta_url' => 'nullable|url',
+            'image_url' => 'nullable|url',
+            'video_url' => 'nullable|url',
+            'trailer_url' => 'nullable|url',
+            'thumbnail_url' => 'nullable|url',
             'target_date' => 'required|date',
-            'display_order' => 'integer',
+            'display_order' => 'integer|min:0',
             'is_active' => 'boolean',
         ]);
 
