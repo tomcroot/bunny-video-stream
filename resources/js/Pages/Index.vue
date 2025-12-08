@@ -15,13 +15,29 @@
             ref="trailerVideo"
             class="w-full h-full object-cover"
             playsinline
-            muted
+            :muted="isMuted"
             preload="auto"
             @ended="onTrailerEnded"
             @play="onVideoPlay"
             @pause="onVideoPause"
             @contextmenu.prevent
           ></video>
+
+          <!-- Volume Control -->
+          <button
+            v-if="trailerUrl"
+            @click="toggleMute"
+            class="absolute bottom-6 right-6 z-20 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 border border-white/30 flex items-center justify-center transition-all hover:scale-110"
+            title="Toggle sound"
+          >
+            <svg v-if="!isMuted" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+            </svg>
+            <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+            </svg>
+          </button>
 
           <!-- Fallback background if no video -->
           <div
@@ -183,6 +199,77 @@
         </div>
       </section>
 
+      <!-- FEATURED CONTENT (Trailer + Movie for authenticated users) -->
+      <section v-if="user" class="py-16 px-6 bg-black">
+        <div class="max-w-7xl mx-auto">
+          <h2 class="text-2xl md:text-3xl font-bold mb-6">
+            Featured Content
+          </h2>
+
+          <div class="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
+            <!-- Trailer Card -->
+            <div
+              class="min-w-[280px] group cursor-pointer transform hover:-translate-y-2 transition-all duration-300"
+              @click="watchTrailer"
+            >
+              <div class="relative rounded-xl overflow-hidden bg-gray-900">
+                <img
+                  :src="'/movie_poster.jpg'"
+                  alt="Official Trailer"
+                  class="w-full h-[160px] object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                
+                <!-- Play button overlay -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-16 h-16 rounded-full bg-red-600/80 flex items-center justify-center group-hover:bg-red-600 group-hover:scale-110 transition-all">
+                    <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="absolute bottom-3 left-3 right-3">
+                  <span class="inline-block px-2 py-1 bg-blue-600 text-xs font-semibold rounded mb-1">TRAILER</span>
+                  <p class="text-sm font-bold text-white">Official Trailer</p>
+                </div>
+              </div>
+              <p class="mt-2 text-sm text-gray-400">Watch the official trailer</p>
+            </div>
+
+            <!-- Full Movie Card -->
+            <div
+              class="min-w-[280px] group cursor-pointer transform hover:-translate-y-2 transition-all duration-300"
+              @click="watchMovie"
+            >
+              <div class="relative rounded-xl overflow-hidden bg-gray-900">
+                <img
+                  :src="'/movie_poster_2.jpg'"
+                  alt="Full Movie"
+                  class="w-full h-[160px] object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                
+                <!-- Play button overlay -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-16 h-16 rounded-full bg-red-600/80 flex items-center justify-center group-hover:bg-red-600 group-hover:scale-110 transition-all">
+                    <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="absolute bottom-3 left-3 right-3">
+                  <span class="inline-block px-2 py-1 bg-red-600 text-xs font-semibold rounded mb-1">FULL MOVIE</span>
+                  <p class="text-sm font-bold text-white">A Crazy Day in Accra</p>
+                </div>
+              </div>
+              <p class="mt-2 text-sm text-gray-400">1h 42m • Action, Comedy, Thriller</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- CONTINUE WATCHING -->
       <section v-if="continueWatching.length > 0" class="py-16 px-6 bg-black">
         <div class="max-w-7xl mx-auto">
@@ -195,7 +282,7 @@
               v-for="item in continueWatching"
               :key="item.id"
               class="min-w-[220px] group cursor-pointer"
-              @click="router.visit('/watch')"
+              @click="watchMovie"
             >
               <div class="relative rounded-xl overflow-hidden">
                 <img
@@ -462,6 +549,7 @@ const reviewsSection = ref(null)
 const trailerVisible = ref(false)
 const castVisible = ref(false)
 const reviewsVisible = ref(false)
+const isMuted = ref(true)
 
 let observer = null
 
@@ -648,6 +736,17 @@ const playTrailerFromStart = () => {
     trailerVideo.value.play().catch(() => {})
     showHeroContent.value = false
   }
+}
+
+const toggleMute = () => {
+  isMuted.value = !isMuted.value
+  if (trailerVideo.value) {
+    trailerVideo.value.muted = isMuted.value
+  }
+}
+
+const watchTrailer = () => {
+  router.visit('/watch?type=trailer')
 }
 
 const watchMovie = () => {

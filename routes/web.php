@@ -46,10 +46,10 @@ Route::middleware(['guest'])->group(function () {
         return Inertia::render('Auth/ResetPassword', ['token' => $token]);
     })->name('password.reset');
 
-    // OTP endpoints (used by frontend to send and verify SMS OTP)
+    // OTP endpoints (used for registration verification only)
     Route::post('/otp/send', [\App\Http\Controllers\Auth\OtpController::class, 'send']);
-    Route::post('/otp/verify', [\App\Http\Controllers\Auth\OtpController::class, 'verify']);
     Route::post('/otp/verify-register', [\App\Http\Controllers\Auth\OtpController::class, 'verifyRegister']);
+    Route::post('/otp/send-password-reset', [\App\Http\Controllers\Auth\OtpController::class, 'sendPasswordReset']);
 });
 
 Route::middleware(['auth'])->group(function () {

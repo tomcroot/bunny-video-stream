@@ -101,6 +101,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Email Verification
+    |--------------------------------------------------------------------------
+    |
+    | Configure the validity period for email verification links. Set to 14
+    | days (in minutes) to allow users to confirm at any time within that
+    | window. The throttle limits how often verification notifications can be
+    | resent.
+    |
+    */
+
+    'verification' => [
+        'expire' => 20160, // 14 days
+        'throttle' => 6,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |

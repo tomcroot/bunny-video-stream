@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\EmailService;
+use Hofmannsven\Brevo\Facades\Brevo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -54,9 +55,94 @@ class OtpController extends Controller
     }
 
     /**
-     * Send OTP
+     * Send OTP for registration
      */
     public function send(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'string'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+
+        $phone = $this->normalizePhone($validated['phone_number']);
+
+        // Check uniqueness
+        if (User::where('phone_number', $phone)->exists()) {
+            return redirect()->back()->withErrors(['phone_number' => 'This phone number is already registered.']);
+        }
+
+        if ($validated['email'] && User::where('email', $validated['email'])->exists()) {
+            return redirect()->back()->withErrors(['email' => 'This email is already registered.']);
+        }
+
+        $otpKey = $phone;
+        $limitKey = 'otp-send:'.$otpKey;
+
+        if (RateLimiter::tooManyAttempts($limitKey, 3)) {
+            return redirect()->back()
+                ->withErrors(['phone_number' => 'Too many OTP requests. Try again shortly.']);
+        }
+
+        $code = random_int(100000, 999999);
+        Cache::put('otp:'.$otpKey, [
+            'code' => $code,
+            'name' => $validated['name'],
+            'password' => $validated['password'],
+            'phone' => $phone,
+            'email' => $validated['email'],
+        ], now()->addMinutes(10));
+
+        $smsSent = false;
+        try {
+            // Send OTP via SMS (required for account creation)
+            $mnotify = new \Arhinful\LaravelMnotify\MNotify;
+            $mnotify->setAPIKey(config('mnotify.api_key'));
+            $mnotify->setSender(config('mnotify.sender_id'));
+
+            $smsMessage = "Your Promise Films verification code: {$code}";
+            $mnotify->sendQuickSMS([$phone], $smsMessage);
+            $smsSent = true;
+        } catch (\Throwable $e) {
+            Log::error('OTP SMS send failed', ['identifier' => $phone, 'error' => $e->getMessage()]);
+        }
+
+        $emailSent = false;
+        if ($validated['email']) {
+            try {
+                Brevo::sendEmail([
+                    'sender' => [
+                        'email' => config('mail.from.address'),
+                        'name' => config('mail.from.name', 'Promise Films'),
+                    ],
+                    'to' => [[
+                        'email' => $validated['email'],
+                        'name' => $validated['name'],
+                    ]],
+                    'subject' => 'Your Promise Films verification code',
+                    'htmlContent' => "<p>Your verification code is: <strong>{$code}</strong></p><p>This code expires in 10 minutes.</p>",
+                ]);
+                $emailSent = true;
+            } catch (\Throwable $e) {
+                Log::warning('OTP email send failed', ['email' => $validated['email'], 'error' => $e->getMessage()]);
+            }
+        }
+
+        if (! $smsSent && ! $emailSent) {
+            return redirect()->back()
+                ->withErrors(['phone_number' => 'Failed to send verification code. Try again.']);
+        }
+
+        RateLimiter::hit($limitKey, 900);
+
+        return redirect()->back()->with('success', $smsSent ? 'Verification code sent via SMS.' : 'Verification code sent via email.');
+    }
+
+    /**
+     * Send OTP for password reset
+     */
+    public function sendPasswordReset(Request $request)
     {
         $validated = $request->validate([
             'phone' => ['required', 'string'],
@@ -64,119 +150,77 @@ class OtpController extends Controller
 
         $phone = $this->normalizePhone($validated['phone']);
 
-        $limitKey = 'otp-send:'.$phone;
+        $user = User::where('phone_number', $phone)
+            ->orWhere('email', $validated['phone'])
+            ->first();
+
+        if (! $user) {
+            return redirect()->back()
+                ->withErrors(['phone' => 'No account found with this phone number or email.']);
+        }
+
+        $limitKey = 'otp-reset:'.$phone;
 
         if (RateLimiter::tooManyAttempts($limitKey, 3)) {
             return redirect()->back()
-                ->withErrors(['phone' => 'Too many OTP requests. Try again shortly.']);
+                ->withErrors(['phone' => 'Too many reset requests. Try again shortly.']);
         }
 
         $code = random_int(100000, 999999);
-
-        Cache::put('otp:'.$phone, $code, now()->addMinutes(5));
+        Cache::put('otp-reset:'.$phone, $code, now()->addMinutes(10));
 
         try {
             $mnotify = new \Arhinful\LaravelMnotify\MNotify;
             $mnotify->setAPIKey(config('mnotify.api_key'));
             $mnotify->setSender(config('mnotify.sender_id'));
 
-            $message = "Your Promise Films login code: {$code}";
+            $message = "Your Promise Films password reset code: {$code}";
             $mnotify->sendQuickSMS([$phone], $message);
 
             RateLimiter::hit($limitKey, 900);
         } catch (\Throwable $e) {
-            Log::error('OTP send failed', ['phone' => $phone, 'error' => $e->getMessage()]);
+            Log::error('Password reset OTP send failed', ['phone' => $phone, 'error' => $e->getMessage()]);
 
             return redirect()->back()
-                ->withErrors(['phone' => 'Failed to send OTP. Try again.']);
+                ->withErrors(['phone' => 'Failed to send reset code. Try again.']);
         }
 
-        return redirect()->back()->with('success', 'OTP sent successfully.');
+        return redirect()->back()->with('success', 'Password reset code sent successfully.');
     }
 
     /**
-     * Verify OTP and login (auto-create if needed)
-     */
-    public function verify(Request $request)
-    {
-        $validated = $request->validate([
-            'phone' => ['required', 'string'],
-            'code' => ['required', 'string'],
-        ]);
-
-        $phone = $this->normalizePhone($validated['phone']);
-        $cached = Cache::get('otp:'.$phone);
-
-        if (! $cached || (string) $cached !== (string) $validated['code']) {
-            return redirect()->back()
-                ->withErrors(['code' => 'Invalid or expired OTP.']);
-        }
-
-        $user = User::where('phone_number', $phone)->first();
-
-        if (! $user) {
-            $fakeEmail = preg_replace('/[^0-9]/', '', $phone).'@promiselandfilms.local';
-
-            $user = User::create([
-                'name' => $phone,
-                'email' => $fakeEmail,
-                'password' => Str::random(40),
-                'phone_number' => $phone,
-            ]);
-
-            try {
-                if (app()->bound(EmailService::class)) {
-                    app(EmailService::class)->sendWelcomeEmail($user);
-                }
-            } catch (\Throwable $e) {
-                Log::warning('Welcome email failed', ['user_id' => $user->id]);
-            }
-        }
-
-        Auth::login($user);
-        Cache::forget('otp:'.$phone);
-
-        return redirect()->intended('/dashboard');
-    }
-
-    /**
-     * Verify OTP + full user registration
+     * Verify OTP + complete registration
      */
     public function verifyRegister(Request $request)
     {
         $validated = $request->validate([
             'phone' => ['required', 'string'],
+            'email' => ['nullable', 'email', 'max:255'],
             'code' => ['required', 'string'],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
         ]);
 
-        $phone = $this->normalizePhone($validated['phone']);
-        $cached = Cache::get('otp:'.$phone);
+        $otpKey = $this->normalizePhone($validated['phone']);
 
-        if (! $cached || (string) $cached !== (string) $validated['code']) {
+        $cached = Cache::get('otp:'.$otpKey);
+
+        if (! $cached || ! is_array($cached)) {
             return redirect()->back()
-                ->withErrors(['code' => 'Invalid or expired OTP.']);
+                ->withErrors(['code' => 'OTP session expired. Please start over.']);
         }
 
-        if (
-            User::where('phone_number', $phone)
-                ->orWhere('email', $validated['email'])
-                ->exists()
-        ) {
+        if ((string) $cached['code'] !== (string) $validated['code']) {
             return redirect()->back()
-                ->withErrors(['phone' => 'Phone number or email already in use.']);
+                ->withErrors(['code' => 'Invalid verification code.']);
         }
 
-        $email = $validated['email']
-            ?? preg_replace('/[^0-9]/', '', $phone).'@promiselandfilms.local';
+        // Create user with cached data
+        $email = $cached['email'] ?: (preg_replace('/[^0-9]/', '', $cached['phone']).'@promiselandfilms.local');
 
         $user = User::create([
-            'name' => $validated['name'],
+            'name' => $cached['name'],
             'email' => $email,
-            'password' => Hash::make($validated['password']),
-            'phone_number' => $phone,
+            'phone_number' => $cached['phone'],
+            'password' => Hash::make($cached['password']),
         ]);
 
         try {
@@ -187,10 +231,19 @@ class OtpController extends Controller
             Log::warning('Welcome email failed', ['user_id' => $user->id]);
         }
 
-        Auth::login($user);
-        Cache::forget('otp:'.$phone);
+        // Send email confirmation link (valid for configured window)
+        try {
+            if ($user->hasVerifiedEmail() === false) {
+                $user->sendEmailVerificationNotification();
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Email verification notification failed', ['user_id' => $user->id]);
+        }
+
+        Auth::login($user, true); // Remember user for 30 days
+        Cache::forget('otp:'.$otpKey);
 
         return redirect()->intended('/dashboard')
-            ->with('success', 'Account created successfully.');
+            ->with('success', 'Account created successfully!');
     }
 }

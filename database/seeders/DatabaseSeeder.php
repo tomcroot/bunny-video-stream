@@ -11,6 +11,7 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,26 +27,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Ensure roles exist (Spatie Permissions)
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $userRole = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
+
         // Create admin account if it doesn't exist
         $admin = User::firstOrCreate(
             ['email' => 'info@acrazydayinaccra.com'],
             [
                 'name' => 'Admin',
-                'password' => bcrypt(env('ADMIN_PASSWORD', 'ChangeMe123!')), // Use environment variable for production
+                'password' => bcrypt('0538872908'),
+                'phone_number' => '+233538872908',
                 'email_verified_at' => now(),
-                'is_admin' => true,
             ]
         );
 
+        // Attach admin role
+        if (! $admin->hasRole($adminRole)) {
+            $admin->assignRole($adminRole);
+        }
+
         // Create test user if it doesn't exist (only in non-production)
         if (app()->environment('local', 'testing')) {
-            User::firstOrCreate(
+            $testUser = User::firstOrCreate(
                 ['email' => 'test@example.com'],
                 [
                     'name' => 'Test User',
                     'password' => bcrypt('password'),
                 ]
             );
+
+            if (! $testUser->hasRole($userRole)) {
+                $testUser->assignRole($userRole);
+            }
         }
 
         // Create sample banner

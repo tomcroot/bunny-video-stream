@@ -14,6 +14,7 @@ export default defineConfig({
     ],
     build: {
         rollupOptions: {
+            external: ['/movie_poster.jpg', '/movie_poster_2.jpg', '/plfilms-acradayinaccra-poster.png', '/plf_logo_light.png', '/plf_logo_dark.png'],
             output: {
                 manualChunks: {
                     // Vue ecosystem
@@ -32,5 +33,7 @@ export default defineConfig({
             },
         },
         chunkSizeWarningLimit: 1000, // Increase limit to 1000kb
+        assetsDir: 'build/assets',
+        assetsInlineLimit: 4096, // Inline assets smaller than 4kb
     },
 });

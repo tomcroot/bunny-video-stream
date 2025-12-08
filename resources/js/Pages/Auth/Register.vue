@@ -32,11 +32,11 @@
         <div class="mb-8 text-center">
           <h2 class="text-3xl font-bold">Create your account</h2>
           <p class="text-sm text-muted-foreground mt-2">
-            Simple & direct registration
+            {{ otpSent ? 'Check your phone (or email if provided) for the code' : 'Enter your details to get started' }}
           </p>
         </div>
 
-        <!-- STEP 1 -->
+        <!-- Registration Form -->
         <div v-if="!otpSent" class="bg-card border border-border rounded-lg p-6 shadow-lg space-y-4">
           <div>
             <label class="block text-sm font-medium mb-2">Name</label>
@@ -54,11 +54,13 @@
             <input
               v-model="registerForm.phone_number"
               type="tel"
+              placeholder="0244 123 456"
               class="w-full px-4 py-3 rounded-md bg-background border border-input"
             />
             <div v-if="registerForm.errors.phone_number" class="text-destructive text-sm mt-1">
               {{ registerForm.errors.phone_number }}
             </div>
+            <p class="text-xs text-muted-foreground mt-1">SMS code will be sent to this number</p>
           </div>
 
           <div>
@@ -66,11 +68,13 @@
             <input
               v-model="registerForm.email"
               type="email"
+              placeholder="you@example.com"
               class="w-full px-4 py-3 rounded-md bg-background border border-input"
             />
             <div v-if="registerForm.errors.email" class="text-destructive text-sm mt-1">
               {{ registerForm.errors.email }}
             </div>
+            <p class="text-xs text-muted-foreground mt-1">Leave blank if you prefer SMS only</p>
           </div>
 
           <div>
@@ -86,19 +90,19 @@
           </div>
 
           <button
-            @click="sendOtp"
-            :disabled="sending"
+            @click="submitRegistration"
+            :disabled="registerForm.processing"
             class="w-full px-6 py-3 bg-primary text-primary-foreground rounded-md disabled:opacity-50"
           >
-            <span v-if="sending">Sending OTP...</span>
-            <span v-else>Send Verification Code</span>
+            <span v-if="registerForm.processing">Creating Account...</span>
+            <span v-else>Create Account</span>
           </button>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- OTP Verification Step -->
         <div v-else class="bg-card border border-border rounded-lg p-6 shadow-lg space-y-4">
           <p class="text-sm text-muted-foreground text-center">
-            Enter the 6-digit code sent to
+            Enter the 6-digit code sent via SMS to
             <strong>{{ registerForm.phone_number }}</strong>
           </p>
 
@@ -134,8 +138,8 @@
           </div>
 
           <button
-            @click="sendOtp"
-            :disabled="cooldown > 0 || sending"
+            @click="resendOtp"
+            :disabled="cooldown > 0 || registerForm.processing"
             class="text-sm text-primary disabled:opacity-50"
           >
             <span v-if="cooldown > 0">Resend in {{ cooldown }}s</span>
@@ -157,11 +161,11 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 
-// slider
+// slider - using public folder
 const images = [
-  'https://images.unsplash.com/photo-1524985069026-dd778a71c7b4',
-  'https://images.unsplash.com/photo-1515169067865-5387ec356754',
-  'https://images.unsplash.com/photo-1508873699372-7ae59b0f2fef'
+  '/movie_poster.jpg',
+  '/movie_poster_2.jpg',
+  '/plfilms-acradayinaccra-poster.png'
 ]
 
 const current = ref(0)
@@ -184,13 +188,11 @@ const registerForm = useForm({
 })
 
 const verifyForm = useForm({
-  phone: '',
   code: '',
 })
 
 const otpSent = ref(false)
 const cooldown = ref(0)
-const sending = ref(false)
 let cooldownTimer = null
 
 const startCooldown = (s = 60) => {
@@ -203,19 +205,12 @@ const startCooldown = (s = 60) => {
   }, 1000)
 }
 
-// SEND OTP
-const sendOtp = () => {
-  sending.value = true
-
-  verifyForm.phone = registerForm.phone_number
-
-  verifyForm.post('/otp/send', {
+// SUBMIT REGISTRATION (sends OTP)
+const submitRegistration = () => {
+  registerForm.post('/otp/send', {
     onSuccess: () => {
       otpSent.value = true
       startCooldown(60)
-    },
-    onFinish: () => {
-      sending.value = false
     },
     preserveScroll: true,
   })
@@ -223,17 +218,25 @@ const sendOtp = () => {
 
 // VERIFY + REGISTER
 const verifyOtp = () => {
-  verifyForm.phone = registerForm.phone_number
-
   verifyForm.transform(() => ({
-    phone: registerForm.phone_number,
     code: verifyForm.code,
+    phone: registerForm.phone_number,
+    email: registerForm.email,
     name: registerForm.name,
-    email: registerForm.email || null,
     password: registerForm.password,
   })).post('/otp/verify-register', {
     onSuccess: () => {
       // Redirect handled by backend
+    },
+    preserveScroll: true,
+  })
+}
+
+// RESEND OTP
+const resendOtp = () => {
+  registerForm.post('/otp/send', {
+    onSuccess: () => {
+      startCooldown(60)
     },
     preserveScroll: true,
   })

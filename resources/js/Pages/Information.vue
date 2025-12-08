@@ -409,9 +409,9 @@ const props = defineProps({
   },
 })
 
-// Static fallback assets
-const defaultPoster = '/images/movie-poster.jpg'
-const defaultBackdrop = '/images/movie-backdrop.jpg'
+// Static fallback assets - using public folder
+const defaultPoster = '/movie_poster.jpg'
+const defaultBackdrop = '/movie_poster_2.jpg'
 
 // Movie meta
 const movieMeta = {

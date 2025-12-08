@@ -23,9 +23,17 @@ class WatchController extends Controller
             ->where('is_active', true)
             ->first();
 
-        // Full movie stream: HLS signed playback only (no iframe)
-        $videoId = '41d7b1aa-fca0-49dd-bb64-ad881d0a4ff6';
-        $videoTitle = $banner?->title ?? 'A Crazy Day in Accra';
+        // Check if user wants trailer or full movie
+        $type = request()->query('type', 'movie');
+
+        // Set video ID based on type
+        if ($type === 'trailer') {
+            $videoId = '643d70e3-19ee-4ae9-a2c9-ec20bf5742d9'; // Trailer
+            $videoTitle = 'A Crazy Day in Accra - Official Trailer';
+        } else {
+            $videoId = '41d7b1aa-fca0-49dd-bb64-ad881d0a4ff6'; // Full movie
+            $videoTitle = $banner?->title ?? 'A Crazy Day in Accra';
+        }
 
         // Always use HLS signed playback URL
         $embedUrl = null;
@@ -37,6 +45,7 @@ class WatchController extends Controller
             $fallbackVideoUrl = "https://vz-6024b712-a89.b-cdn.net/{$videoId}/playlist.m3u8";
             Log::warning('Bunny signed HLS fallback unavailable', [
                 'error' => $e->getMessage(),
+                'videoId' => $videoId,
             ]);
         }
 
@@ -46,6 +55,7 @@ class WatchController extends Controller
             'embedUrl' => $embedUrl,
             'fallbackVideoUrl' => $fallbackVideoUrl,
             'videoTitle' => $videoTitle,
+            'videoType' => $type,
         ]);
     }
 }

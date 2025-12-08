@@ -1,6 +1,8 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
+const logo = '/plf_logo_light.png' // Using public folder
 
 const page = usePage()
 const mobileMenuOpen = ref(false)
@@ -8,6 +10,12 @@ const mobileMenuOpen = ref(false)
 const isActive = (path) => {
   return page.url === path || page.url.startsWith(path + '/')
 }
+
+// Check if user is admin
+const user = computed(() => page.props.auth?.user)
+const isAdmin = computed(() => {
+  return user.value?.roles?.some(role => role.name === 'admin') || false
+})
 </script>
 
 <template>
@@ -16,8 +24,11 @@ const isActive = (path) => {
       <div class="flex items-center justify-between h-20">
 
         <!-- Logo -->
-        <Link href="/" class="text-2xl font-black text-white hover:text-red-600 transition-colors">
-          A CRAZY DAY IN ACCRA
+        <Link href="/" class="flex items-center gap-3 group">
+          <img :src="logo" alt="Promise Land Films" class="h-12 w-auto transition-opacity group-hover:opacity-80" />
+          <span class="text-xl font-bold text-white group-hover:text-red-600 transition-colors hidden md:inline">
+            A Crazy Day in Accra
+          </span>
         </Link>
 
         <!-- Desktop Nav -->
@@ -38,7 +49,9 @@ const isActive = (path) => {
 
           <!-- Auth -->
           <div v-if="$page.props.auth?.user" class="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-700">
-            <Link href="/dashboard" class="text-white hover:text-red-600 font-semibold">Dashboard</Link>
+            <Link :href="isAdmin ? '/admin' : '/dashboard'" class="text-white hover:text-red-600 font-semibold">
+              {{ isAdmin ? 'Admin Dashboard' : 'Dashboard' }}
+            </Link>
 
             <button class="flex items-center gap-2 text-white hover:text-red-600">
               <svg class="w-6 h-6 rounded-full bg-red-600 p-1" fill="currentColor" viewBox="0 0 20 20">
@@ -53,9 +66,9 @@ const isActive = (path) => {
           </div>
 
           <div v-else class="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-700">
-            <Link href="/login" class="text-white hover:text-red-600 font-semibold">Login</Link>
-            <Link href="/register" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold">
-              Sign Up
+            <Link href="/register" class="text-white hover:text-red-600 font-semibold">Sign Up</Link>
+            <Link href="/login" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold">
+              Login
             </Link>
           </div>
         </div>
@@ -94,8 +107,11 @@ const isActive = (path) => {
             {{ item[1] }}
           </Link>
 
+          <!-- Mobile Auth -->
           <div v-if="$page.props.auth?.user" class="pt-3 border-t border-gray-800 flex flex-col space-y-3">
-            <Link href="/dashboard" class="text-white hover:text-red-600 font-semibold">Dashboard</Link>
+            <Link :href="isAdmin ? '/admin' : '/dashboard'" class="text-white hover:text-red-600 font-semibold">
+              {{ isAdmin ? 'Admin Dashboard' : 'Dashboard' }}
+            </Link>
             <Link href="/logout" method="post" as="button"
               class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold">
               Logout
@@ -103,10 +119,10 @@ const isActive = (path) => {
           </div>
 
           <div v-else class="pt-3 border-t border-gray-800 flex flex-col space-y-3">
-            <Link href="/login" class="text-white hover:text-red-600 font-semibold">Login</Link>
             <Link href="/register" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold">
               Sign Up
             </Link>
+            <Link href="/login" class="text-white hover:text-red-600 font-semibold">Login</Link>
           </div>
         </div>
       </div>

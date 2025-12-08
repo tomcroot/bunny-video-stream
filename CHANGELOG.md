@@ -2,6 +2,106 @@
 
 All notable changes to this project will be documented in this file.
 
+## [December 8, 2025]
+
+### Added
+
+-   Added Promise Land Films logo images (light and dark versions) to public directory
+-   Added official movie poster images to public directory (3 variations)
+-   Integrated actual logos and posters throughout the application
+-   Added "Remember Me" functionality for 30-day login sessions
+-   Added password reset OTP functionality
+
+### Changed - Authentication System Overhaul
+
+-   **Simplified Registration**: Single-form registration with email OR phone + password, followed by OTP verification
+    -   User enters: name, email/phone, password
+    -   System sends OTP to provided identifier
+    -   User verifies OTP to complete registration
+    -   Auto-login with 30-day session on successful verification
+-   **Simplified Login**: Single-form login with email OR phone + password (removed OTP login option)
+    -   Accepts email or phone number in single input field
+    -   Standard password authentication
+    -   Optional "Remember Me" checkbox for 30-day session
+-   **OTP Usage**: Now reserved for:
+    -   Registration verification (required)
+    -   Password reset flow (upcoming)
+    -   Removed OTP-only login option
+-   **Admin Credentials**: Updated to:
+    -   Email: `info@acrazydayinaccra.com`
+    -   Password: `0538872908`
+    -   Phone: `0538872908` (normalized to `+233538872908`)
+-   **Session Management**: Implemented 30-day "remember me" functionality using Laravel's remember token
+
+### Removed
+
+-   Removed OTP-only login flow (verify() method from OtpController)
+-   Removed `/otp/verify` route
+-   Removed separate OTP and email/password sections from login form
+-   Consolidated authentication to single standardized flow
+
+### Fixed
+
+-   Fixed Vite build error by removing hardcoded `/images/movie-poster.jpg` import in Credits.vue
+-   Replaced placeholder images with actual production assets
+-   Fixed component import paths from uppercase `Components` to lowercase `components` directory
+-   Fixed invalid CSS properties in Information.vue (replaced `ring` with proper `box-shadow`)
+-   Added missing `Log` import to HomeController
+-   Added defensive guards for MNotify SMS notifications (graceful fallback to email)
+-   Added runtime checks for BunnyVideoService SDK method availability
+-   Fixed TwoFactorAuthenticationController to handle missing provider methods
+
+### Changed
+
+-   Updated registration flow: prioritized Sign Up over Login for new users in navigation (desktop and mobile)
+-   Normalized Tailwind utility classes (`flex-shrink-0` → `shrink-0`)
+-   Improved button hierarchy in header (Sign Up primary with red background, Login secondary)
+-   Replaced text logo with Promise Land Films branded logo image in header
+-   Replaced Unsplash placeholder images with official movie posters in login/register pages
+-   Updated Information and Credits pages to use actual movie poster assets
+
+### Verified
+
+-   **OTP System Confirmation**: OTP codes are sent via SMS to phone numbers (not email)
+    -   Primary authentication uses phone numbers through MNotify SMS service
+    -   Registration form requires phone number, email is optional
+    -   OTP codes are 6-digit codes valid for 5 minutes
+    -   Rate limiting: 3 OTP requests per phone number within 15 minutes
+
+### Added
+
+-   Comprehensive `.gitignore` excluding all dev docs, analysis files, and temporary scripts
+-   Production-ready file structure documented in `.gitignore` comments
+-   Enhanced error handling for optional Laravel packages (MNotify, two-factor providers)
+
+### Infrastructure
+
+-   Cleaned up development documentation files (gitignored but preserved locally)
+-   Organized build artifacts and temporary files exclusion
+-   Improved TypeScript config for Vite builds
+
+## [December 7, 2025]
+
+### Added
+
+-   Admin settings system for managing premiere date and feature toggles
+-   SiteSettings model with flexible key-value configuration storage
+-   Settings migration and seeder with 9 default configurations
+-   Admin Settings UI at `/admin/settings` for non-developers
+-   Watch progress tracking for video resume functionality
+-   Analytics integration combining local stats and Bunny CDN data
+
+### Changed
+
+-   Premiere countdown now dynamically managed from admin panel
+-   Contact form and reviews can be toggled from settings
+-   Route renamed from `/information` to `/details`
+
+### Fixed
+
+-   All component imports now use lowercase `components` directory
+-   Build process stabilized with proper asset handling
+
 ## [Unreleased]
 
 ### Updated
