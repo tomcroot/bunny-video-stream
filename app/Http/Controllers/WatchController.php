@@ -15,9 +15,9 @@ class WatchController extends Controller
     {
         $user = auth()->user();
 
-        // Get the active banner with video URL
+        // Get the active banner with trailer URL
         $banner = Banner::where('is_active', true)
-            ->whereNotNull('video_url')
+            ->whereNotNull('trailer_url')
             ->orderBy('display_order')
             ->first();
 
