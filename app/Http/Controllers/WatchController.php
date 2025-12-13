@@ -21,10 +21,17 @@ class WatchController extends Controller
             ->orderBy('display_order')
             ->first();
 
-        // Get watch page content
-        $pageContent = PageContent::where('page', 'watch')
-            ->where('is_active', true)
-            ->first();
+        // Get watch page content (with defensive check for column existence)
+        $pageContent = null;
+        try {
+            $pageContent = PageContent::where('page', 'watch')
+                ->where('is_active', true)
+                ->first();
+        } catch (\Exception $e) {
+            // Fallback if 'page' column doesn't exist in production DB
+            \Log::warning('PageContent query failed, using fallback', ['error' => $e->getMessage()]);
+            $pageContent = PageContent::where('is_active', true)->first();
+        }
 
         // Get user's active subscription
         $subscription = null;

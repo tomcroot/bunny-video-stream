@@ -87,6 +87,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('reviews', \App\Http\Controllers\Admin\ReviewController::class);
         Route::patch('reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');
 
+        // File Upload
+        Route::post('upload/image', [\App\Http\Controllers\Admin\UploadController::class, 'uploadImage'])->name('upload.image');
+        Route::delete('upload/image', [\App\Http\Controllers\Admin\UploadController::class, 'deleteImage'])->name('upload.delete');
+
         // Referral Code Management
         Route::prefix('referral-codes')->name('referral-codes.')->controller(\App\Http\Controllers\ReferralCodeController::class)->group(function () {
             Route::get('/', 'index')->name('index');

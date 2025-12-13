@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
+  <Head title="Settings" />
+  <AdminLayout>
     <div class="bg-white shadow">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 class="text-3xl font-bold text-gray-900">Site Settings</h1>
@@ -8,15 +8,12 @@
       </div>
     </div>
 
-    <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <form @submit.prevent="handleSubmit" class="space-y-8">
-        <!-- Success Message -->
         <div v-if="showSuccess" class="rounded-md bg-green-50 p-4">
           <p class="text-sm font-medium text-green-800">Settings saved successfully!</p>
         </div>
 
-        <!-- Premiere Settings -->
         <div class="bg-white rounded-lg shadow p-6">
           <h2 class="text-xl font-semibold text-gray-900 mb-6">Premiere Settings</h2>
           <div class="space-y-4">
@@ -36,11 +33,9 @@
           </div>
         </div>
 
-        <!-- Feature Toggles -->
         <div class="bg-white rounded-lg shadow p-6">
           <h2 class="text-xl font-semibold text-gray-900 mb-6">Feature Controls</h2>
           <div class="space-y-4">
-            <!-- Contact Form -->
             <div class="flex items-center justify-between py-3 border-b border-gray-200">
               <div>
                 <p class="font-medium text-gray-900">Contact Form</p>
@@ -63,7 +58,6 @@
               </button>
             </div>
 
-            <!-- Reviews -->
             <div class="flex items-center justify-between py-3 border-b border-gray-200">
               <div>
                 <p class="font-medium text-gray-900">Reviews</p>
@@ -86,7 +80,6 @@
               </button>
             </div>
 
-            <!-- Reviews Approval -->
             <div class="flex items-center justify-between py-3 border-b border-gray-200">
               <div>
                 <p class="font-medium text-gray-900">Require Review Approval</p>
@@ -109,7 +102,6 @@
               </button>
             </div>
 
-            <!-- Maintenance Mode -->
             <div class="flex items-center justify-between py-3">
               <div>
                 <p class="font-medium text-gray-900">Maintenance Mode</p>
@@ -134,11 +126,9 @@
           </div>
         </div>
 
-        <!-- Contact & Upload Settings -->
         <div class="bg-white rounded-lg shadow p-6">
           <h2 class="text-xl font-semibold text-gray-900 mb-6">Additional Settings</h2>
           <div class="space-y-4">
-            <!-- Contact Email -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Contact Email Address
@@ -153,7 +143,6 @@
               </p>
             </div>
 
-            <!-- Max Upload Size -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Max File Upload Size (MB)
@@ -172,7 +161,6 @@
           </div>
         </div>
 
-        <!-- Form Actions -->
         <div class="flex gap-3">
           <button
             type="submit"
@@ -189,13 +177,13 @@
         </div>
       </form>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 import { ref, reactive } from 'vue'
-import { router } from '@inertiajs/vue3'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 defineProps({
   settings: Object,

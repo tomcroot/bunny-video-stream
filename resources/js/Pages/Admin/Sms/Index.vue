@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { Head, useForm } from '@inertiajs/vue3'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
   usersWithPhones: { type: Array, default: () => [] },
@@ -60,13 +61,14 @@ const submitRenewal = () => {
 </script>
 
 <template>
-  <div class="max-w-6xl mx-auto py-10 space-y-8">
-    <Head title="SMS Management" />
+  <AdminLayout>
+    <div class="max-w-6xl mx-auto py-10 space-y-8">
+      <Head title="SMS Management" />
 
-    <header>
-      <h1 class="text-3xl font-bold">SMS Management</h1>
-      <p class="text-muted-foreground">Send bulk SMS notifications to your users.</p>
-    </header>
+      <header>
+        <h1 class="text-3xl font-bold">SMS Management</h1>
+        <p class="text-muted-foreground">Send bulk SMS notifications to your users.</p>
+      </header>
 
     <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <div class="bg-card border border-border rounded-lg p-4">
@@ -156,5 +158,6 @@ const submitRenewal = () => {
         </div>
       </div>
     </section>
-  </div>
+    </div>
+  </AdminLayout>
 </template>

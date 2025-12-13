@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- Header -->
+  <Head title="Add Gallery Image" />
+  <AdminLayout>
     <div class="bg-card border-b border-border shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
@@ -57,10 +57,30 @@
               </div>
             </div>
 
-            <!-- Image URL -->
+            <!-- Image Upload -->
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">
+                Image *
+              </label>
+              <ImageUpload
+                v-model="form.image_url"
+                folder="gallery"
+                alt="Gallery image preview"
+                @upload-success="handleUploadSuccess"
+                @upload-error="handleUploadError"
+              />
+              <div v-if="form.errors.image_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.image_url }}
+              </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                Upload an image or enter URL manually below.
+              </p>
+            </div>
+
+            <!-- Manual URL Input (Optional) -->
             <div>
               <label for="image_url" class="block text-sm font-medium text-foreground mb-2">
-                Image URL *
+                Or Enter Image URL
               </label>
               <input
                 id="image_url"
@@ -68,14 +88,7 @@
                 type="url"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://example.com/image.jpg"
-                required
               />
-              <div v-if="form.errors.image_url" class="mt-1 text-sm text-red-600">
-                {{ form.errors.image_url }}
-              </div>
-              <p class="mt-1 text-sm text-muted-foreground">
-                Enter the URL of the image you want to add to the gallery.
-              </p>
             </div>
 
             <!-- Display Order -->
@@ -132,20 +145,32 @@
         </form>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
-import { Link, useForm } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const form = useForm({
   title: '',
   description: '',
   image_url: '',
+  category: 'behind-the-scenes',
   display_order: 0,
   is_active: true
 })
+
+const handleUploadSuccess = (data) => {
+  // Image URL already set via v-model
+  console.log('Upload successful:', data)
+}
+
+const handleUploadError = (error) => {
+  console.error('Upload failed:', error)
+}
 
 const submit = () => {
   form.post('/admin/gallery', {

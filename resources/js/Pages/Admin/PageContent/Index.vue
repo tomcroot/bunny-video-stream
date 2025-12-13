@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background">
+  <AdminLayout>
     <!-- Header -->
     <div class="bg-card border-b border-border shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,13 +99,14 @@
         </div>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { Link, router } from '@inertiajs/vue3'
 import { Plus } from 'lucide-vue-next'
 import { computed } from 'vue'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
   content: { type: Array, default: () => [] }

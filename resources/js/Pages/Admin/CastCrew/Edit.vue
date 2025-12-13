@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- Header -->
+  <Head title="Edit Cast/Crew Member" />
+  <AdminLayout>
     <div class="bg-card border-b border-border shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
@@ -24,20 +24,37 @@
       <div class="bg-card rounded-lg shadow p-6">
         <form @submit.prevent="submit">
           <div class="space-y-6">
-            <!-- Name -->
+            <!-- Stage Name -->
             <div>
-              <label for="name" class="block text-sm font-medium text-foreground mb-2">
-                Name *
+              <label for="stage_name" class="block text-sm font-medium text-foreground mb-2">
+                Stage Name *
               </label>
               <input
-                id="name"
-                v-model="form.name"
+                id="stage_name"
+                v-model="form.stage_name"
                 type="text"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
-                <div v-if="form.errors.name" class="mt-1 text-sm text-red-600">
-                  {{ form.errors.name }}
+                <div v-if="form.errors.stage_name" class="mt-1 text-sm text-red-600">
+                  {{ form.errors.stage_name }}
+              </div>
+            </div>
+
+            <!-- Real Name -->
+            <div>
+              <label for="real_name" class="block text-sm font-medium text-foreground mb-2">
+                Real Name
+              </label>
+              <input
+                id="real_name"
+                v-model="form.real_name"
+                type="text"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Optional - defaults to stage name"
+              />
+                <div v-if="form.errors.real_name" class="mt-1 text-sm text-red-600">
+                  {{ form.errors.real_name }}
               </div>
             </div>
 
@@ -61,21 +78,21 @@
               </div>
             </div>
 
-            <!-- Role -->
+            <!-- Job Title -->
             <div>
-              <label for="role" class="block text-sm font-medium text-foreground mb-2">
-                Role/Position *
+              <label for="job_title" class="block text-sm font-medium text-foreground mb-2">
+                Job Title/Role *
               </label>
               <input
-                id="role"
-                v-model="form.role"
+                id="job_title"
+                v-model="form.job_title"
                 type="text"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="e.g., Actor, Director, Producer"
+                placeholder="e.g., Lead Actor, Director, Producer"
                 required
               />
-                <div v-if="form.errors.role" class="mt-1 text-sm text-red-600">
-                  {{ form.errors.role }}
+                <div v-if="form.errors.job_title" class="mt-1 text-sm text-red-600">
+                  {{ form.errors.job_title }}
               </div>
             </div>
 
@@ -96,23 +113,23 @@
               </div>
             </div>
 
-            <!-- Photo URL -->
+            <!-- Image URL -->
             <div>
-              <label for="photo_url" class="block text-sm font-medium text-foreground mb-2">
-                Photo URL
+              <label for="image_url" class="block text-sm font-medium text-foreground mb-2">
+                Image URL
               </label>
               <input
-                id="photo_url"
-                v-model="form.photo_url"
+                id="image_url"
+                v-model="form.image_url"
                 type="url"
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://example.com/photo.jpg"
               />
-              <div v-if="form.errors.photo_url" class="mt-1 text-sm text-red-600">
-                {{ form.errors.photo_url }}
+                <div v-if="form.errors.image_url" class="mt-1 text-sm text-red-600">
+                  {{ form.errors.image_url }}
               </div>
               <p class="mt-1 text-sm text-muted-foreground">
-                Enter the URL of the member's photo.
+                Enter the URL of the member's photo. If left empty, a placeholder will be used.
               </p>
             </div>
 
@@ -170,29 +187,32 @@
         </form>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
-import { Link, useForm } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
-  castCrew: { type: Object, default: () => ({}) }
+  member: { type: Object, default: () => ({}) }
 })
 
 const form = useForm({
-  name: props.castCrew.name || '',
-  role_type: props.castCrew.role_type || '',
-  role: props.castCrew.role || '',
-  bio: props.castCrew.bio || '',
-  photo_url: props.castCrew.photo_url || '',
-  display_order: props.castCrew.display_order || 0,
-  is_active: props.castCrew.is_active ?? true
+  stage_name: props.member.stage_name || '',
+  real_name: props.member.real_name || '',
+  role_type: props.member.role_type || '',
+  job_title: props.member.job_title || '',
+  bio: props.member.bio || '',
+  image_url: props.member.image_url || '',
+  referral_code: props.member.referral_code || '',
+  display_order: props.member.display_order || 0,
+  is_active: props.member.is_active ?? true
 })
 
 const submit = () => {
-  if (!props.castCrew?.id) return
-  form.put(`/admin/cast-crew/${props.castCrew.id}`)
+  if (!props.member?.id) return
+  form.put(`/admin/cast-crew/${props.member.id}`)
 }
 </script>

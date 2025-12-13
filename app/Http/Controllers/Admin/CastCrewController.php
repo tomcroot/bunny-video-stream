@@ -38,15 +38,20 @@ class CastCrewController extends Controller
     {
         $validated = $request->validate([
             'stage_name' => 'required|string|max:255',
-            'real_name' => 'required|string|max:255',
+            'real_name' => 'nullable|string|max:255',
             'role_type' => 'required|in:cast,crew',
-            'job_title' => 'nullable|string|max:255',
-            'image_url' => 'nullable|url',
+            'job_title' => 'required|string|max:255',
+            'image_url' => 'nullable|string',
             'bio' => 'nullable|string',
             'referral_code' => 'nullable|string|max:255',
-            'display_order' => 'integer',
-            'is_active' => 'boolean',
+            'display_order' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
         ]);
+
+        // Set defaults
+        $validated['real_name'] = $validated['real_name'] ?? $validated['stage_name'];
+        $validated['display_order'] = $validated['display_order'] ?? 0;
+        $validated['is_active'] = $validated['is_active'] ?? true;
 
         CastCrew::create($validated);
 
@@ -80,15 +85,20 @@ class CastCrewController extends Controller
     {
         $validated = $request->validate([
             'stage_name' => 'required|string|max:255',
-            'real_name' => 'required|string|max:255',
+            'real_name' => 'nullable|string|max:255',
             'role_type' => 'required|in:cast,crew',
-            'job_title' => 'nullable|string|max:255',
-            'image_url' => 'nullable|url',
+            'job_title' => 'required|string|max:255',
+            'image_url' => 'nullable|string',
             'bio' => 'nullable|string',
             'referral_code' => 'nullable|string|max:255',
-            'display_order' => 'integer',
-            'is_active' => 'boolean',
+            'display_order' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
         ]);
+
+        // Set defaults
+        $validated['real_name'] = $validated['real_name'] ?? $validated['stage_name'];
+        $validated['display_order'] = $validated['display_order'] ?? $castCrew->display_order ?? 0;
+        $validated['is_active'] = $validated['is_active'] ?? $castCrew->is_active ?? true;
 
         $castCrew->update($validated);
 

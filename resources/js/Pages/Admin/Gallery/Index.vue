@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-background">
+  <AdminLayout>
     <!-- Header -->
     <div class="bg-card border-b border-border shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
           <div>
-            <h1 class="text-2xl font-bold text-foreground">Admin Dashboard</h1>
-            <p class="text-muted-foreground">Manage Gallery Images</p>
+            <h1 class="text-2xl font-bold text-foreground">Manage Gallery</h1>
+            <p class="text-muted-foreground">Behind the scenes photos</p>
           </div>
           <Link
             href="/admin/gallery/create"
@@ -89,13 +89,14 @@
         </div>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { Link, router } from '@inertiajs/vue3'
 import { Plus } from 'lucide-vue-next'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
   gallery: { type: Array, default: () => [] }

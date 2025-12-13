@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { Head, useForm } from '@inertiajs/vue3'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
   recipients: { type: Array, default: () => [] },
@@ -67,13 +68,14 @@ const submitTest = () => {
 </script>
 
 <template>
-  <div class="max-w-6xl mx-auto py-10 space-y-8">
-    <Head title="Email Management" />
+  <AdminLayout>
+    <div class="max-w-6xl mx-auto py-10 space-y-8">
+      <Head title="Email Management" />
 
-    <header>
-      <h1 class="text-3xl font-bold">Email Management</h1>
-      <p class="text-muted-foreground">Send bulk, campaign, and test emails.</p>
-    </header>
+      <header>
+        <h1 class="text-3xl font-bold">Email Management</h1>
+        <p class="text-muted-foreground">Send bulk, campaign, and test emails.</p>
+      </header>
 
     <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <div class="bg-card border border-border rounded-lg p-4">
@@ -182,5 +184,6 @@ const submitTest = () => {
         </button>
       </form>
     </section>
-  </div>
+    </div>
+  </AdminLayout>
 </template>

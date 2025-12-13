@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-background">
+  <AdminLayout>
     <!-- Header -->
     <div class="bg-card border-b border-border shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
           <div>
-            <h1 class="text-2xl font-bold text-foreground">Admin Dashboard</h1>
-            <p class="text-muted-foreground">Manage Cast & Crew</p>
+            <h1 class="text-2xl font-bold text-foreground">Manage Cast & Crew</h1>
+            <p class="text-muted-foreground">All cast and crew members</p>
           </div>
           <Link
             href="/admin/cast-crew/create"
@@ -62,22 +62,22 @@
               >
                 <div class="aspect-square bg-muted">
                   <img
-                    :src="member.photo_url || '/placeholder-avatar.jpg'"
-                    :alt="member.name"
+                    :src="member.image_url || '/placeholder-avatar.jpg'"
+                    :alt="member.stage_name"
                     class="w-full h-full object-cover"
                   />
                 </div>
 
                 <div class="p-4">
                   <div class="flex items-center justify-between mb-2">
-                    <h3 class="font-medium text-foreground">{{ member.name }}</h3>
+                    <h3 class="font-medium text-foreground">{{ member.stage_name }}</h3>
                     <span :class="['px-2 py-1 text-xs rounded-full', member.role_type === 'cast' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800']">
                       {{ member.role_type === 'cast' ? 'Cast' : 'Crew' }}
                     </span>
                   </div>
 
-                  <p class="text-sm text-muted-foreground mb-2">{{ member.role }}</p>
-                  <p class="text-sm text-muted-foreground mb-3">{{ member.bio }}</p>
+                  <p class="text-sm text-muted-foreground mb-2">{{ member.job_title }}</p>
+                  <p class="text-sm text-muted-foreground mb-3 line-clamp-2">{{ member.bio }}</p>
 
                   <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
@@ -120,19 +120,20 @@
         </div>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { Link, router } from '@inertiajs/vue3'
 import { Plus } from 'lucide-vue-next'
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
-  castCrew: { type: Array, default: () => [] }
+  members: { type: Array, default: () => [] }
 })
 
-const castCrew = computed(() => props.castCrew ?? [])
+const castCrew = computed(() => props.members ?? [])
 const activeFilter = ref('all')
 
 const castCount = computed(() => castCrew.value.filter(member => member.role_type === 'cast').length)
