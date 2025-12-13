@@ -63,17 +63,19 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create sample banner
-        Banner::create([
-            'title' => 'A Crazy Day in Accra',
-            'message' => 'Experience the chaos and excitement! Stream this amazing thriller now.',
-            'cta_text' => 'Watch Now',
-            'cta_url' => '/register',
-            'trailer_url' => 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/playlist.m3u8', // Trailer HLS playlist URL
-            'thumbnail_url' => 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/thumbnail_d5a0c8c0.jpg', // Bunny CDN thumbnail - shown when trailer ends
-            'target_date' => now()->addDays(30),
-            'display_order' => 1,
-            'is_active' => true,
-        ]);
+        Banner::updateOrCreate(
+            ['title' => 'A Crazy Day in Accra'],
+            [
+                'message' => 'Experience the chaos and excitement! Stream this amazing thriller now.',
+                'cta_text' => 'Watch Now',
+                'cta_url' => '/register',
+                'trailer_url' => 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/playlist.m3u8', // Trailer HLS playlist URL
+                'thumbnail_url' => 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/thumbnail_d5a0c8c0.jpg', // Bunny CDN thumbnail - shown when trailer ends
+                'target_date' => now()->addDays(30),
+                'display_order' => 1,
+                'is_active' => true,
+            ]
+        );
 
         // Create sample cast members
         $castMembers = [
@@ -110,7 +112,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($castMembers as $member) {
-            CastCrew::create($member);
+            CastCrew::updateOrCreate(
+                ['stage_name' => $member['stage_name'], 'role_type' => $member['role_type']],
+                $member
+            );
         }
 
         // Create sample crew members
@@ -138,7 +143,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($crewMembers as $member) {
-            CastCrew::create($member);
+            CastCrew::updateOrCreate(
+                ['stage_name' => $member['stage_name'], 'role_type' => $member['role_type']],
+                $member
+            );
         }
 
         // Create sample gallery images
@@ -170,7 +178,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($galleryImages as $image) {
-            Gallery::create($image);
+            Gallery::updateOrCreate(
+                ['title' => $image['title']],
+                $image
+            );
         }
 
         // Create sample movie details
@@ -209,7 +220,10 @@ class DatabaseSeeder extends Seeder
             if (isset($content['genres']) && is_string($content['genres'])) {
                 $content['genres'] = json_decode($content['genres'], true);
             }
-            PageContent::create($content);
+            // Use updateOrCreate to avoid duplicate key errors
+            $page = $content['page'];
+            unset($content['page']);
+            PageContent::updateOrCreate(['page' => $page], $content);
         }
 
         // Create sample reviews
@@ -238,48 +252,61 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($reviews as $review) {
-            Review::create($review);
+            Review::updateOrCreate(
+                ['email' => $review['email']],
+                $review
+            );
         }
 
         // Create sample referral codes (migrated from Supabase)
-        ReferralCode::create([
-            'code' => 'SAVE20',
-            'description' => '20% discount for early supporters',
-            'discount_percentage' => 20,
-            'is_active' => true,
-            'created_by' => $admin->id,
-        ]);
+        ReferralCode::updateOrCreate(
+            ['code' => 'SAVE20'],
+            [
+                'description' => '20% discount for early supporters',
+                'discount_percentage' => 20,
+                'is_active' => true,
+                'created_by' => $admin->id,
+            ]
+        );
 
-        ReferralCode::create([
-            'code' => 'EARLYBIRD',
-            'description' => '15% off for first 100 users',
-            'discount_percentage' => 15,
-            'is_active' => true,
-            'created_by' => $admin->id,
-        ]);
+        ReferralCode::updateOrCreate(
+            ['code' => 'EARLYBIRD'],
+            [
+                'description' => '15% off for first 100 users',
+                'discount_percentage' => 15,
+                'is_active' => true,
+                'created_by' => $admin->id,
+            ]
+        );
 
-        ReferralCode::create([
-            'code' => 'WELCOME10',
-            'description' => '10% welcome discount for new subscribers',
-            'discount_percentage' => 10,
-            'is_active' => true,
-            'created_by' => $admin->id,
-        ]);
+        ReferralCode::updateOrCreate(
+            ['code' => 'WELCOME10'],
+            [
+                'description' => '10% welcome discount for new subscribers',
+                'discount_percentage' => 10,
+                'is_active' => true,
+                'created_by' => $admin->id,
+            ]
+        );
 
-        ReferralCode::create([
-            'code' => 'FRIEND25',
-            'description' => '25% referral bonus - share with friends',
-            'discount_percentage' => 25,
-            'is_active' => true,
-            'created_by' => $admin->id,
-        ]);
+        ReferralCode::updateOrCreate(
+            ['code' => 'FRIEND25'],
+            [
+                'description' => '25% referral bonus - share with friends',
+                'discount_percentage' => 25,
+                'is_active' => true,
+                'created_by' => $admin->id,
+            ]
+        );
 
-        ReferralCode::create([
-            'code' => 'VIP50',
-            'description' => '50% off for VIP members',
-            'discount_percentage' => 50,
-            'is_active' => false, // Inactive - only for special events
-            'created_by' => $admin->id,
-        ]);
+        ReferralCode::updateOrCreate(
+            ['code' => 'VIP50'],
+            [
+                'description' => '50% off for VIP members',
+                'discount_percentage' => 50,
+                'is_active' => false, // Inactive - only for special events
+                'created_by' => $admin->id,
+            ]
+        );
     }
 }
