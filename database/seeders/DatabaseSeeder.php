@@ -188,6 +188,20 @@ class DatabaseSeeder extends Seeder
                 'genres' => json_encode(['Thriller', 'Drama', 'Comedy']),
                 'is_active' => true,
             ],
+            [
+                'page' => 'watch',
+                'title' => 'A Crazy Day in Accra',
+                'poster' => '/movie_poster.jpg',
+                'backdrop' => '/movie_poster_2.jpg',
+                'movie_url' => 'https://vz-6024b712-a89.b-cdn.net/41d7b1aa-fca0-49dd-bb64-ad881d0a4ff6/playlist.m3u8',
+                'logline' => 'Jason arrives at a high-stakes pitch meeting in Accra and walks straight into a setup—framed for murder, hunted across the city, and forced to uncover a conspiracy before the day ends.',
+                'synopsis' => 'A gripping thriller set in the vibrant streets of Accra, where one man\'s desperate quest for survival uncovers the dark underbelly of corruption and justice. Follow Jason as he navigates through the city\'s bustling markets, shadowy alleyways, and powerful institutions in a race against time.',
+                'rating' => '16+',
+                'runtime' => '1h 42m',
+                'year' => '2025',
+                'genres' => json_encode(['Action', 'Comedy', 'Thriller']),
+                'is_active' => true,
+            ],
         ];
 
         foreach ($pageContents as $content) {

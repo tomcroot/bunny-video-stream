@@ -201,36 +201,6 @@
           </h2>
 
           <div class="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
-            <!-- Trailer Card -->
-            <div
-              class="min-w-[280px] group cursor-pointer transform hover:-translate-y-2 transition-all duration-300"
-              @click="watchTrailer"
-            >
-              <div class="relative rounded-xl overflow-hidden bg-gray-900">
-                <img
-                  :src="'/movie_poster.jpg'"
-                  alt="Official Trailer"
-                  class="w-full h-[160px] object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-
-                <!-- Play button overlay -->
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <div class="w-16 h-16 rounded-full bg-red-600/80 flex items-center justify-center group-hover:bg-red-600 group-hover:scale-110 transition-all">
-                    <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  </div>
-                </div>
-
-                <div class="absolute bottom-3 left-3 right-3">
-                  <span class="inline-block px-2 py-1 bg-blue-600 text-xs font-semibold rounded mb-1">TRAILER</span>
-                  <p class="text-sm font-bold text-white">Official Trailer</p>
-                </div>
-              </div>
-              <p class="mt-2 text-sm text-gray-400">Watch the official trailer</p>
-            </div>
-
             <!-- Full Movie Card -->
             <div
               class="min-w-[280px] group cursor-pointer transform hover:-translate-y-2 transition-all duration-300"
@@ -916,10 +886,6 @@ const updateVolume = () => {
       trailerVideo.value.muted = true
     }
   }
-}
-
-const watchTrailer = () => {
-  router.visit('/watch?type=trailer')
 }
 
 const watchMovie = () => {

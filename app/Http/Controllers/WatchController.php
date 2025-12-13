@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
 use App\Models\PageContent;
 use App\Models\Subscription;
 use App\Services\BunnyVideoService;
@@ -15,22 +14,13 @@ class WatchController extends Controller
     {
         $user = auth()->user();
 
-        // Get the active banner with trailer URL
-        $banner = Banner::where('is_active', true)
-            ->whereNotNull('trailer_url')
-            ->orderBy('display_order')
+        // Get watch page content with movie URL (premium content)
+        $pageContent = PageContent::where('page', 'watch')
+            ->where('is_active', true)
             ->first();
 
-        // Get watch page content (with defensive check for column existence)
-        $pageContent = null;
-        try {
-            $pageContent = PageContent::where('page', 'watch')
-                ->where('is_active', true)
-                ->first();
-        } catch (\Exception $e) {
-            // Fallback if 'page' column doesn't exist in production DB
-            \Log::warning('PageContent query failed, using fallback', ['error' => $e->getMessage()]);
-            $pageContent = PageContent::where('is_active', true)->first();
+        if (! $pageContent || ! $pageContent->movie_url) {
+            abort(503, 'Movie content is currently unavailable. Please try again later.');
         }
 
         // Get user's active subscription
@@ -42,39 +32,36 @@ class WatchController extends Controller
                 ->first();
         }
 
-        // Check if user wants trailer or full movie
-        $type = request()->query('type', 'movie');
+        // Use movie URL from page_content (this is premium content, not trailer)
+        $movieUrl = $pageContent->movie_url;
+        $videoTitle = $pageContent->title ?? 'A Crazy Day in Accra';
 
-        // Set video ID based on type
-        if ($type === 'trailer') {
-            $videoId = '643d70e3-19ee-4ae9-a2c9-ec20bf5742d9'; // Trailer
-            $videoTitle = 'A Crazy Day in Accra - Official Trailer';
-        } else {
-            $videoId = '41d7b1aa-fca0-49dd-bb64-ad881d0a4ff6'; // Full movie
-            $videoTitle = $banner?->title ?? 'A Crazy Day in Accra';
-        }
-
-        // Always use HLS signed playback URL
-        $embedUrl = null;
+        // Generate signed HLS URL for security
         $fallbackVideoUrl = null;
         try {
-            $fallbackVideoUrl = $bunny->getSignedPlaybackUrl($videoId, 7200);
+            // Extract video ID from Bunny CDN URL
+            preg_match('/\/([a-f0-9\-]+)\/playlist\.m3u8/', $movieUrl, $matches);
+            $videoId = $matches[1] ?? null;
+
+            if ($videoId) {
+                $fallbackVideoUrl = $bunny->getSignedPlaybackUrl($videoId, 7200);
+            } else {
+                // If not a standard Bunny URL format, use as-is
+                $fallbackVideoUrl = $movieUrl;
+            }
         } catch (\Throwable $e) {
-            // Last resort: public playlist
-            $fallbackVideoUrl = "https://vz-6024b712-a89.b-cdn.net/{$videoId}/playlist.m3u8";
-            Log::warning('Bunny signed HLS fallback unavailable', [
+            // Fallback to direct URL if signing fails
+            $fallbackVideoUrl = $movieUrl;
+            Log::warning('Bunny signed URL generation failed, using direct URL', [
                 'error' => $e->getMessage(),
-                'videoId' => $videoId,
+                'movieUrl' => $movieUrl,
             ]);
         }
 
         return Inertia::render('Watch', [
-            'banner' => $banner,
             'pageContent' => $pageContent,
-            'embedUrl' => $embedUrl,
             'fallbackVideoUrl' => $fallbackVideoUrl,
             'videoTitle' => $videoTitle,
-            'videoType' => $type,
             'user' => $user,
             'subscription' => $subscription ? [
                 'id' => $subscription->id,

@@ -100,7 +100,7 @@ const props = defineProps({
     type: String,
     default: 'A Crazy Day in Accra',
   },
-  banner: {
+  pageContent: {
     type: Object,
     default: null,
   },
