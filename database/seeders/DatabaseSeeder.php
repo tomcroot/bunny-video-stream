@@ -176,6 +176,7 @@ class DatabaseSeeder extends Seeder
         // Create sample movie details
         $pageContents = [
             [
+                'page' => 'home',
                 'title' => 'A Crazy Day in Accra',
                 'poster' => '/movie_poster.jpg',
                 'backdrop' => '/movie_poster_2.jpg',
