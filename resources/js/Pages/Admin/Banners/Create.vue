@@ -58,23 +58,6 @@
               </div>
             </div>
 
-            <!-- Image URL -->
-            <div>
-              <label for="image_url" class="block text-sm font-medium text-foreground mb-2">
-                Image URL
-              </label>
-              <input
-                id="image_url"
-                v-model="form.image_url"
-                type="url"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="https://example.com/image.jpg"
-              />
-              <div v-if="form.errors.image_url" class="mt-1 text-sm text-red-600">
-                {{ form.errors.image_url }}
-              </div>
-            </div>
-
             <!-- Hero Trailer URL (HLS) -->
             <div>
               <label for="trailer_url" class="block text-sm font-medium text-foreground mb-2">
@@ -87,7 +70,7 @@
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://.../playlist.m3u8"
               />
-              <p class="mt-1 text-xs text-muted-foreground">Bunny CDN HLS playlist for the trailer.</p>
+              <p class="mt-1 text-xs text-muted-foreground">Bunny CDN HLS playlist for the trailer video.</p>
               <div v-if="form.errors.trailer_url" class="mt-1 text-sm text-red-600">
                 {{ form.errors.trailer_url }}
               </div>
@@ -96,7 +79,7 @@
             <!-- Thumbnail URL -->
             <div>
               <label for="thumbnail_url" class="block text-sm font-medium text-foreground mb-2">
-                Thumbnail URL
+                Thumbnail Image URL
               </label>
               <input
                 id="thumbnail_url"
@@ -105,25 +88,9 @@
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://.../thumb.jpg"
               />
+              <p class="mt-1 text-xs text-muted-foreground">Shown when trailer ends or as fallback.</p>
               <div v-if="form.errors.thumbnail_url" class="mt-1 text-sm text-red-600">
                 {{ form.errors.thumbnail_url }}
-              </div>
-            </div>
-
-            <!-- Legacy Video URL (optional) -->
-            <div>
-              <label for="video_url" class="block text-sm font-medium text-foreground mb-2">
-                Video URL
-              </label>
-              <input
-                id="video_url"
-                v-model="form.video_url"
-                type="url"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Optional legacy video link"
-              />
-              <div v-if="form.errors.video_url" class="mt-1 text-sm text-red-600">
-                {{ form.errors.video_url }}
               </div>
             </div>
 
@@ -238,8 +205,6 @@ import { ArrowLeft } from 'lucide-vue-next'
 const form = useForm({
   title: '',
   message: '',
-  image_url: '',
-  video_url: '',
   trailer_url: '',
   thumbnail_url: '',
   cta_text: '',

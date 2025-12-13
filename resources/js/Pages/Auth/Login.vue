@@ -4,7 +4,7 @@
     <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-red-900 via-red-800 to-red-700 items-center justify-center relative">
       <div class="absolute inset-0 bg-background/40"></div>
       <div class="max-w-2xl px-8 z-10">
-        <h1 class="text-4xl font-bold mb-4">Welcome to Promise Films</h1>
+        <h1 class="text-4xl font-bold mb-4">Welcome to Promise Land Films</h1>
         <p class="mb-6 text-muted-foreground">Sign in with email or phone number and your password.</p>
         <div class="rounded-lg overflow-hidden shadow-2xl border border-border">
           <img :src="images[current]" class="w-full h-64 object-cover" />

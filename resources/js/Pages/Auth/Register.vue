@@ -4,7 +4,7 @@
     <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-red-900 via-red-800 to-red-700 items-center justify-center relative">
       <div class="absolute inset-0 bg-background/40"></div>
       <div class="max-w-2xl px-8 z-10">
-        <h1 class="text-4xl font-bold mb-4">Join Promise Films</h1>
+        <h1 class="text-4xl font-bold mb-4">Join Promise Land Films</h1>
         <p class="mb-6 text-muted-foreground">
           Create your account to stream "A Crazy Day in Accra".
         </p>

@@ -128,7 +128,17 @@ class PaymentController extends Controller
             if (! $resp['ok']) {
                 $payment->update(['status' => 'failed']);
 
+                // Check if request is from Inertia
+                if (request()->header('X-Inertia')) {
+                    return back()->with('error', 'Paystack init failed');
+                }
+
                 return response()->json(['message' => 'Paystack init failed'], 422);
+            }
+
+            // Check if request is from Inertia
+            if (request()->header('X-Inertia')) {
+                return \Inertia\Inertia::location($resp['body']['data']['authorization_url']);
             }
 
             return response()->json([

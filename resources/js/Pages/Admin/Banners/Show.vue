@@ -32,8 +32,8 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="bg-card rounded-lg shadow overflow-hidden">
         <!-- Banner Image -->
-        <div v-if="banner.image_url" class="w-full h-64 bg-muted">
-          <img :src="banner.image_url" :alt="banner.title" class="w-full h-full object-cover" />
+        <div v-if="banner.thumbnail_url" class="w-full h-64 bg-muted">
+          <img :src="banner.thumbnail_url" :alt="banner.title" class="w-full h-full object-cover" />
         </div>
 
         <div class="p-6">

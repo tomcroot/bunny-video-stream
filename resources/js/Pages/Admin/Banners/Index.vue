@@ -38,8 +38,8 @@
               class="flex items-center justify-between p-4 border border-border rounded-lg"
             >
               <div class="flex items-center space-x-4">
-                <div v-if="banner.image_url" class="w-16 h-16 bg-muted rounded overflow-hidden">
-                  <img :src="banner.image_url" :alt="banner.title" class="w-full h-full object-cover" />
+                <div v-if="banner.thumbnail_url" class="w-16 h-16 bg-muted rounded overflow-hidden">
+                  <img :src="banner.thumbnail_url" :alt="banner.title" class="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 class="font-medium text-foreground">{{ banner.title }}</h3>

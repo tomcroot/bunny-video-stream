@@ -74,7 +74,7 @@
                 </span>
               </span>
               <span v-else class="flex items-center gap-2 text-green-400">
-                ✅ <span class="font-semibold">Now streaming exclusively on Promise Films</span>
+                ✅ <span class="font-semibold">Now streaming exclusively on Promise Land Films</span>
               </span>
 
               <span class="hidden md:inline text-gray-300/80 ml-3">

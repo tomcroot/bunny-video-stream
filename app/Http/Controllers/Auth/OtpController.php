@@ -101,7 +101,7 @@ class OtpController extends Controller
             $mnotify->setAPIKey(config('mnotify.api_key'));
             $mnotify->setSender(config('mnotify.sender_id'));
 
-            $smsMessage = "Your Promise Films verification code: {$code}";
+            $smsMessage = "Your Promise Land Films verification code: {$code}";
             $mnotify->sendQuickSMS([$phone], $smsMessage);
             $smsSent = true;
         } catch (\Throwable $e) {
@@ -114,7 +114,7 @@ class OtpController extends Controller
                 Brevo::sendEmail([
                     'sender' => [
                         'email' => config('mail.from.address'),
-                        'name' => config('mail.from.name', 'Promise Films'),
+                        'name' => config('mail.from.name', 'Promise Land Films'),
                     ],
                     'to' => [[
                         'email' => $validated['email'],
@@ -216,34 +216,49 @@ class OtpController extends Controller
         // Create user with cached data
         $email = $cached['email'] ?: (preg_replace('/[^0-9]/', '', $cached['phone']).'@promiselandfilms.local');
 
-        $user = User::create([
-            'name' => $cached['name'],
-            'email' => $email,
-            'phone_number' => $cached['phone'],
-            'password' => Hash::make($cached['password']),
-        ]);
+        // Check if user already exists (handle edge case where user was created between initial check and OTP verification)
+        $user = User::where('phone_number', $cached['phone'])->first();
 
-        try {
-            if (app()->bound(EmailService::class)) {
-                app(EmailService::class)->sendWelcomeEmail($user);
-            }
-        } catch (\Throwable $e) {
-            Log::warning('Welcome email failed', ['user_id' => $user->id]);
-        }
+        if (! $user) {
+            // Double-check email uniqueness before creating
+            if (User::where('email', $email)->exists()) {
+                Cache::forget('otp:'.$otpKey);
 
-        // Send email confirmation link (valid for configured window)
-        try {
-            if ($user->hasVerifiedEmail() === false) {
-                $user->sendEmailVerificationNotification();
+                return redirect()->back()
+                    ->withErrors(['email' => 'This email is already registered. Please use a different email or login.']);
             }
-        } catch (\Throwable $e) {
-            Log::warning('Email verification notification failed', ['user_id' => $user->id]);
+
+            $user = User::create([
+                'name' => $cached['name'],
+                'email' => $email,
+                'phone_number' => $cached['phone'],
+                'password' => Hash::make($cached['password']),
+            ]);
+
+            // Send welcome email only for newly created users
+            try {
+                if (app()->bound(EmailService::class)) {
+                    app(EmailService::class)->sendWelcomeEmail($user);
+                }
+            } catch (\Throwable $e) {
+                Log::warning('Welcome email failed', ['user_id' => $user->id]);
+            }
+
+            // Send email verification link after successful SMS OTP verification
+            try {
+                if ($user->hasVerifiedEmail() === false) {
+                    $user->notify(new \App\Notifications\VerifyEmailNotification);
+                    Log::info('Email verification sent after SMS OTP', ['user_id' => $user->id, 'email' => $user->email]);
+                }
+            } catch (\Throwable $e) {
+                Log::warning('Email verification notification failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+            }
         }
 
         Auth::login($user, true); // Remember user for 30 days
         Cache::forget('otp:'.$otpKey);
 
-        return redirect()->intended('/dashboard')
-            ->with('success', 'Account created successfully!');
+        return redirect()->route('payment.checkout')
+            ->with('success', 'Account created successfully! Please complete your payment to access the movie.');
     }
 }

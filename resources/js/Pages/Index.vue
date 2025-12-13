@@ -4,11 +4,12 @@
       <section
         ref="heroSection"
         class="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden"
+        @mousemove="handleMouseMove"
       >
         <!-- VIDEO PLAYER HERO -->
         <div
           class="absolute inset-0 w-full h-full bg-black"
-          :style="{ opacity: showHeroContent ? 0.3 : 1, transition: 'opacity 1s ease-out' }"
+          :style="{ opacity: showHeroContent ? 0.5 : 1, transition: 'opacity 1s ease-out' }"
         >
           <video
             v-if="resolvedTrailerUrl"
@@ -52,13 +53,13 @@
           v-if="resolvedTrailerUrl"
           class="absolute top-4 right-6 z-20 text-xs text-white/35 tracking-widest select-none pointer-events-none"
         >
-          PROMISE FILMS • PREVIEW
+          PROMISE LAND FILMS • PREVIEW
         </div>
 
         <!-- Cinema overlay gradient -->
         <div
           class="absolute inset-0 bg-linear-to-t from-black via-black/85 to-black/40"
-          :style="{ opacity: showHeroContent ? 1 : 0.5, transition: 'opacity 1s ease-out' }"
+          :style="{ opacity: showHeroContent ? 0.85 : 0.5, transition: 'opacity 1s ease-out' }"
         />
 
         <!-- Film grain overlay -->
@@ -74,7 +75,7 @@
           }"
         >
           <p class="text-xs uppercase tracking-[0.35em] text-red-400 mb-4 opacity-80">
-            Promise Films Original
+            Promise Land Films Original
           </p>
           <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-xl leading-tight">
             {{ heroTitle }}
@@ -112,7 +113,7 @@
                 </span>
               </span>
               <span v-else class="flex items-center gap-2 text-green-400">
-                ✅ <span class="font-semibold">Now streaming exclusively on Promise Films</span>
+                ✅ <span class="font-semibold">Now streaming exclusively on Promise Land Films</span>
               </span>
               <span class="hidden md:inline text-gray-300/80 ml-2">
                 {{ premiereLabel }}
@@ -485,7 +486,7 @@ const heroMessage = computed(
     activeBanner.value?.message ||
     'One city. One insane day. A high-energy Ghanaian thriller packed with chaos, humor, and heart.'
 )
-const heroFallbackImage = computed(() => activeBanner.value?.thumbnail_url || activeBanner.value?.image_url || null)
+const heroFallbackImage = computed(() => activeBanner.value?.thumbnail_url || null)
 const heroCtaUrl = computed(() => activeBanner.value?.cta_url || '')
 
 // Hero video
@@ -494,7 +495,8 @@ const trailerVideo = ref(null)
 const trailerVideoSection = ref(null)
 const heroHlsInstance = ref(null)
 const trailerHlsInstance = ref(null)
-const showHeroContent = ref(false)
+const showHeroContent = ref(true)
+let mouseActivityTimeout = null
 const heroBgStyle = computed(() => ({
   backgroundImage: heroFallbackImage.value
     ? `linear-gradient(135deg, #0f0f0f 0%, #1f1f1f 35%, #0f0f0f 100%), url(${heroFallbackImage.value})`
@@ -715,24 +717,55 @@ onUnmounted(() => {
   if (countdownTimer) {
     clearInterval(countdownTimer)
   }
+  if (mouseActivityTimeout) {
+    clearTimeout(mouseActivityTimeout)
+  }
   window.removeEventListener('keydown', blockKeys)
 })
 
+// Mouse movement handler
+const handleMouseMove = () => {
+  // Show content on mouse movement
+  showHeroContent.value = true
+
+  // Clear existing timeout
+  if (mouseActivityTimeout) {
+    clearTimeout(mouseActivityTimeout)
+  }
+
+  // Hide content after 10 seconds of no mouse movement
+  mouseActivityTimeout = setTimeout(() => {
+    // Only hide if video is playing
+    if (trailerVideo.value && !trailerVideo.value.paused) {
+      showHeroContent.value = false
+    }
+  }, 10000)
+}
+
 // Video event handlers
 const onVideoPlay = () => {
-  // Content fades in after video starts playing
-  setTimeout(() => {
+  // Start the hide timer when video starts playing
+  if (mouseActivityTimeout) {
+    clearTimeout(mouseActivityTimeout)
+  }
+  mouseActivityTimeout = setTimeout(() => {
     showHeroContent.value = false
-  }, 100)
+  }, 10000)
 }
 
 const onVideoPause = () => {
   showHeroContent.value = true
+  if (mouseActivityTimeout) {
+    clearTimeout(mouseActivityTimeout)
+  }
 }
 
 const onTrailerEnded = () => {
   // Show thumbnail/content when video ends
   showHeroContent.value = true
+  if (mouseActivityTimeout) {
+    clearTimeout(mouseActivityTimeout)
+  }
   if (trailerVideo.value) {
     trailerVideo.value.pause()
   }

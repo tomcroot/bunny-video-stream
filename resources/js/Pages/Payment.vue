@@ -118,7 +118,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 
 const props = defineProps({
   user: Object,
@@ -162,31 +162,30 @@ const initiatePayment = async () => {
 
   try {
     const movieId = new URLSearchParams(window.location.search).get('movieId')
-    const res = await fetch('/payments/init', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content },
-      body: JSON.stringify({ amount: props.amount, currency: 'GHS', movie_id: movieId, referral_code: couponCode.value || null, email: billingEmail.value || null, channel: paymentChannel.value })
+
+    router.post('/payments/init', {
+      amount: props.amount,
+      currency: 'GHS',
+      movie_id: movieId,
+      referral_code: couponCode.value || null,
+      email: billingEmail.value || null,
+      channel: paymentChannel.value
+    }, {
+      onError: (errors) => {
+        validationErrors.value = errors
+        hideStatusOverlay()
+        processing.value = false
+        console.error('Validation errors:', errors)
+      },
+      onFinish: () => {
+        // Inertia will handle the redirect via Inertia::location()
+        // If we're still on this page, there was an error
+        if (window.location.href.includes('/payment')) {
+          hideStatusOverlay()
+          processing.value = false
+        }
+      }
     })
-
-    const data = await res.json().catch(() => ({}))
-
-    // Handle validation errors (422)
-    if (res.status === 422 && data.errors) {
-      validationErrors.value = data.errors
-      hideStatusOverlay()
-      processing.value = false
-      console.error('Validation errors:', data.errors)
-      return
-    }
-
-    if (!res.ok || !data.authorization_url) {
-      console.error('Payment init failed:', res.status, data)
-      hideStatusOverlay()
-      processing.value = false
-      return alert(data.message || 'Payment failed to start')
-    }
-
-    window.location.href = data.authorization_url
   } catch (e) {
     hideStatusOverlay()
     console.error('Network error:', e)

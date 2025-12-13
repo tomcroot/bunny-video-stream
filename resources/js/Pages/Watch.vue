@@ -65,7 +65,7 @@
 
       <!-- WATERMARK (ANTI-RECORDING DETERRENT) -->
       <div class="absolute top-6 right-6 z-20 text-xs text-white/40 tracking-widest select-none">
-        PROMISE FILMS • {{ watermarkId }}
+        PROMISE LAND FILMS • {{ watermarkId }}
       </div>
 
       <!-- SUBSCRIPTION EXPIRY WARNING -->

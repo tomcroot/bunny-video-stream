@@ -67,9 +67,9 @@ class DatabaseSeeder extends Seeder
             'title' => 'A Crazy Day in Accra',
             'message' => 'Experience the chaos and excitement! Stream this amazing thriller now.',
             'cta_text' => 'Watch Now',
-            'cta_url' => '/watch',
-            'image_url' => 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/thumbnail_d5a0c8c0.jpg', // Bunny CDN thumbnail
-            'video_url' => '643d70e3-19ee-4ae9-a2c9-ec20bf5742d9', // Bunny CDN video GUID (HLS)
+            'cta_url' => '/register',
+            'trailer_url' => 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/playlist.m3u8', // Trailer HLS playlist URL
+            'thumbnail_url' => 'https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/thumbnail_d5a0c8c0.jpg', // Bunny CDN thumbnail - shown when trailer ends
             'target_date' => now()->addDays(30),
             'display_order' => 1,
             'is_active' => true,

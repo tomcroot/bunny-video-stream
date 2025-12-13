@@ -4,13 +4,11 @@ namespace App\Notifications;
 
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-class VerifyEmailNotification extends VerifyEmail implements ShouldQueue
+class VerifyEmailNotification extends VerifyEmail
 {
     use Queueable;
 
@@ -21,7 +19,7 @@ class VerifyEmailNotification extends VerifyEmail implements ShouldQueue
     {
         return URL::temporarySignedRoute(
             'verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+            Carbon::now()->addDays(30), // 30 days expiration
             [
                 'id' => $notifiable->getKey(),
                 'hash' => sha1($notifiable->getEmailForVerification()),
@@ -42,7 +40,7 @@ class VerifyEmailNotification extends VerifyEmail implements ShouldQueue
             ->line('Thank you for registering with Promise Land Films.')
             ->line('Please click the button below to verify your email address.')
             ->action('Verify Email Address', $verificationUrl)
-            ->line('This verification link will expire in 60 minutes.')
+            ->line('This verification link will expire in 30 days.')
             ->line('If you did not create an account, no further action is required.')
             ->salutation('Best regards, The Promise Land Films Team');
     }
