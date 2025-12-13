@@ -36,7 +36,6 @@ const isAdmin = computed(() => {
           <Link v-for="item in [
             ['/', 'Home'],
             ['/details', 'Details'],
-            ['/credits', 'Credits'],
             ['/gallery', 'Gallery']
           ]"
             :key="item[0]"
@@ -95,7 +94,6 @@ const isAdmin = computed(() => {
           <Link v-for="item in [
             ['/', 'Home'],
             ['/details', 'Details'],
-            ['/credits', 'Credits'],
             ['/gallery', 'Gallery']
           ]"
             :key="item[0]"

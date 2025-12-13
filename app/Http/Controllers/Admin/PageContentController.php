@@ -45,6 +45,7 @@ class PageContentController extends Controller
             'year' => 'nullable|string|max:4',
             'genres' => 'nullable|array',
             'metadata' => 'nullable|array',
+            'sponsors' => 'nullable|array',
             'is_active' => 'boolean',
         ]);
 
@@ -89,6 +90,7 @@ class PageContentController extends Controller
             'year' => 'nullable|string|max:4',
             'genres' => 'nullable|array',
             'metadata' => 'nullable|array',
+            'sponsors' => 'nullable|array',
             'is_active' => 'boolean',
         ]);
 

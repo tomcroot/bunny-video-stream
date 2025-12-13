@@ -57,25 +57,31 @@
               </div>
             </div>
 
-            <!-- Image URL -->
+            <!-- Image Upload -->
             <div>
-              <label for="image_url" class="block text-sm font-medium text-foreground mb-2">
-                Image URL *
+              <label class="block text-sm font-medium text-foreground mb-2">
+                Gallery Image *
               </label>
-              <input
-                id="image_url"
+              <ImageUpload
                 v-model="form.image_url"
-                type="url"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="https://example.com/image.jpg"
-                required
+                folder="gallery"
+                alt="Gallery image preview"
+                @upload-success="handleUploadSuccess"
+                @upload-error="handleUploadError"
               />
               <div v-if="form.errors.image_url" class="mt-1 text-sm text-red-600">
                 {{ form.errors.image_url }}
               </div>
               <p class="mt-1 text-sm text-muted-foreground">
-                Enter the URL of the image.
+                Upload an image or enter URL manually below.
               </p>
+              <!-- Manual URL Input -->
+              <input
+                v-model="form.image_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2"
+                placeholder="Or paste image URL..."
+              />
             </div>
 
             <!-- Display Order -->
@@ -138,21 +144,30 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const props = defineProps({
-  gallery: { type: Object, default: () => ({}) }
+  image: { type: Object, required: true }
 })
 
 const form = useForm({
-  title: props.gallery?.title ?? '',
-  description: props.gallery?.description ?? '',
-  image_url: props.gallery?.image_url ?? '',
-  display_order: props.gallery?.display_order ?? 0,
-  is_active: props.gallery?.is_active ?? false
+  title: props.image.title ?? '',
+  description: props.image.description ?? '',
+  image_url: props.image.image_url ?? '',
+  display_order: props.image.display_order ?? 0,
+  is_active: props.image.is_active ?? false
 })
 
+const handleUploadSuccess = (data) => {
+  // URL already updated via v-model
+}
+
+const handleUploadError = (error) => {
+  console.error('Upload failed:', error)
+}
+
 const submit = () => {
-  form.put(`/admin/gallery/${props.gallery?.id ?? ''}`, {
+  form.put(`/admin/gallery/${props.image.id}`, {
     onSuccess: () => {
       // Redirect handled by controller
     }

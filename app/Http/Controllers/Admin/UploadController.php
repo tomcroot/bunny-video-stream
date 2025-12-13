@@ -15,15 +15,15 @@ class UploadController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'file' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // 10MB max
-            'folder' => 'nullable|string|in:gallery,cast,banners,posters'
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,webp,svg|max:10240', // 10MB max
+            'folder' => 'nullable|string|in:gallery,cast,banners,posters,sponsors,avatars',
         ]);
 
         $folder = $request->input('folder', 'uploads');
         $file = $request->file('file');
 
         // Generate unique filename
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
 
         // Store in public disk
         $path = $file->storeAs("images/{$folder}", $filename, 'public');
@@ -35,7 +35,7 @@ class UploadController extends Controller
             'success' => true,
             'url' => $url,
             'path' => $path,
-            'filename' => $filename
+            'filename' => $filename,
         ]);
     }
 
@@ -45,7 +45,7 @@ class UploadController extends Controller
     public function deleteImage(Request $request)
     {
         $request->validate([
-            'path' => 'required|string'
+            'path' => 'required|string',
         ]);
 
         $path = $request->input('path');
@@ -55,13 +55,13 @@ class UploadController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Image deleted successfully'
+                'message' => 'Image deleted successfully',
             ]);
         }
 
         return response()->json([
             'success' => false,
-            'message' => 'Image not found'
+            'message' => 'Image not found',
         ], 404);
     }
 }

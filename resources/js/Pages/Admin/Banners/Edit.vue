@@ -76,22 +76,32 @@
               </div>
             </div>
 
-            <!-- Thumbnail URL -->
+            <!-- Thumbnail Image Upload -->
             <div>
-              <label for="thumbnail_url" class="block text-sm font-medium text-foreground mb-2">
-                Thumbnail Image URL
+              <label class="block text-sm font-medium text-foreground mb-2">
+                Thumbnail Image
               </label>
-              <input
-                id="thumbnail_url"
+              <ImageUpload
                 v-model="form.thumbnail_url"
-                type="url"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="https://.../thumb.jpg"
+                folder="banners"
+                alt="Banner thumbnail"
+                @upload-success="handleUploadSuccess"
+                @upload-error="handleUploadError"
               />
               <p class="mt-1 text-xs text-muted-foreground">Shown when trailer ends or as fallback.</p>
               <div v-if="form.errors.thumbnail_url" class="mt-1 text-sm text-red-600">
                 {{ form.errors.thumbnail_url }}
               </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                Upload a thumbnail or enter URL manually below.
+              </p>
+              <!-- Manual URL Input -->
+              <input
+                v-model="form.thumbnail_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2"
+                placeholder="Or paste image URL..."
+              />
             </div>
 
             <!-- Button Text -->
@@ -201,6 +211,7 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const props = defineProps({
   banner: { type: Object, default: () => ({}) }
@@ -217,6 +228,14 @@ const form = useForm({
   display_order: props.banner.display_order || 0,
   is_active: props.banner.is_active ?? true
 })
+
+const handleUploadSuccess = (data) => {
+  form.thumbnail_url = data.url
+}
+
+const handleUploadError = (error) => {
+  console.error('Upload failed:', error)
+}
 
 const submit = () => {
   if (!props.banner?.id) return

@@ -27,9 +27,39 @@ class SettingsController extends Controller
             return $carry;
         }, []);
 
+        // Provide defaults from .env where applicable
+        $defaults = [
+            'site_title' => config('app.name', 'A Crazy Day in Accra'),
+            'contact_email' => config('mail.from.address', 'contact@example.com'),
+            'enable_contact_form' => 'true',
+            'enable_reviews' => 'true',
+            'reviews_require_approval' => 'true',
+            'maintenance_mode' => 'false',
+            'max_file_upload_mb' => '50',
+            'premiere_date' => '2025-12-10T06:00:00Z',
+        ];
+
+        // Merge defaults with existing settings
+        foreach ($defaults as $key => $value) {
+            if (! isset($formattedSettings[$key])) {
+                $formattedSettings[$key] = [
+                    'value' => $value,
+                    'data_type' => is_numeric($value) ? 'integer' : (in_array($value, ['true', 'false']) ? 'boolean' : 'string'),
+                    'description' => '',
+                ];
+            }
+        }
+
         return Inertia::render('Admin/Settings', [
             'settings' => $formattedSettings,
             'settingsList' => $settings,
+            'envInfo' => [
+                'app_name' => config('app.name'),
+                'app_env' => config('app.env'),
+                'app_url' => config('app.url'),
+                'mail_from' => config('mail.from.address'),
+                'mail_mailer' => config('mail.default'),
+            ],
             'availableSettings' => [
                 [
                     'key' => 'premiere_date',
@@ -37,6 +67,7 @@ class SettingsController extends Controller
                     'description' => 'When the film premieres (ISO 8601 format)',
                     'data_type' => 'string',
                     'example' => '2025-12-10T06:00:00Z',
+                    'env_source' => null,
                 ],
                 [
                     'key' => 'site_title',
@@ -44,6 +75,7 @@ class SettingsController extends Controller
                     'description' => 'Main site title displayed in header',
                     'data_type' => 'string',
                     'example' => 'A Crazy Day in Accra',
+                    'env_source' => 'APP_NAME in .env',
                 ],
                 [
                     'key' => 'site_description',
@@ -51,6 +83,7 @@ class SettingsController extends Controller
                     'description' => 'SEO meta description',
                     'data_type' => 'string',
                     'example' => 'A gripping thriller set in Accra...',
+                    'env_source' => null,
                 ],
                 [
                     'key' => 'contact_email',
@@ -58,6 +91,7 @@ class SettingsController extends Controller
                     'description' => 'Email for contact form submissions',
                     'data_type' => 'string',
                     'example' => 'contact@acrazydayinaccra.com',
+                    'env_source' => 'MAIL_FROM_ADDRESS in .env',
                 ],
                 [
                     'key' => 'enable_contact_form',
@@ -65,6 +99,7 @@ class SettingsController extends Controller
                     'description' => 'Allow visitors to submit contact requests',
                     'data_type' => 'boolean',
                     'example' => 'true',
+                    'env_source' => null,
                 ],
                 [
                     'key' => 'enable_reviews',
@@ -72,6 +107,7 @@ class SettingsController extends Controller
                     'description' => 'Allow visitors to submit reviews',
                     'data_type' => 'boolean',
                     'example' => 'true',
+                    'env_source' => null,
                 ],
                 [
                     'key' => 'reviews_require_approval',
@@ -79,6 +115,7 @@ class SettingsController extends Controller
                     'description' => 'Moderate reviews before publishing',
                     'data_type' => 'boolean',
                     'example' => 'true',
+                    'env_source' => null,
                 ],
                 [
                     'key' => 'maintenance_mode',
@@ -86,6 +123,7 @@ class SettingsController extends Controller
                     'description' => 'Enable maintenance mode (show maintenance page)',
                     'data_type' => 'boolean',
                     'example' => 'false',
+                    'env_source' => null,
                 ],
                 [
                     'key' => 'max_file_upload_mb',
@@ -93,6 +131,7 @@ class SettingsController extends Controller
                     'description' => 'Maximum file size for uploads',
                     'data_type' => 'integer',
                     'example' => '50',
+                    'env_source' => null,
                 ],
             ],
         ]);

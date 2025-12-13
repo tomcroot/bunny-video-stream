@@ -218,18 +218,18 @@
 
       <!-- CAST & CREW -->
       <div v-if="activeTab === 'Cast & Crew'" class="space-y-6">
-        <h3 class="text-xl font-bold">Cast</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+        <h3 class="text-xl font-bold">Cast & Crew</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           <div
             v-for="member in castList"
             :key="member.id"
-            class="text-center"
+            class="text-center group"
           >
-            <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border border-white/10 mb-3">
-              <img :src="member.photo" :alt="member.name" class="w-full h-full object-cover" />
+            <div class="aspect-[3/4] rounded-lg overflow-hidden border border-white/10 mb-3 group-hover:border-red-500/50 transition-colors">
+              <img :src="member.image_url" :alt="member.stage_name" class="w-full h-full object-cover" />
             </div>
-            <p class="font-semibold text-sm">{{ member.name }}</p>
-            <p class="text-xs text-gray-400">{{ member.role }}</p>
+            <p class="font-semibold text-sm">{{ member.stage_name }}</p>
+            <p class="text-xs text-gray-400">{{ member.job_title }}</p>
           </div>
         </div>
       </div>
@@ -344,6 +344,33 @@
           </ul>
         </div>
       </div>
+
+      <!-- SPONSORS -->
+      <div v-if="activeTab === 'Sponsors'" class="space-y-6">
+        <h3 class="text-xl font-bold">Partners & Sponsors</h3>
+        <div v-if="props.sponsors && props.sponsors.length > 0">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <a
+              v-for="(sponsor, index) in props.sponsors"
+              :key="index"
+              :href="sponsor.website_url || '#'"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative flex items-center justify-center p-4 bg-zinc-900/80 rounded-lg border border-white/10 hover:border-red-500/50 aspect-video transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(248,113,113,0.3)]"
+            >
+              <img
+                :src="sponsor.logo_url"
+                :alt="sponsor.name"
+                class="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        </div>
+        <div v-else class="text-center py-12 text-gray-400">
+          <p>No sponsors information available.</p>
+        </div>
+      </div>
     </section>
 
     <!-- TRAILER CINEMA MODAL -->
@@ -403,6 +430,10 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  sponsors: {
+    type: Array,
+    default: () => [],
+  },
   user: {
     type: Object,
     default: null,
@@ -421,17 +452,12 @@ const movieMeta = {
 }
 
 // Tabs
-const tabs = ['Overview', 'Cast & Crew', 'Reviews', 'Production']
+const tabs = ['Overview', 'Cast & Crew', 'Reviews', 'Production', 'Sponsors']
 const activeTab = ref('Overview')
 
-// Cast list
+// Cast list from database
 const castList = computed(() => {
-  if (props.castCrew && props.castCrew.length) return props.castCrew
-  return [
-    { id: 1, name: 'Jason Kofi', role: 'Jason', photo: '/images/cast1.jpg' },
-    { id: 2, name: 'Ama Mensah', role: 'Nadia', photo: '/images/cast2.jpg' },
-    { id: 3, name: 'Kwesi Boateng', role: 'Inspector Ado', photo: '/images/cast3.jpg' },
-  ]
+  return props.castCrew || []
 })
 
 // Reviews

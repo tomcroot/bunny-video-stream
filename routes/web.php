@@ -21,8 +21,6 @@ Route::get('/privacy', function () {
 
 Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 
-Route::get('/credits', [PageController::class, 'credits'])->name('credits');
-
 // SEO Routes
 Route::get('/sitemap.xml', function () {
     return response()->file(public_path('sitemap.xml'));
@@ -110,6 +108,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
         Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
         Route::post('settings/{key}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSingle'])->name('settings.update-single');
+
+        // Environment Settings Management
+        Route::get('env-settings', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'index'])->name('env-settings.index');
+        Route::post('env-settings', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'update'])->name('env-settings.update');
 
         // Subscribers
         Route::get('subscribers', [\App\Http\Controllers\Admin\SubscribersController::class, 'index'])->name('subscribers.index');

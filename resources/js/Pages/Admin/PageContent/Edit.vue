@@ -42,38 +42,58 @@
               </div>
             </div>
 
-            <!-- Poster URL -->
+            <!-- Poster Upload -->
             <div>
-              <label for="poster" class="block text-sm font-medium text-foreground mb-2">
-                Poster URL
+              <label class="block text-sm font-medium text-foreground mb-2">
+                Poster Image
               </label>
-              <input
-                id="poster"
+              <ImageUpload
                 v-model="form.poster"
-                type="url"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="/movie_poster.jpg"
+                folder="posters"
+                alt="Movie poster"
+                @upload-success="(data) => handleUploadSuccess('poster', data.url)"
+                @upload-error="handleUploadError"
               />
               <div v-if="form.errors.poster" class="mt-1 text-sm text-red-600">
                 {{ form.errors.poster }}
               </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                Upload a poster image or enter URL manually below.
+              </p>
+              <!-- Manual URL Input -->
+              <input
+                v-model="form.poster"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2"
+                placeholder="Or paste image URL..."
+              />
             </div>
 
-            <!-- Backdrop URL -->
+            <!-- Backdrop Upload -->
             <div>
-              <label for="backdrop" class="block text-sm font-medium text-foreground mb-2">
-                Backdrop URL
+              <label class="block text-sm font-medium text-foreground mb-2">
+                Backdrop Image
               </label>
-              <input
-                id="backdrop"
+              <ImageUpload
                 v-model="form.backdrop"
-                type="url"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="/movie_poster_2.jpg"
+                folder="posters"
+                alt="Movie backdrop"
+                @upload-success="(data) => handleUploadSuccess('backdrop', data.url)"
+                @upload-error="handleUploadError"
               />
               <div v-if="form.errors.backdrop" class="mt-1 text-sm text-red-600">
                 {{ form.errors.backdrop }}
               </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                Upload a backdrop image or enter URL manually below.
+              </p>
+              <!-- Manual URL Input -->
+              <input
+                v-model="form.backdrop"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2"
+                placeholder="Or paste image URL..."
+              />
             </div>
 
             <!-- Logline -->
@@ -183,6 +203,84 @@
               </div>
             </div>
 
+            <!-- Sponsors Section -->
+            <div class="border-t border-border pt-6">
+              <h3 class="text-lg font-semibold text-foreground mb-4">Sponsors</h3>
+              <div class="space-y-4">
+                <div v-for="(sponsor, index) in form.sponsors" :key="index" class="p-4 border border-border rounded-md bg-muted/20">
+                  <div class="flex justify-between items-start mb-3">
+                    <span class="text-sm font-medium text-foreground">Sponsor {{ index + 1 }}</span>
+                    <button
+                      type="button"
+                      @click="removeSponsor(index)"
+                      class="text-red-600 hover:text-red-700 text-sm"
+                    >
+                      Remove
+                    </button>
+                  </div>
+
+                  <div class="space-y-3">
+                    <!-- Sponsor Name -->
+                    <div>
+                      <label class="block text-sm font-medium text-foreground mb-1">
+                        Sponsor Name *
+                      </label>
+                      <input
+                        v-model="sponsor.name"
+                        type="text"
+                        class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder="e.g., ABC Company"
+                        required
+                      />
+                    </div>
+
+                    <!-- Sponsor Logo -->
+                    <div>
+                      <label class="block text-sm font-medium text-foreground mb-1">
+                        Logo
+                      </label>
+                      <ImageUpload
+                        v-model="sponsor.logo_url"
+                        folder="sponsors"
+                        alt="Sponsor logo"
+                        @upload-success="(data) => sponsor.logo_url = data.url"
+                        @upload-error="handleUploadError"
+                      />
+                      <!-- Manual URL Input -->
+                      <input
+                        v-model="sponsor.logo_url"
+                        type="url"
+                        class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2"
+                        placeholder="Or paste logo URL..."
+                      />
+                    </div>
+
+                    <!-- Website URL -->
+                    <div>
+                      <label class="block text-sm font-medium text-foreground mb-1">
+                        Website URL
+                      </label>
+                      <input
+                        v-model="sponsor.website_url"
+                        type="url"
+                        class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder="https://example.com"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Add Sponsor Button -->
+                <button
+                  type="button"
+                  @click="addSponsor"
+                  class="w-full px-4 py-2 border-2 border-dashed border-border rounded-md text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+                >
+                  + Add Sponsor
+                </button>
+              </div>
+            </div>
+
             <!-- Is Active -->
             <div class="flex items-center">
               <input
@@ -224,6 +322,7 @@
 import { Link, useForm } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const props = defineProps({
   content: { type: Object, default: () => ({}) }
@@ -241,6 +340,7 @@ const form = useForm({
   runtime: props.content.runtime || '',
   year: props.content.year || '',
   genres: props.content.genres || [],
+  sponsors: props.content.sponsors || [],
   is_active: props.content.is_active ?? true
 })
 
@@ -248,6 +348,26 @@ const form = useForm({
 watch(genresInput, (newVal) => {
   form.genres = newVal.split(',').map(g => g.trim()).filter(g => g)
 })
+
+const addSponsor = () => {
+  form.sponsors.push({
+    name: '',
+    logo_url: '',
+    website_url: ''
+  })
+}
+
+const removeSponsor = (index) => {
+  form.sponsors.splice(index, 1)
+}
+
+const handleUploadSuccess = (field, url) => {
+  form[field] = url
+}
+
+const handleUploadError = (error) => {
+  console.error('Upload failed:', error)
+}
 
 const submit = () => {
   if (!props.content?.id) return

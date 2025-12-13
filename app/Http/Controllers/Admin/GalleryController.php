@@ -37,8 +37,8 @@ class GalleryController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image_url' => 'required|url',
-            'category' => 'required|string',
+            'image_url' => 'required|string',
+            'category' => 'nullable|string',
             'display_order' => 'integer',
             'is_active' => 'boolean',
         ]);
@@ -76,8 +76,8 @@ class GalleryController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image_url' => 'required|url',
-            'category' => 'required|string',
+            'image_url' => 'required|string',
+            'category' => 'nullable|string',
             'display_order' => 'integer',
             'is_active' => 'boolean',
         ]);

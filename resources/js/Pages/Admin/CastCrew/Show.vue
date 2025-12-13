@@ -10,7 +10,7 @@
           </div>
           <div class="flex space-x-2">
             <Link
-              :href="`/admin/cast-crew/${castCrew.id}/edit`"
+              :href="`/admin/cast-crew/${member.id}/edit`"
               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
               <Edit class="h-4 w-4 mr-2" />
@@ -33,7 +33,7 @@
       <div class="bg-card rounded-lg shadow overflow-hidden">
         <!-- Member Photo -->
         <div class="w-full h-96 bg-muted">
-          <img :src="castCrew.photo_url || '/placeholder-avatar.jpg'" :alt="castCrew.name" class="w-full h-full object-cover" />
+          <img :src="member.photo_url || '/placeholder-avatar.jpg'" :alt="member.name" class="w-full h-full object-cover" />
         </div>
 
         <div class="p-6">
@@ -125,7 +125,7 @@ import { Link } from '@inertiajs/vue3'
 import { ArrowLeft, Edit } from 'lucide-vue-next'
 
 defineProps({
-  castCrew: Object
+  member: Object
 })
 
 const formatDate = (dateString) => {

@@ -27,13 +27,13 @@
         </div>
 
         <div class="p-6">
-          <div v-if="galleryItems.length === 0" class="text-center py-8">
+          <div v-if="images.length === 0" class="text-center py-8">
             <p class="text-muted-foreground">No gallery images found. Add your first image to get started.</p>
           </div>
 
           <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
-              v-for="image in galleryItems"
+              v-for="image in images"
               :key="image.id"
               class="bg-card border border-border rounded-lg overflow-hidden shadow-sm"
             >
@@ -99,10 +99,10 @@ import { Plus } from 'lucide-vue-next'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
-  gallery: { type: Array, default: () => [] }
+  images: { type: Array, default: () => [] }
 })
 
-const galleryItems = computed(() => props.gallery ?? [])
+const galleryItems = computed(() => props.images ?? [])
 
 const deleteImage = (id) => {
   if (confirm('Are you sure you want to delete this gallery image?')) {

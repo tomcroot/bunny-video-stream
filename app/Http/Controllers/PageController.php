@@ -23,10 +23,13 @@ class PageController extends Controller
 
         // Try to get page content, but don't fail if column doesn't exist
         try {
-            $pageContent = PageContent::where('page', 'home')->first();
+            $pageContent = PageContent::where('is_active', true)->latest()->first();
         } catch (\Exception $e) {
             $pageContent = null;
         }
+
+        // Extract sponsors from page content
+        $sponsors = $pageContent?->sponsors ?? [];
 
         $paid = Auth::check() ? Auth::user()->hasSuccessfulPayment() : false;
         $premiereDate = SiteSettings::getSetting('premiere_date', '2025-12-10T06:00:00Z');
@@ -38,6 +41,7 @@ class PageController extends Controller
             'gallery' => $gallery,
             'reviews' => $reviews,
             'pageContent' => $pageContent,
+            'sponsors' => $sponsors,
             'paid' => $paid,
             'premiereDate' => $premiereDate,
             'trailerUrl' => $heroBanner?->trailer_url,
@@ -55,9 +59,14 @@ class PageController extends Controller
             ->latest()
             ->get();
 
+        $castCrew = CastCrew::orderBy('display_order')->get();
+        $sponsors = $pageContent?->sponsors ?? [];
+
         return Inertia::render('Information', [
             'pageContent' => $pageContent,
             'reviews' => $reviews,
+            'castCrew' => $castCrew,
+            'sponsors' => $sponsors,
         ]);
     }
 
@@ -72,15 +81,6 @@ class PageController extends Controller
 
         return Inertia::render('Gallery', [
             'gallery' => $gallery,
-        ]);
-    }
-
-    public function credits()
-    {
-        $castCrew = CastCrew::orderBy('display_order')->get();
-
-        return Inertia::render('Credits', [
-            'castCrew' => $castCrew,
         ]);
     }
 

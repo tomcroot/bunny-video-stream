@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CastCrew;
+use App\Models\PageContent;
 use App\Models\Review;
 use App\Services\BunnyVideoService;
 use Illuminate\Support\Facades\Auth;
@@ -58,10 +59,15 @@ class HomeController extends Controller
                 ];
             });
 
+        // Fetch sponsors from page_content (home page)
+        $homeContent = PageContent::where('page', 'home')->first();
+        $sponsors = $homeContent && $homeContent->sponsors ? $homeContent->sponsors : [];
+
         return Inertia::render('Index', [
             'trailerUrl' => $trailerUrl,
             'castCrew' => $castCrew,
             'reviews' => $reviews,
+            'sponsors' => $sponsors,
             'paid' => Auth::check() ? Auth::user()->hasSuccessfulPayment() : false,
         ]);
     }

@@ -193,6 +193,37 @@
         </div>
       </section>
 
+      <!-- SPONSORS SECTION - Bottom of Banner Section -->
+      <section
+        v-if="sponsors && sponsors.length > 0"
+        class="py-16 px-6 bg-gradient-to-b from-black to-gray-900 border-t border-gray-800"
+      >
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-xl md:text-2xl font-bold mb-10 text-center text-gray-300">
+            Our Partners
+          </h2>
+
+          <!-- Sponsors Grid - Responsive -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 items-center justify-items-center">
+            <a
+              v-for="(sponsor, index) in sponsors"
+              :key="index"
+              :href="sponsor.website_url || '#'"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative w-full aspect-video flex items-center justify-center p-4 bg-white/5 rounded-lg border border-white/10 hover:border-red-500/50 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(248,113,113,0.3)]"
+            >
+              <img
+                :src="sponsor.logo_url"
+                :alt="sponsor.name"
+                class="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        </div>
+      </section>
+
       <!-- FEATURED CONTENT (Trailer + Movie for authenticated users) -->
       <section v-if="user" class="py-16 px-6 bg-black">
         <div class="max-w-7xl mx-auto">
@@ -355,25 +386,25 @@
       >
         <div class="max-w-6xl mx-auto">
           <h2 class="text-3xl md:text-4xl font-bold mb-14 text-center">
-            Credits
+            Cast & Crew
           </h2>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             <div
               v-for="member in castCrew"
               :key="member.id"
               class="group text-center transform transition-transform duration-300 hover:-translate-y-2"
             >
-              <div class="relative mx-auto w-28 h-28 mb-4">
-                <div class="absolute inset-0 rounded-full bg-red-500/25 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div class="relative mb-4 aspect-[3/4] overflow-hidden rounded-lg">
+                <div class="absolute inset-0 bg-red-500/25 blur-xl opacity-0 group-hover:opacity-100 transition-opacity z-0" />
                 <img
-                  :src="member.photo"
-                  :alt="member.name"
-                  class="relative rounded-full object-cover w-full h-full border border-white/20 group-hover:border-red-500/70 group-hover:shadow-[0_0_25px_rgba(248,113,113,0.55)] transition-all duration-300"
+                  :src="member.image_url"
+                  :alt="member.stage_name"
+                  class="relative w-full h-full object-cover border border-white/20 group-hover:border-red-500/70 group-hover:shadow-[0_0_25px_rgba(248,113,113,0.55)] transition-all duration-300 rounded-lg"
                 />
               </div>
-              <p class="font-semibold text-lg">{{ member.name }}</p>
-              <p class="text-sm text-gray-400">{{ member.role }}</p>
+              <p class="font-semibold text-base">{{ member.stage_name }}</p>
+              <p class="text-sm text-gray-400">{{ member.job_title }}</p>
             </div>
           </div>
         </div>
@@ -414,7 +445,7 @@
       </section>
 
     </div>
-</template>
+  </template>
 
 <script setup>
 import PublicLayout from '@/Layouts/PublicLayout.vue'
@@ -448,6 +479,10 @@ const props = defineProps({
     default: () => [],
   },
   reviews: {
+    type: Array,
+    default: () => [],
+  },
+  sponsors: {
     type: Array,
     default: () => [],
   },

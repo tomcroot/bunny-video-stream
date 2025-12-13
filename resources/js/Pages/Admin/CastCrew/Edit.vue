@@ -113,24 +113,31 @@
               </div>
             </div>
 
-            <!-- Image URL -->
+            <!-- Image Upload -->
             <div>
-              <label for="image_url" class="block text-sm font-medium text-foreground mb-2">
-                Image URL
+              <label class="block text-sm font-medium text-foreground mb-2">
+                Profile Photo
               </label>
-              <input
-                id="image_url"
+              <ImageUpload
                 v-model="form.image_url"
-                type="url"
-                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="https://example.com/photo.jpg"
+                folder="cast"
+                alt="Cast/Crew member photo"
+                @upload-success="handleUploadSuccess"
+                @upload-error="handleUploadError"
               />
-                <div v-if="form.errors.image_url" class="mt-1 text-sm text-red-600">
-                  {{ form.errors.image_url }}
+              <div v-if="form.errors.image_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.image_url }}
               </div>
               <p class="mt-1 text-sm text-muted-foreground">
-                Enter the URL of the member's photo. If left empty, a placeholder will be used.
+                Upload a photo or enter URL manually below. If left empty, a placeholder will be used.
               </p>
+              <!-- Manual URL Input (Optional) -->
+              <input
+                v-model="form.image_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2"
+                placeholder="Or paste image URL..."
+              />
             </div>
 
             <!-- Display Order -->
@@ -194,6 +201,7 @@
 import { Head, Link, useForm } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const props = defineProps({
   member: { type: Object, default: () => ({}) }
@@ -210,6 +218,14 @@ const form = useForm({
   display_order: props.member.display_order || 0,
   is_active: props.member.is_active ?? true
 })
+
+const handleUploadSuccess = (data) => {
+  form.image_url = data.url
+}
+
+const handleUploadError = (error) => {
+  console.error('Upload failed:', error)
+}
 
 const submit = () => {
   if (!props.member?.id) return

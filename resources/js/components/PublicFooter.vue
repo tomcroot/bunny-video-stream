@@ -20,7 +20,6 @@ import { Link } from '@inertiajs/vue3'
           <div class="space-y-2">
             <Link href="/" class="block text-gray-400 hover:text-red-600">Home</Link>
             <Link href="/details" class="block text-gray-400 hover:text-red-600">Details</Link>
-            <Link href="/credits" class="block text-gray-400 hover:text-red-600">Credits</Link>
             <Link href="/gallery" class="block text-gray-400 hover:text-red-600">Gallery</Link>
           </div>
         </div>

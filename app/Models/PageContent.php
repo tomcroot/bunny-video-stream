@@ -19,12 +19,15 @@ class PageContent extends Model
         'year',
         'genres',
         'metadata',
+        'movie_url',
+        'sponsors',
         'is_active',
     ];
 
     protected $casts = [
         'genres' => 'array',
         'metadata' => 'array',
+        'sponsors' => 'array',
         'is_active' => 'boolean',
     ];
 }
