@@ -8,37 +8,35 @@
       >
         <!-- VIDEO PLAYER HERO -->
         <div
-          class="absolute inset-0 w-full h-full bg-black"
-          :style="{ opacity: showHeroContent ? 0.5 : 1, transition: 'opacity 1s ease-out' }"
+          class="absolute inset-0 w-full h-full bg-black z-0"
         >
           <video
             v-if="resolvedTrailerUrl"
             ref="trailerVideo"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover relative z-10"
             playsinline
             :muted="isMuted"
-            preload="auto"
+            preload="metadata"
+            @loadstart="onVideoLoadStart"
+            @loadeddata="onVideoLoaded"
+            @canplay="onVideoCanPlay"
             @ended="onTrailerEnded"
             @play="onVideoPlay"
             @pause="onVideoPause"
+            @error="onVideoError"
             @contextmenu.prevent
           ></video>
 
-          <!-- Volume Control -->
-          <button
-            v-if="resolvedTrailerUrl"
-            @click="toggleMute"
-            class="absolute bottom-6 right-6 z-20 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 border border-white/30 flex items-center justify-center transition-all hover:scale-110"
-            title="Toggle sound"
+          <!-- Loading Spinner -->
+          <div
+            v-if="resolvedTrailerUrl && videoLoading"
+            class="absolute inset-0 flex items-center justify-center bg-black/80 z-20"
           >
-            <svg v-if="!isMuted" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-            </svg>
-            <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
-            </svg>
-          </button>
+            <div class="text-center">
+              <div class="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p class="text-white text-sm">Loading trailer...</p>
+            </div>
+          </div>
 
           <!-- Fallback background if no video -->
           <div
@@ -47,6 +45,22 @@
             :style="heroBgStyle"
           />
         </div>
+
+        <!-- Netflix-style Unmute Button - Fixed Position Outside Video Container -->
+        <button
+          v-if="resolvedTrailerUrl && !videoLoading"
+          @click="toggleMute"
+          class="fixed bottom-24 right-8 z-[9999] flex items-center gap-2 px-4 py-2.5 rounded-full border-2 border-white/80 bg-black/40 hover:bg-black/60 backdrop-blur-md transition-all hover:scale-105 shadow-2xl"
+          style="pointer-events: auto !important;"
+        >
+          <svg v-if="isMuted" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+          </svg>
+          <svg v-else class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <span class="text-white font-semibold text-sm">{{ isMuted ? 'Unmute' : 'Mute' }}</span>
+        </button>
 
         <!-- Small watermark deterrent -->
         <div
@@ -58,16 +72,16 @@
 
         <!-- Cinema overlay gradient -->
         <div
-          class="absolute inset-0 bg-linear-to-t from-black via-black/85 to-black/40"
-          :style="{ opacity: showHeroContent ? 0.85 : 0.5, transition: 'opacity 1s ease-out' }"
+          class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-5"
+          :style="{ opacity: showHeroContent ? 0.5 : 0.2, transition: 'opacity 1s ease-out' }"
         />
 
         <!-- Film grain overlay -->
-        <div class="pointer-events-none absolute inset-0 opacity-20 mix-blend-soft-light grain" />
+        <div class="pointer-events-none absolute inset-0 opacity-10 mix-blend-soft-light grain z-30" />
 
         <!-- Hero content - FADES IN AFTER VIDEO PLAYS / ENDS -->
         <div
-          class="relative z-10 max-w-5xl px-6 text-center transition-all duration-1000"
+          class="relative z-40 max-w-5xl px-6 text-center transition-all duration-1000"
           :style="{
             opacity: showHeroContent ? 1 : 0,
             transform: showHeroContent ? 'translateY(0)' : 'translateY(20px)',
@@ -556,6 +570,10 @@ const trailerVisible = ref(false)
 const castVisible = ref(false)
 const reviewsVisible = ref(false)
 const isMuted = ref(true)
+const volume = ref(0.7)
+const videoLoading = ref(true)
+const videoError = ref(false)
+let replayTimeout = null
 
 let observer = null
 
@@ -618,21 +636,58 @@ const setupHls = (videoEl, hlsRef, { autoplay = false, muted = true } = {}) => {
     hlsRef.value = new Hls({
       autoStartLoad: true,
       enableWorker: true,
-      lowLatencyMode: true,
+      lowLatencyMode: false,
+      maxBufferLength: 30,
+      maxMaxBufferLength: 60,
+      backBufferLength: 0,
     })
+
+    hlsRef.value.on(Hls.Events.ERROR, (event, data) => {
+      console.error('HLS Error:', data)
+      if (data.fatal) {
+        videoError.value = true
+        videoLoading.value = false
+        if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+          console.log('Attempting to recover from network error...')
+          hlsRef.value.startLoad()
+        } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+          console.log('Attempting to recover from media error...')
+          hlsRef.value.recoverMediaError()
+        }
+      }
+    })
+
     hlsRef.value.loadSource(resolvedTrailerUrl.value)
     hlsRef.value.attachMedia(videoEl)
 
     hlsRef.value.on(Hls.Events.MANIFEST_PARSED, () => {
+      console.log('HLS manifest parsed')
+      videoLoading.value = false
       if (autoplay) {
-        videoEl.play().catch(() => {})
+        videoEl.play().catch((err) => {
+          console.log('Autoplay blocked, trying muted:', err)
+          // Browsers often block unmuted autoplay, so try muted first
+          videoEl.muted = true
+          isMuted.value = true
+          videoEl.play().catch(() => {
+            console.log('Autoplay failed even when muted')
+          })
+        })
       }
     })
   } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
     videoEl.src = resolvedTrailerUrl.value
     videoEl.addEventListener('loadedmetadata', () => {
+      videoLoading.value = false
       if (autoplay) {
-        videoEl.play().catch(() => {})
+        videoEl.play().catch((err) => {
+          console.log('Autoplay blocked, trying muted:', err)
+          videoEl.muted = true
+          isMuted.value = true
+          videoEl.play().catch(() => {
+            console.log('Autoplay failed even when muted')
+          })
+        })
       }
     })
   }
@@ -643,7 +698,13 @@ onMounted(async () => {
   if (resolvedTrailerUrl.value && trailerVideo.value) {
     const video = trailerVideo.value
     video.addEventListener('contextmenu', (e) => e.preventDefault())
+
+    // Set initial volume
+    video.volume = volume.value
+
+    // Start muted for autoplay compatibility
     setupHls(video, heroHlsInstance, { autoplay: true, muted: true })
+
     window.addEventListener('keydown', blockKeys)
   }
 
@@ -720,6 +781,9 @@ onUnmounted(() => {
   if (mouseActivityTimeout) {
     clearTimeout(mouseActivityTimeout)
   }
+  if (replayTimeout) {
+    clearTimeout(replayTimeout)
+  }
   window.removeEventListener('keydown', blockKeys)
 })
 
@@ -743,7 +807,29 @@ const handleMouseMove = () => {
 }
 
 // Video event handlers
+const onVideoLoadStart = () => {
+  videoLoading.value = true
+  videoError.value = false
+}
+
+const onVideoLoaded = () => {
+  console.log('Video data loaded')
+  videoLoading.value = false
+}
+
+const onVideoCanPlay = () => {
+  console.log('Video can play')
+  videoLoading.value = false
+}
+
+const onVideoError = (e) => {
+  console.error('Video error:', e)
+  videoLoading.value = false
+  videoError.value = true
+}
+
 const onVideoPlay = () => {
+  videoLoading.value = false
   // Start the hide timer when video starts playing
   if (mouseActivityTimeout) {
     clearTimeout(mouseActivityTimeout)
@@ -761,14 +847,27 @@ const onVideoPause = () => {
 }
 
 const onTrailerEnded = () => {
-  // Show thumbnail/content when video ends
+  // Show content briefly when video ends
   showHeroContent.value = true
   if (mouseActivityTimeout) {
     clearTimeout(mouseActivityTimeout)
   }
-  if (trailerVideo.value) {
-    trailerVideo.value.pause()
+
+  // Wait 30 seconds before replaying
+  if (replayTimeout) {
+    clearTimeout(replayTimeout)
   }
+
+  replayTimeout = setTimeout(() => {
+    if (trailerVideo.value) {
+      trailerVideo.value.currentTime = 0
+      trailerVideo.value.play().catch(err => {
+        console.log('Replay failed:', err)
+      })
+      // Hide content when video replays
+      showHeroContent.value = false
+    }
+  }, 30000) // 30 seconds
 }
 
 const playTrailerFromStart = () => {
@@ -796,6 +895,26 @@ const toggleMute = () => {
   isMuted.value = !isMuted.value
   if (trailerVideo.value) {
     trailerVideo.value.muted = isMuted.value
+    if (!isMuted.value && trailerVideo.value.volume === 0) {
+      trailerVideo.value.volume = 0.7
+      volume.value = 0.7
+    }
+  }
+}
+
+const updateVolume = () => {
+  if (trailerVideo.value) {
+    trailerVideo.value.volume = volume.value
+    // Auto-unmute if volume is increased from 0
+    if (volume.value > 0 && isMuted.value) {
+      isMuted.value = false
+      trailerVideo.value.muted = false
+    }
+    // Auto-mute if volume is set to 0
+    if (volume.value === 0 && !isMuted.value) {
+      isMuted.value = true
+      trailerVideo.value.muted = true
+    }
   }
 }
 
