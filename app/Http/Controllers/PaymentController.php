@@ -217,11 +217,15 @@ class PaymentController extends Controller
                         Log::info('Payment success email sent', [
                             'payment_id' => $payment->id,
                             'user_id' => $payment->user_id,
+                            'email' => $payment->user->email,
                         ]);
                     } catch (\Exception $e) {
                         Log::error('Failed to send payment success email', [
                             'payment_id' => $payment->id,
+                            'user_id' => $payment->user_id,
+                            'email' => $payment->user->email ?? 'unknown',
                             'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString(),
                         ]);
                     }
                 }
@@ -319,11 +323,15 @@ class PaymentController extends Controller
                             'payment_id' => $payment->id,
                             'user_id' => $payment->user_id,
                             'subscription_id' => $subscription->id,
+                            'email' => $payment->user->email,
                         ]);
                     } catch (\Exception $e) {
-                        Log::error('Failed to send payment success email', [
+                        Log::error('Failed to send payment success email (webhook)', [
                             'payment_id' => $payment->id,
+                            'user_id' => $payment->user_id,
+                            'email' => $payment->user->email ?? 'unknown',
                             'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString(),
                         ]);
                     }
                 }

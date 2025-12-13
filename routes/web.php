@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('gallery', \App\Http\Controllers\Admin\GalleryController::class);
         Route::resource('cast-crew', \App\Http\Controllers\Admin\CastCrewController::class)->parameters(['cast-crew' => 'castCrew']);
         Route::resource('page-content', \App\Http\Controllers\Admin\PageContentController::class)->parameters(['page-content' => 'pageContent']);
+        Route::get('watch-analytics', [\App\Http\Controllers\Admin\WatchAnalyticsController::class, 'index'])->name('watch-analytics');
         Route::resource('reviews', \App\Http\Controllers\Admin\ReviewController::class);
         Route::patch('reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');
 

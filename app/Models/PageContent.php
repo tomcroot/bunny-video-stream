@@ -9,6 +9,7 @@ class PageContent extends Model
     protected $table = 'page_content';
 
     protected $fillable = [
+        'page',
         'title',
         'poster',
         'backdrop',

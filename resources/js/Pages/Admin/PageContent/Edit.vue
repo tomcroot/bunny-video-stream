@@ -24,6 +24,34 @@
       <div class="bg-card rounded-lg shadow p-6">
         <form @submit.prevent="submit">
           <div class="space-y-6">
+            <!-- Page Key -->
+            <div>
+              <label for="page" class="block text-sm font-medium text-foreground mb-2">
+                Page Identifier *
+              </label>
+              <input
+                id="page"
+                v-model="form.page"
+                type="text"
+                list="page-options"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="watch"
+                required
+              />
+              <datalist id="page-options">
+                <option value="watch"></option>
+                <option value="home"></option>
+                <option value="details"></option>
+                <option value="information"></option>
+              </datalist>
+              <div v-if="form.errors.page" class="mt-1 text-sm text-red-600">
+                {{ form.errors.page }}
+              </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                This key must stay unique and should be <strong>watch</strong> for the streaming page content.
+              </p>
+            </div>
+
             <!-- Title -->
             <div>
               <label for="title" class="block text-sm font-medium text-foreground mb-2">
@@ -94,6 +122,26 @@
                 class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2"
                 placeholder="Or paste image URL..."
               />
+            </div>
+
+            <!-- Movie URL -->
+            <div>
+              <label for="movie_url" class="block text-sm font-medium text-foreground mb-2">
+                Movie Stream URL
+              </label>
+              <input
+                id="movie_url"
+                v-model="form.movie_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="https://vz-.../playlist.m3u8"
+              />
+              <div v-if="form.errors.movie_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.movie_url }}
+              </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                Provide the secure HLS playlist URL for playback. Required for the watch page to stream the film.
+              </p>
             </div>
 
             <!-- Logline -->
@@ -331,6 +379,7 @@ const props = defineProps({
 const genresInput = ref((props.content.genres || []).join(', '))
 
 const form = useForm({
+  page: props.content.page || 'watch',
   title: props.content.title || '',
   poster: props.content.poster || '',
   backdrop: props.content.backdrop || '',
@@ -340,6 +389,7 @@ const form = useForm({
   runtime: props.content.runtime || '',
   year: props.content.year || '',
   genres: props.content.genres || [],
+  movie_url: props.content.movie_url || '',
   sponsors: props.content.sponsors || [],
   is_active: props.content.is_active ?? true
 })

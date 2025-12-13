@@ -24,6 +24,34 @@
       <div class="bg-card rounded-lg shadow p-6">
         <form @submit.prevent="submit">
           <div class="space-y-6">
+            <!-- Page Key -->
+            <div>
+              <label for="page" class="block text-sm font-medium text-foreground mb-2">
+                Page Identifier *
+              </label>
+              <input
+                id="page"
+                v-model="form.page"
+                type="text"
+                list="page-options"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="watch"
+                required
+              />
+              <datalist id="page-options">
+                <option value="watch"></option>
+                <option value="home"></option>
+                <option value="details"></option>
+                <option value="information"></option>
+              </datalist>
+              <div v-if="form.errors.page" class="mt-1 text-sm text-red-600">
+                {{ form.errors.page }}
+              </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                Use <strong>watch</strong> for the streaming page or specify another unique key.
+              </p>
+            </div>
+
             <!-- Title -->
             <div>
               <label for="title" class="block text-sm font-medium text-foreground mb-2">
@@ -74,6 +102,26 @@
               <div v-if="form.errors.backdrop" class="mt-1 text-sm text-red-600">
                 {{ form.errors.backdrop }}
               </div>
+            </div>
+
+            <!-- Movie URL -->
+            <div>
+              <label for="movie_url" class="block text-sm font-medium text-foreground mb-2">
+                Movie Stream URL
+              </label>
+              <input
+                id="movie_url"
+                v-model="form.movie_url"
+                type="url"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="https://vz-.../playlist.m3u8"
+              />
+              <div v-if="form.errors.movie_url" class="mt-1 text-sm text-red-600">
+                {{ form.errors.movie_url }}
+              </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                Provide the secure HLS playlist URL for the full feature. Required for the watch page.
+              </p>
             </div>
 
             <!-- Logline -->
@@ -228,6 +276,7 @@ import { ref, watch } from 'vue'
 const genresInput = ref('')
 
 const form = useForm({
+  page: 'watch',
   title: '',
   poster: '',
   backdrop: '',
@@ -237,6 +286,7 @@ const form = useForm({
   runtime: '',
   year: '',
   genres: [],
+  movie_url: '',
   is_active: true
 })
 

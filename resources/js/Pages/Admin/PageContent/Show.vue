@@ -55,6 +55,11 @@
                 <dd class="text-foreground text-lg font-semibold">{{ content.title }}</dd>
               </div>
 
+              <div>
+                <dt class="text-sm font-medium text-muted-foreground">Page Identifier</dt>
+                <dd class="text-foreground">{{ content.page || 'N/A' }}</dd>
+              </div>
+
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <dt class="text-sm font-medium text-muted-foreground">Release Year</dt>
@@ -74,6 +79,17 @@
                     <span :class="['px-2 py-1 text-xs rounded-full', content.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
                       {{ content.is_active ? 'Active' : 'Inactive' }}
                     </span>
+                  </dd>
+                </div>
+                <div class="col-span-2">
+                  <dt class="text-sm font-medium text-muted-foreground">Movie Stream URL</dt>
+                  <dd class="text-foreground break-all">
+                    <template v-if="content.movie_url">
+                      <a :href="content.movie_url" target="_blank" rel="noopener" class="text-blue-500 hover:underline">{{ content.movie_url }}</a>
+                    </template>
+                    <template v-else>
+                      Not set
+                    </template>
                   </dd>
                 </div>
               </div>

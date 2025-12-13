@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\PageContent;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class PageContentController extends Controller
@@ -35,6 +36,7 @@ class PageContentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'page' => ['required', 'string', 'max:255', 'unique:page_content,page'],
             'title' => 'required|string|max:255',
             'poster' => 'nullable|string',
             'backdrop' => 'nullable|string',
@@ -47,6 +49,7 @@ class PageContentController extends Controller
             'metadata' => 'nullable|array',
             'sponsors' => 'nullable|array',
             'is_active' => 'boolean',
+            'movie_url' => 'nullable|url',
         ]);
 
         PageContent::create($validated);
@@ -80,6 +83,7 @@ class PageContentController extends Controller
     public function update(Request $request, PageContent $pageContent)
     {
         $validated = $request->validate([
+            'page' => ['required', 'string', 'max:255', Rule::unique('page_content', 'page')->ignore($pageContent->id)],
             'title' => 'required|string|max:255',
             'poster' => 'nullable|string',
             'backdrop' => 'nullable|string',
@@ -92,9 +96,16 @@ class PageContentController extends Controller
             'metadata' => 'nullable|array',
             'sponsors' => 'nullable|array',
             'is_active' => 'boolean',
+            'movie_url' => 'nullable|url',
         ]);
 
         $pageContent->update($validated);
+
+        // Sync sponsors across all page content records if sponsors were updated
+        if (array_key_exists('sponsors', $validated) && $validated['sponsors']) {
+            PageContent::where('id', '!=', $pageContent->id)
+                ->update(['sponsors' => json_encode($validated['sponsors'])]);
+        }
 
         return redirect()->route('admin.page-content.index')->with('success', 'Movie details updated successfully.');
     }

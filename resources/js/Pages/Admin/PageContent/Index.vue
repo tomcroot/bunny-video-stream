@@ -8,13 +8,22 @@
             <h1 class="text-2xl font-bold text-foreground">Movie Details</h1>
             <p class="text-muted-foreground">Manage movie information for the information page</p>
           </div>
-          <Link
-            href="/admin/page-content/create"
-            class="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-          >
-            <Plus class="h-4 w-4 mr-2" />
-            Add Movie
-          </Link>
+          <div class="flex gap-2">
+            <Link
+              href="/admin/watch-analytics"
+              class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+            >
+              <BarChart3 class="h-4 w-4 mr-2" />
+              View Analytics
+            </Link>
+            <Link
+              href="/admin/page-content/create"
+              class="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Plus class="h-4 w-4 mr-2" />
+              Add Movie
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -53,6 +62,9 @@
                 <span :class="['px-2 py-1 text-xs rounded-full', movie.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
                   {{ movie.is_active ? 'Active' : 'Inactive' }}
                 </span>
+                <span v-if="movie.page" class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full uppercase tracking-wide">
+                  {{ movie.page }}
+                </span>
                 <span v-if="movie.rating" class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
                   {{ movie.rating }}
                 </span>
@@ -71,6 +83,13 @@
 
               <div class="flex flex-wrap gap-2 text-xs text-muted-foreground mt-2">
                 <span v-if="movie.runtime">⏱ {{ movie.runtime }}</span>
+                <span v-if="movie.movie_url" class="flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3 text-blue-500">
+                    <path d="M4 4a2 2 0 012-2h4a2 2 0 012 2v1h1a2 2 0 012 2v2h-2V7H5v8h4v2H6a2 2 0 01-2-2V4zm7 2V4H6v2h5z" />
+                    <path d="M13 11a1 1 0 011-1h3a1 1 0 011 1v5a1 1 0 01-1 1h-3a1 1 0 01-1-1v-5zm2 4h1v-3h-1v3z" />
+                  </svg>
+                  Stream URL set
+                </span>
               </div>
             </div>
 
@@ -104,7 +123,7 @@
 
 <script setup>
 import { Link, router } from '@inertiajs/vue3'
-import { Plus } from 'lucide-vue-next'
+import { Plus, BarChart3 } from 'lucide-vue-next'
 import { computed } from 'vue'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 

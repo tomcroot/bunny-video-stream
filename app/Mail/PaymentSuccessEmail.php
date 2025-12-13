@@ -4,16 +4,14 @@ namespace App\Mail;
 
 use App\Models\Payment;
 use App\Models\Subscription;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PaymentSuccessEmail extends Mailable implements ShouldQueue
+class PaymentSuccessEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels;
 
     public function __construct(
         public Payment $payment,
@@ -23,6 +21,7 @@ class PaymentSuccessEmail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: [$this->payment->user->email],
             subject: 'Payment Successful - Your Video Access is Active',
         );
     }
