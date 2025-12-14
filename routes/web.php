@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
