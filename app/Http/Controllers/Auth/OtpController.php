@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendOtpEmailJob;
+use App\Jobs\SendOtpSmsJob;
+use App\Jobs\SendWelcomeEmailJob;
 use App\Models\User;
-use App\Services\EmailService;
-use Hofmannsven\Brevo\Facades\Brevo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -94,49 +95,23 @@ class OtpController extends Controller
             'email' => $validated['email'],
         ], now()->addMinutes(10));
 
-        $smsSent = false;
-        try {
-            // Send OTP via SMS (required for account creation)
-            $mnotify = new \Arhinful\LaravelMnotify\MNotify;
-            $mnotify->setAPIKey(config('mnotify.api_key'));
-            $mnotify->setSender(config('mnotify.sender_id'));
+        // Dispatch SMS job (non-blocking)
+        $smsMessage = "Your Promise Land Films verification code: {$code}";
+        SendOtpSmsJob::dispatch($phone, $smsMessage);
 
-            $smsMessage = "Your Promise Land Films verification code: {$code}";
-            $mnotify->sendQuickSMS([$phone], $smsMessage);
-            $smsSent = true;
-        } catch (\Throwable $e) {
-            Log::error('OTP SMS send failed', ['identifier' => $phone, 'error' => $e->getMessage()]);
-        }
-
-        $emailSent = false;
+        // Dispatch email job if email provided (non-blocking)
         if ($validated['email']) {
-            try {
-                Brevo::sendEmail([
-                    'sender' => [
-                        'email' => config('mail.from.address'),
-                        'name' => config('mail.from.name', 'Promise Land Films'),
-                    ],
-                    'to' => [[
-                        'email' => $validated['email'],
-                        'name' => $validated['name'],
-                    ]],
-                    'subject' => 'Your Promise Films verification code',
-                    'htmlContent' => "<p>Your verification code is: <strong>{$code}</strong></p><p>This code expires in 10 minutes.</p>",
-                ]);
-                $emailSent = true;
-            } catch (\Throwable $e) {
-                Log::warning('OTP email send failed', ['email' => $validated['email'], 'error' => $e->getMessage()]);
-            }
-        }
-
-        if (! $smsSent && ! $emailSent) {
-            return redirect()->back()
-                ->withErrors(['phone_number' => 'Failed to send verification code. Try again.']);
+            SendOtpEmailJob::dispatch($validated['email'], $validated['name'], (string) $code);
         }
 
         RateLimiter::hit($limitKey, 900);
 
-        return redirect()->back()->with('success', $smsSent ? 'Verification code sent via SMS.' : 'Verification code sent via email.');
+        Log::info('OTP jobs dispatched', [
+            'phone' => $phone,
+            'email' => $validated['email'] ?? null,
+        ]);
+
+        return redirect()->back()->with('success', 'Verification code sent. Please check your SMS'.($validated['email'] ? ' and email.' : '.'));
     }
 
     /**
@@ -169,23 +144,15 @@ class OtpController extends Controller
         $code = random_int(100000, 999999);
         Cache::put('otp-reset:'.$phone, $code, now()->addMinutes(10));
 
-        try {
-            $mnotify = new \Arhinful\LaravelMnotify\MNotify;
-            $mnotify->setAPIKey(config('mnotify.api_key'));
-            $mnotify->setSender(config('mnotify.sender_id'));
+        // Dispatch SMS job (non-blocking)
+        $message = "Your Promise Films password reset code: {$code}";
+        SendOtpSmsJob::dispatch($phone, $message);
 
-            $message = "Your Promise Films password reset code: {$code}";
-            $mnotify->sendQuickSMS([$phone], $message);
+        RateLimiter::hit($limitKey, 900);
 
-            RateLimiter::hit($limitKey, 900);
-        } catch (\Throwable $e) {
-            Log::error('Password reset OTP send failed', ['phone' => $phone, 'error' => $e->getMessage()]);
+        Log::info('Password reset OTP job dispatched', ['phone' => $phone]);
 
-            return redirect()->back()
-                ->withErrors(['phone' => 'Failed to send reset code. Try again.']);
-        }
-
-        return redirect()->back()->with('success', 'Password reset code sent successfully.');
+        return redirect()->back()->with('success', 'Password reset code sent. Please check your SMS.');
     }
 
     /**
@@ -235,20 +202,14 @@ class OtpController extends Controller
                 'password' => Hash::make($cached['password']),
             ]);
 
-            // Send welcome email only for newly created users
-            try {
-                if (app()->bound(EmailService::class)) {
-                    app(EmailService::class)->sendWelcomeEmail($user);
-                }
-            } catch (\Throwable $e) {
-                Log::warning('Welcome email failed', ['user_id' => $user->id]);
-            }
+            // Dispatch welcome email job (non-blocking)
+            SendWelcomeEmailJob::dispatch($user->id);
 
-            // Send email verification link after successful SMS OTP verification
+            // Send email verification link after successful SMS OTP verification (already queued via notification)
             try {
                 if ($user->hasVerifiedEmail() === false) {
                     $user->notify(new \App\Notifications\VerifyEmailNotification);
-                    Log::info('Email verification sent after SMS OTP', ['user_id' => $user->id, 'email' => $user->email]);
+                    Log::info('Email verification queued after SMS OTP', ['user_id' => $user->id, 'email' => $user->email]);
                 }
             } catch (\Throwable $e) {
                 Log::warning('Email verification notification failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\PaymentSuccessEmail;
+use App\Jobs\SendPaymentSuccessEmailJob;
 use App\Models\Payment;
 use App\Models\ReferralUsage;
 use App\Models\Subscription;
@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 
 class PaymentController extends Controller
@@ -212,22 +211,12 @@ class PaymentController extends Controller
                         ]
                     );
 
-                    try {
-                        Mail::send(new PaymentSuccessEmail($payment, $subscription));
-                        Log::info('Payment success email sent', [
-                            'payment_id' => $payment->id,
-                            'user_id' => $payment->user_id,
-                            'email' => $payment->user->email,
-                        ]);
-                    } catch (\Exception $e) {
-                        Log::error('Failed to send payment success email', [
-                            'payment_id' => $payment->id,
-                            'user_id' => $payment->user_id,
-                            'email' => $payment->user->email ?? 'unknown',
-                            'error' => $e->getMessage(),
-                            'trace' => $e->getTraceAsString(),
-                        ]);
-                    }
+                    // Dispatch payment success email job (non-blocking)
+                    SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id);
+                    Log::info('Payment success email job dispatched', [
+                        'payment_id' => $payment->id,
+                        'subscription_id' => $subscription->id,
+                    ]);
                 }
 
                 return redirect('/watch')->with('status', 'Payment successful! Enjoy your movie.');
@@ -317,23 +306,12 @@ class PaymentController extends Controller
                         ]
                     );
 
-                    try {
-                        Mail::send(new PaymentSuccessEmail($payment, $subscription));
-                        Log::info('Payment success email sent', [
-                            'payment_id' => $payment->id,
-                            'user_id' => $payment->user_id,
-                            'subscription_id' => $subscription->id,
-                            'email' => $payment->user->email,
-                        ]);
-                    } catch (\Exception $e) {
-                        Log::error('Failed to send payment success email (webhook)', [
-                            'payment_id' => $payment->id,
-                            'user_id' => $payment->user_id,
-                            'email' => $payment->user->email ?? 'unknown',
-                            'error' => $e->getMessage(),
-                            'trace' => $e->getTraceAsString(),
-                        ]);
-                    }
+                    // Dispatch payment success email job (non-blocking)
+                    SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id);
+                    Log::info('Payment success email job dispatched (webhook)', [
+                        'payment_id' => $payment->id,
+                        'subscription_id' => $subscription->id,
+                    ]);
                 }
             } else {
                 $payment->status = 'failed';

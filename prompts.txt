@@ -1,0 +1,1 @@
+then let's review our setup.sh, deploy.sh and deploy.yml to ensure we add the workers and redis functionalities in our production setup

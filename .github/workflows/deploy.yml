@@ -20,7 +20,12 @@ jobs:
           script: |
             cd /var/www/acrazydayinaccra
 
+            # Ensure scripts are executable
             sudo chmod +x setup.sh deploy.sh
+            sudo chmod +x scripts/*.sh
 
+            # Run setup (drift verification) and deploy
             ./setup.sh
             ./deploy.sh
+
+            echo "✅ Deployment completed successfully"
