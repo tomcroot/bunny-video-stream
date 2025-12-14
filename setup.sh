@@ -88,11 +88,17 @@ EOF
   sudo chmod 600 /root/.credentials/db
 fi
 
-# ---------------- REDIS VERIFY ----------------
+# ---------------- REDIS ----------------
+# Ensure Redis is enabled and running
+sudo systemctl enable redis-server
+sudo systemctl start redis-server
+
+# Verify Redis is responding
 if ! redis-cli ping | grep -q PONG; then
   echo "❌ Redis not responding"
   exit 1
 fi
+echo "✅ Redis is running"
 
 # ---------------- NGINX ----------------
 NGINX_CONF="/etc/nginx/sites-available/$APP_NAME"

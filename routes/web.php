@@ -184,3 +184,24 @@ Route::post('/referral/validate-discount', [\App\Http\Controllers\ReferralCodeCo
 
 // Paystack webhook (server-to-server). Prefer a namespaced, plural path.
 Route::post('/webhooks/paystack', [PaymentController::class, 'webhook'])->name('payments.webhook');
+
+Route::get('/health', function () {
+    try {
+        // Check database
+        DB::connection()->getPdo();
+
+        // Check Redis
+        Cache::store('redis')->get('health_check');
+
+        return response()->json([
+            'status' => 'ok',
+            'timestamp' => now()->toIso8601String(),
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'System unhealthy',
+        ], 503);
+    }
+});

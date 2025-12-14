@@ -15,6 +15,22 @@ echo "📦 Installing Node dependencies and building assets..."
 npm install
 ./node_modules/.bin/vite build
 
+# ============================================================================
+# ENSURE REDIS IS CONFIGURED IN .ENV (Production)
+# ============================================================================
+echo "🔧 Ensuring Redis configuration in .env..."
+if [ -f "$APP_DIR/.env" ]; then
+  # Update to Redis if still using database
+  sed -i 's/^QUEUE_CONNECTION=database/QUEUE_CONNECTION=redis/' "$APP_DIR/.env"
+  sed -i 's/^CACHE_STORE=database/CACHE_STORE=redis/' "$APP_DIR/.env"
+  sed -i 's/^SESSION_DRIVER=database/SESSION_DRIVER=redis/' "$APP_DIR/.env"
+
+  # Verify Redis settings exist
+  grep -q "^QUEUE_CONNECTION=redis" "$APP_DIR/.env" && echo "  ✓ Queue: Redis" || echo "  ⚠ Queue not set to Redis"
+  grep -q "^CACHE_STORE=redis" "$APP_DIR/.env" && echo "  ✓ Cache: Redis" || echo "  ⚠ Cache not set to Redis"
+  grep -q "^SESSION_DRIVER=redis" "$APP_DIR/.env" && echo "  ✓ Session: Redis" || echo "  ⚠ Session not set to Redis"
+fi
+
 echo "🗃️ Running database migrations..."
 php artisan migrate --force
 
