@@ -206,4 +206,4 @@ Route::get('/health', function () {
             'message' => 'System unhealthy',
         ], 503);
     }
-});
+})->withoutMiddleware(\App\Http\Middleware\HandleInertiaRequests::class);
