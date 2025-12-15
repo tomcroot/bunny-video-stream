@@ -12,6 +12,11 @@ class StreamerDashboardController extends Controller
     {
         $user = Auth::user();
 
+        // Redirect admins to admin dashboard
+        if ($user->hasRole('admin')) {
+            return redirect('/admin');
+        }
+
         // Get featured content (banners/movies)
         $featured = Banner::where('is_active', true)
             ->orderBy('display_order')

@@ -112,9 +112,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
         Route::post('settings/{key}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSingle'])->name('settings.update-single');
 
-        // Environment Settings Management
+        // Environment Settings Management (dev password protected)
         Route::get('env-settings', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'index'])->name('env-settings.index');
         Route::post('env-settings', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'update'])->name('env-settings.update');
+        Route::post('env-settings/verify-password', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'verifyPassword'])->name('env-settings.verify-password');
+        Route::post('env-settings/send-otp', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'sendOtp'])->name('env-settings.send-otp');
+        Route::post('env-settings/verify-otp', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'verifyOtp'])->name('env-settings.verify-otp');
+        Route::post('env-settings/lock', [\App\Http\Controllers\Admin\EnvSettingsController::class, 'lock'])->name('env-settings.lock');
 
         // Subscribers
         Route::get('subscribers', [\App\Http\Controllers\Admin\SubscribersController::class, 'index'])->name('subscribers.index');

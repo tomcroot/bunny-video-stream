@@ -3,17 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendOtpSmsJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 
 class EnvSettingsController extends Controller
 {
     /**
-     * Display environment settings
+     * Display environment settings (requires dev password verification)
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Check if already verified in this session
+        if (! session('dev_verified')) {
+            return Inertia::render('Admin/EnvSettingsLocked', [
+                'devPhone' => $this->getMaskedDevPhone(),
+            ]);
+        }
+
         $envSettings = $this->parseEnvFile();
         $envExample = $this->parseEnvExampleFile();
 
@@ -21,6 +30,99 @@ class EnvSettingsController extends Controller
             'envSettings' => $envSettings,
             'envStructure' => $envExample,
         ]);
+    }
+
+    /**
+     * Verify dev password to access env settings
+     */
+    public function verifyPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string',
+        ]);
+
+        $devPassword = config('app.dev_password', env('DEV_PASSWORD', 'iamCr00t$'));
+
+        if ($request->password === $devPassword) {
+            session(['dev_verified' => true]);
+
+            return redirect()->route('admin.env-settings.index')
+                ->with('success', 'Access granted');
+        }
+
+        return back()->withErrors(['password' => 'Invalid developer password']);
+    }
+
+    /**
+     * Send OTP to developer phone
+     */
+    public function sendOtp(Request $request)
+    {
+        $devPhone = env('DEV_PHONE', '+233544515261');
+
+        // Rate limit: 3 OTPs per 15 minutes
+        $cacheKey = 'dev-otp-limit:'.$request->ip();
+        $attempts = Cache::get($cacheKey, 0);
+
+        if ($attempts >= 3) {
+            return back()->withErrors(['otp' => 'Too many OTP requests. Try again later.']);
+        }
+
+        $code = random_int(100000, 999999);
+        Cache::put('dev-otp:'.$request->ip(), $code, now()->addMinutes(10));
+        Cache::put($cacheKey, $attempts + 1, now()->addMinutes(15));
+
+        // Send OTP via SMS
+        $message = "Your developer access code: {$code}. Valid for 10 minutes.";
+        SendOtpSmsJob::dispatch($devPhone, $message);
+
+        return back()->with('success', 'OTP sent to developer phone');
+    }
+
+    /**
+     * Verify OTP for dev access
+     */
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|string|size:6',
+        ]);
+
+        $cachedOtp = Cache::get('dev-otp:'.$request->ip());
+
+        if (! $cachedOtp || (string) $cachedOtp !== (string) $request->otp) {
+            return back()->withErrors(['otp' => 'Invalid or expired OTP']);
+        }
+
+        Cache::forget('dev-otp:'.$request->ip());
+        session(['dev_verified' => true]);
+
+        return redirect()->route('admin.env-settings.index')
+            ->with('success', 'Access granted via OTP');
+    }
+
+    /**
+     * Lock env settings (clear session verification)
+     */
+    public function lock(Request $request)
+    {
+        session()->forget('dev_verified');
+
+        return redirect()->route('admin.settings.index')
+            ->with('success', 'Environment settings locked');
+    }
+
+    /**
+     * Get masked developer phone for display
+     */
+    private function getMaskedDevPhone(): string
+    {
+        $phone = env('DEV_PHONE', '+233544515261');
+        if (strlen($phone) < 8) {
+            return '****';
+        }
+
+        return substr($phone, 0, 4).'****'.substr($phone, -4);
     }
 
     /**
