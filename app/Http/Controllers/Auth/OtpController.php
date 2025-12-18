@@ -97,11 +97,11 @@ class OtpController extends Controller
 
         // Dispatch SMS job (non-blocking)
         $smsMessage = "Your Promise Land Films verification code: {$code}";
-        SendOtpSmsJob::dispatch($phone, $smsMessage);
+        SendOtpSmsJob::dispatch($phone, $smsMessage)->onQueue('otp');
 
         // Dispatch email job if email provided (non-blocking)
         if ($validated['email']) {
-            SendOtpEmailJob::dispatch($validated['email'], $validated['name'], (string) $code);
+            SendOtpEmailJob::dispatch($validated['email'], $validated['name'], (string) $code)->onQueue('otp');
         }
 
         RateLimiter::hit($limitKey, 900);
@@ -146,7 +146,7 @@ class OtpController extends Controller
 
         // Dispatch SMS job (non-blocking)
         $message = "Your Promise Films password reset code: {$code}";
-        SendOtpSmsJob::dispatch($phone, $message);
+        SendOtpSmsJob::dispatch($phone, $message)->onQueue('otp');
 
         RateLimiter::hit($limitKey, 900);
 
@@ -203,7 +203,7 @@ class OtpController extends Controller
             ]);
 
             // Dispatch welcome email job (non-blocking)
-            SendWelcomeEmailJob::dispatch($user->id);
+            SendWelcomeEmailJob::dispatch($user->id)->onQueue('emails');
 
             // Send email verification link after successful SMS OTP verification (already queued via notification)
             try {

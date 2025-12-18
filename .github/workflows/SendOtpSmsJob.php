@@ -14,8 +14,6 @@ class SendOtpSmsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    // ...existing code...
-
     /**
      * The number of times the job may be attempted.
      */

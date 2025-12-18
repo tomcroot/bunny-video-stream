@@ -15,10 +15,7 @@ class SendWelcomeEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * The queue this job should be dispatched to.
-     */
-    public string $queue = 'emails';
+    // ...existing code...
 
     /**
      * The number of times the job may be attempted.

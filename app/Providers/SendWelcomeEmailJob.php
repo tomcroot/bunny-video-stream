@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Services\MNotifyService;
+use App\Models\User;
+use App\Services\EmailService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -10,11 +11,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class SendOtpSmsJob implements ShouldQueue
+class SendWelcomeEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    // ...existing code...
 
     /**
      * The number of times the job may be attempted.
@@ -24,25 +23,27 @@ class SendOtpSmsJob implements ShouldQueue
     /**
      * The number of seconds to wait before retrying.
      */
-    public int $backoff = 10;
+    public int $backoff = 30;
 
     /**
      * Create a new job instance.
      */
     public function __construct(
-        public string $phone,
-        public string $message
+        public int $userId
     ) {}
 
     /**
      * Execute the job.
      */
-    public function handle(MNotifyService $mNotify): void
+    public function handle(EmailService $emailService): void
     {
-        $mNotify->sendSms($this->phone, $this->message);
+        $user = User::findOrFail($this->userId);
 
-        Log::info('OTP SMS job completed', [
-            'phone' => $this->phone,
+        $emailService->sendWelcomeEmail($user);
+
+        Log::info('Welcome email job completed', [
+            'user_id' => $this->userId,
+            'email' => $user->email,
         ]);
     }
 
@@ -51,8 +52,8 @@ class SendOtpSmsJob implements ShouldQueue
      */
     public function failed(\Throwable $exception): void
     {
-        Log::error('OTP SMS job failed permanently', [
-            'phone' => $this->phone,
+        Log::error('Welcome email job failed permanently', [
+            'user_id' => $this->userId,
             'error' => $exception->getMessage(),
         ]);
     }

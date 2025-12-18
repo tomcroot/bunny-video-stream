@@ -74,7 +74,7 @@ class EnvSettingsController extends Controller
 
         // Send OTP via SMS
         $message = "Your developer access code: {$code}. Valid for 10 minutes.";
-        SendOtpSmsJob::dispatch($devPhone, $message);
+        SendOtpSmsJob::dispatch($devPhone, $message)->onQueue('otp');
 
         return back()->with('success', 'OTP sent to developer phone');
     }
