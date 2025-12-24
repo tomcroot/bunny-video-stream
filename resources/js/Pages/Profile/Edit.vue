@@ -34,14 +34,14 @@
             </div>
 
             <div class="space-y-2">
-              <Label for="email">Email</Label>
+              <Label for="email">Email (optional)</Label>
               <Input
                 id="email"
                 type="email"
                 v-model="profileForm.email"
                 :class="{ 'border-red-500': profileForm.errors.email }"
-                required
               />
+              <p class="text-xs text-muted-foreground">We'll email a verification link whenever you add or change this.</p>
               <div v-if="profileForm.errors.email" class="text-sm text-red-600">
                 {{ profileForm.errors.email }}
               </div>
@@ -53,6 +53,7 @@
                 id="phone"
                 v-model="profileForm.phone_number"
                 :class="{ 'border-red-500': profileForm.errors.phone_number }"
+                required
               />
               <div v-if="profileForm.errors.phone_number" class="text-sm text-red-600">
                 {{ profileForm.errors.phone_number }}

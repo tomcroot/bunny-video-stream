@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\PhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
@@ -21,15 +24,45 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
-            'phone_number' => 'nullable|string|max:20',
+        $payload = $request->all();
+        $payload['email'] = isset($payload['email']) && $payload['email'] !== ''
+            ? strtolower($payload['email'])
+            : null;
+        $payload['phone_number'] = PhoneNumber::normalize($payload['phone_number'] ?? null);
+
+        $validated = Validator::make($payload, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'phone_number' => ['required', 'string', 'max:32', Rule::unique('users', 'phone_number')->ignore($user->id)],
+        ])->validate();
+
+        $emailInput = $validated['email'] ?? null;
+        $email = $emailInput ?: PhoneNumber::placeholderEmail($validated['phone_number']);
+        $emailChanged = $email !== $user->email;
+
+        $user->forceFill([
+            'name' => $validated['name'],
+            'email' => $email,
+            'phone_number' => $validated['phone_number'],
         ]);
 
-        $user->update($validated);
+        if ($emailChanged) {
+            $user->email_verified_at = null;
+        }
 
-        return back()->with('success', 'Profile updated successfully!');
+        $user->save();
+
+        if ($emailChanged && $emailInput) {
+            $user->sendEmailVerificationNotification();
+        }
+
+        $message = 'Profile updated successfully!';
+
+        if ($emailChanged && $emailInput) {
+            $message .= ' Please check your inbox to verify your new email address.';
+        }
+
+        return back()->with('success', $message);
     }
 
     public function updatePassword(Request $request)

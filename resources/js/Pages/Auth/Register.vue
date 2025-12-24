@@ -56,6 +56,7 @@
               type="tel"
               placeholder="0244 123 456"
               class="w-full px-4 py-3 rounded-md bg-background border border-input"
+              required
             />
             <div v-if="registerForm.errors.phone_number" class="text-destructive text-sm mt-1">
               {{ registerForm.errors.phone_number }}
@@ -70,6 +71,7 @@
               placeholder="you@example.com"
               class="w-full px-4 py-3 rounded-md bg-background border border-input"
             />
+            <p class="text-xs text-muted-foreground mt-1">Provide an email to receive a verification link immediately.</p>
             <div v-if="registerForm.errors.email" class="text-destructive text-sm mt-1">
               {{ registerForm.errors.email }}
             </div>

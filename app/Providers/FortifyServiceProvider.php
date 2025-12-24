@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Support\PhoneNumber;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -44,15 +45,8 @@ class FortifyServiceProvider extends ServiceProvider
                 // Email login
                 $user = \App\Models\User::where('email', $input)->first();
             } else {
-                // Phone login - normalize phone number
-                $phone = preg_replace('/[^0-9+]/', '', $input);
-                if (Str::startsWith($phone, '0')) {
-                    $phone = preg_replace('/^0+/', '', $phone);
-                    $phone = '+233'.$phone;
-                } elseif (preg_match('/^233[0-9]+$/', $phone)) {
-                    $phone = '+'.$phone;
-                }
-                $user = \App\Models\User::where('phone_number', $phone)->first();
+                $phone = PhoneNumber::normalize($input);
+                $user = $phone ? \App\Models\User::where('phone_number', $phone)->first() : null;
             }
 
             if ($user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {

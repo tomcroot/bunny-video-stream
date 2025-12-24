@@ -75,7 +75,15 @@ Route::middleware(['auth'])->group(function () {
     })->middleware(['signed'])->name('verification.verify');
 
     Route::post('/email/verification-notification', function (Illuminate\Http\Request $request) {
-        $request->user()->sendEmailVerificationNotification();
+        $user = $request->user();
+
+        if (! $user->email) {
+            return back()->withErrors([
+                'email' => 'Add an email address to your profile before requesting a verification link.',
+            ]);
+        }
+
+        $user->sendEmailVerificationNotification();
 
         return back()->with('message', 'Verification link sent!');
     })->middleware(['throttle:6,1'])->name('verification.send');
@@ -180,7 +188,7 @@ Route::get('/watch', [\App\Http\Controllers\WatchController::class, 'index'])
 Route::get('/{id}', function ($id) {
     // Only match UUID or numeric patterns
     if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$|^\d+$/i', $id)) {
-        return redirect('/watch');
+        return redirect()->route('watch');
     }
     abort(404);
 })->where('id', '[0-9a-f\-]+|[0-9]+');

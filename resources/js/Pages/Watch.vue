@@ -285,6 +285,26 @@
       <div class="w-1/3 h-full"></div>
       <div class="w-1/3 h-full pointer-events-auto" @dblclick.stop="skip(10)"></div>
     </div>
+
+    <!-- SECURITY OVERLAY -->
+    <Transition name="fade">
+      <div
+        v-if="securityState.active"
+        class="absolute inset-0 z-50 bg-black/95 flex flex-col items-center justify-center text-center text-white px-6"
+      >
+        <svg class="w-16 h-16 mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M12 3l9 6v6l-9 6-9-6V9l9-6z" />
+        </svg>
+        <h2 class="text-2xl font-semibold mb-2">Screen capture blocked</h2>
+        <p class="text-sm md:text-base text-white/80 max-w-xl mb-6">{{ securityState.reason }}</p>
+        <button
+          class="px-6 py-3 bg-red-600 hover:bg-red-500 rounded-md font-semibold transition-colors"
+          @click="dismissSecurityAlert"
+        >
+          Resume playback
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -332,12 +352,15 @@ const showCenterPlay = ref(true)
 const hoverTime = ref(null)
 const hoverPercent = ref(0)
 const skipIndicator = ref(null)
+const securityState = ref({ active: false, reason: '' })
 
 // Internal
 let controlsTimeout = null
 let hls = null
 let progressInterval = null
 let isDragging = false
+const securityCleanups = []
+let restoreDisplayMedia = null
 
 // Computed
 const progressPercent = computed(() => duration.value > 0 ? (currentTime.value / duration.value) * 100 : 0)
@@ -595,9 +618,131 @@ async function loadProgress() {
   }
 }
 
+// Screen capture / recording protection
+function triggerSecurityAlert(reason = 'Screen capture attempts are blocked while streaming.') {
+  if (player.value && !player.value.paused) {
+    try {
+      player.value.pause()
+    } catch (e) {
+      console.debug('Unable to pause player during security alert', e)
+    }
+  }
+
+  securityState.value = {
+    active: true,
+    reason,
+  }
+
+  showCenterPlay.value = true
+  showControls()
+}
+
+function dismissSecurityAlert() {
+  securityState.value = {
+    active: false,
+    reason: '',
+  }
+  showControls()
+}
+
+function registerSecurityGuards() {
+  const handleVisibility = () => {
+    if (document.visibilityState === 'hidden') {
+      saveProgress()
+      triggerSecurityAlert('Playback paused because the tab was hidden. Screen recording and screenshots are disabled on this page.')
+    }
+  }
+
+  const handleWindowBlur = () => {
+    if (document.visibilityState === 'hidden') return
+    if (isPlaying.value) {
+      triggerSecurityAlert('Playback paused because the window lost focus. Screen recording is disabled while streaming.')
+    }
+  }
+
+  const handleBeforePrint = (event) => {
+    event?.preventDefault?.()
+    triggerSecurityAlert('Printing, PDF export, and virtual screen capture are disabled while the film is playing.')
+  }
+
+  document.addEventListener('visibilitychange', handleVisibility)
+  window.addEventListener('blur', handleWindowBlur)
+  window.addEventListener('beforeprint', handleBeforePrint)
+
+  securityCleanups.push(() => document.removeEventListener('visibilitychange', handleVisibility))
+  securityCleanups.push(() => window.removeEventListener('blur', handleWindowBlur))
+  securityCleanups.push(() => window.removeEventListener('beforeprint', handleBeforePrint))
+
+  if (player.value) {
+    const handlePictureInPicture = () => {
+      triggerSecurityAlert('Picture-in-picture mode is disabled to help prevent screen recording.')
+      if (document.pictureInPictureElement) {
+        document.exitPictureInPicture().catch(() => {})
+      }
+    }
+
+    player.value.addEventListener('enterpictureinpicture', handlePictureInPicture)
+    securityCleanups.push(() => player.value?.removeEventListener('enterpictureinpicture', handlePictureInPicture))
+
+    if ('onwebkitpresentationmodechanged' in player.value) {
+      const handlePresentationMode = () => {
+        if (player.value?.webkitPresentationMode === 'picture-in-picture') {
+          try {
+            player.value.webkitSetPresentationMode('inline')
+          } catch (e) {
+            console.debug('Failed to reset presentation mode', e)
+          }
+          triggerSecurityAlert('Picture-in-picture mode is disabled on this device to protect the stream.')
+        }
+      }
+
+      player.value.addEventListener('webkitpresentationmodechanged', handlePresentationMode)
+      securityCleanups.push(() => player.value?.removeEventListener('webkitpresentationmodechanged', handlePresentationMode))
+    }
+  }
+}
+
+function blockDisplayMedia() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) return
+  if (navigator.mediaDevices.__plfDisplayMediaLocked) return
+
+  const originalGetDisplayMedia = navigator.mediaDevices.getDisplayMedia.bind(navigator.mediaDevices)
+  const blocker = async () => {
+    triggerSecurityAlert('Screen recording permissions are disabled while watching this film.')
+    throw new DOMException('Screen recording blocked', 'NotAllowedError')
+  }
+
+  try {
+    navigator.mediaDevices.getDisplayMedia = blocker
+    navigator.mediaDevices.__plfDisplayMediaLocked = true
+  } catch (error) {
+    console.debug('Unable to override getDisplayMedia', error)
+    return
+  }
+
+  restoreDisplayMedia = () => {
+    navigator.mediaDevices.getDisplayMedia = originalGetDisplayMedia
+    delete navigator.mediaDevices.__plfDisplayMediaLocked
+    restoreDisplayMedia = null
+  }
+}
+
 // Keyboard Shortcuts
 function handleKeydown(e) {
   if (!player.value) return
+
+  const isScreenshotCombo =
+    e.key === 'PrintScreen' ||
+    (e.metaKey && e.shiftKey && ['3', '4', '5'].includes(e.key)) ||
+    (e.ctrlKey && e.shiftKey && e.key === 'S')
+
+  const isPrintCombo = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'p'
+
+  if (isScreenshotCombo || isPrintCombo) {
+    e.preventDefault()
+    triggerSecurityAlert('Screenshot, recording, and print shortcuts are disabled while streaming.')
+    return
+  }
 
   const actions = {
     ' ': () => togglePlayPause(),
@@ -696,9 +841,8 @@ onMounted(() => {
 
   // Event listeners
   window.addEventListener('keydown', handleKeydown)
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') saveProgress()
-  })
+  registerSecurityGuards()
+  blockDisplayMedia()
   window.addEventListener('beforeunload', () => saveProgress())
   document.addEventListener('fullscreenchange', () => {
     isFullscreen.value = !!document.fullscreenElement
@@ -710,6 +854,11 @@ onUnmounted(() => {
   if (progressInterval) clearInterval(progressInterval)
   if (controlsTimeout) clearTimeout(controlsTimeout)
   window.removeEventListener('keydown', handleKeydown)
+  securityCleanups.forEach((cleanup) => cleanup?.())
+  securityCleanups.length = 0
+  if (restoreDisplayMedia) {
+    restoreDisplayMedia()
+  }
   saveProgress()
 })
 </script>

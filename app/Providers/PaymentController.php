@@ -8,6 +8,7 @@ use App\Models\ReferralUsage;
 use App\Models\Subscription;
 use App\Services\PaystackService;
 use App\Services\ReferralService;
+use App\Support\PhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -92,8 +93,8 @@ class PaymentController extends Controller
                 $finalAmount = (int) ($finalAmount * (1 - $discountPercentage / 100));
             }
 
-            // Use default email if not provided
-            $email = $validated['email'] ?? $user->phone_number.'@acrazydayinaccra.com';
+            // Use deterministic fallback email when none is provided
+            $email = $validated['email'] ?? PhoneNumber::placeholderEmail($user->phone_number);
 
             $reference = $paystack->generateReference();
 
@@ -219,7 +220,7 @@ class PaymentController extends Controller
                     ]);
                 }
 
-                return redirect('/watch')->with('status', 'Payment successful! Enjoy your movie.');
+                return redirect()->route('watch')->with('status', 'Payment successful! Enjoy your movie.');
             }
         }
 

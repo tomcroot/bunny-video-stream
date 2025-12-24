@@ -5,33 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    @php
+        $appUrl = rtrim(config('app.url') ?: 'https://acrazydayinaccra.com', '/');
+        $ogTitle = 'A Crazy Day in Accra - Official Film';
+        $ogDescription = "Stream the award-winning short film 'A Crazy Day in Accra' now.";
+        $ogImage = $appUrl . '/movie_poster.jpg';
+        $twitterDomain = parse_url($appUrl, PHP_URL_HOST) ?? 'acrazydayinaccra.com';
+    @endphp
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Stream A Crazy Day in Accra - A thrilling short film featuring compelling storytelling and outstanding cinematography.">
+    <!-- HTML Meta Tags -->
+    <title>{{ $ogTitle }}</title>
+    <meta name="description" content="{{ $ogDescription }}">
     <meta name="keywords" content="A Crazy Day in Accra, short film, streaming, promise land films, movie">
     <meta name="author" content="Promise Land Films">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="canonical" href="{{ config('app.url') }}">
+    <link rel="canonical" href="{{ $appUrl }}">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="{{ $appUrl }}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ config('app.url') }}">
-    <meta property="og:title" content="A Crazy Day in Accra - Official Film">
-    <meta property="og:description" content="Stream the award-winning short film 'A Crazy Day in Accra' now.">
-    <meta property="og:image" content="{{ config('app.url') }}/og-image.jpg">
+    <meta property="og:title" content="{{ $ogTitle }}">
+    <meta property="og:description" content="{{ $ogDescription }}">
+    <meta property="og:image" content="{{ $ogImage }}">
     <meta property="og:site_name" content="Promise Land Films">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ config('app.url') }}">
-    <meta property="twitter:title" content="A Crazy Day in Accra - Official Film">
-    <meta property="twitter:description" content="Stream the award-winning short film 'A Crazy Day in Accra' now.">
-    <meta property="twitter:image" content="{{ config('app.url') }}/og-image.jpg">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="{{ $twitterDomain }}">
+    <meta property="twitter:url" content="{{ $appUrl }}">
+    <meta name="twitter:title" content="{{ $ogTitle }}">
+    <meta name="twitter:description" content="{{ $ogDescription }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
 
     <!-- LinkedIn -->
-    <meta property="linkedin:title" content="A Crazy Day in Accra">
-    <meta property="linkedin:description" content="Stream the award-winning short film 'A Crazy Day in Accra' on Promise Land Films.">
+    <meta property="linkedin:title" content="{{ $ogTitle }}">
+    <meta property="linkedin:description" content="{{ $ogDescription }}">
 
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
@@ -41,8 +49,8 @@
         'name' => 'A Crazy Day in Accra',
         'description' => 'A thrilling short film set in Accra with compelling storytelling and outstanding cinematography.',
         'genre' => ['Thriller', 'Drama'],
-        'image' => config('app.url') . '/og-image.jpg',
-        'url' => config('app.url'),
+        'image' => $ogImage,
+        'url' => $appUrl,
         'author' => [
             '@type' => 'Organization',
             'name' => 'Promise Land Films'

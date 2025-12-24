@@ -6294,13 +6294,13 @@ const _sfc_main$H = {
       } else {
         _push(`<!---->`);
       }
-      _push(`</div><div><label class="block text-sm font-medium mb-2">Phone Number</label><input${ssrRenderAttr("value", unref(registerForm).phone_number)} type="tel" placeholder="0244 123 456" class="w-full px-4 py-3 rounded-md bg-background border border-input">`);
+      _push(`</div><div><label class="block text-sm font-medium mb-2">Phone Number</label><input${ssrRenderAttr("value", unref(registerForm).phone_number)} type="tel" placeholder="0244 123 456" class="w-full px-4 py-3 rounded-md bg-background border border-input" required>`);
       if (unref(registerForm).errors.phone_number) {
         _push(`<div class="text-destructive text-sm mt-1">${ssrInterpolate(unref(registerForm).errors.phone_number)}</div>`);
       } else {
         _push(`<!---->`);
       }
-      _push(`</div><div><label class="block text-sm font-medium mb-2">Email (optional)</label><input${ssrRenderAttr("value", unref(registerForm).email)} type="email" placeholder="you@example.com" class="w-full px-4 py-3 rounded-md bg-background border border-input">`);
+      _push(`</div><div><label class="block text-sm font-medium mb-2">Email (optional)</label><input${ssrRenderAttr("value", unref(registerForm).email)} type="email" placeholder="you@example.com" class="w-full px-4 py-3 rounded-md bg-background border border-input"><p class="text-xs text-muted-foreground mt-1">Provide an email to receive a verification link immediately.</p>`);
       if (unref(registerForm).errors.email) {
         _push(`<div class="text-destructive text-sm mt-1">${ssrInterpolate(unref(registerForm).errors.email)}</div>`);
       } else {
@@ -10479,10 +10479,10 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                   _push3(ssrRenderComponent(unref(_sfc_main$x), { for: "email" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(`Email`);
+                        _push4(`Email (optional)`);
                       } else {
                         return [
-                          createTextVNode("Email")
+                          createTextVNode("Email (optional)")
                         ];
                       }
                     }),
@@ -10493,9 +10493,9 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                     type: "email",
                     modelValue: unref(profileForm).email,
                     "onUpdate:modelValue": ($event) => unref(profileForm).email = $event,
-                    class: { "border-red-500": unref(profileForm).errors.email },
-                    required: ""
+                    class: { "border-red-500": unref(profileForm).errors.email }
                   }, null, _parent3, _scopeId2));
+                  _push3(`<p class="text-xs text-muted-foreground"${_scopeId2}>We&#39;ll email a verification link whenever you add or change this.</p>`);
                   if (unref(profileForm).errors.email) {
                     _push3(`<div class="text-sm text-red-600"${_scopeId2}>${ssrInterpolate(unref(profileForm).errors.email)}</div>`);
                   } else {
@@ -10518,7 +10518,8 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                     id: "phone",
                     modelValue: unref(profileForm).phone_number,
                     "onUpdate:modelValue": ($event) => unref(profileForm).phone_number = $event,
-                    class: { "border-red-500": unref(profileForm).errors.phone_number }
+                    class: { "border-red-500": unref(profileForm).errors.phone_number },
+                    required: ""
                   }, null, _parent3, _scopeId2));
                   if (unref(profileForm).errors.phone_number) {
                     _push3(`<div class="text-sm text-red-600"${_scopeId2}>${ssrInterpolate(unref(profileForm).errors.phone_number)}</div>`);
@@ -10570,7 +10571,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                       createVNode("div", { class: "space-y-2" }, [
                         createVNode(unref(_sfc_main$x), { for: "email" }, {
                           default: withCtx(() => [
-                            createTextVNode("Email")
+                            createTextVNode("Email (optional)")
                           ]),
                           _: 1
                         }),
@@ -10579,9 +10580,9 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                           type: "email",
                           modelValue: unref(profileForm).email,
                           "onUpdate:modelValue": ($event) => unref(profileForm).email = $event,
-                          class: { "border-red-500": unref(profileForm).errors.email },
-                          required: ""
+                          class: { "border-red-500": unref(profileForm).errors.email }
                         }, null, 8, ["modelValue", "onUpdate:modelValue", "class"]),
+                        createVNode("p", { class: "text-xs text-muted-foreground" }, "We'll email a verification link whenever you add or change this."),
                         unref(profileForm).errors.email ? (openBlock(), createBlock("div", {
                           key: 0,
                           class: "text-sm text-red-600"
@@ -10598,7 +10599,8 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                           id: "phone",
                           modelValue: unref(profileForm).phone_number,
                           "onUpdate:modelValue": ($event) => unref(profileForm).phone_number = $event,
-                          class: { "border-red-500": unref(profileForm).errors.phone_number }
+                          class: { "border-red-500": unref(profileForm).errors.phone_number },
+                          required: ""
                         }, null, 8, ["modelValue", "onUpdate:modelValue", "class"]),
                         unref(profileForm).errors.phone_number ? (openBlock(), createBlock("div", {
                           key: 0,
@@ -10667,7 +10669,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                     createVNode("div", { class: "space-y-2" }, [
                       createVNode(unref(_sfc_main$x), { for: "email" }, {
                         default: withCtx(() => [
-                          createTextVNode("Email")
+                          createTextVNode("Email (optional)")
                         ]),
                         _: 1
                       }),
@@ -10676,9 +10678,9 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                         type: "email",
                         modelValue: unref(profileForm).email,
                         "onUpdate:modelValue": ($event) => unref(profileForm).email = $event,
-                        class: { "border-red-500": unref(profileForm).errors.email },
-                        required: ""
+                        class: { "border-red-500": unref(profileForm).errors.email }
                       }, null, 8, ["modelValue", "onUpdate:modelValue", "class"]),
+                      createVNode("p", { class: "text-xs text-muted-foreground" }, "We'll email a verification link whenever you add or change this."),
                       unref(profileForm).errors.email ? (openBlock(), createBlock("div", {
                         key: 0,
                         class: "text-sm text-red-600"
@@ -10695,7 +10697,8 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$A }, {
                         id: "phone",
                         modelValue: unref(profileForm).phone_number,
                         "onUpdate:modelValue": ($event) => unref(profileForm).phone_number = $event,
-                        class: { "border-red-500": unref(profileForm).errors.phone_number }
+                        class: { "border-red-500": unref(profileForm).errors.phone_number },
+                        required: ""
                       }, null, 8, ["modelValue", "onUpdate:modelValue", "class"]),
                       unref(profileForm).errors.phone_number ? (openBlock(), createBlock("div", {
                         key: 0,
@@ -11849,9 +11852,12 @@ const _sfc_main = /* @__PURE__ */ Object.assign({ layout: null }, {
     const hoverTime = ref(null);
     const hoverPercent = ref(0);
     const skipIndicator = ref(null);
+    const securityState = ref({ active: false, reason: "" });
     let controlsTimeout = null;
     let hls = null;
     let progressInterval = null;
+    const securityCleanups = [];
+    let restoreDisplayMedia = null;
     const progressPercent = computed(() => duration.value > 0 ? currentTime.value / duration.value * 100 : 0);
     const bufferedPercent = computed(() => duration.value > 0 ? buffered.value / duration.value * 100 : 0);
     const showMovieInfo = computed(() => controlsVisible.value && !isPlaying.value);
@@ -11955,8 +11961,100 @@ const _sfc_main = /* @__PURE__ */ Object.assign({ layout: null }, {
         return 0;
       }
     }
+    function triggerSecurityAlert(reason = "Screen capture attempts are blocked while streaming.") {
+      if (player.value && !player.value.paused) {
+        try {
+          player.value.pause();
+        } catch (e2) {
+          console.debug("Unable to pause player during security alert", e2);
+        }
+      }
+      securityState.value = {
+        active: true,
+        reason
+      };
+      showCenterPlay.value = true;
+      showControls();
+    }
+    function registerSecurityGuards() {
+      const handleVisibility = () => {
+        if (document.visibilityState === "hidden") {
+          saveProgress();
+          triggerSecurityAlert("Playback paused because the tab was hidden. Screen recording and screenshots are disabled on this page.");
+        }
+      };
+      const handleWindowBlur = () => {
+        if (document.visibilityState === "hidden") return;
+        if (isPlaying.value) {
+          triggerSecurityAlert("Playback paused because the window lost focus. Screen recording is disabled while streaming.");
+        }
+      };
+      const handleBeforePrint = (event) => {
+        event?.preventDefault?.();
+        triggerSecurityAlert("Printing, PDF export, and virtual screen capture are disabled while the film is playing.");
+      };
+      document.addEventListener("visibilitychange", handleVisibility);
+      window.addEventListener("blur", handleWindowBlur);
+      window.addEventListener("beforeprint", handleBeforePrint);
+      securityCleanups.push(() => document.removeEventListener("visibilitychange", handleVisibility));
+      securityCleanups.push(() => window.removeEventListener("blur", handleWindowBlur));
+      securityCleanups.push(() => window.removeEventListener("beforeprint", handleBeforePrint));
+      if (player.value) {
+        const handlePictureInPicture = () => {
+          triggerSecurityAlert("Picture-in-picture mode is disabled to help prevent screen recording.");
+          if (document.pictureInPictureElement) {
+            document.exitPictureInPicture().catch(() => {
+            });
+          }
+        };
+        player.value.addEventListener("enterpictureinpicture", handlePictureInPicture);
+        securityCleanups.push(() => player.value?.removeEventListener("enterpictureinpicture", handlePictureInPicture));
+        if ("onwebkitpresentationmodechanged" in player.value) {
+          const handlePresentationMode = () => {
+            if (player.value?.webkitPresentationMode === "picture-in-picture") {
+              try {
+                player.value.webkitSetPresentationMode("inline");
+              } catch (e2) {
+                console.debug("Failed to reset presentation mode", e2);
+              }
+              triggerSecurityAlert("Picture-in-picture mode is disabled on this device to protect the stream.");
+            }
+          };
+          player.value.addEventListener("webkitpresentationmodechanged", handlePresentationMode);
+          securityCleanups.push(() => player.value?.removeEventListener("webkitpresentationmodechanged", handlePresentationMode));
+        }
+      }
+    }
+    function blockDisplayMedia() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) return;
+      if (navigator.mediaDevices.__plfDisplayMediaLocked) return;
+      const originalGetDisplayMedia = navigator.mediaDevices.getDisplayMedia.bind(navigator.mediaDevices);
+      const blocker = async () => {
+        triggerSecurityAlert("Screen recording permissions are disabled while watching this film.");
+        throw new DOMException("Screen recording blocked", "NotAllowedError");
+      };
+      try {
+        navigator.mediaDevices.getDisplayMedia = blocker;
+        navigator.mediaDevices.__plfDisplayMediaLocked = true;
+      } catch (error) {
+        console.debug("Unable to override getDisplayMedia", error);
+        return;
+      }
+      restoreDisplayMedia = () => {
+        navigator.mediaDevices.getDisplayMedia = originalGetDisplayMedia;
+        delete navigator.mediaDevices.__plfDisplayMediaLocked;
+        restoreDisplayMedia = null;
+      };
+    }
     function handleKeydown(e2) {
       if (!player.value) return;
+      const isScreenshotCombo = e2.key === "PrintScreen" || e2.metaKey && e2.shiftKey && ["3", "4", "5"].includes(e2.key) || e2.ctrlKey && e2.shiftKey && e2.key === "S";
+      const isPrintCombo = (e2.metaKey || e2.ctrlKey) && e2.key.toLowerCase() === "p";
+      if (isScreenshotCombo || isPrintCombo) {
+        e2.preventDefault();
+        triggerSecurityAlert("Screenshot, recording, and print shortcuts are disabled while streaming.");
+        return;
+      }
       const actions = {
         " ": () => togglePlayPause(),
         "k": () => togglePlayPause(),
@@ -12043,9 +12141,8 @@ const _sfc_main = /* @__PURE__ */ Object.assign({ layout: null }, {
         if (isPlaying.value && true) saveProgress();
       }, 1e4);
       window.addEventListener("keydown", handleKeydown);
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "hidden") saveProgress();
-      });
+      registerSecurityGuards();
+      blockDisplayMedia();
       window.addEventListener("beforeunload", () => saveProgress());
       document.addEventListener("fullscreenchange", () => {
         isFullscreen.value = !!document.fullscreenElement;
@@ -12056,6 +12153,11 @@ const _sfc_main = /* @__PURE__ */ Object.assign({ layout: null }, {
       if (progressInterval) clearInterval(progressInterval);
       if (controlsTimeout) clearTimeout(controlsTimeout);
       window.removeEventListener("keydown", handleKeydown);
+      securityCleanups.forEach((cleanup) => cleanup?.());
+      securityCleanups.length = 0;
+      if (restoreDisplayMedia) {
+        restoreDisplayMedia();
+      }
       saveProgress();
     });
     return (_ctx, _push, _parent, _attrs) => {
@@ -12063,47 +12165,47 @@ const _sfc_main = /* @__PURE__ */ Object.assign({ layout: null }, {
         ref_key: "playerContainer",
         ref: playerContainer,
         class: ["relative w-full h-screen bg-black overflow-hidden", { "cursor-none": !controlsVisible.value && isPlaying.value }]
-      }, _attrs))} data-v-ac1f9c5b><video class="w-full h-full object-contain" playsinline preload="auto" data-v-ac1f9c5b></video><div class="absolute inset-0 pointer-events-none" data-v-ac1f9c5b><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100" : "opacity-0", "absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500"])}" data-v-ac1f9c5b></div><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100" : "opacity-0", "absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-black via-black/80 to-transparent transition-opacity duration-500"])}" data-v-ac1f9c5b></div></div><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8 pointer-events-none", "absolute top-0 left-0 right-0 px-4 md:px-8 py-4 flex items-center justify-between z-40 transition-all duration-500"])}" data-v-ac1f9c5b><button class="flex items-center gap-3 text-white hover:text-gray-300 transition-colors group" data-v-ac1f9c5b><svg class="w-8 h-8 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" data-v-ac1f9c5b></path></svg><span class="hidden md:inline font-medium" data-v-ac1f9c5b>Back to Browse</span></button><div class="text-xs text-white/20 tracking-[0.2em] select-none font-light" data-v-ac1f9c5b> PROMISE LAND FILMS </div></div><div class="${ssrRenderClass([showMovieInfo.value ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12 pointer-events-none", "absolute bottom-36 md:bottom-40 left-4 md:left-8 z-30 max-w-md md:max-w-lg transition-all duration-700 ease-out"])}" data-v-ac1f9c5b><h1 class="text-2xl md:text-4xl font-bold mb-2 md:mb-3 drop-shadow-2xl leading-tight" data-v-ac1f9c5b>${ssrInterpolate(__props.videoTitle)}</h1><div class="flex flex-wrap items-center gap-2 md:gap-3 text-xs md:text-sm text-gray-300 mb-2 md:mb-3" data-v-ac1f9c5b><span class="px-2 py-0.5 bg-red-600 text-white text-xs font-bold rounded" data-v-ac1f9c5b>18+</span><span class="text-white/80" data-v-ac1f9c5b>${ssrInterpolate(formattedDuration.value)}</span><span class="hidden md:inline text-white/50" data-v-ac1f9c5b>•</span><span class="hidden md:inline text-white/80" data-v-ac1f9c5b>2024</span><span class="text-green-500 font-semibold" data-v-ac1f9c5b>${ssrInterpolate(videoQuality.value)}</span></div><p class="text-gray-400 text-xs md:text-sm leading-relaxed line-clamp-2 md:line-clamp-3" data-v-ac1f9c5b>${ssrInterpolate(__props.pageContent?.description || "One wild day. One city. Infinite chaos. A fast-paced Accra adventure like never before.")}</p></div><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none", "absolute bottom-0 left-0 right-0 px-4 md:px-8 pb-4 md:pb-6 z-40 transition-all duration-500"])}" data-v-ac1f9c5b><div class="mb-3 md:mb-4 group" data-v-ac1f9c5b><div class="relative h-1 group-hover:h-2 bg-white/20 rounded-full cursor-pointer transition-all duration-200" data-v-ac1f9c5b><div class="absolute h-full bg-white/30 rounded-full transition-all" style="${ssrRenderStyle({ width: bufferedPercent.value + "%" })}" data-v-ac1f9c5b></div><div class="absolute h-full bg-red-600 rounded-full" style="${ssrRenderStyle({ width: progressPercent.value + "%" })}" data-v-ac1f9c5b></div><div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-red-600 rounded-full shadow-lg transform scale-0 group-hover:scale-100 transition-transform duration-200" style="${ssrRenderStyle({ left: `calc(${progressPercent.value}% - 6px)` })}" data-v-ac1f9c5b></div>`);
+      }, _attrs))} data-v-171bb6a0><video class="w-full h-full object-contain" playsinline preload="auto" data-v-171bb6a0></video><div class="absolute inset-0 pointer-events-none" data-v-171bb6a0><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100" : "opacity-0", "absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500"])}" data-v-171bb6a0></div><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100" : "opacity-0", "absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-black via-black/80 to-transparent transition-opacity duration-500"])}" data-v-171bb6a0></div></div><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8 pointer-events-none", "absolute top-0 left-0 right-0 px-4 md:px-8 py-4 flex items-center justify-between z-40 transition-all duration-500"])}" data-v-171bb6a0><button class="flex items-center gap-3 text-white hover:text-gray-300 transition-colors group" data-v-171bb6a0><svg class="w-8 h-8 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" data-v-171bb6a0></path></svg><span class="hidden md:inline font-medium" data-v-171bb6a0>Back to Browse</span></button><div class="text-xs text-white/20 tracking-[0.2em] select-none font-light" data-v-171bb6a0> PROMISE LAND FILMS </div></div><div class="${ssrRenderClass([showMovieInfo.value ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12 pointer-events-none", "absolute bottom-36 md:bottom-40 left-4 md:left-8 z-30 max-w-md md:max-w-lg transition-all duration-700 ease-out"])}" data-v-171bb6a0><h1 class="text-2xl md:text-4xl font-bold mb-2 md:mb-3 drop-shadow-2xl leading-tight" data-v-171bb6a0>${ssrInterpolate(__props.videoTitle)}</h1><div class="flex flex-wrap items-center gap-2 md:gap-3 text-xs md:text-sm text-gray-300 mb-2 md:mb-3" data-v-171bb6a0><span class="px-2 py-0.5 bg-red-600 text-white text-xs font-bold rounded" data-v-171bb6a0>18+</span><span class="text-white/80" data-v-171bb6a0>${ssrInterpolate(formattedDuration.value)}</span><span class="hidden md:inline text-white/50" data-v-171bb6a0>•</span><span class="hidden md:inline text-white/80" data-v-171bb6a0>2024</span><span class="text-green-500 font-semibold" data-v-171bb6a0>${ssrInterpolate(videoQuality.value)}</span></div><p class="text-gray-400 text-xs md:text-sm leading-relaxed line-clamp-2 md:line-clamp-3" data-v-171bb6a0>${ssrInterpolate(__props.pageContent?.description || "One wild day. One city. Infinite chaos. A fast-paced Accra adventure like never before.")}</p></div><div class="${ssrRenderClass([controlsVisible.value ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none", "absolute bottom-0 left-0 right-0 px-4 md:px-8 pb-4 md:pb-6 z-40 transition-all duration-500"])}" data-v-171bb6a0><div class="mb-3 md:mb-4 group" data-v-171bb6a0><div class="relative h-1 group-hover:h-2 bg-white/20 rounded-full cursor-pointer transition-all duration-200" data-v-171bb6a0><div class="absolute h-full bg-white/30 rounded-full transition-all" style="${ssrRenderStyle({ width: bufferedPercent.value + "%" })}" data-v-171bb6a0></div><div class="absolute h-full bg-red-600 rounded-full" style="${ssrRenderStyle({ width: progressPercent.value + "%" })}" data-v-171bb6a0></div><div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-red-600 rounded-full shadow-lg transform scale-0 group-hover:scale-100 transition-transform duration-200" style="${ssrRenderStyle({ left: `calc(${progressPercent.value}% - 6px)` })}" data-v-171bb6a0></div>`);
       if (hoverTime.value !== null) {
-        _push(`<div class="absolute -top-10 px-2 py-1 bg-black/95 text-white text-xs rounded-md transform -translate-x-1/2 shadow-lg" style="${ssrRenderStyle({ left: hoverPercent.value + "%" })}" data-v-ac1f9c5b>${ssrInterpolate(formatTime(hoverTime.value))}</div>`);
+        _push(`<div class="absolute -top-10 px-2 py-1 bg-black/95 text-white text-xs rounded-md transform -translate-x-1/2 shadow-lg" style="${ssrRenderStyle({ left: hoverPercent.value + "%" })}" data-v-171bb6a0>${ssrInterpolate(formatTime(hoverTime.value))}</div>`);
       } else {
         _push(`<!---->`);
       }
-      _push(`</div></div><div class="flex items-center justify-between" data-v-ac1f9c5b><div class="flex items-center gap-2 md:gap-5" data-v-ac1f9c5b><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95" data-v-ac1f9c5b>`);
+      _push(`</div></div><div class="flex items-center justify-between" data-v-171bb6a0><div class="flex items-center gap-2 md:gap-5" data-v-171bb6a0><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95" data-v-171bb6a0>`);
       if (isPlaying.value) {
-        _push(`<svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" data-v-ac1f9c5b></path></svg>`);
+        _push(`<svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" data-v-171bb6a0></path></svg>`);
       } else {
-        _push(`<svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M8 5v14l11-7z" data-v-ac1f9c5b></path></svg>`);
+        _push(`<svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M8 5v14l11-7z" data-v-171bb6a0></path></svg>`);
       }
-      _push(`</button><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95 relative" data-v-ac1f9c5b><svg class="w-7 h-7 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" data-v-ac1f9c5b><path d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4z" data-v-ac1f9c5b></path><path d="M5.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0012 16V8a1 1 0 00-1.6-.8l-5.334 4z" data-v-ac1f9c5b></path></svg><span class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-bold" data-v-ac1f9c5b>10</span></button><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95 relative" data-v-ac1f9c5b><svg class="w-7 h-7 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" data-v-ac1f9c5b><path d="M11.934 12.8a1 1 0 010-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.334-4z" data-v-ac1f9c5b></path><path d="M18.934 12.8a1 1 0 010-1.6l-5.334-4A1 1 0 0012 8v8a1 1 0 001.6.8l5.334-4z" data-v-ac1f9c5b></path></svg><span class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-bold" data-v-ac1f9c5b>10</span></button><div class="hidden md:flex items-center gap-2 group/vol" data-v-ac1f9c5b><button class="text-white hover:text-white/80 transition-all" data-v-ac1f9c5b>`);
+      _push(`</button><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95 relative" data-v-171bb6a0><svg class="w-7 h-7 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" data-v-171bb6a0><path d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4z" data-v-171bb6a0></path><path d="M5.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0012 16V8a1 1 0 00-1.6-.8l-5.334 4z" data-v-171bb6a0></path></svg><span class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-bold" data-v-171bb6a0>10</span></button><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95 relative" data-v-171bb6a0><svg class="w-7 h-7 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" data-v-171bb6a0><path d="M11.934 12.8a1 1 0 010-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.334-4z" data-v-171bb6a0></path><path d="M18.934 12.8a1 1 0 010-1.6l-5.334-4A1 1 0 0012 8v8a1 1 0 001.6.8l5.334-4z" data-v-171bb6a0></path></svg><span class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-bold" data-v-171bb6a0>10</span></button><div class="hidden md:flex items-center gap-2 group/vol" data-v-171bb6a0><button class="text-white hover:text-white/80 transition-all" data-v-171bb6a0>`);
       if (isMuted.value || volume.value === 0) {
-        _push(`<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" data-v-ac1f9c5b></path></svg>`);
+        _push(`<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" data-v-171bb6a0></path></svg>`);
       } else if (volume.value < 0.5) {
-        _push(`<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z" data-v-ac1f9c5b></path></svg>`);
+        _push(`<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z" data-v-171bb6a0></path></svg>`);
       } else {
-        _push(`<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" data-v-ac1f9c5b></path></svg>`);
+        _push(`<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" data-v-171bb6a0></path></svg>`);
       }
-      _push(`</button><div class="w-0 group-hover/vol:w-24 overflow-hidden transition-all duration-300" data-v-ac1f9c5b><input type="range" min="0" max="1" step="0.05"${ssrRenderAttr("value", volume.value)} class="w-full h-1 appearance-none bg-white/30 rounded-full cursor-pointer accent-red-600" data-v-ac1f9c5b></div></div><div class="text-white text-xs md:text-sm font-medium tabular-nums ml-1 md:ml-0" data-v-ac1f9c5b><span class="text-white" data-v-ac1f9c5b>${ssrInterpolate(formatTime(currentTime.value))}</span><span class="text-white/50 mx-1" data-v-ac1f9c5b>/</span><span class="text-white/70" data-v-ac1f9c5b>${ssrInterpolate(formatTime(duration.value))}</span></div></div><div class="flex items-center gap-3 md:gap-4" data-v-ac1f9c5b><div class="hidden sm:flex items-center gap-1 px-2 py-1 bg-white/10 rounded text-xs font-semibold text-white/90" data-v-ac1f9c5b>${ssrInterpolate(videoQuality.value)}</div><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95" data-v-ac1f9c5b>`);
+      _push(`</button><div class="w-0 group-hover/vol:w-24 overflow-hidden transition-all duration-300" data-v-171bb6a0><input type="range" min="0" max="1" step="0.05"${ssrRenderAttr("value", volume.value)} class="w-full h-1 appearance-none bg-white/30 rounded-full cursor-pointer accent-red-600" data-v-171bb6a0></div></div><div class="text-white text-xs md:text-sm font-medium tabular-nums ml-1 md:ml-0" data-v-171bb6a0><span class="text-white" data-v-171bb6a0>${ssrInterpolate(formatTime(currentTime.value))}</span><span class="text-white/50 mx-1" data-v-171bb6a0>/</span><span class="text-white/70" data-v-171bb6a0>${ssrInterpolate(formatTime(duration.value))}</span></div></div><div class="flex items-center gap-3 md:gap-4" data-v-171bb6a0><div class="hidden sm:flex items-center gap-1 px-2 py-1 bg-white/10 rounded text-xs font-semibold text-white/90" data-v-171bb6a0>${ssrInterpolate(videoQuality.value)}</div><button class="text-white hover:text-white/80 transition-all hover:scale-110 active:scale-95" data-v-171bb6a0>`);
       if (!isFullscreen.value) {
-        _push(`<svg class="w-6 h-6 md:w-7 md:h-7" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" data-v-ac1f9c5b></path></svg>`);
+        _push(`<svg class="w-6 h-6 md:w-7 md:h-7" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" data-v-171bb6a0></path></svg>`);
       } else {
-        _push(`<svg class="w-6 h-6 md:w-7 md:h-7" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" data-v-ac1f9c5b></path></svg>`);
+        _push(`<svg class="w-6 h-6 md:w-7 md:h-7" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" data-v-171bb6a0></path></svg>`);
       }
       _push(`</button></div></div></div>`);
       if (showCenterPlay.value && !isLoading.value) {
-        _push(`<div class="absolute inset-0 flex items-center justify-center z-30" data-v-ac1f9c5b><button class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300 hover:scale-110 active:scale-95 group" data-v-ac1f9c5b><svg class="w-10 h-10 md:w-12 md:h-12 text-white ml-1 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M8 5v14l11-7z" data-v-ac1f9c5b></path></svg></button></div>`);
+        _push(`<div class="absolute inset-0 flex items-center justify-center z-30" data-v-171bb6a0><button class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300 hover:scale-110 active:scale-95 group" data-v-171bb6a0><svg class="w-10 h-10 md:w-12 md:h-12 text-white ml-1 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M8 5v14l11-7z" data-v-171bb6a0></path></svg></button></div>`);
       } else {
         _push(`<!---->`);
       }
       if (isBuffering.value && !isLoading.value) {
-        _push(`<div class="absolute inset-0 flex items-center justify-center z-30 pointer-events-none" data-v-ac1f9c5b><div class="w-14 h-14 md:w-16 md:h-16 border-4 border-white/10 border-t-red-600 rounded-full animate-spin" data-v-ac1f9c5b></div></div>`);
+        _push(`<div class="absolute inset-0 flex items-center justify-center z-30 pointer-events-none" data-v-171bb6a0><div class="w-14 h-14 md:w-16 md:h-16 border-4 border-white/10 border-t-red-600 rounded-full animate-spin" data-v-171bb6a0></div></div>`);
       } else {
         _push(`<!---->`);
       }
       if (isLoading.value) {
-        _push(`<div class="absolute inset-0 flex items-center justify-center bg-black z-50" data-v-ac1f9c5b><div class="text-center" data-v-ac1f9c5b><div class="w-14 h-14 md:w-16 md:h-16 border-4 border-white/10 border-t-red-600 rounded-full animate-spin mx-auto mb-4" data-v-ac1f9c5b></div><p class="text-white text-base md:text-lg font-medium" data-v-ac1f9c5b>Loading...</p>`);
+        _push(`<div class="absolute inset-0 flex items-center justify-center bg-black z-50" data-v-171bb6a0><div class="text-center" data-v-171bb6a0><div class="w-14 h-14 md:w-16 md:h-16 border-4 border-white/10 border-t-red-600 rounded-full animate-spin mx-auto mb-4" data-v-171bb6a0></div><p class="text-white text-base md:text-lg font-medium" data-v-171bb6a0>Loading...</p>`);
         if (resumeTime.value > 0) {
-          _push(`<p class="text-gray-500 text-sm mt-2" data-v-ac1f9c5b> Resuming from ${ssrInterpolate(formatTime(resumeTime.value))}</p>`);
+          _push(`<p class="text-gray-500 text-sm mt-2" data-v-171bb6a0> Resuming from ${ssrInterpolate(formatTime(resumeTime.value))}</p>`);
         } else {
           _push(`<!---->`);
         }
@@ -12112,21 +12214,27 @@ const _sfc_main = /* @__PURE__ */ Object.assign({ layout: null }, {
         _push(`<!---->`);
       }
       if (errorMessage.value) {
-        _push(`<div class="absolute inset-0 flex items-center justify-center bg-black/95 z-50" data-v-ac1f9c5b><div class="text-center max-w-md px-6" data-v-ac1f9c5b><svg class="w-14 h-14 md:w-16 md:h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" data-v-ac1f9c5b></path></svg><p class="text-white text-lg mb-4" data-v-ac1f9c5b>${ssrInterpolate(errorMessage.value)}</p><button class="px-8 py-3 bg-red-600 hover:bg-red-700 rounded-md text-white font-semibold transition-colors" data-v-ac1f9c5b> Try Again </button></div></div>`);
+        _push(`<div class="absolute inset-0 flex items-center justify-center bg-black/95 z-50" data-v-171bb6a0><div class="text-center max-w-md px-6" data-v-171bb6a0><svg class="w-14 h-14 md:w-16 md:h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" data-v-171bb6a0></path></svg><p class="text-white text-lg mb-4" data-v-171bb6a0>${ssrInterpolate(errorMessage.value)}</p><button class="px-8 py-3 bg-red-600 hover:bg-red-700 rounded-md text-white font-semibold transition-colors" data-v-171bb6a0> Try Again </button></div></div>`);
       } else {
         _push(`<!---->`);
       }
       if (skipIndicator.value === "back") {
-        _push(`<div class="absolute left-8 md:left-20 top-1/2 -translate-y-1/2 text-white z-30 pointer-events-none" data-v-ac1f9c5b><div class="flex items-center gap-2 bg-black/60 backdrop-blur-sm rounded-full px-4 py-3" data-v-ac1f9c5b><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" data-v-ac1f9c5b></path></svg><span class="font-semibold" data-v-ac1f9c5b>10s</span></div></div>`);
+        _push(`<div class="absolute left-8 md:left-20 top-1/2 -translate-y-1/2 text-white z-30 pointer-events-none" data-v-171bb6a0><div class="flex items-center gap-2 bg-black/60 backdrop-blur-sm rounded-full px-4 py-3" data-v-171bb6a0><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" data-v-171bb6a0></path></svg><span class="font-semibold" data-v-171bb6a0>10s</span></div></div>`);
       } else {
         _push(`<!---->`);
       }
       if (skipIndicator.value === "forward") {
-        _push(`<div class="absolute right-8 md:right-20 top-1/2 -translate-y-1/2 text-white z-30 pointer-events-none" data-v-ac1f9c5b><div class="flex items-center gap-2 bg-black/60 backdrop-blur-sm rounded-full px-4 py-3" data-v-ac1f9c5b><span class="font-semibold" data-v-ac1f9c5b>10s</span><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-ac1f9c5b><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" data-v-ac1f9c5b></path></svg></div></div>`);
+        _push(`<div class="absolute right-8 md:right-20 top-1/2 -translate-y-1/2 text-white z-30 pointer-events-none" data-v-171bb6a0><div class="flex items-center gap-2 bg-black/60 backdrop-blur-sm rounded-full px-4 py-3" data-v-171bb6a0><span class="font-semibold" data-v-171bb6a0>10s</span><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" data-v-171bb6a0></path></svg></div></div>`);
       } else {
         _push(`<!---->`);
       }
-      _push(`<div class="absolute inset-0 flex md:hidden pointer-events-none z-20" data-v-ac1f9c5b><div class="w-1/3 h-full pointer-events-auto" data-v-ac1f9c5b></div><div class="w-1/3 h-full" data-v-ac1f9c5b></div><div class="w-1/3 h-full pointer-events-auto" data-v-ac1f9c5b></div></div></div>`);
+      _push(`<div class="absolute inset-0 flex md:hidden pointer-events-none z-20" data-v-171bb6a0><div class="w-1/3 h-full pointer-events-auto" data-v-171bb6a0></div><div class="w-1/3 h-full" data-v-171bb6a0></div><div class="w-1/3 h-full pointer-events-auto" data-v-171bb6a0></div></div>`);
+      if (securityState.value.active) {
+        _push(`<div class="absolute inset-0 z-50 bg-black/95 flex flex-col items-center justify-center text-center text-white px-6" data-v-171bb6a0><svg class="w-16 h-16 mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-171bb6a0><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M12 3l9 6v6l-9 6-9-6V9l9-6z" data-v-171bb6a0></path></svg><h2 class="text-2xl font-semibold mb-2" data-v-171bb6a0>Screen capture blocked</h2><p class="text-sm md:text-base text-white/80 max-w-xl mb-6" data-v-171bb6a0>${ssrInterpolate(securityState.value.reason)}</p><button class="px-6 py-3 bg-red-600 hover:bg-red-500 rounded-md font-semibold transition-colors" data-v-171bb6a0> Resume playback </button></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div>`);
     };
   }
 });
@@ -12136,7 +12244,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Watch.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const Watch = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-ac1f9c5b"]]);
+const Watch = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-171bb6a0"]]);
 const __vite_glob_0_46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Watch
