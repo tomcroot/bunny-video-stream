@@ -197,12 +197,27 @@ class PaymentController extends Controller
                 $payment->paid_at = $payment->paid_at ?: now();
                 $payment->save();
 
+                // Create user account if not exists
+                $user = $payment->user;
+                if (! $user) {
+                    $user = \App\Models\User::firstOrCreate(
+                        ['phone_number' => $payment->meta['phone_number'] ?? null],
+                        [
+                            'name' => $payment->meta['name'] ?? 'User',
+                            'email' => $payment->meta['email'] ?? null,
+                            'password' => \Illuminate\Support\Facades\Hash::make($payment->meta['password'] ?? \Str::random(12)),
+                        ]
+                    );
+                    $payment->user_id = $user->id;
+                    $payment->save();
+                }
+
                 // Create subscription with 365-day expiry
                 $movieId = $payment->meta['movie_id'] ?? null;
                 if ($movieId) {
                     $subscription = Subscription::updateOrCreate(
                         [
-                            'user_id' => $payment->user_id,
+                            'user_id' => $user->id,
                             'movie_id' => $movieId,
                         ],
                         [

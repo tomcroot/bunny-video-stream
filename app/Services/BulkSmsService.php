@@ -104,31 +104,12 @@ class BulkSmsService
      */
     public function sendCustomBulkSms(array $phoneNumbers, string $message): array
     {
-        try {
-            $mnotify = new \Arhinful\LaravelMnotify\MNotify;
-            $mnotify->setAPIKey(config('mnotify.api_key'));
-            $mnotify->setSender(config('mnotify.sender_id'));
-
-            $response = $mnotify->sendQuickSMS($phoneNumbers, $message);
-
-            return [
-                'success' => true,
-                'response' => $response,
-                'recipients_count' => count($phoneNumbers),
-            ];
-        } catch (\Exception $e) {
-            Log::error('Failed to send bulk SMS', [
-                'phone_numbers' => $phoneNumbers,
-                'message' => $message,
-                'error' => $e->getMessage(),
-            ]);
-
-            return [
-                'success' => false,
-                'error' => $e->getMessage(),
-                'recipients_count' => count($phoneNumbers),
-            ];
-        }
+        // Legacy MNotify bulk SMS logic removed. Use Hubtel or another provider if needed.
+        return [
+            'success' => false,
+            'error' => 'SMS sending logic has been removed.',
+            'recipients_count' => count($phoneNumbers),
+        ];
     }
 
     /**

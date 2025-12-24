@@ -4,7 +4,8 @@
       <section
         ref="heroSection"
         class="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden"
-        @mousemove="handleMouseMove"
+        @mousemove="onUserIntent"
+        @touchstart="onUserIntent"
       >
         <!-- VIDEO PLAYER HERO -->
         <div
@@ -41,7 +42,7 @@
           <!-- Fallback background if no video -->
           <div
             v-else
-            class="pointer-events-none absolute inset-0 bg-cover bg-center will-change-transform"
+            class="absolute inset-0 bg-cover bg-center will-change-transform"
             :style="heroBgStyle"
           />
         </div>
@@ -65,27 +66,26 @@
         <!-- Small watermark deterrent -->
         <div
           v-if="resolvedTrailerUrl"
-          class="absolute top-4 right-6 z-20 text-xs text-white/35 tracking-widest select-none pointer-events-none"
+          class="absolute top-4 right-6 z-20 text-xs text-white/35 tracking-widest select-none"
         >
           PROMISE LAND FILMS • PREVIEW
         </div>
 
         <!-- Cinema overlay gradient -->
         <div
-          class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-5"
+          class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-5 pointer-events-none"
           :style="{ opacity: showHeroContent ? 0.5 : 0.2, transition: 'opacity 1s ease-out' }"
         />
 
         <!-- Film grain overlay -->
-        <div class="pointer-events-none absolute inset-0 opacity-10 mix-blend-soft-light grain z-30" />
+        <div class="absolute inset-0 opacity-10 mix-blend-soft-light grain z-30 pointer-events-none" />
 
         <!-- Hero content - FADES IN AFTER VIDEO PLAYS / ENDS -->
         <div
           class="relative z-40 max-w-5xl px-6 text-center transition-all duration-1000"
           :style="{
             opacity: showHeroContent ? 1 : 0,
-            transform: showHeroContent ? 'translateY(0)' : 'translateY(20px)',
-            pointerEvents: showHeroContent ? 'auto' : 'none'
+            transform: showHeroContent ? 'translateY(0)' : 'translateY(20px)'
           }"
         >
           <p class="text-xs uppercase tracking-[0.35em] text-red-400 mb-4 opacity-80">
@@ -144,6 +144,7 @@
             <!-- BEFORE PREMIERE: Watch Trailer / Remind Me -->
             <button
               class="px-10 py-4 bg-red-600 hover:bg-red-700 rounded-full font-bold text-lg shadow-xl transition-all flex items-center gap-3 hero-cta"
+              :class="{ 'opacity-60': !showHeroContent }"
               @click="handlePrimaryCta"
             >
               <span class="inline-flex h-8 w-8 rounded-full bg-white/15 items-center justify-center">
@@ -286,7 +287,7 @@
                   class="w-full h-[130px] object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <!-- dark gradient -->
-                <div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+                <div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
 
                 <!-- Progress bar -->
                 <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
@@ -329,7 +330,7 @@
                   :alt="episode.title"
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div class="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                <div class="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
                 <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-xs text-gray-200">
                   <span class="bg-black/60 px-2 py-0.5 rounded-full">
                     Episode {{ episode.number }}
@@ -364,7 +365,7 @@
         </h2>
 
         <div class="relative rounded-lg overflow-hidden shadow-2xl border border-gray-700 bg-black">
-          <div class="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-black/50 pointer-events-none" />
+          <div class="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-black/50" />
           <video
             v-if="resolvedTrailerUrl"
             ref="trailerVideoSection"
@@ -451,6 +452,7 @@
 import PublicLayout from '@/Layouts/PublicLayout.vue'
 import { router } from '@inertiajs/vue3'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useHeroVisibility } from '@/composables/useHeroVisibility'
 import Hls from 'hls.js'
 
 defineOptions({
@@ -506,7 +508,10 @@ const heroMessage = computed(
     'One city. One insane day. A high-energy Ghanaian thriller packed with chaos, humor, and heart.'
 )
 const heroFallbackImage = computed(() => activeBanner.value?.thumbnail_url || null)
-const heroCtaUrl = computed(() => activeBanner.value?.cta_url || '')
+const heroCtaUrl = computed(() => {
+  const url = activeBanner.value?.cta_url
+  return typeof url === 'string' && url.trim().length > 0 ? url : null
+})
 
 // Hero video
 const heroSection = ref(null)
@@ -514,8 +519,12 @@ const trailerVideo = ref(null)
 const trailerVideoSection = ref(null)
 const heroHlsInstance = ref(null)
 const trailerHlsInstance = ref(null)
-const showHeroContent = ref(true)
-let mouseActivityTimeout = null
+const {
+  visible: showHeroContent,
+  onPlay: onHeroPlay,
+  onPause: onHeroPause,
+  onUserIntent,
+} = useHeroVisibility({ hideDelay: 10000 })
 const heroBgStyle = computed(() => ({
   backgroundImage: heroFallbackImage.value
     ? `linear-gradient(135deg, #0f0f0f 0%, #1f1f1f 35%, #0f0f0f 100%), url(${heroFallbackImage.value})`
@@ -783,33 +792,14 @@ onUnmounted(() => {
   if (countdownTimer) {
     clearInterval(countdownTimer)
   }
-  if (mouseActivityTimeout) {
-    clearTimeout(mouseActivityTimeout)
-  }
+  // No mouseActivityTimeout cleanup needed
   if (replayTimeout) {
     clearTimeout(replayTimeout)
   }
   window.removeEventListener('keydown', blockKeys)
 })
 
-// Mouse movement handler
-const handleMouseMove = () => {
-  // Show content on mouse movement
-  showHeroContent.value = true
-
-  // Clear existing timeout
-  if (mouseActivityTimeout) {
-    clearTimeout(mouseActivityTimeout)
-  }
-
-  // Hide content after 10 seconds of no mouse movement
-  mouseActivityTimeout = setTimeout(() => {
-    // Only hide if video is playing
-    if (trailerVideo.value && !trailerVideo.value.paused) {
-      showHeroContent.value = false
-    }
-  }, 10000)
-}
+// Mouse movement handler replaced by useHeroVisibility composable
 
 // Video event handlers
 const onVideoLoadStart = () => {
@@ -835,34 +825,21 @@ const onVideoError = (e) => {
 
 const onVideoPlay = () => {
   videoLoading.value = false
-  // Start the hide timer when video starts playing
-  if (mouseActivityTimeout) {
-    clearTimeout(mouseActivityTimeout)
-  }
-  mouseActivityTimeout = setTimeout(() => {
-    showHeroContent.value = false
-  }, 10000)
+  onHeroPlay()
 }
 
 const onVideoPause = () => {
-  showHeroContent.value = true
-  if (mouseActivityTimeout) {
-    clearTimeout(mouseActivityTimeout)
-  }
+  onHeroPause()
 }
 
 const onTrailerEnded = () => {
   // Show content briefly when video ends
-  showHeroContent.value = true
-  if (mouseActivityTimeout) {
-    clearTimeout(mouseActivityTimeout)
-  }
-
-  // Wait 30 seconds before replaying
+  onHeroPause()
   if (replayTimeout) {
     clearTimeout(replayTimeout)
   }
 
+  // Wait 30 seconds before replaying
   replayTimeout = setTimeout(() => {
     if (trailerVideo.value) {
       trailerVideo.value.currentTime = 0
@@ -870,7 +847,7 @@ const onTrailerEnded = () => {
         console.log('Replay failed:', err)
       })
       // Hide content when video replays
-      showHeroContent.value = false
+      onHeroPlay()
     }
   }, 30000) // 30 seconds
 }
@@ -879,21 +856,22 @@ const playTrailerFromStart = () => {
   if (trailerVideo.value) {
     trailerVideo.value.currentTime = 0
     trailerVideo.value.play().catch(() => {})
-    showHeroContent.value = false
+    onHeroPlay()
   }
 }
 
 const handlePrimaryCta = () => {
-  if (heroCtaUrl.value) {
-    router.visit(heroCtaUrl.value)
+  if (typeof heroCtaUrl.value === 'string') {
+    window.location.href = heroCtaUrl.value
     return
   }
 
   if (!countdown.value.isPast) {
     playTrailerFromStart()
-  } else {
-    watchMovie()
+    return
   }
+
+  window.location.href = '/watch'
 }
 
 const toggleMute = () => {
@@ -924,7 +902,7 @@ const updateVolume = () => {
 }
 
 const watchMovie = () => {
-  router.visit('/watch')
+  window.location.href = '/watch'
 }
 
 // Notify Me logic
@@ -935,20 +913,23 @@ const notifyPremiere = () => {
   if (user.value) {
     // Logged-in user: hit backend
     notifyState.value.loading = true
-    router.post(
-      '/premiere/notify',
-      { movie: movieSlug },
-      {
-        onSuccess: () => {
-          notifyState.value.success = 'You will be reminded when the premiere goes live.'
-          notifyState.value.loading = false
-        },
-        onError: () => {
-          notifyState.value.error = 'Could not save your reminder. Please try again.'
-          notifyState.value.loading = false
-        },
-      }
-    )
+    fetch('/premiere/notify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+      },
+      body: JSON.stringify({ movie: movieSlug }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Network error')
+        notifyState.value.success = 'You will be reminded when the premiere goes live.'
+        notifyState.value.loading = false
+      })
+      .catch(() => {
+        notifyState.value.error = 'Could not save your reminder. Please try again.'
+        notifyState.value.loading = false
+      })
   } else {
     // Guest: show email form
     notifyState.value.showForm = true
@@ -965,23 +946,23 @@ const submitNotifyEmail = () => {
   }
 
   notifyState.value.loading = true
-  router.post(
-    '/premiere/notify',
-    {
-      movie: movieSlug,
-      email: notifyState.value.email,
+  fetch('/premiere/notify', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
     },
-    {
-      onSuccess: () => {
-        notifyState.value.success = 'We will email you when the premiere begins.'
-        notifyState.value.loading = false
-      },
-      onError: () => {
-        notifyState.value.error = 'Could not save your reminder. Please try again.'
-        notifyState.value.loading = false
-      },
-    }
-  )
+    body: JSON.stringify({ movie: movieSlug, email: notifyState.value.email }),
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error('Network error')
+      notifyState.value.success = 'We will email you when the premiere begins.'
+      notifyState.value.loading = false
+    })
+    .catch(() => {
+      notifyState.value.error = 'Could not save your reminder. Please try again.'
+      notifyState.value.loading = false
+    })
 }
 </script>
 

@@ -31,7 +31,7 @@ class RenewalReminderNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mnotify'];
+        return ['mail'];
     }
 
     /**
@@ -39,11 +39,7 @@ class RenewalReminderNotification extends Notification implements ShouldQueue
      */
     public function toMNotify(object $notifiable)
     {
-        if (class_exists('\\Arhinful\\LaravelMNotify\\MNotifyMessage')) {
-            return (new \Arhinful\LaravelMNotify\MNotifyMessage)
-                ->message("Reminder: Your access to '{$this->movieTitle}' expires in {$this->daysRemaining} days. Renew now to continue watching!");
-        }
-
+        // mNotify SMS logic removed. Use Hubtel or other provider if needed.
         return (new MailMessage)
             ->subject('Access Expiring Soon')
             ->line("Your access to '{$this->movieTitle}' will expire in {$this->daysRemaining} days.")

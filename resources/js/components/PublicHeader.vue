@@ -1,4 +1,10 @@
 <script setup>
+// Navigation items (shared for desktop and mobile)
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/details', label: 'Details' },
+  { href: '/gallery', label: 'Gallery' },
+]
 import { Link, usePage } from '@inertiajs/vue3'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
@@ -10,13 +16,16 @@ const userMenuOpen = ref(false)
 const userMenuRef = ref(null)
 
 const isActive = (path) => {
+  if (typeof page.url !== 'string') return false
   return page.url === path || page.url.startsWith(path + '/')
 }
 
 // Check if user is admin
 const user = computed(() => page.props.auth?.user)
 const isAdmin = computed(() => {
-  return user.value?.roles?.some(role => role.name === 'admin') || false
+  return Array.isArray(user.value?.roles)
+    ? user.value.roles.some(role => role.name === 'admin')
+    : false
 })
 
 // Close user menu when clicking outside
@@ -50,17 +59,14 @@ onUnmounted(() => {
 
         <!-- Desktop Nav -->
         <div class="hidden lg:flex items-center space-x-8">
-          <Link v-for="item in [
-            ['/', 'Home'],
-            ['/details', 'Details'],
-            ['/gallery', 'Gallery']
-          ]"
-            :key="item[0]"
-            :href="item[0]"
-            :class="isActive(item[0]) ? 'text-red-600' : 'text-white hover:text-red-600'"
+          <Link
+            v-for="item in navItems"
+            :key="item.href"
+            :href="typeof item.href === 'string' ? item.href : '/'"
+            :class="isActive(item.href) ? 'text-red-600' : 'text-white hover:text-red-600'"
             class="font-semibold transition-colors"
           >
-            {{ item[1] }}
+            {{ item.label }}
           </Link>
 
           <!-- Auth - Logged In User Menu -->
@@ -195,18 +201,15 @@ onUnmounted(() => {
       <!-- Mobile Menu -->
       <div v-if="mobileMenuOpen" class="lg:hidden py-4 border-t border-gray-800">
         <div class="flex flex-col space-y-3">
-          <Link v-for="item in [
-            ['/', 'Home'],
-            ['/details', 'Details'],
-            ['/gallery', 'Gallery']
-          ]"
-            :key="item[0]"
-            :href="item[0]"
+          <Link
+            v-for="item in navItems"
+            :key="item.href"
+            :href="typeof item.href === 'string' ? item.href : '/'"
             @click="mobileMenuOpen = false"
-            :class="isActive(item[0]) ? 'text-red-600' : 'text-white hover:text-red-600'"
+            :class="isActive(item.href) ? 'text-red-600' : 'text-white hover:text-red-600'"
             class="font-semibold py-2"
           >
-            {{ item[1] }}
+            {{ item.label }}
           </Link>
 
           <!-- Mobile Auth - Logged In -->

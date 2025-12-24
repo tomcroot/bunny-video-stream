@@ -43,4 +43,11 @@ return [
         'signing_key' => env('BUNNY_SIGNING_KEY'), // required for signed/expiring playback URLs and iframe embeds
     ],
 
+    'hubtel' => [
+        'client_id' => env('HUBTEL_CLIENT_ID'),
+        'client_secret' => env('HUBTEL_CLIENT_SECRET'),
+        'otp_base_url' => env('HUBTEL_OTP_BASE_URL'),
+        'sender_id' => env('HUBTEL_SENDER_ID'),
+    ],
+
 ];

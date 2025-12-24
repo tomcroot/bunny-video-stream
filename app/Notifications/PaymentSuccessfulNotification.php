@@ -31,7 +31,7 @@ class PaymentSuccessfulNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mnotify'];
+        return ['mail'];
     }
 
     /**
@@ -39,11 +39,7 @@ class PaymentSuccessfulNotification extends Notification implements ShouldQueue
      */
     public function toMNotify(object $notifiable)
     {
-        if (class_exists('\\Arhinful\\LaravelMNotify\\MNotifyMessage')) {
-            return (new \Arhinful\LaravelMNotify\MNotifyMessage)
-                ->message("Payment successful! Your access to '{$this->movieTitle}' has been activated. Amount: ₵{$this->amount}");
-        }
-
+        // mNotify SMS logic removed. Use Hubtel or other provider if needed.
         return (new MailMessage)
             ->subject('Payment Successful!')
             ->line("Your payment of ₵{$this->amount} for '{$this->movieTitle}' has been processed successfully.")

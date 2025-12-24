@@ -81,7 +81,7 @@
                   <dt class="text-sm font-medium text-muted-foreground">Button URL</dt>
                   <dd class="text-foreground">
                     <a
-                      v-if="banner.cta_url"
+                      v-if="typeof banner.cta_url === 'string' && banner.cta_url.trim().length > 0"
                       :href="banner.cta_url"
                       target="_blank"
                       rel="noopener noreferrer"

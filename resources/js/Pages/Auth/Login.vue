@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex bg-background">
-    <!-- Left: marketing -->
+
     <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-red-900 via-red-800 to-red-700 items-center justify-center relative">
       <div class="absolute inset-0 bg-background/40"></div>
       <div class="max-w-2xl px-8 z-10">
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <!-- Right -->
+
     <div class="flex-1 flex items-center justify-center p-6">
       <div class="w-full max-w-md">
 
@@ -31,7 +31,7 @@
           <p class="text-sm text-muted-foreground mt-2">Enter your credentials to continue</p>
         </div>
 
-        <!-- Login Form -->
+
         <form @submit.prevent="submitLogin" class="bg-card border border-border rounded-lg p-6 shadow-lg space-y-4">
           <div>
             <label class="block text-sm font-medium mb-2">Email or Phone Number</label>
@@ -89,7 +89,7 @@ import { useForm, usePage } from '@inertiajs/vue3'
 
 const flash = usePage().props.flash
 
-// slider - using public folder
+
 const images = [
   '/movie_poster.jpg',
   '/movie_poster_2.jpg',
@@ -107,7 +107,7 @@ onMounted(() => {
 
 onUnmounted(() => clearInterval(timer))
 
-// LOGIN FORM
+
 const form = useForm({
   email: '',
   password: '',
@@ -118,7 +118,7 @@ const submitLogin = () => {
   form.post('/login', {
     onFinish: () => form.reset('password'),
     onSuccess: () => {
-      // Redirect handled by backend
+
     },
     preserveScroll: true,
   })
