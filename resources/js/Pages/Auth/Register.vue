@@ -32,12 +32,12 @@
         <div class="mb-8 text-center">
           <h2 class="text-3xl font-bold">Create your account</h2>
           <p class="text-sm text-muted-foreground mt-2">
-            {{ otpSent ? 'Check your phone (or email if provided) for the code' : 'Enter your details to get started' }}
+            Enter your details to get started
           </p>
         </div>
 
         <!-- Registration Form -->
-        <div v-if="!otpSent" class="bg-card border border-border rounded-lg p-6 shadow-lg space-y-4">
+        <div class="bg-card border border-border rounded-lg p-6 shadow-lg space-y-4">
           <div>
             <label class="block text-sm font-medium mb-2">Name</label>
             <input
@@ -60,7 +60,6 @@
             <div v-if="registerForm.errors.phone_number" class="text-destructive text-sm mt-1">
               {{ registerForm.errors.phone_number }}
             </div>
-            <p class="text-xs text-muted-foreground mt-1">SMS code will be sent to this number</p>
           </div>
 
           <div>
@@ -74,18 +73,57 @@
             <div v-if="registerForm.errors.email" class="text-destructive text-sm mt-1">
               {{ registerForm.errors.email }}
             </div>
-            <p class="text-xs text-muted-foreground mt-1">Leave blank if you prefer SMS only</p>
           </div>
 
           <div>
             <label class="block text-sm font-medium mb-2">Password</label>
-            <input
-              v-model="registerForm.password"
-              type="password"
-              class="w-full px-4 py-3 rounded-md bg-background border border-input"
-            />
+            <div class="relative">
+              <input
+                v-model="registerForm.password"
+                :type="showPassword ? 'text' : 'password'"
+                class="w-full px-4 py-3 rounded-md bg-background border border-input pr-10"
+              />
+              <button
+                @click="showPassword = !showPassword"
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <svg v-if="showPassword" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                </svg>
+                <svg v-else class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.83 9L15.5 12.67c.11-.35.17-.72.17-1.1 0-2.21-1.79-4-4-4-.38 0-.75.05-1.1.15L11.83 9zm7.08-9.14c-.37-.06-.74-.1-1.13-.1-5 0-9.27 3.11-11 7.5 1.73 4.39 6 7.5 11 7.5.39 0 .76-.03 1.13-.1l1.41 1.41c-.54.1-1.08.16-1.54.16-5.5 0-10.27-3.61-12-8.5 1.73-4.89 6.5-8.5 12-8.5.46 0 .99.06 1.54.16L18.91.34zM19.5 13c0-1.66-1.34-3-3-3-.35 0-.69.06-1 .16l3.84 3.84c.1-.31.16-.65.16-1zm-9-8c.35 0 .69.06 1 .16L9.16 4.16C8.69 4.06 8.35 4 8 4c-1.66 0-3 1.34-3 3 0 .35.06.69.16 1l3.84-3.84z"/>
+                </svg>
+              </button>
+            </div>
             <div v-if="registerForm.errors.password" class="text-destructive text-sm mt-1">
               {{ registerForm.errors.password }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2">Confirm Password</label>
+            <div class="relative">
+              <input
+                v-model="registerForm.password_confirmation"
+                :type="showPasswordConfirmation ? 'text' : 'password'"
+                class="w-full px-4 py-3 rounded-md bg-background border border-input pr-10"
+              />
+              <button
+                @click="showPasswordConfirmation = !showPasswordConfirmation"
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <svg v-if="showPasswordConfirmation" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                </svg>
+                <svg v-else class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.83 9L15.5 12.67c.11-.35.17-.72.17-1.1 0-2.21-1.79-4-4-4-.38 0-.75.05-1.1.15L11.83 9zm7.08-9.14c-.37-.06-.74-.1-1.13-.1-5 0-9.27 3.11-11 7.5 1.73 4.39 6 7.5 11 7.5.39 0 .76-.03 1.13-.1l1.41 1.41c-.54.1-1.08.16-1.54.16-5.5 0-10.27-3.61-12-8.5 1.73-4.89 6.5-8.5 12-8.5.46 0 .99.06 1.54.16L18.91.34zM19.5 13c0-1.66-1.34-3-3-3-.35 0-.69.06-1 .16l3.84 3.84c.1-.31.16-.65.16-1zm-9-8c.35 0 .69.06 1 .16L9.16 4.16C8.69 4.06 8.35 4 8 4c-1.66 0-3 1.34-3 3 0 .35.06.69.16 1l3.84-3.84z"/>
+                </svg>
+              </button>
+            </div>
+            <div v-if="registerForm.errors.password_confirmation" class="text-destructive text-sm mt-1">
+              {{ registerForm.errors.password_confirmation }}
             </div>
           </div>
 
@@ -99,8 +137,8 @@
           </button>
         </div>
 
-        <!-- OTP Verification Step -->
-        <div v-else class="bg-card border border-border rounded-lg p-6 shadow-lg space-y-4">
+        <!-- OTP Verification Step DISABLED - Direct account creation enabled -->
+        <!-- <div v-else class="bg-card border border-border rounded-lg p-6 shadow-lg space-y-4">
           <p class="text-sm text-muted-foreground text-center">
             Enter the 6-digit code sent via SMS to
             <strong>{{ registerForm.phone_number }}</strong>
@@ -145,7 +183,7 @@
             <span v-if="cooldown > 0">Resend in {{ cooldown }}s</span>
             <span v-else>Resend Code</span>
           </button>
-        </div>
+        </div> -->
 
         <p class="mt-6 text-center text-sm text-muted-foreground">
           Already have an account?
@@ -179,19 +217,24 @@ onMounted(() => {
 
 onUnmounted(() => clearInterval(timer))
 
+// Password visibility toggles
+const showPassword = ref(false)
+const showPasswordConfirmation = ref(false)
+
 // FORMS
 const registerForm = useForm({
   name: '',
   phone_number: '',
   email: '',
   password: '',
+  password_confirmation: '',
 })
 
 const verifyForm = useForm({
   code: '',
 })
 
-const otpSent = ref(false)
+const otpSent = ref(false) // OTP DISABLED - kept for UI compatibility
 const cooldown = ref(0)
 let cooldownTimer = null
 
@@ -205,26 +248,9 @@ const startCooldown = (s = 60) => {
   }, 1000)
 }
 
-// SUBMIT REGISTRATION (sends OTP)
+// SUBMIT REGISTRATION (OTP DISABLED - Direct registration)
 const submitRegistration = () => {
-  registerForm.post('/otp/send', {
-    onSuccess: () => {
-      otpSent.value = true
-      startCooldown(60)
-    },
-    preserveScroll: true,
-  })
-}
-
-// VERIFY + REGISTER
-const verifyOtp = () => {
-  verifyForm.transform(() => ({
-    code: verifyForm.code,
-    phone: registerForm.phone_number,
-    email: registerForm.email,
-    name: registerForm.name,
-    password: registerForm.password,
-  })).post('/otp/verify-register', {
+  registerForm.post('/register', {
     onSuccess: () => {
       // Redirect handled by backend
     },
@@ -232,18 +258,34 @@ const verifyOtp = () => {
   })
 }
 
-// RESEND OTP
-const resendOtp = () => {
-  registerForm.post('/otp/send', {
-    onSuccess: () => {
-      startCooldown(60)
-    },
-    preserveScroll: true,
-  })
-}
+// VERIFY + REGISTER (OTP DISABLED - commented out)
+// const verifyOtp = () => {
+//   verifyForm.transform(() => ({
+//     code: verifyForm.code,
+//     phone: registerForm.phone_number,
+//     email: registerForm.email,
+//     name: registerForm.name,
+//     password: registerForm.password,
+//   })).post('/otp/verify-register', {
+//     onSuccess: () => {
+//       // Redirect handled by backend
+//     },
+//     preserveScroll: true,
+//   })
+// }
+
+// RESEND OTP (OTP DISABLED - commented out)
+// const resendOtp = () => {
+//   registerForm.post('/otp/send', {
+//     onSuccess: () => {
+//       startCooldown(60)
+//     },
+//     preserveScroll: true,
+//   })
+// }
 
 const resetOtp = () => {
   otpSent.value = false
   verifyForm.reset('code')
-}
+} // OTP DISABLED - function kept for reference
 </script>

@@ -11,9 +11,9 @@ git reset --hard origin/main
 echo "📦 Installing PHP dependencies..."
 composer install --no-dev --optimize-autoloader
 
-echo "📦 Installing Node dependencies and building assets..."
-npm install
-./node_modules/.bin/vite build
+echo "📦 Installing Node dependencies and building assets (SPA + SSR)..."
+npm ci
+npm run build
 
 # ============================================================================
 # ENSURE REDIS IS CONFIGURED IN .ENV (Production)

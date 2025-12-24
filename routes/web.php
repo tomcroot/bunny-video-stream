@@ -9,6 +9,17 @@ use Inertia\Inertia;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
+// Serve favicon directly via Laravel to prevent 404 noise in dev tools
+Route::get('/favicon.ico', function () {
+    $path = public_path('favicon.ico');
+
+    abort_unless(file_exists($path), 404);
+
+    return response()->file($path, [
+        'Cache-Control' => 'public, max-age=604800, immutable',
+    ]);
+});
+
 Route::get('/details', [PageController::class, 'information'])->name('details');
 Route::post('/reviews', [\App\Http\Controllers\ReviewSubmissionController::class, 'store'])->name('reviews.store');
 
@@ -46,10 +57,10 @@ Route::middleware(['guest'])->group(function () {
         return Inertia::render('Auth/ResetPassword', ['token' => $token]);
     })->name('password.reset');
 
-    // OTP endpoints (used for registration verification only)
-    Route::post('/otp/send', [\App\Http\Controllers\Auth\OtpController::class, 'send']);
-    Route::post('/otp/verify-register', [\App\Http\Controllers\Auth\OtpController::class, 'verifyRegister']);
-    Route::post('/otp/send-password-reset', [\App\Http\Controllers\Auth\OtpController::class, 'sendPasswordReset']);
+    // OTP endpoints DISABLED - kept for reference only
+    // Route::post('/otp/send', [\App\Http\Controllers\Auth\OtpController::class, 'send']);
+    // Route::post('/otp/verify-register', [\App\Http\Controllers\Auth\OtpController::class, 'verifyRegister']);
+    // Route::post('/otp/send-password-reset', [\App\Http\Controllers\Auth\OtpController::class, 'sendPasswordReset']);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -125,8 +136,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('subscribers/export', [\App\Http\Controllers\Admin\SubscribersController::class, 'export'])->name('subscribers.export');
     });
 
-    // Streamer Dashboard
-    Route::get('/dashboard', [\App\Http\Controllers\StreamerDashboardController::class, 'index'])->name('dashboard');
+    // Streamer Dashboard (requires payment for non-admins)
+    Route::get('/dashboard', [\App\Http\Controllers\StreamerDashboardController::class, 'index'])
+        ->middleware('paid')
+        ->name('dashboard');
 
     // Profile Management
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');

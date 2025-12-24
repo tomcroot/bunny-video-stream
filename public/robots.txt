@@ -6,7 +6,8 @@ Allow: /
 
 # Disallow admin and sensitive routes
 Disallow: /admin/
-Disallow: /otp/
+# OTP disabled - route no longer in use
+# Disallow: /otp/
 Disallow: /email/
 Disallow: /password/
 Disallow: /login

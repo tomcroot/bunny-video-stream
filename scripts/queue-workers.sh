@@ -40,14 +40,16 @@ stopwaitsecs=3600"
 }
 
 # Priority queues for critical operations
-ensure_worker otp "otp" 2
+# OTP workers DISABLED - kept for reference only
+# ensure_worker otp "otp" 2
 ensure_worker payments "payments" 1
 ensure_worker emails "emails" 1
 ensure_worker default "default" 1
 
 sudo supervisorctl reread
 sudo supervisorctl update
-sudo supervisorctl restart laravel-otp:* || true
+# OTP queue workers disabled
+# sudo supervisorctl restart laravel-otp:* || true
 sudo supervisorctl restart laravel-payments:* || true
 sudo supervisorctl restart laravel-emails:* || true
 sudo supervisorctl restart laravel-default:* || true

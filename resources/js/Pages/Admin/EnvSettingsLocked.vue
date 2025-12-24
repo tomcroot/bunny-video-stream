@@ -93,28 +93,23 @@
                                 >
                                     <span
                                         class="px-2 bg-card text-muted-foreground"
-                                        >or</span
+                                        >OTP Disabled</span
                                     >
                                 </div>
                             </div>
 
+                            <!-- OTP Button Disabled -->
                             <button
-                                @click="requestOtp"
-                                :disabled="isLoading"
-                                class="w-full px-6 py-2 bg-gray-200 text-gray-900 rounded-md hover:bg-gray-300 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled
+                                class="w-full px-6 py-2 bg-gray-100 text-gray-400 rounded-md cursor-not-allowed font-medium transition-colors"
                             >
-                                <span v-if="isLoading">Sending...</span>
-                                <span v-else
-                                    >Request OTP via SMS ({{
-                                        props.devPhone
-                                    }})</span
-                                >
+                                <span>Request OTP via SMS (Disabled)</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Step 2: OTP Verification -->
-                    <div v-if="step === 'otp'" class="space-y-4">
+                    <!-- Step 2: OTP Verification DISABLED -->
+                    <!-- <div v-if="step === 'otp'" class="space-y-4">
                         <div class="text-center mb-4">
                             <p class="text-sm text-muted-foreground">
                                 An OTP has been sent to
@@ -169,6 +164,7 @@
                             </button>
                         </div>
                     </div>
+                    -->
                 </div>
             </div>
 
@@ -275,6 +271,12 @@ const verifyPassword = async () => {
 };
 
 const requestOtp = async () => {
+    // OTP DISABLED
+    errorMessage.value = "OTP verification has been disabled. Please use password verification only.";
+};
+
+/*
+const requestOtpOriginal = async () => {
     isLoading.value = true;
     errorMessage.value = "";
     successMessage.value = "";
@@ -304,8 +306,15 @@ const requestOtp = async () => {
         isLoading.value = false;
     }
 };
+*/
 
 const verifyOtp = async () => {
+    // OTP DISABLED
+    errorMessage.value = "OTP verification has been disabled. Please use password verification only.";
+};
+
+/*
+const verifyOtpOriginal = async () => {
     if (otp.value.length < 6) return;
 
     isLoading.value = true;
@@ -335,6 +344,7 @@ const verifyOtp = async () => {
         isLoading.value = false;
     }
 };
+*/
 
 const startCooldown = () => {
     cooldown.value = 60;

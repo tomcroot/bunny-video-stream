@@ -43,4 +43,10 @@ return [
         'signing_key' => env('BUNNY_SIGNING_KEY'), // required for signed/expiring playback URLs and iframe embeds
     ],
 
+    'analytics' => [
+        'ga_measurement_id' => env('GOOGLE_ANALYTICS_MEASUREMENT_ID'),
+        'google_tag_id' => env('GOOGLE_TAG_ID'),
+        'meta_pixel_id' => env('META_PIXEL_ID'),
+    ],
+
 ];
