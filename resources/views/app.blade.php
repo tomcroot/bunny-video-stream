@@ -118,7 +118,7 @@
     @endif
 
     <script>
-        window.__APP_ANALYTICS__ = @json([
+        window.__APP_ANALYTICS__ = @js([
             'gaMeasurementId' => $gaMeasurementId,
             'googleTagId' => $googleTagId,
             'metaPixelId' => $metaPixelId,
