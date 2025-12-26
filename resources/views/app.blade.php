@@ -62,6 +62,7 @@
     @php
         $gaMeasurementId = config('services.analytics.ga_measurement_id');
         $googleTagId = config('services.analytics.google_tag_id');
+        $googleAdsId = config('services.analytics.google_ads_id');
         $metaPixelId = config('services.analytics.meta_pixel_id');
     @endphp
 
@@ -77,8 +78,23 @@
         <!-- End Google Tag Manager -->
     @endif
 
+    <!-- Google Analytics & Google Ads Conversion Tracking -->
+    @if ($gaMeasurementId || $googleAdsId)
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaMeasurementId ?: $googleAdsId }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
+            @if ($gaMeasurementId)
+                gtag('config', '{{ $gaMeasurementId }}', { send_page_view: false });
+            @endif
 
+            @if ($googleAdsId)
+                gtag('config', '{{ $googleAdsId }}');
+            @endif
+        </script>
+    @endif
 
     <!-- Favicon and Web App Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -129,6 +145,7 @@
         window.__APP_ANALYTICS__ = @js([
             'gaMeasurementId' => $gaMeasurementId,
             'googleTagId' => $googleTagId,
+            'googleAdsId' => $googleAdsId,
             'metaPixelId' => $metaPixelId,
         ]);
     </script>

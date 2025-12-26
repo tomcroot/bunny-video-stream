@@ -190,6 +190,14 @@ const initiatePayment = async () => {
       })
     }
 
+    // Track Google Ads Purchase event
+    if (window.appAnalytics && window.appAnalytics.trackGoogleAdsPurchase) {
+      window.appAnalytics.trackGoogleAdsPurchase({
+        value: finalAmount.value,
+        currency: 'GHS'
+      })
+    }
+
     router.post('/payments/init', {
       amount: props.amount,
       currency: 'GHS',

@@ -44,6 +44,40 @@ const trackGaEvent = (config, eventName, params = {}) => {
     window.gtag('event', eventName, params);
 };
 
+// Google Ads conversion tracking helpers
+const trackGoogleAdsPurchase = (config, purchaseData = {}) => {
+    if (!config.googleAdsId || typeof window.gtag !== 'function') {
+        return;
+    }
+
+    const { value, currency = 'GHS' } = purchaseData;
+
+    window.gtag('event', 'purchase', {
+        value,
+        currency,
+        transaction_id: purchaseData.transaction_id || '',
+    });
+};
+
+const trackGoogleAdsLead = (config, leadData = {}) => {
+    if (!config.googleAdsId || typeof window.gtag !== 'function') {
+        return;
+    }
+
+    window.gtag('event', 'generate_lead', {
+        currency: leadData.currency || 'GHS',
+        value: leadData.value || 0,
+    });
+};
+
+const trackGoogleAdsEvent = (config, eventName, params = {}) => {
+    if (!config.googleAdsId || typeof window.gtag !== 'function') {
+        return;
+    }
+
+    window.gtag('event', eventName, params);
+};
+
 // Meta Pixel conversion tracking helpers
 const trackMetaPurchase = (config, purchaseData = {}) => {
     if (!config.metaPixelId || typeof window.fbq !== 'function') {
@@ -156,5 +190,8 @@ export const registerAnalytics = (router) => {
         trackMetaContact: () => trackMetaContact(config),
         trackMetaViewContent: (contentData = {}) => trackMetaViewContent(config, contentData),
         trackMetaAddToCart: (cartData = {}) => trackMetaAddToCart(config, cartData),
+        trackGoogleAdsPurchase: (purchaseData = {}) => trackGoogleAdsPurchase(config, purchaseData),
+        trackGoogleAdsLead: (leadData = {}) => trackGoogleAdsLead(config, leadData),
+        trackGoogleAdsEvent: (eventName, params = {}) => trackGoogleAdsEvent(config, eventName, params),
     };
 };

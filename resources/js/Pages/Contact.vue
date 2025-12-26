@@ -250,6 +250,14 @@ const submitForm = async () => {
           window.appAnalytics.trackMetaContact()
         }
 
+        // Track Google Ads Lead event
+        if (window.appAnalytics && window.appAnalytics.trackGoogleAdsLead) {
+          window.appAnalytics.trackGoogleAdsLead({
+            value: 0,
+            currency: 'GHS'
+          })
+        }
+
         // Reset form
         form.name = ''
         form.email = ''
