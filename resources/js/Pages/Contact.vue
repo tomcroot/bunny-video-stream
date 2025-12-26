@@ -245,6 +245,11 @@ const submitForm = async () => {
   try {
     await router.post('/contact', form, {
       onSuccess: () => {
+        // Track Meta Pixel Contact event
+        if (window.appAnalytics && window.appAnalytics.trackMetaContact) {
+          window.appAnalytics.trackMetaContact()
+        }
+
         // Reset form
         form.name = ''
         form.email = ''

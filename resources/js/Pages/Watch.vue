@@ -834,6 +834,15 @@ async function initializePlayer() {
 onMounted(() => {
   initializePlayer()
 
+  // Track Meta Pixel ViewContent event when user starts watching
+  if (window.appAnalytics && window.appAnalytics.trackMetaViewContent) {
+    window.appAnalytics.trackMetaViewContent({
+      content_name: props.videoTitle || 'A Crazy Day in Accra',
+      content_id: 'a-crazy-day-in-accra-watch',
+      content_type: 'video'
+    })
+  }
+
   // Save progress periodically
   progressInterval = setInterval(() => {
     if (isPlaying.value && !isDragging) saveProgress()

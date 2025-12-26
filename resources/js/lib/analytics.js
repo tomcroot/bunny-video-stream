@@ -44,6 +44,76 @@ const trackGaEvent = (config, eventName, params = {}) => {
     window.gtag('event', eventName, params);
 };
 
+// Meta Pixel conversion tracking helpers
+const trackMetaPurchase = (config, purchaseData = {}) => {
+    if (!config.metaPixelId || typeof window.fbq !== 'function') {
+        return;
+    }
+
+    const { value, currency = 'GHS', content_name, content_id, content_type = 'product' } = purchaseData;
+
+    window.fbq('track', 'Purchase', {
+        value,
+        currency,
+        content_name,
+        content_id,
+        content_type,
+    });
+};
+
+const trackMetaLead = (config, leadData = {}) => {
+    if (!config.metaPixelId || typeof window.fbq !== 'function') {
+        return;
+    }
+
+    const { value, currency = 'GHS', content_name } = leadData;
+
+    window.fbq('track', 'Lead', {
+        value,
+        currency,
+        content_name,
+    });
+};
+
+const trackMetaContact = (config) => {
+    if (!config.metaPixelId || typeof window.fbq !== 'function') {
+        return;
+    }
+
+    window.fbq('track', 'Contact');
+};
+
+const trackMetaViewContent = (config, contentData = {}) => {
+    if (!config.metaPixelId || typeof window.fbq !== 'function') {
+        return;
+    }
+
+    const { content_name, content_id, value, currency = 'GHS' } = contentData;
+
+    window.fbq('track', 'ViewContent', {
+        content_name,
+        content_id,
+        value,
+        currency,
+    });
+};
+
+const trackMetaAddToCart = (config, cartData = {}) => {
+    if (!config.metaPixelId || typeof window.fbq !== 'function') {
+        return;
+    }
+
+    const { value, currency = 'GHS', content_name, content_id, content_type = 'product' } = cartData;
+
+    window.fbq('track', 'AddToCart', {
+        value,
+        currency,
+        content_name,
+        content_id,
+        content_type,
+    });
+};
+
 export const registerAnalytics = (router) => {
     if (!isBrowser || !router) {
         return;
@@ -81,5 +151,10 @@ export const registerAnalytics = (router) => {
         trackGaEvent: (eventName, params = {}) => trackGaEvent(config, eventName, params),
         trackMetaEvent: (eventName, params = {}) => trackMetaEvent(config, eventName, params),
         trackMetaCustomEvent: (eventName, params = {}) => trackMetaCustomEvent(config, eventName, params),
+        trackMetaPurchase: (purchaseData = {}) => trackMetaPurchase(config, purchaseData),
+        trackMetaLead: (leadData = {}) => trackMetaLead(config, leadData),
+        trackMetaContact: () => trackMetaContact(config),
+        trackMetaViewContent: (contentData = {}) => trackMetaViewContent(config, contentData),
+        trackMetaAddToCart: (cartData = {}) => trackMetaAddToCart(config, cartData),
     };
 };

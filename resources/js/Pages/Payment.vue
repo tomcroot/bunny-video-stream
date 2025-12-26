@@ -138,6 +138,22 @@ const validationErrors = ref({})
 
 const finalAmount = computed(() => (props.amount / 100) * (1 - discount.value / 100))
 
+// Track ViewContent event on page load
+const trackViewContent = () => {
+  if (!window.appAnalytics || !window.appAnalytics.trackMetaViewContent) {
+    return
+  }
+
+  const movieId = new URLSearchParams(window.location.search).get('movieId') || 'a-crazy-day-in-accra'
+
+  window.appAnalytics.trackMetaViewContent({
+    content_name: props.movie?.title || 'A Crazy Day in Accra',
+    content_id: movieId,
+    value: finalAmount.value,
+    currency: 'GHS'
+  })
+}
+
 const statusOverlay = ref({ visible: false, title: '', message: '' })
 const showStatusOverlay = (t, m) => (statusOverlay.value = { visible: true, title: t, message: m })
 const hideStatusOverlay = () => (statusOverlay.value.visible = false)
@@ -162,6 +178,17 @@ const initiatePayment = async () => {
 
   try {
     const movieId = new URLSearchParams(window.location.search).get('movieId')
+
+    // Track Meta Pixel Purchase event
+    if (window.appAnalytics && window.appAnalytics.trackMetaPurchase) {
+      window.appAnalytics.trackMetaPurchase({
+        value: finalAmount.value,
+        currency: 'GHS',
+        content_name: props.movie?.title || 'A Crazy Day in Accra',
+        content_id: movieId || 'a-crazy-day-in-accra',
+        content_type: 'product'
+      })
+    }
 
     router.post('/payments/init', {
       amount: props.amount,
@@ -194,6 +221,10 @@ const initiatePayment = async () => {
   }
 }
 
-onMounted(() => setTimeout(() => (loading.value = false), 400))
+onMounted(() => {
+  setTimeout(() => (loading.value = false), 400)
+  // Track ViewContent event on component mount
+  setTimeout(() => trackViewContent(), 500)
+})
 onUnmounted(() => {})
 </script>
