@@ -110,20 +110,6 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @if ($googleTagId)
-        <!-- Google Tag Manager already injected above -->
-    @endif
-
-    @if ($gaMeasurementId)
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaMeasurementId }}"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '{{ $gaMeasurementId }}', { send_page_view: false });
-        </script>
-    @endif
-
     @if ($metaPixelId)
         <script>
             !function(f,b,e,v,n,t,s)
