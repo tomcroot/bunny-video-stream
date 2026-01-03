@@ -264,14 +264,29 @@ class PaymentController extends Controller
                         'expires_at' => $subscription->expires_at,
                     ]);
 
-                    // Dispatch payment success email job (non-blocking)
-                    SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
-
-                    Log::info('Payment success email job dispatched', [
-                        'payment_id' => $payment->id,
-                        'subscription_id' => $subscription->id,
-                        'user_email' => $payment->user->email ?? 'unknown',
-                    ]);
+                    // Send payment success email
+                    if (config('app.env') === 'production') {
+                        // Queue in production (when workers are running)
+                        SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
+                        Log::info('Payment success email job dispatched to queue', [
+                            'payment_id' => $payment->id,
+                            'subscription_id' => $subscription->id,
+                        ]);
+                    } else {
+                        // Send immediately in development (no queue workers)
+                        try {
+                            SendPaymentSuccessEmailJob::dispatchSync($payment->id, $subscription->id);
+                            Log::info('Payment success email sent synchronously', [
+                                'payment_id' => $payment->id,
+                                'subscription_id' => $subscription->id,
+                            ]);
+                        } catch (\Exception $e) {
+                            Log::error('Failed to send payment success email', [
+                                'payment_id' => $payment->id,
+                                'error' => $e->getMessage(),
+                            ]);
+                        }
+                    }
                 } catch (\Exception $e) {
                     Log::error('Failed to create subscription or send email', [
                         'payment_id' => $payment->id,
@@ -406,13 +421,29 @@ class PaymentController extends Controller
                         'payment_id' => $payment->id,
                     ]);
 
-                    // Dispatch payment success email job (non-blocking)
-                    SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
-
-                    Log::info('Webhook: Email job dispatched', [
-                        'payment_id' => $payment->id,
-                        'subscription_id' => $subscription->id,
-                    ]);
+                    // Send payment success email
+                    if (config('app.env') === 'production') {
+                        // Queue in production (when workers are running)
+                        SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
+                        Log::info('Webhook: Payment success email job dispatched to queue', [
+                            'payment_id' => $payment->id,
+                            'subscription_id' => $subscription->id,
+                        ]);
+                    } else {
+                        // Send immediately in development (no queue workers)
+                        try {
+                            SendPaymentSuccessEmailJob::dispatchSync($payment->id, $subscription->id);
+                            Log::info('Webhook: Payment success email sent synchronously', [
+                                'payment_id' => $payment->id,
+                                'subscription_id' => $subscription->id,
+                            ]);
+                        } catch (\Exception $e) {
+                            Log::error('Webhook: Failed to send payment success email', [
+                                'payment_id' => $payment->id,
+                                'error' => $e->getMessage(),
+                            ]);
+                        }
+                    }
                 } catch (\Exception $e) {
                     Log::error('Webhook: Failed to create subscription', [
                         'payment_id' => $payment->id,
