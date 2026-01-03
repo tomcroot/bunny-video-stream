@@ -253,8 +253,9 @@ const submitForm = async () => {
         // Track Google Ads Lead event
         if (window.appAnalytics && window.appAnalytics.trackGoogleAdsLead) {
           window.appAnalytics.trackGoogleAdsLead({
-            value: 0,
-            currency: 'GHS'
+            value: props.pageContent?.inquiry_value || 0,
+            currency: 'GHS',
+            content_name: 'Contact Inquiry'
           })
         }
 

@@ -838,8 +838,10 @@ onMounted(() => {
   if (window.appAnalytics && window.appAnalytics.trackMetaViewContent) {
     window.appAnalytics.trackMetaViewContent({
       content_name: props.videoTitle || 'A Crazy Day in Accra',
-      content_id: 'a-crazy-day-in-accra-watch',
-      content_type: 'video'
+      content_id: props.pageContent?.id || 'a-crazy-day-in-accra',
+      content_type: 'video',
+      value: props.pageContent?.price || 0,
+      currency: 'GHS',
     })
   }
 

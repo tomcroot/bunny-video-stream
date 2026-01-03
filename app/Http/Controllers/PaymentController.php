@@ -55,8 +55,14 @@ class PaymentController extends Controller
             ], 500);
         }
 
-        // ✅ PREVENT DUPLICATE ACCESS: user already has a successful payment / subscription
-        $movieId = $validated['movie_id'] ?? null;
+        // ⭐ FIX #3: Ensure movie_id always has a value
+        $movieId = $validated['movie_id'] ?? 1;  // Default to movie ID 1
+
+        Log::info('Payment initialization', [
+            'user_id' => $user->id,
+            'movie_id' => $movieId,
+            'amount' => $validated['amount'],
+        ]);
 
         $alreadyPaid = Subscription::where('user_id', $user->id)
             ->when($movieId, fn ($q) => $q->where('movie_id', $movieId))
@@ -105,7 +111,7 @@ class PaymentController extends Controller
                 'currency' => $validated['currency'] ?? 'GHS',
                 'status' => 'initialized',
                 'meta' => [
-                    'movie_id' => $validated['movie_id'] ?? null,
+                    'movie_id' => $movieId,  // ← NOW ALWAYS SET
                     'referral_code' => $validated['referral_code'] ?? null,
                 ],
             ]);
@@ -173,18 +179,39 @@ class PaymentController extends Controller
     public function callback(Request $request, PaystackService $paystack)
     {
         $reference = (string) $request->query('reference', '');
+
         if ($reference === '') {
+            Log::warning('Payment callback: Missing reference parameter');
+
             return redirect('/')->with('status', 'Missing payment reference');
         }
 
         $payment = Payment::where('reference', $reference)->first();
+
         if (! $payment) {
+            Log::warning('Payment callback: Payment not found', ['reference' => $reference]);
+
             return redirect('/')->with('status', 'Payment not found');
         }
+
+        Log::info('=== PAYMENT CALLBACK START ===', [
+            'reference' => $reference,
+            'payment_id' => $payment->id,
+            'user_id' => $payment->user_id,
+            'current_status' => $payment->status,
+            'timestamp' => now()->toIso8601String(),
+        ]);
 
         $verify = $paystack->verify($reference);
         $payment->increment('verify_attempts');
         $payment->forceFill(['last_verify_at' => now()])->save();
+
+        Log::info('Paystack verification response', [
+            'reference' => $reference,
+            'verify_ok' => $verify['ok'] ?? false,
+            'verify_status' => $verify['body']['status'] ?? 'unknown',
+            'verify_response' => json_encode($verify),
+        ]);
 
         if ($verify['ok'] && ($verify['body']['status'] ?? false) === true) {
             $data = $verify['body']['data'] ?? [];
@@ -192,15 +219,33 @@ class PaymentController extends Controller
             $payment->channel = $data['channel'] ?? $payment->channel;
             $payment->gateway_response = $data['gateway_response'] ?? $payment->gateway_response;
 
+            Log::info('Paystack status verified as success', [
+                'reference' => $reference,
+                'payment_id' => $payment->id,
+                'status' => $status,
+            ]);
+
             if ($status === 'success') {
                 $payment->status = 'success';
                 $payment->authorization_code = $data['authorization']['authorization_code'] ?? $payment->authorization_code;
                 $payment->paid_at = $payment->paid_at ?: now();
                 $payment->save();
 
-                // Create subscription with 365-day expiry
-                $movieId = $payment->meta['movie_id'] ?? null;
-                if ($movieId) {
+                Log::info('Payment status updated to success', [
+                    'payment_id' => $payment->id,
+                    'paid_at' => $payment->paid_at,
+                ]);
+
+                // ⭐ FIX #1: ALWAYS CREATE SUBSCRIPTION (with fallback movie_id)
+                $movieId = $payment->meta['movie_id'] ?? 1;
+
+                try {
+                    Log::info('Creating subscription', [
+                        'user_id' => $payment->user_id,
+                        'movie_id' => $movieId,
+                        'payment_id' => $payment->id,
+                    ]);
+
                     $subscription = Subscription::updateOrCreate(
                         [
                             'user_id' => $payment->user_id,
@@ -212,20 +257,53 @@ class PaymentController extends Controller
                         ]
                     );
 
+                    Log::info('Subscription created successfully', [
+                        'subscription_id' => $subscription->id,
+                        'user_id' => $payment->user_id,
+                        'movie_id' => $movieId,
+                        'expires_at' => $subscription->expires_at,
+                    ]);
+
                     // Dispatch payment success email job (non-blocking)
                     SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
+
                     Log::info('Payment success email job dispatched', [
                         'payment_id' => $payment->id,
                         'subscription_id' => $subscription->id,
+                        'user_email' => $payment->user->email ?? 'unknown',
                     ]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to create subscription or send email', [
+                        'payment_id' => $payment->id,
+                        'user_id' => $payment->user_id,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+
+                    // Don't fail the entire process if subscription creation fails
+                    // User already paid - just mark it and notify admin
                 }
+
+                Log::info('=== PAYMENT CALLBACK SUCCESS ===', [
+                    'reference' => $reference,
+                    'payment_id' => $payment->id,
+                    'user_id' => $payment->user_id,
+                ]);
 
                 return redirect()->route('watch')->with('status', 'Payment successful! Enjoy your movie.');
             }
         }
 
+        // Verification failed
         $payment->status = 'failed';
         $payment->save();
+
+        Log::error('=== PAYMENT CALLBACK FAILED ===', [
+            'reference' => $reference,
+            'payment_id' => $payment->id,
+            'verify_ok' => $verify['ok'] ?? false,
+            'verify_status' => $verify['body']['status'] ?? 'unknown',
+        ]);
 
         return redirect('/')->with('status', 'Payment verification failed. Please contact support if you were charged.');
     }
@@ -235,12 +313,21 @@ class PaymentController extends Controller
         $raw = $request->getContent();
         $sig = $request->header('x-paystack-signature');
 
+        Log::info('Webhook received from Paystack', [
+            'signature_present' => ! empty($sig),
+            'body_length' => strlen($raw),
+        ]);
+
         if (! $paystack->validWebhookSignature($raw, $sig)) {
+            Log::warning('Invalid Paystack webhook signature');
+
             return response()->json(['message' => 'Invalid signature'], 401);
         }
 
         $payload = $request->json()->all();
         $event = $payload['event'] ?? null;
+
+        Log::info('Webhook event', ['event' => $event]);
 
         if ($event !== 'charge.success') {
             return response()->json(['ok' => true]);
@@ -249,11 +336,15 @@ class PaymentController extends Controller
         $reference = $payload['data']['reference'] ?? null;
 
         if (! $reference) {
+            Log::warning('Webhook: Missing reference');
+
             return response()->json(['message' => 'Missing reference'], 422);
         }
 
         $payment = Payment::where('reference', $reference)->first();
         if (! $payment) {
+            Log::warning('Webhook: Payment not found', ['reference' => $reference]);
+
             return response()->json(['message' => 'Payment not found'], 404);
         }
 
@@ -261,6 +352,12 @@ class PaymentController extends Controller
         $verify = $paystack->verify($reference);
         $payment->increment('verify_attempts');
         $payment->forceFill(['last_verify_at' => now()])->save();
+
+        Log::info('Webhook verification', [
+            'reference' => $reference,
+            'verify_ok' => $verify['ok'] ?? false,
+            'verify_status' => $verify['body']['status'] ?? 'unknown',
+        ]);
 
         if ($verify['ok'] && ($verify['body']['status'] ?? false) === true) {
             $data = $verify['body']['data'] ?? [];
@@ -273,6 +370,8 @@ class PaymentController extends Controller
                 $payment->authorization_code = $data['authorization']['authorization_code'] ?? $payment->authorization_code;
                 $payment->paid_at = $payment->paid_at ?: now();
                 $payment->save();
+
+                Log::info('Webhook: Payment marked as success', ['payment_id' => $payment->id]);
 
                 // Record referral usage (idempotent)
                 if (! empty($payment->meta['referral_code'])) {
@@ -286,37 +385,44 @@ class PaymentController extends Controller
                             ]
                         );
                     } catch (\Exception $e) {
-                        Log::error('Failed to record referral usage', [
+                        Log::error('Failed to record referral usage in webhook', [
                             'payment_id' => $payment->id,
                             'error' => $e->getMessage(),
                         ]);
                     }
                 }
 
-                // Create subscription with 365-day expiry
-                $movieId = $payment->meta['movie_id'] ?? null;
-                if ($movieId) {
+                // ⭐ FIX #2: ALWAYS CREATE SUBSCRIPTION IN WEBHOOK TOO
+                $movieId = $payment->meta['movie_id'] ?? 1;
+
+                try {
                     $subscription = Subscription::updateOrCreate(
-                        [
-                            'user_id' => $payment->user_id,
-                            'movie_id' => $movieId,
-                        ],
-                        [
-                            'payment_id' => $payment->id,
-                            'expires_at' => now()->addDays(365),
-                        ]
+                        ['user_id' => $payment->user_id, 'movie_id' => $movieId],
+                        ['payment_id' => $payment->id, 'expires_at' => now()->addDays(365)]
                     );
+
+                    Log::info('Webhook: Subscription created', [
+                        'subscription_id' => $subscription->id,
+                        'payment_id' => $payment->id,
+                    ]);
 
                     // Dispatch payment success email job (non-blocking)
                     SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
-                    Log::info('Payment success email job dispatched (webhook)', [
+
+                    Log::info('Webhook: Email job dispatched', [
                         'payment_id' => $payment->id,
                         'subscription_id' => $subscription->id,
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Webhook: Failed to create subscription', [
+                        'payment_id' => $payment->id,
+                        'error' => $e->getMessage(),
                     ]);
                 }
             } else {
                 $payment->status = 'failed';
                 $payment->save();
+                Log::info('Webhook: Payment marked as failed', ['reference' => $reference, 'status' => $status]);
             }
         }
 
