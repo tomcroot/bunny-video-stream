@@ -120,6 +120,69 @@
         </CardContent>
       </Card>
 
+      <!-- My Referral -->
+      <Card id="my-referral" class="mb-6">
+        <CardHeader>
+          <CardTitle>My Referral</CardTitle>
+          <CardDescription>Share your referral code or link to invite others.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div v-if="loadingReferral" class="text-sm text-muted-foreground">Loading referral details...</div>
+
+          <div v-else-if="referralError" class="text-sm text-red-600">{{ referralError }}</div>
+
+          <div v-else class="space-y-4">
+            <div class="space-y-2">
+              <Label for="referral-code">Referral Code</Label>
+              <div class="flex gap-2">
+                <Input id="referral-code" :model-value="referral.code" readonly />
+                <Button type="button" variant="outline" @click="copyText(referral.code)">Copy</Button>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <Label for="referral-link">Referral Link</Label>
+              <div class="flex gap-2">
+                <Input id="referral-link" :model-value="referral.link" readonly />
+                <Button type="button" variant="outline" @click="copyText(referral.link)">Copy</Button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="rounded-md border border-border p-3">
+                <p class="text-xs text-muted-foreground">Total Uses</p>
+                <p class="text-lg font-semibold text-foreground">{{ referral.total_uses || 0 }}</p>
+              </div>
+              <div class="rounded-md border border-border p-3">
+                <p class="text-xs text-muted-foreground">Total Discount</p>
+                <p class="text-lg font-semibold text-foreground">GHS {{ formatAmount(referral.total_discount_given || 0) }}</p>
+              </div>
+              <div class="rounded-md border border-border p-3">
+                <p class="text-xs text-muted-foreground">Discount Rate</p>
+                <p class="text-lg font-semibold text-foreground">{{ referral.discount_percentage }}%</p>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-foreground mb-2">Recent Uses</p>
+              <div v-if="(referral.recent_uses || []).length === 0" class="text-sm text-muted-foreground">No usage yet.</div>
+              <ul v-else class="space-y-2">
+                <li
+                  v-for="(usage, idx) in referral.recent_uses"
+                  :key="idx"
+                  class="flex items-center justify-between text-sm border border-border rounded-md px-3 py-2"
+                >
+                  <span class="text-foreground">{{ usage.user_name }}</span>
+                  <span class="text-muted-foreground">GHS {{ formatAmount(usage.discount_applied) }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <p class="text-xs text-muted-foreground">Your referral gives {{ referral.discount_percentage }}% discount to the person using it.</p>
+          </div>
+        </CardContent>
+      </Card>
+
       <!-- Delete Account -->
       <Card class="border-red-600">
         <CardHeader>
@@ -176,7 +239,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useForm, Link } from '@inertiajs/vue3'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -209,6 +272,17 @@ const deleteForm = useForm({
   password: ''
 })
 
+const loadingReferral = ref(true)
+const referralError = ref('')
+const referral = ref({
+  code: '',
+  link: '',
+  discount_percentage: 0,
+  total_uses: 0,
+  total_discount_given: 0,
+  recent_uses: [],
+})
+
 const updateProfile = () => {
   profileForm.put('/profile', {
     preserveScroll: true,
@@ -235,4 +309,46 @@ const deleteAccount = () => {
     }
   })
 }
+
+const loadReferral = async () => {
+  loadingReferral.value = true
+  referralError.value = ''
+
+  try {
+    const response = await fetch('/api/referral/me', {
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Could not load referral details.')
+    }
+
+    referral.value = await response.json()
+  } catch (error) {
+    referralError.value = 'Could not load referral details right now.'
+  } finally {
+    loadingReferral.value = false
+  }
+}
+
+const copyText = async (value) => {
+  if (!value) return
+
+  try {
+    await navigator.clipboard.writeText(value)
+    alert('Copied!')
+  } catch {
+    alert('Copy failed. Please copy manually.')
+  }
+}
+
+const formatAmount = (value) => {
+  return Number(value || 0).toFixed(2)
+}
+
+onMounted(() => {
+  loadReferral()
+})
 </script>

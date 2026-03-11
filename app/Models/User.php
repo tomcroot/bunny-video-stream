@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\VerifyEmailNotification;
+use App\Services\ReferralService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,6 +49,13 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function (User $user): void {
+            app(ReferralService::class)->getOrCreateUserReferralCode($user);
+        });
     }
 
     public function payments()

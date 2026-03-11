@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendPaymentSuccessEmailJob;
 use App\Models\Payment;
-use App\Models\ReferralUsage;
 use App\Models\Subscription;
 use App\Services\PaystackService;
 use App\Services\ReferralService;
 use App\Support\PhoneNumber;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -93,9 +93,22 @@ class PaymentController extends Controller
         try {
             $finalAmount = (int) $validated['amount'];
             $discountPercentage = 0;
+            $originalAmount = (int) $validated['amount'];
 
             if (! empty($validated['referral_code'])) {
-                $discountPercentage = $referralService->validateCode($validated['referral_code']);
+                $referralCode = $referralService->getCodeByString($validated['referral_code']);
+
+                if (! $referralCode || ! $referralCode->is_active) {
+                    throw new ModelNotFoundException('Invalid or inactive referral code.');
+                }
+
+                if ((int) $referralCode->created_by === (int) $user->id) {
+                    return response()->json([
+                        'message' => 'You cannot use your own referral code.',
+                    ], 422);
+                }
+
+                $discountPercentage = (float) $referralCode->discount_percentage;
                 $finalAmount = (int) ($finalAmount * (1 - $discountPercentage / 100));
             }
 
@@ -113,6 +126,8 @@ class PaymentController extends Controller
                 'meta' => [
                     'movie_id' => $movieId,  // ← NOW ALWAYS SET
                     'referral_code' => $validated['referral_code'] ?? null,
+                    'original_amount' => $originalAmount,
+                    'discount_percentage' => $discountPercentage,
                 ],
             ]);
 
@@ -176,7 +191,7 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function callback(Request $request, PaystackService $paystack)
+    public function callback(Request $request, PaystackService $paystack, ReferralService $referralService)
     {
         $reference = (string) $request->query('reference', '');
 
@@ -264,6 +279,23 @@ class PaymentController extends Controller
                         'expires_at' => $subscription->expires_at,
                     ]);
 
+                    if (! empty($payment->meta['referral_code'])) {
+                        try {
+                            $discountAmount = max(0, ((int) ($payment->meta['original_amount'] ?? $payment->amount) - (int) $payment->amount) / 100);
+                            $referralService->recordUsage(
+                                $payment->meta['referral_code'],
+                                (string) $payment->user_id,
+                                (string) $subscription->id,
+                                $discountAmount
+                            );
+                        } catch (\Exception $e) {
+                            Log::error('Failed to record referral usage in callback', [
+                                'payment_id' => $payment->id,
+                                'error' => $e->getMessage(),
+                            ]);
+                        }
+                    }
+
                     // Send payment success email
                     if (config('app.env') === 'production') {
                         // Queue in production (when workers are running)
@@ -323,7 +355,7 @@ class PaymentController extends Controller
         return redirect('/')->with('status', 'Payment verification failed. Please contact support if you were charged.');
     }
 
-    public function webhook(Request $request, PaystackService $paystack)
+    public function webhook(Request $request, PaystackService $paystack, ReferralService $referralService)
     {
         $raw = $request->getContent();
         $sig = $request->header('x-paystack-signature');
@@ -388,25 +420,6 @@ class PaymentController extends Controller
 
                 Log::info('Webhook: Payment marked as success', ['payment_id' => $payment->id]);
 
-                // Record referral usage (idempotent)
-                if (! empty($payment->meta['referral_code'])) {
-                    try {
-                        ReferralUsage::firstOrCreate(
-                            ['payment_id' => $payment->id],
-                            [
-                                'referral_code' => $payment->meta['referral_code'],
-                                'user_id' => $payment->user_id,
-                                'discount_amount' => ($payment->meta['original_amount'] - $payment->amount) / 100,
-                            ]
-                        );
-                    } catch (\Exception $e) {
-                        Log::error('Failed to record referral usage in webhook', [
-                            'payment_id' => $payment->id,
-                            'error' => $e->getMessage(),
-                        ]);
-                    }
-                }
-
                 // ⭐ FIX #2: ALWAYS CREATE SUBSCRIPTION IN WEBHOOK TOO
                 $movieId = $payment->meta['movie_id'] ?? 1;
 
@@ -420,6 +433,23 @@ class PaymentController extends Controller
                         'subscription_id' => $subscription->id,
                         'payment_id' => $payment->id,
                     ]);
+
+                    if (! empty($payment->meta['referral_code'])) {
+                        try {
+                            $discountAmount = max(0, ((int) ($payment->meta['original_amount'] ?? $payment->amount) - (int) $payment->amount) / 100);
+                            $referralService->recordUsage(
+                                $payment->meta['referral_code'],
+                                (string) $payment->user_id,
+                                (string) $subscription->id,
+                                $discountAmount
+                            );
+                        } catch (\Exception $e) {
+                            Log::error('Failed to record referral usage in webhook', [
+                                'payment_id' => $payment->id,
+                                'error' => $e->getMessage(),
+                            ]);
+                        }
+                    }
 
                     // Send payment success email
                     if (config('app.env') === 'production') {

@@ -327,11 +327,12 @@ const props = defineProps({
     movie: Object,
     amount: { type: Number, default: 1500 },
     movieId: { type: [String, Number], default: 1 }, // ⭐ FIX #5: Add movieId prop
+    prefilledReferralCode: { type: String, default: "" },
 });
 
 const loading = ref(true);
 const paymentChannel = ref("mobile_money");
-const couponCode = ref("");
+const couponCode = ref(props.prefilledReferralCode || "");
 const discount = ref(0);
 const validatingCoupon = ref(false);
 const billingEmail = ref("");
@@ -340,7 +341,7 @@ const processing = ref(false);
 const validationErrors = ref({});
 
 const finalAmount = computed(
-    () => (props.amount / 100) * (1 - discount.value / 100)
+    () => (props.amount / 100) * (1 - discount.value / 100),
 );
 
 // Track ViewContent event on page load
@@ -394,7 +395,8 @@ const initiatePayment = async () => {
         const movieId = props.movieId || 1; // Use prop or default
 
         // Generate a unique transaction ID for this payment
-        const transactionId = 'txn_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        const transactionId =
+            "txn_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
 
         // Track Meta Pixel Purchase event
         if (window.appAnalytics && window.appAnalytics.trackMetaPurchase) {
@@ -443,7 +445,7 @@ const initiatePayment = async () => {
                         processing.value = false;
                     }
                 },
-            }
+            },
         );
     } catch (e) {
         hideStatusOverlay();

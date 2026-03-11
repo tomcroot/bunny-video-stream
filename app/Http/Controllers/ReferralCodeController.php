@@ -6,10 +6,10 @@ use App\Models\ReferralCode;
 use App\Services\ReferralService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReferralCodeController extends Controller
 {
@@ -22,11 +22,11 @@ class ReferralCodeController extends Controller
     /**
      * Public page: Show all active referral codes (optional UI page)
      */
-    public function index(): Response
+    public function index(): JsonResponse
     {
         $codes = $this->referralService->getActiveCodesList();
 
-        return Inertia::render('Referrals/Index', [
+        return response()->json([
             'codes' => $codes->map(fn ($code) => [
                 'code' => $code->code,
                 'description' => $code->description,
@@ -60,9 +60,54 @@ class ReferralCodeController extends Controller
     }
 
     /**
+     * Alias route compatibility for /api/referral/validate.
+     */
+    public function validate(Request $request): JsonResponse
+    {
+        return $this->validateDiscount($request);
+    }
+
+    /**
+     * Validate a referral code and return JSON for checkout AJAX.
+     */
+    public function validateDiscount(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'code' => 'required|string|max:50',
+        ]);
+
+        try {
+            $referralCode = $this->referralService->getCodeByString($validated['code']);
+
+            if (! $referralCode || ! $referralCode->is_active) {
+                throw new ModelNotFoundException;
+            }
+
+            if (Auth::check() && (int) $referralCode->created_by === (int) Auth::id()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You cannot use your own referral code.',
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            return response()->json([
+                'success' => true,
+                'code' => $referralCode->code,
+                'discount_percentage' => (float) $referralCode->discount_percentage,
+                'message' => 'Referral code applied successfully.',
+            ]);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid or inactive referral code.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    /**
      * Validate code + calculate discount (Checkout use case)
      */
-    public function calculateDiscount(Request $request)
+    public function calculateDiscount(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'price' => 'required|numeric|min:0.01',
@@ -75,29 +120,78 @@ class ReferralCodeController extends Controller
                 $validated['code']
             );
 
-            return redirect()->back()->with([
+            return response()->json([
                 'discount' => $discount,
             ]);
         } catch (ModelNotFoundException) {
-            return redirect()->back()
-                ->withErrors(['code' => 'Invalid or inactive referral code'])
-                ->withInput();
+            return response()->json([
+                'message' => 'Invalid or inactive referral code',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
     /**
      * Admin page: Show referral stats
      */
-    public function stats(string $code): Response
+    public function stats(string $code): JsonResponse
     {
         $referralCode = ReferralCode::whereCode($code)->firstOrFail();
         $this->authorize('viewAdmin', $referralCode);
 
         $stats = $this->referralService->getCodeStats($code);
 
-        return Inertia::render('Admin/Referrals/Stats', [
+        return response()->json([
+            'meta' => [
+                'analytics_label' => 'admin_referral_analytics',
+                'scope' => 'admin',
+            ],
             'code' => $referralCode->code,
             'stats' => $stats,
+        ]);
+    }
+
+    /**
+     * Referral link landing endpoint, stores referral code and redirects to checkout.
+     */
+    public function captureLink(Request $request, string $code)
+    {
+        $referralCode = $this->referralService->getCodeByString($code);
+
+        if (! $referralCode || ! $referralCode->is_active) {
+            return redirect()->route('payment.checkout')
+                ->with('error', 'Invalid referral link.');
+        }
+
+        if (Auth::check() && (int) $referralCode->created_by === (int) Auth::id()) {
+            return redirect()->route('payment.checkout')
+                ->with('error', 'You cannot use your own referral link.');
+        }
+
+        $request->session()->put('referral_code', $referralCode->code);
+
+        return redirect()->route('payment.checkout', [
+            'ref' => $referralCode->code,
+            'movieId' => $request->query('movieId', 1),
+        ]);
+    }
+
+    /**
+     * Return current user's referral code and link.
+     */
+    public function myReferral(): JsonResponse
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $stats = $this->referralService->getMyReferralStats($user);
+
+        return response()->json([
+            'meta' => [
+                'analytics_label' => 'user_referral_summary',
+                'scope' => 'user',
+            ],
+            'stats' => $stats,
+            ...$stats,
         ]);
     }
 

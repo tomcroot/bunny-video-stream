@@ -147,6 +147,17 @@ onUnmounted(() => {
                     </svg>
                     <span>Profile</span>
                   </Link>
+
+                  <Link
+                    href="/profile#my-referral"
+                    @click="userMenuOpen = false"
+                    class="flex items-center gap-3 px-4 py-2.5 text-white hover:bg-white/10 transition-colors"
+                  >
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656-5.656l1.414-1.414M10.172 13.828a4 4 0 010-5.656l1.414-1.414a4 4 0 015.656 5.656l-1.414 1.414"/>
+                    </svg>
+                    <span>My Referral</span>
+                  </Link>
                 </div>
 
                 <!-- Sign Out -->
@@ -259,6 +270,17 @@ onUnmounted(() => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
               <span class="font-medium">Profile</span>
+            </Link>
+
+            <Link
+              href="/profile#my-referral"
+              @click="mobileMenuOpen = false"
+              class="flex items-center gap-3 px-2 py-3 text-white hover:text-red-500 hover:bg-white/5 rounded-lg transition-colors"
+            >
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656-5.656l1.414-1.414M10.172 13.828a4 4 0 010-5.656l1.414-1.414a4 4 0 015.656 5.656l-1.414 1.414"/>
+              </svg>
+              <span class="font-medium">My Referral</span>
             </Link>
 
             <!-- Sign Out -->

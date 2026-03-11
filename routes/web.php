@@ -167,6 +167,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/payments/init', [PaymentController::class, 'init'])->name('payments.init');
     Route::get('/payments/status/{reference}', [PaymentController::class, 'status'])
         ->name('payments.status');
+    Route::get('/api/referral/me', [\App\Http\Controllers\ReferralCodeController::class, 'myReferral'])
+        ->name('referral.me');
     // Watch progress tracking (for resume functionality)
     Route::prefix('api/watch-progress')->controller(\App\Http\Controllers\WatchProgressController::class)->group(function () {
         Route::get('/{videoId}', 'show');
@@ -202,12 +204,15 @@ Route::get('/payment/checkout', [\App\Http\Controllers\PaymentCheckoutController
 // Referral Code endpoints (public - can be used by anyone)
 Route::prefix('api/referral')->name('referral.')->controller(\App\Http\Controllers\ReferralCodeController::class)->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::post('/validate', 'validate')->name('validate');
+    Route::post('/validate', 'validateDiscount')->name('validate');
     Route::post('/calculate-discount', 'calculateDiscount')->name('calculate-discount');
 });
 
 // Referral code validation for Inertia/Vue (form or AJAX)
 Route::post('/referral/validate-discount', [\App\Http\Controllers\ReferralCodeController::class, 'validateDiscount'])->name('referral.validate-discount');
+
+// Referral landing links (user-to-user sharing)
+Route::get('/ref/{code}', [\App\Http\Controllers\ReferralCodeController::class, 'captureLink'])->name('referral.capture');
 
 // Paystack webhook (server-to-server). Prefer a namespaced, plural path.
 Route::post('/webhooks/paystack', [PaymentController::class, 'webhook'])->name('payments.webhook');
