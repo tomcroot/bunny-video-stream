@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class PaystackService
@@ -11,8 +10,9 @@ class PaystackService
 
     protected string $secretKey;
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly ExternalApiClient $apiClient
+    ) {
         $this->baseUrl = (string) (config('services.paystack.payment_url')
             ?: 'https://api.paystack.co');
 
@@ -23,32 +23,17 @@ class PaystackService
 
     public function initialize(array $payload): array
     {
-        $response = Http::withToken($this->secretKey)
-            ->connectTimeout(5)
-            ->timeout(15)
-            ->retry(2, 500)
-            ->post($this->baseUrl.'/transaction/initialize', $payload);
-
-        return [
-            'ok' => $response->ok(),
-            'status' => $response->status(),
-            'body' => $response->json(),
-        ];
+        return $this->apiClient->requestWithProfile('paystack', 'post', $this->baseUrl.'/transaction/initialize', [
+            'token' => $this->secretKey,
+            'json' => $payload,
+        ]);
     }
 
     public function verify(string $reference): array
     {
-        $response = Http::withToken($this->secretKey)
-            ->connectTimeout(5)
-            ->timeout(15)
-            ->retry(2, 500)
-            ->get($this->baseUrl.'/transaction/verify/'.urlencode($reference));
-
-        return [
-            'ok' => $response->ok(),
-            'status' => $response->status(),
-            'body' => $response->json(),
-        ];
+        return $this->apiClient->requestWithProfile('paystack', 'get', $this->baseUrl.'/transaction/verify/'.urlencode($reference), [
+            'token' => $this->secretKey,
+        ]);
     }
 
     public function validWebhookSignature(string $rawBody, ?string $signature): bool

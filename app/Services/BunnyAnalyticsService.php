@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class BunnyAnalyticsService
@@ -11,8 +10,9 @@ class BunnyAnalyticsService
 
     private $baseUrl = 'https://api.bunny.net/statistics';
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly ExternalApiClient $apiClient
+    ) {
         $this->apiKey = config('services.bunny.api_key');
     }
 
@@ -38,21 +38,25 @@ class BunnyAnalyticsService
                 $query['dateTo'] = $dateTo;
             }
 
-            $response = Http::withHeaders([
-                'AccessKey' => $this->apiKey,
-                'Accept' => 'application/json',
-            ])->get($this->baseUrl, $query);
+            $response = $this->apiClient->requestWithProfile('bunny', 'get', $this->baseUrl, [
+                'headers' => [
+                    'AccessKey' => $this->apiKey,
+                    'Accept' => 'application/json',
+                ],
+                'query' => $query,
+            ]);
 
-            if ($response->failed()) {
+            if (! ($response['ok'] ?? false)) {
                 Log::error('Bunny analytics request failed', [
-                    'status' => $response->status(),
+                    'status' => $response['status'] ?? 0,
+                    'error' => $response['error'] ?? null,
                     'video_id' => $videoId,
                 ]);
 
                 return null;
             }
 
-            return $response->json();
+            return $response['body'] ?? null;
         } catch (\Exception $e) {
             Log::error('Bunny analytics error', [
                 'error' => $e->getMessage(),
@@ -93,20 +97,24 @@ class BunnyAnalyticsService
                 $query['dateTo'] = $dateTo;
             }
 
-            $response = Http::withHeaders([
-                'AccessKey' => $this->apiKey,
-                'Accept' => 'application/json',
-            ])->get($this->baseUrl, $query);
+            $response = $this->apiClient->requestWithProfile('bunny', 'get', $this->baseUrl, [
+                'headers' => [
+                    'AccessKey' => $this->apiKey,
+                    'Accept' => 'application/json',
+                ],
+                'query' => $query,
+            ]);
 
-            if ($response->failed()) {
+            if (! ($response['ok'] ?? false)) {
                 Log::error('Bunny library statistics request failed', [
-                    'status' => $response->status(),
+                    'status' => $response['status'] ?? 0,
+                    'error' => $response['error'] ?? null,
                 ]);
 
                 return null;
             }
 
-            return $response->json();
+            return $response['body'] ?? null;
         } catch (\Exception $e) {
             Log::error('Bunny library statistics error', [
                 'error' => $e->getMessage(),

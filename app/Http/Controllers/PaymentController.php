@@ -203,6 +203,7 @@ class PaymentController extends Controller
 
     public function callback(Request $request, PaystackService $paystack, ReferralService $referralService)
     {
+        $callbackStartedAt = microtime(true);
         $reference = (string) $request->query('reference', '');
 
         if ($reference === '') {
@@ -315,10 +316,10 @@ class PaymentController extends Controller
                             'subscription_id' => $subscription->id,
                         ]);
                     } else {
-                        // Send immediately in development (no queue workers)
+                        // Avoid blocking callback in development; run after response is sent.
                         try {
-                            SendPaymentSuccessEmailJob::dispatchSync($payment->id, $subscription->id);
-                            Log::info('Payment success email sent synchronously', [
+                            SendPaymentSuccessEmailJob::dispatchAfterResponse($payment->id, $subscription->id);
+                            Log::info('Payment success email scheduled after response', [
                                 'payment_id' => $payment->id,
                                 'subscription_id' => $subscription->id,
                             ]);
@@ -345,6 +346,7 @@ class PaymentController extends Controller
                     'reference' => $reference,
                     'payment_id' => $payment->id,
                     'user_id' => $payment->user_id,
+                    'duration_ms' => (int) ((microtime(true) - $callbackStartedAt) * 1000),
                 ]);
 
                 return redirect()->route('payments.success', [
@@ -362,6 +364,7 @@ class PaymentController extends Controller
             'payment_id' => $payment->id,
             'verify_ok' => $verify['ok'] ?? false,
             'verify_status' => $verify['body']['status'] ?? 'unknown',
+            'duration_ms' => (int) ((microtime(true) - $callbackStartedAt) * 1000),
         ]);
 
         return redirect('/')->with('status', 'Payment verification failed. Please contact support if you were charged.');
