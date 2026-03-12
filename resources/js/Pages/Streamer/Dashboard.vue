@@ -1,168 +1,430 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- Header -->
-    <div class="bg-card border-b border-border shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div>
-            <h1 class="text-2xl font-bold text-foreground">Welcome, {{ user.name }}!</h1>
-            <p class="text-muted-foreground">Your streaming dashboard</p>
-          </div>
-          <Link href="/" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Back to Home
-          </Link>
-        </div>
-      </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Profile Quick Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
-          <p class="text-sm text-muted-foreground mb-2">Account Status</p>
-          <p class="text-2xl font-bold text-foreground">{{ user.email }}</p>
-          <p class="text-xs text-muted-foreground mt-2">Member since {{ formatDate(user.created_at) }}</p>
+    <div class="min-h-screen bg-background">
+        <!-- Header -->
+        <div class="bg-card border-b border-border shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-foreground">
+                            Welcome, {{ user.name }}!
+                        </h1>
+                        <p class="text-muted-foreground">
+                            Your streaming dashboard
+                        </p>
+                    </div>
+                    <Link
+                        href="/"
+                        class="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        Back to Home
+                    </Link>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
-          <p class="text-sm text-muted-foreground mb-2">Phone</p>
-          <p class="text-2xl font-bold text-foreground">{{ user.phone_number || 'Not provided' }}</p>
-          <p v-if="user.phone_number" class="text-xs text-green-600 mt-2">✓ Verified</p>
-        </div>
-
-        <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
-          <p class="text-sm text-muted-foreground mb-2">Access Level</p>
-          <p class="text-2xl font-bold text-green-600">Active</p>
-          <p class="text-xs text-muted-foreground mt-2">Full streaming access</p>
-        </div>
-      </div>
-
-      <!-- Featured Content Section -->
-      <div class="mb-12">
-        <div class="flex justify-between items-center mb-6">
-          <div>
-            <h2 class="text-2xl font-bold text-foreground mb-1">Featured Content</h2>
-            <p class="text-sm text-muted-foreground">Start watching or continue from where you left off</p>
-          </div>
-          <Link href="/" class="text-sm text-primary hover:text-primary/80 transition-colors font-medium">
-            View All
-          </Link>
-        </div>
-
-        <div v-if="featured.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            v-for="item in featured"
-            :key="item.id"
-            class="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
-          >
-            <div class="aspect-video bg-muted relative overflow-hidden group">
-              <img
-                v-if="item.image_url"
-                :src="item.image_url"
-                :alt="item.title"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button
-                  @click="watchItem(item)"
-                  class="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors"
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <!-- Profile Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div
+                    class="bg-card border border-border rounded-lg p-6 shadow-sm"
                 >
-                  <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                  Watch Now
-                </button>
-              </div>
+                    <p class="text-sm text-muted-foreground mb-2">
+                        Account Status
+                    </p>
+                    <p class="text-2xl font-bold text-foreground">
+                        {{ user.email }}
+                    </p>
+                    <p class="text-xs text-muted-foreground mt-2">
+                        Member since {{ formatDate(user.created_at) }}
+                    </p>
+                </div>
+
+                <div
+                    class="bg-card border border-border rounded-lg p-6 shadow-sm"
+                >
+                    <p class="text-sm text-muted-foreground mb-2">Phone</p>
+                    <p class="text-2xl font-bold text-foreground">
+                        {{ user.phone_number || "Not provided" }}
+                    </p>
+                    <p
+                        v-if="user.phone_number"
+                        class="text-xs text-green-600 mt-2"
+                    >
+                        ✓ Verified
+                    </p>
+                </div>
+
+                <div
+                    class="bg-card border border-border rounded-lg p-6 shadow-sm"
+                >
+                    <p class="text-sm text-muted-foreground mb-2">
+                        Access Level
+                    </p>
+                    <p class="text-2xl font-bold text-green-600">Active</p>
+                    <p class="text-xs text-muted-foreground mt-2">
+                        Full streaming access
+                    </p>
+                </div>
             </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-foreground mb-1">{{ item.title }}</h3>
-              <p class="text-sm text-muted-foreground line-clamp-2">{{ item.description }}</p>
+
+            <!-- Featured Content Section -->
+            <div class="mb-12">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-foreground mb-1">
+                            Featured Content
+                        </h2>
+                        <p class="text-sm text-muted-foreground">
+                            Start watching or continue from where you left off
+                        </p>
+                    </div>
+                    <Link
+                        href="/"
+                        class="text-sm text-primary hover:text-primary/80 transition-colors font-medium"
+                    >
+                        View All
+                    </Link>
+                </div>
+
+                <div
+                    v-if="featured.length > 0"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                    <div
+                        v-for="item in featured"
+                        :key="item.id"
+                        class="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
+                    >
+                        <div
+                            class="aspect-video bg-muted relative overflow-hidden group"
+                        >
+                            <img
+                                v-if="item.image_url"
+                                :src="item.image_url"
+                                :alt="item.title"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div
+                                class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            >
+                                <button
+                                    @click="watchItem(item)"
+                                    class="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors"
+                                >
+                                    <svg
+                                        class="h-5 w-5"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                    Watch Now
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-foreground mb-1">
+                                {{ item.title }}
+                            </h3>
+                            <p
+                                class="text-sm text-muted-foreground line-clamp-2"
+                            >
+                                {{ item.description }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else class="text-center py-12">
+                    <p class="text-muted-foreground">
+                        No content available yet.
+                    </p>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <div v-else class="text-center py-12">
-          <p class="text-muted-foreground">No content available yet.</p>
-        </div>
-      </div>
+            <!-- Watch, Account & Referral Management -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Watch Movie -->
+                <div
+                    class="bg-card border border-border rounded-lg p-6 shadow-sm"
+                >
+                    <h3 class="text-lg font-semibold text-foreground mb-4">
+                        Watch Movie
+                    </h3>
+                    <div class="space-y-3">
+                        <Link
+                            href="/watch"
+                            class="block p-4 border border-primary rounded-lg hover:bg-primary/10 transition-colors bg-primary/5"
+                        >
+                            <p
+                                class="font-semibold text-primary flex items-center gap-2"
+                            >
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                Watch Full Movie
+                            </p>
+                            <p class="text-sm text-muted-foreground mt-1">
+                                Stream 'A Crazy Day in Accra' now
+                            </p>
+                        </Link>
+                    </div>
+                </div>
 
-      <!-- Watch & Account Management -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Watch Movie -->
-        <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
-          <h3 class="text-lg font-semibold text-foreground mb-4">Watch Movie</h3>
-          <div class="space-y-3">
-            <Link
-              href="/watch"
-              class="block p-4 border border-primary rounded-lg hover:bg-primary/10 transition-colors bg-primary/5"
-            >
-              <p class="font-semibold text-primary flex items-center gap-2">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-                Watch Full Movie
-              </p>
-              <p class="text-sm text-muted-foreground mt-1">Stream 'A Crazy Day in Accra' now</p>
-            </Link>
-          </div>
-        </div>
+                <!-- Account Settings -->
+                <div
+                    class="bg-card border border-border rounded-lg p-6 shadow-sm"
+                >
+                    <h3 class="text-lg font-semibold text-foreground mb-4">
+                        Account Settings
+                    </h3>
+                    <div class="space-y-3">
+                        <Link
+                            href="/profile"
+                            class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+                        >
+                            <p class="font-medium text-foreground">
+                                Edit Profile
+                            </p>
+                            <p class="text-sm text-muted-foreground">
+                                Update your personal information
+                            </p>
+                        </Link>
+                        <Link
+                            href="/profile/payments"
+                            class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+                        >
+                            <p class="font-medium text-foreground">
+                                Payment History
+                            </p>
+                            <p class="text-sm text-muted-foreground">
+                                View your transactions
+                            </p>
+                        </Link>
+                    </div>
+                </div>
 
-        <!-- Account Settings -->
-        <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
-          <h3 class="text-lg font-semibold text-foreground mb-4">Account Settings</h3>
-          <div class="space-y-3">
-            <Link
-              href="/profile"
-              class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
-            >
-              <p class="font-medium text-foreground">Edit Profile</p>
-              <p class="text-sm text-muted-foreground">Update your personal information</p>
-            </Link>
-            <Link
-              href="/profile/payments"
-              class="block p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
-            >
-              <p class="font-medium text-foreground">Payment History</p>
-              <p class="text-sm text-muted-foreground">View your transactions</p>
-            </Link>
-          </div>
+                <!-- My Referral -->
+                <div
+                    class="bg-card border border-border rounded-lg p-6 shadow-sm"
+                >
+                    <h3 class="text-lg font-semibold text-foreground mb-4">
+                        My Referral
+                    </h3>
+
+                    <div
+                        v-if="referral.loading"
+                        class="text-sm text-muted-foreground"
+                    >
+                        Loading referral data...
+                    </div>
+
+                    <div v-else-if="referral.error" class="space-y-3">
+                        <p class="text-sm text-muted-foreground">
+                            Referral info is not available right now.
+                        </p>
+                        <button
+                            type="button"
+                            @click="loadReferral()"
+                            class="text-sm px-3 py-2 rounded-md border border-border hover:bg-muted/50 transition-colors"
+                        >
+                            Retry
+                        </button>
+                    </div>
+
+                    <div v-else class="space-y-4">
+                        <div>
+                            <p class="text-xs text-muted-foreground mb-1">
+                                Your code
+                            </p>
+                            <div
+                                class="flex items-center justify-between gap-2 p-3 border border-border rounded-md"
+                            >
+                                <span
+                                    class="font-semibold text-foreground tracking-wide"
+                                    >{{ referral.code || "N/A" }}</span
+                                >
+                                <button
+                                    type="button"
+                                    @click="copyText(referral.code)"
+                                    class="text-xs px-2 py-1 rounded border border-border hover:bg-muted/50 transition-colors"
+                                    :disabled="!referral.code"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-muted-foreground mb-1">
+                                Referral link
+                            </p>
+                            <div
+                                class="flex items-center justify-between gap-2 p-3 border border-border rounded-md"
+                            >
+                                <span
+                                    class="text-xs text-foreground truncate"
+                                    >{{ referral.link || "N/A" }}</span
+                                >
+                                <button
+                                    type="button"
+                                    @click="copyText(referral.link)"
+                                    class="text-xs px-2 py-1 rounded border border-border hover:bg-muted/50 transition-colors"
+                                    :disabled="!referral.link"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-3 border border-border rounded-md">
+                                <p class="text-xs text-muted-foreground">
+                                    Signups
+                                </p>
+                                <p
+                                    class="text-lg font-semibold text-foreground"
+                                >
+                                    {{ referral.signups }}
+                                </p>
+                            </div>
+                            <div class="p-3 border border-border rounded-md">
+                                <p class="text-xs text-muted-foreground">
+                                    Revenue
+                                </p>
+                                <p
+                                    class="text-lg font-semibold text-foreground"
+                                >
+                                    {{ formatCurrency(referral.revenue) }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div v-if="referral.recentUses.length > 0">
+                            <p class="text-xs text-muted-foreground mb-2">
+                                Recent activity
+                            </p>
+                            <ul class="space-y-2">
+                                <li
+                                    v-for="usage in referral.recentUses.slice(
+                                        0,
+                                        3,
+                                    )"
+                                    :key="
+                                        usage.id ||
+                                        `${usage.referred_email}-${usage.created_at}`
+                                    "
+                                    class="text-xs text-foreground p-2 rounded-md border border-border"
+                                >
+                                    {{ usage.referred_email || "New signup" }} ·
+                                    {{ formatDate(usage.created_at) }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link } from "@inertiajs/vue3";
+import axios from "axios";
+import { onMounted, reactive } from "vue";
 
 const props = defineProps({
-  user: {
-    type: Object,
-    default: () => ({
-      name: '',
-      email: '',
-      phone_number: '',
-      created_at: new Date()
-    })
-  },
-  featured: {
-    type: Array,
-    default: () => []
-  }
-})
+    user: {
+        type: Object,
+        default: () => ({
+            name: "",
+            email: "",
+            phone_number: "",
+            created_at: new Date(),
+        }),
+    },
+    featured: {
+        type: Array,
+        default: () => [],
+    },
+});
+
+const referral = reactive({
+    loading: true,
+    error: false,
+    code: "",
+    link: "",
+    signups: 0,
+    revenue: 0,
+    recentUses: [],
+});
 
 const formatDate = (date) => {
-  if (!date) return 'N/A'
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
+    if (!date) return "N/A";
+    return new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+};
+
+const formatCurrency = (amount) => {
+    const value = Number(amount || 0);
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+    }).format(value);
+};
+
+const buildFallbackReferralLink = (code) => {
+    if (!code) return "";
+    return `${window.location.origin}/ref/${encodeURIComponent(code)}`;
+};
+
+const loadReferral = async () => {
+    referral.loading = true;
+    referral.error = false;
+
+    try {
+        const response = await axios.get("/api/referral/me");
+        const data = response?.data || {};
+        const stats = data.stats || {};
+
+        referral.code = data.code || "";
+        referral.link = data.link || buildFallbackReferralLink(data.code);
+        referral.signups = Number(stats.total_signups || 0);
+        referral.revenue = Number(stats.total_revenue || 0);
+        referral.recentUses = Array.isArray(stats.recent_uses)
+            ? stats.recent_uses
+            : [];
+    } catch (error) {
+        referral.error = true;
+    } finally {
+        referral.loading = false;
+    }
+};
+
+const copyText = async (value) => {
+    if (!value) return;
+    try {
+        await navigator.clipboard.writeText(value);
+    } catch (error) {
+        // Clipboard API can fail in restricted browser contexts.
+    }
+};
 
 const watchItem = (item) => {
-  // Redirect to watch page
-  window.location.href = '/watch'
-}
+    // Redirect to watch page
+    window.location.href = "/watch";
+};
+
+onMounted(() => {
+    loadReferral();
+});
 </script>
