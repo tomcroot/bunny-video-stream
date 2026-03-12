@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ReferralCode;
 use App\Models\ReferralUsage;
+use App\Models\SiteSettings;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -29,6 +30,10 @@ class ReferralService
      */
     public function validateCode(string $code): float
     {
+        if (! $this->isReferralSystemEnabled()) {
+            throw new ModelNotFoundException('Referral system is disabled.');
+        }
+
         $referralCode = ReferralCode::byCode($code)
             ->active()
             ->firstOrFail();
@@ -41,6 +46,10 @@ class ReferralService
      */
     public function getCodeByString(string $code): ?ReferralCode
     {
+        if (! $this->isReferralSystemEnabled()) {
+            return null;
+        }
+
         return ReferralCode::byCode($code)->first();
     }
 
@@ -57,13 +66,14 @@ class ReferralService
             return $existing;
         }
 
-        $code = $this->generateUniqueNumericCode(6, 10);
+        $length = $this->getConfiguredCodeLengths();
+        $code = $this->generateUniqueNumericCode($length['min'], $length['max']);
 
         return ReferralCode::create([
             'code' => $code,
             'description' => 'Personal referral code for '.$user->name,
-            'discount_percentage' => self::DEFAULT_USER_REFERRAL_DISCOUNT,
-            'is_active' => true,
+            'discount_percentage' => $this->getDefaultUserReferralDiscount(),
+            'is_active' => $this->isDefaultReferralCodeActive(),
             'created_by' => $user->id,
         ]);
     }
@@ -73,7 +83,9 @@ class ReferralService
      */
     public function getReferralLink(string $code): string
     {
-        return URL::to('/ref/'.strtoupper($code));
+        $path = '/'.trim((string) $this->getReferralSetting('referral_link_path', '/ref'), '/');
+
+        return URL::to($path.'/'.strtoupper($code));
     }
 
     /**
@@ -147,10 +159,51 @@ class ReferralService
             ->with('creator')
             ->firstOrFail();
 
+        return [
+            'scope' => 'admin',
+            ...$this->buildReferralStatsPayload($referralCode, 20),
+        ];
+    }
+
+    /**
+     * Get minimal referral stats for the current user referral code.
+     *
+     * @return array<string, mixed>
+     */
+    public function getMyReferralStats(User $user): array
+    {
+        $referralCode = $this->getOrCreateUserReferralCode($user);
+
+        $stats = $this->buildReferralStatsPayload($referralCode, 5);
+
+        return [
+            'scope' => 'user',
+            'code' => $stats['code'],
+            'description' => $stats['description'],
+            'discount_percentage' => $stats['discount_percentage'],
+            'link' => $this->getReferralLink($referralCode->code),
+            'total_uses' => $stats['total_uses'],
+            'total_signups' => $stats['total_uses'],
+            'total_revenue' => $stats['total_revenue'],
+            'total_discount_given' => $stats['total_discount_given'],
+            'recent_uses' => $stats['recent_uses'],
+        ];
+    }
+
+    /**
+     * Shared referral analytics engine used by both admin and user referral responses.
+     *
+     * @return array<string, mixed>
+     */
+    private function buildReferralStatsPayload(ReferralCode $referralCode, int $recentLimit = 20): array
+    {
         $usages = $referralCode->usages()
             ->with('user')
             ->orderByDesc('used_at')
             ->get();
+
+        $totalUses = $usages->count();
+        $totalDiscountGiven = (float) $usages->sum('discount_applied');
 
         $usageByDay = $usages
             ->where('used_at', '>=', Carbon::now()->subDays(30))
@@ -165,7 +218,6 @@ class ReferralService
         $creator = $referralCode->creator;
 
         return [
-            'scope' => 'admin',
             'code' => $referralCode->code,
             'description' => $referralCode->description,
             'discount_percentage' => (float) $referralCode->discount_percentage,
@@ -175,56 +227,31 @@ class ReferralService
                 'name' => $creator->name,
                 'email' => $creator->email,
             ] : null,
-            'total_uses' => $usages->count(),
+            'total_uses' => $totalUses,
             'unique_users' => $usages->unique('user_id')->count(),
-            'total_discount_given' => (float) $usages->sum('discount_applied'),
-            'average_discount_per_use' => $usages->count() > 0
-                ? round((float) $usages->sum('discount_applied') / $usages->count(), 2)
+            'total_discount_given' => $totalDiscountGiven,
+            'total_revenue' => $totalDiscountGiven,
+            'average_discount_per_use' => $totalUses > 0
+                ? round($totalDiscountGiven / $totalUses, 2)
                 : 0,
             'usage_by_day_last_30_days' => $usageByDay,
             'recent_uses' => $usages
-                ->take(20)
+                ->take($recentLimit)
                 ->map(function ($usage) {
+                    $usedAt = $usage->used_at?->toIso8601String();
+
                     return [
-                        'user_name' => $usage->user->name,
-                        'user_email' => $usage->user->email,
+                        'id' => $usage->id,
+                        'user_name' => $usage->user->name ?? null,
+                        'user_email' => $usage->user->email ?? null,
+                        'referred_email' => $usage->user->email ?? null,
                         'discount_applied' => (float) $usage->discount_applied,
-                        'used_at' => $usage->used_at->toIso8601String(),
+                        'used_at' => $usedAt,
+                        'created_at' => $usedAt,
                     ];
                 })
                 ->values()
                 ->all(),
-        ];
-    }
-
-    /**
-     * Get minimal referral stats for the current user referral code.
-     *
-     * @return array<string, mixed>
-     */
-    public function getMyReferralStats(User $user): array
-    {
-        $referralCode = $this->getOrCreateUserReferralCode($user);
-
-        $usages = $referralCode->usages()
-            ->with('user')
-            ->orderByDesc('used_at')
-            ->get();
-
-        return [
-            'scope' => 'user',
-            'code' => $referralCode->code,
-            'discount_percentage' => (float) $referralCode->discount_percentage,
-            'link' => $this->getReferralLink($referralCode->code),
-            'total_uses' => $usages->count(),
-            'total_discount_given' => (float) $usages->sum('discount_applied'),
-            'recent_uses' => $usages->take(5)->map(function ($usage) {
-                return [
-                    'user_name' => $usage->user->name,
-                    'discount_applied' => (float) $usage->discount_applied,
-                    'used_at' => $usage->used_at->toIso8601String(),
-                ];
-            })->values()->all(),
         ];
     }
 
@@ -251,10 +278,13 @@ class ReferralService
     ): ReferralCode {
         $userId = $createdBy instanceof User ? $createdBy->id : $createdBy;
 
+        $maxDiscount = $this->getMaximumAllowedDiscountPercentage();
+        $normalizedDiscount = max(0, min($maxDiscount, $discountPercentage));
+
         return ReferralCode::create([
             'code' => strtoupper($code),
             'description' => $description,
-            'discount_percentage' => $discountPercentage,
+            'discount_percentage' => $normalizedDiscount,
             'created_by' => $userId,
         ]);
     }
@@ -293,5 +323,51 @@ class ReferralService
         }
 
         throw new \RuntimeException('Unable to generate a unique referral code.');
+    }
+
+    private function getReferralSetting(string $key, mixed $default = null): mixed
+    {
+        return SiteSettings::getSetting($key, $default);
+    }
+
+    private function isReferralSystemEnabled(): bool
+    {
+        return (bool) $this->getReferralSetting('referral_system_enabled', true);
+    }
+
+    private function isDefaultReferralCodeActive(): bool
+    {
+        return (bool) $this->getReferralSetting('referral_default_code_active', true);
+    }
+
+    private function getDefaultUserReferralDiscount(): float
+    {
+        $default = (float) $this->getReferralSetting(
+            'referral_default_discount_percentage',
+            self::DEFAULT_USER_REFERRAL_DISCOUNT
+        );
+
+        return max(0, min($this->getMaximumAllowedDiscountPercentage(), $default));
+    }
+
+    private function getMaximumAllowedDiscountPercentage(): float
+    {
+        $value = (float) $this->getReferralSetting('referral_max_discount_percentage', 100);
+
+        return max(1, min(100, $value));
+    }
+
+    /**
+     * @return array{min: int, max: int}
+     */
+    private function getConfiguredCodeLengths(): array
+    {
+        $min = (int) $this->getReferralSetting('referral_min_code_length', 6);
+        $max = (int) $this->getReferralSetting('referral_max_code_length', 10);
+
+        $min = max(4, min(12, $min));
+        $max = max($min, min(12, $max));
+
+        return ['min' => $min, 'max' => $max];
     }
 }

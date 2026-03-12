@@ -7,9 +7,9 @@
         <p class="mt-1 text-gray-600">Manage key site features and configurations</p>
 
         <!-- Environment Info Banner -->
-        <div class="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+        <div class="mt-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
           <div class="flex items-start gap-3">
-            <svg class="w-6 h-6 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-blue-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div class="flex-1">
@@ -256,6 +256,122 @@
           </div>
         </div>
 
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-6">Referral Settings</h2>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between py-3 border-b border-gray-200">
+              <div>
+                <p class="font-medium text-gray-900">Enable Referral System</p>
+                <p class="text-sm text-gray-500">Globally enable or disable referrals</p>
+              </div>
+              <button
+                type="button"
+                @click="toggleSetting('referral_system_enabled')"
+                :class="[
+                  formData.referral_system_enabled ? 'bg-red-600' : 'bg-gray-300',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                ]"
+              >
+                <span
+                  :class="[
+                    formData.referral_system_enabled ? 'translate-x-5' : 'translate-x-0',
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                  ]"
+                />
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between py-3 border-b border-gray-200">
+              <div>
+                <p class="font-medium text-gray-900">Auto-Created Codes Active</p>
+                <p class="text-sm text-gray-500">New user referral codes will be active by default</p>
+              </div>
+              <button
+                type="button"
+                @click="toggleSetting('referral_default_code_active')"
+                :class="[
+                  formData.referral_default_code_active ? 'bg-red-600' : 'bg-gray-300',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                ]"
+              >
+                <span
+                  :class="[
+                    formData.referral_default_code_active ? 'translate-x-5' : 'translate-x-0',
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                  ]"
+                />
+              </button>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Default Discount Percentage
+              </label>
+              <input
+                v-model.number="formData.referral_default_discount_percentage"
+                type="number"
+                step="0.1"
+                min="0"
+                max="100"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Max Allowed Discount Percentage
+              </label>
+              <input
+                v-model.number="formData.referral_max_discount_percentage"
+                type="number"
+                step="0.1"
+                min="1"
+                max="100"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Min Code Length
+                </label>
+                <input
+                  v-model.number="formData.referral_min_code_length"
+                  type="number"
+                  min="4"
+                  max="12"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Max Code Length
+                </label>
+                <input
+                  v-model.number="formData.referral_max_code_length"
+                  type="number"
+                  min="4"
+                  max="12"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Referral Link Path
+              </label>
+              <input
+                v-model="formData.referral_link_path"
+                type="text"
+                placeholder="/ref"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+          </div>
+        </div>
+
         <div class="flex gap-3">
           <button
             type="submit"
@@ -310,6 +426,13 @@ const formData = reactive({
   reviews_require_approval: false,
   maintenance_mode: false,
   max_file_upload_mb: 50,
+  referral_system_enabled: true,
+  referral_default_discount_percentage: 5,
+  referral_max_discount_percentage: 100,
+  referral_min_code_length: 6,
+  referral_max_code_length: 10,
+  referral_default_code_active: true,
+  referral_link_path: '/ref',
 })
 
 // Initialize form data from props
@@ -320,7 +443,10 @@ const initializeFormData = () => {
       if (typeof formData[key] === 'boolean') {
         formData[key] = settingValue === 'true' || settingValue === true
       } else if (typeof formData[key] === 'number') {
-        formData[key] = parseInt(settingValue)
+        const parsed = Number(settingValue)
+        if (!Number.isNaN(parsed)) {
+          formData[key] = parsed
+        }
       } else {
         formData[key] = settingValue
       }
@@ -340,7 +466,9 @@ const handleSubmit = () => {
   const settingsArray = Object.entries(formData).map(([key, value]) => {
     let dataType = 'string'
     if (typeof value === 'boolean') dataType = 'boolean'
-    if (typeof value === 'number') dataType = key.includes('date') ? 'string' : 'integer'
+    if (typeof value === 'number') {
+      dataType = key.includes('percentage') ? 'float' : 'integer'
+    }
 
     return {
       key,
