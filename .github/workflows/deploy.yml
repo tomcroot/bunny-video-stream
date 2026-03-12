@@ -17,7 +17,7 @@ jobs:
       APP_ENV: testing
       APP_KEY: base64:VHr0lIiFXxK0N6Y9JZ1V1K3TgfR2bX0p6p7Dr7guP6M=
       APP_DEBUG: true
-      APP_URL: http://localhost
+      APP_URL: https://acrazydayinaccra.com
       DB_CONNECTION: sqlite
       DB_DATABASE: /tmp/crazyday.sqlite
       CACHE_STORE: array

@@ -14,9 +14,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
+    public function successPage(Request $request)
+    {
+        $reference = (string) $request->query('reference', '');
+
+        return Inertia::render('PaymentSuccess', [
+            'reference' => $reference,
+        ]);
+    }
+
     public function init(Request $request, PaystackService $paystack, ReferralService $referralService)
     {
         $user = Auth::user();
@@ -337,7 +347,9 @@ class PaymentController extends Controller
                     'user_id' => $payment->user_id,
                 ]);
 
-                return redirect()->route('watch')->with('status', 'Payment successful! Enjoy your movie.');
+                return redirect()->route('payments.success', [
+                    'reference' => $reference,
+                ])->with('status', 'Payment successful! Redirecting you to your video.');
             }
         }
 

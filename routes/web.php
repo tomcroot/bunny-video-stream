@@ -167,6 +167,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/payments/init', [PaymentController::class, 'init'])->name('payments.init');
     Route::get('/payments/status/{reference}', [PaymentController::class, 'status'])
         ->name('payments.status');
+    Route::get('/payment/success', [PaymentController::class, 'successPage'])->name('payments.success');
     Route::get('/api/referral/me', [\App\Http\Controllers\ReferralCodeController::class, 'myReferral'])
         ->name('referral.me');
     // Watch progress tracking (for resume functionality)
