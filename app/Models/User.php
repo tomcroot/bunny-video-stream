@@ -54,7 +54,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function booted(): void
     {
         static::created(function (User $user): void {
-            app(ReferralService::class)->getOrCreateUserReferralCode($user);
+            $referralService = app(ReferralService::class);
+            if ($referralService->shouldAutoProvisionUserCode()) {
+                $referralService->getOrCreateUserReferralCode($user);
+            }
         });
     }
 

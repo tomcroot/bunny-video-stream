@@ -69,11 +69,30 @@ class SettingsController extends Controller
         ];
 
         // Merge defaults with existing settings
+        $defaultDataTypes = [
+            'premiere_date' => 'string',
+            'site_title' => 'string',
+            'contact_email' => 'string',
+            'enable_contact_form' => 'boolean',
+            'enable_reviews' => 'boolean',
+            'reviews_require_approval' => 'boolean',
+            'maintenance_mode' => 'boolean',
+            'max_file_upload_mb' => 'integer',
+            'referral_system_enabled' => 'boolean',
+            'referral_default_discount_percentage' => 'float',
+            'referral_max_discount_percentage' => 'float',
+            'referral_min_code_length' => 'integer',
+            'referral_max_code_length' => 'integer',
+            'referral_default_code_active' => 'boolean',
+            'referral_link_path' => 'string',
+        ];
+
         foreach ($defaults as $key => $value) {
             if (! isset($formattedSettings[$key])) {
                 $formattedSettings[$key] = [
                     'value' => $value,
-                    'data_type' => is_numeric($value) ? 'integer' : (in_array($value, ['true', 'false']) ? 'boolean' : 'string'),
+                    'data_type' => $defaultDataTypes[$key]
+                        ?? (is_numeric($value) ? 'integer' : (in_array($value, ['true', 'false']) ? 'boolean' : 'string')),
                     'description' => '',
                 ];
             }
@@ -277,7 +296,7 @@ class SettingsController extends Controller
             }
 
             $snapshot = $this->getReferralSettingsSnapshot();
-            $snapshot[$key] = (string) $validated['value'];
+            $snapshot[$key] = $this->normalizeReferralSnapshotValue($key, $validated['value']);
 
             $this->validateReferralSnapshot($snapshot);
         }
@@ -318,7 +337,7 @@ class SettingsController extends Controller
                 ]);
             }
 
-            $snapshot[$key] = (string) $incoming['value'];
+            $snapshot[$key] = $this->normalizeReferralSnapshotValue($key, $incoming['value']);
         }
 
         $this->validateReferralSnapshot($snapshot);
@@ -351,7 +370,7 @@ class SettingsController extends Controller
             'referral_min_code_length' => ['required', 'integer', 'min:4', 'max:12'],
             'referral_max_code_length' => ['required', 'integer', 'min:4', 'max:12'],
             'referral_default_code_active' => ['required', 'in:true,false,1,0'],
-            'referral_link_path' => ['required', 'string', 'max:50', 'regex:/^\/[A-Za-z0-9_\/-]*$/'],
+            'referral_link_path' => ['required', 'string', 'in:/ref'],
         ]);
 
         $validator->after(function ($validator) use ($snapshot) {
@@ -378,5 +397,28 @@ class SettingsController extends Controller
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
+    }
+
+    private function normalizeReferralSnapshotValue(string $key, mixed $value): string
+    {
+        if (in_array($key, ['referral_system_enabled', 'referral_default_code_active'], true)) {
+            return $this->normalizeBooleanString($value);
+        }
+
+        return (string) $value;
+    }
+
+    private function normalizeBooleanString(mixed $value): string
+    {
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+
+        $normalized = strtolower(trim((string) $value));
+        if (in_array($normalized, ['1', 'true', 'yes', 'on'], true)) {
+            return 'true';
+        }
+
+        return 'false';
     }
 }

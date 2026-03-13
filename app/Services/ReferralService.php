@@ -66,6 +66,10 @@ class ReferralService
             return $existing;
         }
 
+        if (! $this->isReferralSystemEnabled()) {
+            throw new ModelNotFoundException('Referral system is disabled.');
+        }
+
         $length = $this->getConfiguredCodeLengths();
         $code = $this->generateUniqueNumericCode($length['min'], $length['max']);
 
@@ -83,7 +87,10 @@ class ReferralService
      */
     public function getReferralLink(string $code): string
     {
-        $path = '/'.trim((string) $this->getReferralSetting('referral_link_path', '/ref'), '/');
+        $path = (string) $this->getReferralSetting('referral_link_path', '/ref');
+        if ($path !== '/ref') {
+            $path = '/ref';
+        }
 
         return URL::to($path.'/'.strtoupper($code));
     }
@@ -172,6 +179,21 @@ class ReferralService
      */
     public function getMyReferralStats(User $user): array
     {
+        if (! $this->isReferralSystemEnabled()) {
+            return [
+                'scope' => 'user',
+                'code' => null,
+                'description' => null,
+                'discount_percentage' => 0,
+                'link' => null,
+                'total_uses' => 0,
+                'total_signups' => 0,
+                'total_revenue' => 0,
+                'total_discount_given' => 0,
+                'recent_uses' => [],
+            ];
+        }
+
         $referralCode = $this->getOrCreateUserReferralCode($user);
 
         $stats = $this->buildReferralStatsPayload($referralCode, 5);
@@ -333,6 +355,11 @@ class ReferralService
     private function isReferralSystemEnabled(): bool
     {
         return (bool) $this->getReferralSetting('referral_system_enabled', true);
+    }
+
+    public function shouldAutoProvisionUserCode(): bool
+    {
+        return $this->isReferralSystemEnabled();
     }
 
     private function isDefaultReferralCodeActive(): bool
