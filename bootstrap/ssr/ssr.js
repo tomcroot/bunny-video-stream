@@ -4657,7 +4657,14 @@ const _sfc_main$P = {
       enable_reviews: false,
       reviews_require_approval: false,
       maintenance_mode: false,
-      max_file_upload_mb: 50
+      max_file_upload_mb: 50,
+      referral_system_enabled: true,
+      referral_default_discount_percentage: 5,
+      referral_max_discount_percentage: 100,
+      referral_min_code_length: 6,
+      referral_max_code_length: 10,
+      referral_default_code_active: true,
+      referral_link_path: "/ref"
     });
     const initializeFormData = () => {
       Object.keys(formData).forEach((key) => {
@@ -4666,7 +4673,10 @@ const _sfc_main$P = {
           if (typeof formData[key] === "boolean") {
             formData[key] = settingValue === "true" || settingValue === true;
           } else if (typeof formData[key] === "number") {
-            formData[key] = parseInt(settingValue);
+            const parsed = Number(settingValue);
+            if (!Number.isNaN(parsed)) {
+              formData[key] = parsed;
+            }
           } else {
             formData[key] = settingValue;
           }
@@ -4683,7 +4693,9 @@ const _sfc_main$P = {
       const settingsArray = Object.entries(formData).map(([key, value]) => {
         let dataType = "string";
         if (typeof value === "boolean") dataType = "boolean";
-        if (typeof value === "number") dataType = key.includes("date") ? "string" : "integer";
+        if (typeof value === "number") {
+          dataType = key.includes("percentage") ? "float" : "integer";
+        }
         return {
           key,
           value: String(value),
@@ -4706,7 +4718,7 @@ const _sfc_main$P = {
       _push(ssrRenderComponent(_sfc_main$1a, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(`<div class="bg-white shadow"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"${_scopeId}><h1 class="text-3xl font-bold text-gray-900"${_scopeId}>Database Settings</h1><p class="mt-1 text-gray-600"${_scopeId}>Manage key site features and configurations</p><div class="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg"${_scopeId}><div class="flex items-start gap-3"${_scopeId}><svg class="w-6 h-6 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"${_scopeId}></path></svg><div class="flex-1"${_scopeId}><p class="text-sm font-semibold text-blue-900 mb-2"${_scopeId}>Current Environment Configuration</p><div class="grid grid-cols-2 gap-3 text-xs"${_scopeId}><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Environment:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_env || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App Name:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_name || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App URL:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_url || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Mail From:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.mail_from || "N/A")}</span></div></div><p class="text-xs text-blue-700 mt-3"${_scopeId}> Some settings below use values from your .env file as defaults. Database settings override these defaults when saved. </p></div></div></div><div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg"${_scopeId}><p class="text-sm text-yellow-800 mb-2"${_scopeId}><strong${_scopeId}>Need to Edit API Keys or Database Credentials?</strong></p><p class="text-xs text-yellow-700 mb-3"${_scopeId}> These are runtime database settings. For .env configuration (API keys, database credentials, email/SMS settings, payment keys, etc.), use the Environment Settings page. </p>`);
+            _push2(`<div class="bg-white shadow"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"${_scopeId}><h1 class="text-3xl font-bold text-gray-900"${_scopeId}>Database Settings</h1><p class="mt-1 text-gray-600"${_scopeId}>Manage key site features and configurations</p><div class="mt-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg"${_scopeId}><div class="flex items-start gap-3"${_scopeId}><svg class="w-6 h-6 text-blue-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"${_scopeId}></path></svg><div class="flex-1"${_scopeId}><p class="text-sm font-semibold text-blue-900 mb-2"${_scopeId}>Current Environment Configuration</p><div class="grid grid-cols-2 gap-3 text-xs"${_scopeId}><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Environment:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_env || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App Name:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_name || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App URL:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_url || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Mail From:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.mail_from || "N/A")}</span></div></div><p class="text-xs text-blue-700 mt-3"${_scopeId}> Some settings below use values from your .env file as defaults. Database settings override these defaults when saved. </p></div></div></div><div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg"${_scopeId}><p class="text-sm text-yellow-800 mb-2"${_scopeId}><strong${_scopeId}>Need to Edit API Keys or Database Credentials?</strong></p><p class="text-xs text-yellow-700 mb-3"${_scopeId}> These are runtime database settings. For .env configuration (API keys, database credentials, email/SMS settings, payment keys, etc.), use the Environment Settings page. </p>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: "/admin/env-settings",
               class: "inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 text-sm font-medium transition-colors"
@@ -4783,7 +4795,19 @@ const _sfc_main$P = {
             } else {
               _push2(`<!---->`);
             }
-            _push2(`</label><input${ssrRenderAttr("value", formData.contact_email)} type="email"${ssrRenderAttr("placeholder", __props.envInfo?.mail_from || "contact@example.com")} class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Email to receive contact form submissions (defaults to MAIL_FROM_ADDRESS) </p></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Max File Upload Size (MB) </label><input${ssrRenderAttr("value", formData.max_file_upload_mb)} type="number" min="1" max="500" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Maximum file size allowed for uploads </p></div></div></div><div class="flex gap-3"${_scopeId}><button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium"${_scopeId}> Save Settings </button>`);
+            _push2(`</label><input${ssrRenderAttr("value", formData.contact_email)} type="email"${ssrRenderAttr("placeholder", __props.envInfo?.mail_from || "contact@example.com")} class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Email to receive contact form submissions (defaults to MAIL_FROM_ADDRESS) </p></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Max File Upload Size (MB) </label><input${ssrRenderAttr("value", formData.max_file_upload_mb)} type="number" min="1" max="500" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Maximum file size allowed for uploads </p></div></div></div><div class="bg-white rounded-lg shadow p-6"${_scopeId}><h2 class="text-xl font-semibold text-gray-900 mb-6"${_scopeId}>Referral Settings</h2><div class="space-y-4"${_scopeId}><div class="flex items-center justify-between py-3 border-b border-gray-200"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Enable Referral System</p><p class="text-sm text-gray-500"${_scopeId}>Globally enable or disable referrals</p></div><button type="button" class="${ssrRenderClass([
+              formData.referral_system_enabled ? "bg-red-600" : "bg-gray-300",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            ])}"${_scopeId}><span class="${ssrRenderClass([
+              formData.referral_system_enabled ? "translate-x-5" : "translate-x-0",
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3 border-b border-gray-200"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Auto-Created Codes Active</p><p class="text-sm text-gray-500"${_scopeId}>New user referral codes will be active by default</p></div><button type="button" class="${ssrRenderClass([
+              formData.referral_default_code_active ? "bg-red-600" : "bg-gray-300",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            ])}"${_scopeId}><span class="${ssrRenderClass([
+              formData.referral_default_code_active ? "translate-x-5" : "translate-x-0",
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Default Discount Percentage </label><input${ssrRenderAttr("value", formData.referral_default_discount_percentage)} type="number" step="0.1" min="0" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Max Allowed Discount Percentage </label><input${ssrRenderAttr("value", formData.referral_max_discount_percentage)} type="number" step="0.1" min="1" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Min Code Length </label><input${ssrRenderAttr("value", formData.referral_min_code_length)} type="number" min="4" max="12" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Max Code Length </label><input${ssrRenderAttr("value", formData.referral_max_code_length)} type="number" min="4" max="12" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Referral Link Path </label><input${ssrRenderAttr("value", formData.referral_link_path)} type="text" placeholder="/ref" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div></div></div><div class="flex gap-3"${_scopeId}><button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium"${_scopeId}> Save Settings </button>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: "/admin",
               class: "px-6 py-2 bg-gray-200 text-gray-900 rounded-md hover:bg-gray-300 font-medium"
@@ -4806,10 +4830,10 @@ const _sfc_main$P = {
                 createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" }, [
                   createVNode("h1", { class: "text-3xl font-bold text-gray-900" }, "Database Settings"),
                   createVNode("p", { class: "mt-1 text-gray-600" }, "Manage key site features and configurations"),
-                  createVNode("div", { class: "mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg" }, [
+                  createVNode("div", { class: "mt-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg" }, [
                     createVNode("div", { class: "flex items-start gap-3" }, [
                       (openBlock(), createBlock("svg", {
-                        class: "w-6 h-6 text-blue-600 mt-0.5 flex-shrink-0",
+                        class: "w-6 h-6 text-blue-600 mt-0.5 shrink-0",
                         fill: "none",
                         stroke: "currentColor",
                         viewBox: "0 0 24 24"
@@ -5070,6 +5094,136 @@ const _sfc_main$P = {
                           ]
                         ]),
                         createVNode("p", { class: "mt-1 text-xs text-gray-500" }, " Maximum file size allowed for uploads ")
+                      ])
+                    ])
+                  ]),
+                  createVNode("div", { class: "bg-white rounded-lg shadow p-6" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-gray-900 mb-6" }, "Referral Settings"),
+                    createVNode("div", { class: "space-y-4" }, [
+                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-gray-200" }, [
+                        createVNode("div", null, [
+                          createVNode("p", { class: "font-medium text-gray-900" }, "Enable Referral System"),
+                          createVNode("p", { class: "text-sm text-gray-500" }, "Globally enable or disable referrals")
+                        ]),
+                        createVNode("button", {
+                          type: "button",
+                          onClick: ($event) => toggleSetting("referral_system_enabled"),
+                          class: [
+                            formData.referral_system_enabled ? "bg-red-600" : "bg-gray-300",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                          ]
+                        }, [
+                          createVNode("span", {
+                            class: [
+                              formData.referral_system_enabled ? "translate-x-5" : "translate-x-0",
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                            ]
+                          }, null, 2)
+                        ], 10, ["onClick"])
+                      ]),
+                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-gray-200" }, [
+                        createVNode("div", null, [
+                          createVNode("p", { class: "font-medium text-gray-900" }, "Auto-Created Codes Active"),
+                          createVNode("p", { class: "text-sm text-gray-500" }, "New user referral codes will be active by default")
+                        ]),
+                        createVNode("button", {
+                          type: "button",
+                          onClick: ($event) => toggleSetting("referral_default_code_active"),
+                          class: [
+                            formData.referral_default_code_active ? "bg-red-600" : "bg-gray-300",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                          ]
+                        }, [
+                          createVNode("span", {
+                            class: [
+                              formData.referral_default_code_active ? "translate-x-5" : "translate-x-0",
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                            ]
+                          }, null, 2)
+                        ], 10, ["onClick"])
+                      ]),
+                      createVNode("div", null, [
+                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Default Discount Percentage "),
+                        withDirectives(createVNode("input", {
+                          "onUpdate:modelValue": ($event) => formData.referral_default_discount_percentage = $event,
+                          type: "number",
+                          step: "0.1",
+                          min: "0",
+                          max: "100",
+                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                        }, null, 8, ["onUpdate:modelValue"]), [
+                          [
+                            vModelText,
+                            formData.referral_default_discount_percentage,
+                            void 0,
+                            { number: true }
+                          ]
+                        ])
+                      ]),
+                      createVNode("div", null, [
+                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Max Allowed Discount Percentage "),
+                        withDirectives(createVNode("input", {
+                          "onUpdate:modelValue": ($event) => formData.referral_max_discount_percentage = $event,
+                          type: "number",
+                          step: "0.1",
+                          min: "1",
+                          max: "100",
+                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                        }, null, 8, ["onUpdate:modelValue"]), [
+                          [
+                            vModelText,
+                            formData.referral_max_discount_percentage,
+                            void 0,
+                            { number: true }
+                          ]
+                        ])
+                      ]),
+                      createVNode("div", { class: "grid grid-cols-1 md:grid-cols-2 gap-4" }, [
+                        createVNode("div", null, [
+                          createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Min Code Length "),
+                          withDirectives(createVNode("input", {
+                            "onUpdate:modelValue": ($event) => formData.referral_min_code_length = $event,
+                            type: "number",
+                            min: "4",
+                            max: "12",
+                            class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          }, null, 8, ["onUpdate:modelValue"]), [
+                            [
+                              vModelText,
+                              formData.referral_min_code_length,
+                              void 0,
+                              { number: true }
+                            ]
+                          ])
+                        ]),
+                        createVNode("div", null, [
+                          createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Max Code Length "),
+                          withDirectives(createVNode("input", {
+                            "onUpdate:modelValue": ($event) => formData.referral_max_code_length = $event,
+                            type: "number",
+                            min: "4",
+                            max: "12",
+                            class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          }, null, 8, ["onUpdate:modelValue"]), [
+                            [
+                              vModelText,
+                              formData.referral_max_code_length,
+                              void 0,
+                              { number: true }
+                            ]
+                          ])
+                        ])
+                      ]),
+                      createVNode("div", null, [
+                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Referral Link Path "),
+                        withDirectives(createVNode("input", {
+                          "onUpdate:modelValue": ($event) => formData.referral_link_path = $event,
+                          type: "text",
+                          placeholder: "/ref",
+                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                        }, null, 8, ["onUpdate:modelValue"]), [
+                          [vModelText, formData.referral_link_path]
+                        ])
                       ])
                     ])
                   ]),
