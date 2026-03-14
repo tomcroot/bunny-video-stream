@@ -37,7 +37,7 @@ class PageContentController extends Controller
     {
         $validated = $request->validate([
             'page' => ['required', 'string', 'max:255', 'unique:page_content,page'],
-            'title' => 'required|string|max:255',
+            'title' => ['required', 'string', 'max:255', 'unique:page_content,title'],
             'poster' => 'nullable|string',
             'backdrop' => 'nullable|string',
             'synopsis' => 'nullable|string',
@@ -49,7 +49,7 @@ class PageContentController extends Controller
             'metadata' => 'nullable|array',
             'sponsors' => 'nullable|array',
             'is_active' => 'boolean',
-            'movie_url' => 'nullable|url',
+            'movie_url' => 'nullable|url|unique:page_content,movie_url',
         ]);
 
         PageContent::create($validated);
@@ -84,7 +84,7 @@ class PageContentController extends Controller
     {
         $validated = $request->validate([
             'page' => ['required', 'string', 'max:255', Rule::unique('page_content', 'page')->ignore($pageContent->id)],
-            'title' => 'required|string|max:255',
+            'title' => ['required', 'string', 'max:255', Rule::unique('page_content', 'title')->ignore($pageContent->id)],
             'poster' => 'nullable|string',
             'backdrop' => 'nullable|string',
             'synopsis' => 'nullable|string',
@@ -96,7 +96,7 @@ class PageContentController extends Controller
             'metadata' => 'nullable|array',
             'sponsors' => 'nullable|array',
             'is_active' => 'boolean',
-            'movie_url' => 'nullable|url',
+            'movie_url' => ['nullable', 'url', Rule::unique('page_content', 'movie_url')->ignore($pageContent->id)],
         ]);
 
         $pageContent->update($validated);

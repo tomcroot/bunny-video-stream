@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Banner;
 use App\Models\ReferralCode;
 use App\Models\ReferralUsage;
 use App\Models\SiteSettings;
@@ -44,13 +45,25 @@ class ReferralService
     /**
      * Get a referral code by code string.
      */
-    public function getCodeByString(string $code): ?ReferralCode
+    public function getCodeByString(string $code, ?int $movieId = null): ?ReferralCode
     {
         if (! $this->isReferralSystemEnabled()) {
             return null;
         }
 
-        return ReferralCode::byCode($code)->first();
+        $referralCode = ReferralCode::byCode($code)
+            ->with('movie:id,title')
+            ->first();
+
+        if (! $referralCode) {
+            return null;
+        }
+
+        if ($referralCode->movie_id !== null && $movieId !== null && (int) $referralCode->movie_id !== (int) $movieId) {
+            return null;
+        }
+
+        return $referralCode;
     }
 
     /**
@@ -85,14 +98,20 @@ class ReferralService
     /**
      * Build a shareable referral link.
      */
-    public function getReferralLink(string $code): string
+    public function getReferralLink(string $code, ?int $movieId = null): string
     {
         $path = (string) $this->getReferralSetting('referral_link_path', '/ref');
         if ($path !== '/ref') {
             $path = '/ref';
         }
 
-        return URL::to($path.'/'.strtoupper($code));
+        $link = URL::to($path.'/'.strtoupper($code));
+
+        if ($movieId !== null) {
+            $link .= '?movieId='.$movieId;
+        }
+
+        return $link;
     }
 
     /**
@@ -163,7 +182,7 @@ class ReferralService
     public function getCodeStats(string $code): array
     {
         $referralCode = ReferralCode::byCode($code)
-            ->with('creator')
+            ->with(['creator', 'movie'])
             ->firstOrFail();
 
         return [
@@ -196,7 +215,7 @@ class ReferralService
 
         $referralCode = $this->getOrCreateUserReferralCode($user);
 
-        $stats = $this->buildReferralStatsPayload($referralCode, 5);
+        $stats = $this->buildReferralStatsPayload($referralCode, 5, null);
 
         return [
             'scope' => 'user',
@@ -217,15 +236,28 @@ class ReferralService
      *
      * @return array<string, mixed>
      */
-    private function buildReferralStatsPayload(ReferralCode $referralCode, int $recentLimit = 20): array
+    private function buildReferralStatsPayload(ReferralCode $referralCode, int $recentLimit = 20, ?int $movieId = null): array
     {
-        $usages = $referralCode->usages()
-            ->with('user')
+        $movieId = $referralCode->movie_id ?? $movieId;
+
+        $usageQuery = $referralCode->usages()
+            ->with(['user', 'subscription.payment']);
+
+        if ($movieId !== null) {
+            $usageQuery->whereHas('subscription', function ($query) use ($movieId) {
+                $query->where('movie_id', $movieId);
+            });
+        }
+
+        $usages = $usageQuery
             ->orderByDesc('used_at')
             ->get();
 
         $totalUses = $usages->count();
         $totalDiscountGiven = (float) $usages->sum('discount_applied');
+        $totalRevenue = (float) $usages->sum(function ($usage) {
+            return ((int) ($usage->subscription?->payment?->amount ?? 0)) / 100;
+        });
 
         $usageByDay = $usages
             ->where('used_at', '>=', Carbon::now()->subDays(30))
@@ -240,10 +272,16 @@ class ReferralService
         $creator = $referralCode->creator;
 
         return [
+            'movie_id' => $movieId,
             'code' => $referralCode->code,
             'description' => $referralCode->description,
             'discount_percentage' => (float) $referralCode->discount_percentage,
             'is_active' => $referralCode->is_active,
+            'movie' => $referralCode->movie ? [
+                'id' => $referralCode->movie->id,
+                'title' => $referralCode->movie->title,
+            ] : null,
+            'link' => $this->getReferralLink($referralCode->code, $movieId),
             'creator' => $creator ? [
                 'id' => $creator->id,
                 'name' => $creator->name,
@@ -252,7 +290,7 @@ class ReferralService
             'total_uses' => $totalUses,
             'unique_users' => $usages->unique('user_id')->count(),
             'total_discount_given' => $totalDiscountGiven,
-            'total_revenue' => $totalDiscountGiven,
+            'total_revenue' => round($totalRevenue, 2),
             'average_discount_per_use' => $totalUses > 0
                 ? round($totalDiscountGiven / $totalUses, 2)
                 : 0,
@@ -268,6 +306,8 @@ class ReferralService
                         'user_email' => $usage->user->email ?? null,
                         'referred_email' => $usage->user->email ?? null,
                         'discount_applied' => (float) $usage->discount_applied,
+                        'movie_id' => $usage->subscription?->movie_id,
+                        'payment_amount' => round(((int) ($usage->subscription?->payment?->amount ?? 0)) / 100, 2),
                         'used_at' => $usedAt,
                         'created_at' => $usedAt,
                     ];
@@ -296,7 +336,8 @@ class ReferralService
         string $code,
         float $discountPercentage,
         User|string $createdBy,
-        ?string $description = null
+        ?string $description = null,
+        ?int $movieId = null
     ): ReferralCode {
         $userId = $createdBy instanceof User ? $createdBy->id : $createdBy;
 
@@ -308,7 +349,17 @@ class ReferralService
             'description' => $description,
             'discount_percentage' => $normalizedDiscount,
             'created_by' => $userId,
+            'movie_id' => $movieId,
         ]);
+    }
+
+    public function getAdminReferralMovies()
+    {
+        return Banner::query()
+            ->select('id', 'title', 'is_active', 'target_date')
+            ->orderBy('display_order')
+            ->orderBy('title')
+            ->get();
     }
 
     /**

@@ -106,7 +106,7 @@ class PaymentController extends Controller
             $originalAmount = (int) $validated['amount'];
 
             if (! empty($validated['referral_code'])) {
-                $referralCode = $referralService->getCodeByString($validated['referral_code']);
+                $referralCode = $referralService->getCodeByString($validated['referral_code'], (int) $movieId);
 
                 if (! $referralCode || ! $referralCode->is_active) {
                     throw new ModelNotFoundException('Invalid or inactive referral code.');

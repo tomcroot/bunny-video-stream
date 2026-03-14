@@ -11,6 +11,7 @@
             <Link href="/admin/cast-crew" class="text-muted-foreground hover:text-foreground transition-colors">Cast & Crew</Link>
             <Link href="/admin/gallery" class="text-muted-foreground hover:text-foreground transition-colors">Gallery</Link>
             <Link href="/admin/reviews" class="text-muted-foreground hover:text-foreground transition-colors">Reviews</Link>
+            <Link href="/admin/referral-codes" class="text-muted-foreground hover:text-foreground transition-colors">Referrals</Link>
             <Link href="/admin/page-content" class="text-muted-foreground hover:text-foreground transition-colors">Details</Link>
             <Link href="/admin/subscribers" class="text-muted-foreground hover:text-foreground transition-colors">Subscribers</Link>
             <Link href="/admin/settings" class="text-muted-foreground hover:text-foreground transition-colors">Settings</Link>

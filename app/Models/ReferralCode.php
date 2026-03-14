@@ -26,6 +26,7 @@ class ReferralCode extends Model
         'discount_percentage',
         'is_active',
         'created_by',
+        'movie_id',
     ];
 
     /**
@@ -46,6 +47,11 @@ class ReferralCode extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function movie(): BelongsTo
+    {
+        return $this->belongsTo(Banner::class, 'movie_id');
     }
 
     /**

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 class ReferralCodeController extends Controller
@@ -22,16 +23,52 @@ class ReferralCodeController extends Controller
     /**
      * Public page: Show all active referral codes (optional UI page)
      */
-    public function index(): JsonResponse
+    public function index(Request $request)
     {
-        $codes = $this->referralService->getActiveCodesList();
+        $movies = $this->referralService->getAdminReferralMovies();
 
-        return response()->json([
-            'codes' => $codes->map(fn ($code) => [
-                'code' => $code->code,
-                'description' => $code->description,
-                'discount_percentage' => (float) $code->discount_percentage,
-            ]),
+        $codes = ReferralCode::query()
+            ->with(['creator:id,name,email', 'movie:id,title'])
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function (ReferralCode $code) {
+                $stats = $this->referralService->getCodeStats($code->code);
+
+                return [
+                    'id' => $code->id,
+                    'code' => $code->code,
+                    'description' => $code->description,
+                    'discount_percentage' => (float) $code->discount_percentage,
+                    'is_active' => (bool) $code->is_active,
+                    'created_at' => $code->created_at?->toIso8601String(),
+                    'movie' => $stats['movie'],
+                    'creator' => $stats['creator'],
+                    'link' => $stats['link'],
+                    'stats' => $stats,
+                ];
+            })
+            ->values();
+
+        $summary = [
+            'total_codes' => $codes->count(),
+            'active_codes' => $codes->where('is_active', true)->count(),
+            'total_uses' => $codes->sum(fn ($code) => $code['stats']['total_uses'] ?? 0),
+            'total_discount_given' => round($codes->sum(fn ($code) => $code['stats']['total_discount_given'] ?? 0), 2),
+            'total_revenue' => round($codes->sum(fn ($code) => $code['stats']['total_revenue'] ?? 0), 2),
+        ];
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'movies' => $movies,
+                'summary' => $summary,
+                'codes' => $codes,
+            ]);
+        }
+
+        return Inertia::render('Admin/Referrals/Index', [
+            'movies' => $movies,
+            'summary' => $summary,
+            'codes' => $codes,
         ]);
     }
 
@@ -74,10 +111,14 @@ class ReferralCodeController extends Controller
     {
         $validated = $request->validate([
             'code' => 'required|string|max:50',
+            'movie_id' => 'nullable|integer',
         ]);
 
         try {
-            $referralCode = $this->referralService->getCodeByString($validated['code']);
+            $referralCode = $this->referralService->getCodeByString(
+                $validated['code'],
+                isset($validated['movie_id']) ? (int) $validated['movie_id'] : null
+            );
 
             if (! $referralCode || ! $referralCode->is_active) {
                 throw new ModelNotFoundException;
@@ -168,10 +209,11 @@ class ReferralCodeController extends Controller
         }
 
         $request->session()->put('referral_code', $referralCode->code);
+        $movieId = $referralCode->movie_id ?? $request->query('movieId', 1);
 
         return redirect()->route('payment.checkout', [
             'ref' => $referralCode->code,
-            'movieId' => $request->query('movieId', 1),
+            'movieId' => $movieId,
         ]);
     }
 
@@ -206,13 +248,15 @@ class ReferralCodeController extends Controller
             'code' => 'required|string|unique:referral_codes,code|max:50',
             'discount_percentage' => 'required|numeric|min:0|max:100',
             'description' => 'nullable|string|max:255',
+            'movie_id' => 'required|integer|exists:banners,id',
         ]);
 
         $this->referralService->createCode(
             $validated['code'],
             $validated['discount_percentage'],
             Auth::user(),
-            $validated['description'] ?? null
+            $validated['description'] ?? null,
+            (int) $validated['movie_id']
         );
 
         return redirect()->back()->with('success', 'Referral code created successfully.');

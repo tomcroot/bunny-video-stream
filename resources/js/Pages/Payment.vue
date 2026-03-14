@@ -376,7 +376,7 @@ const validateCoupon = async () => {
                     document.querySelector('meta[name="csrf-token"]')
                         ?.content || "",
             },
-            body: JSON.stringify({ code: couponCode.value }),
+            body: JSON.stringify({ code: couponCode.value, movie_id: props.movieId || 1 }),
         });
         const data = await res.json();
         discount.value = res.ok && data.success ? data.discount_percentage : 0;
