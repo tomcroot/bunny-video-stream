@@ -11940,23 +11940,23 @@ const _sfc_main$6 = {
       } else {
         _push(`<!---->`);
       }
-      _push(`<div class="pt-2">`);
+      _push(`<div class="space-y-2 pt-2">`);
       _push(ssrRenderComponent(unref(Link), {
         href: "/watch",
-        class: "inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+        class: "inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
       }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(` Continue to Watch `);
+            _push2(` Start Watching `);
           } else {
             return [
-              createTextVNode(" Continue to Watch ")
+              createTextVNode(" Start Watching ")
             ];
           }
         }),
         _: 1
       }, _parent));
-      _push(`</div></div></div>`);
+      _push(`<p class="text-xs text-muted-foreground"> If auto-redirect does not happen, click <span class="font-medium text-foreground">Start Watching</span>. </p></div></div></div>`);
     };
   }
 };

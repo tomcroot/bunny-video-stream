@@ -4,10 +4,13 @@
       <h1 class="text-2xl font-bold text-foreground">Payment Successful</h1>
       <p class="text-sm text-muted-foreground">Your access is active. Redirecting you to the watch page…</p>
       <p v-if="reference" class="text-xs text-muted-foreground">Reference: {{ reference }}</p>
-      <div class="pt-2">
-        <Link href="/watch" class="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-          Continue to Watch
+      <div class="space-y-2 pt-2">
+        <Link href="/watch" class="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+          Start Watching
         </Link>
+        <p class="text-xs text-muted-foreground">
+          If auto-redirect does not happen, click <span class="font-medium text-foreground">Start Watching</span>.
+        </p>
       </div>
     </div>
   </div>
