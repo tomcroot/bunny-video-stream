@@ -77,7 +77,7 @@ class WatchAnalyticsController extends Controller
 
         // Hourly viewing pattern
         $hourlyPattern = WatchProgress::select(
-            DB::raw('HOUR(updated_at) as hour'),
+            DB::raw($this->hourExpression().' as hour'),
             DB::raw('COUNT(*) as views')
         )
             ->groupBy('hour')
@@ -132,6 +132,15 @@ class WatchAnalyticsController extends Controller
         }
 
         return $distribution;
+    }
+
+    private function hourExpression(): string
+    {
+        return match (DB::connection()->getDriverName()) {
+            'sqlite' => "CAST(strftime('%H', updated_at) AS INTEGER)",
+            'pgsql' => 'EXTRACT(HOUR FROM updated_at)',
+            default => 'HOUR(updated_at)',
+        };
     }
 
     private function formatDuration(int $seconds): string

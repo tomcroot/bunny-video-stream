@@ -13,7 +13,7 @@ class BunnyAnalyticsService
     public function __construct(
         private readonly ExternalApiClient $apiClient
     ) {
-        $this->apiKey = config('services.bunny.api_key');
+        $this->apiKey = config('services.bunny.access_key');
     }
 
     /**
