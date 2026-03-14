@@ -1,12 +1,12 @@
-import { ref, mergeProps, useSSRContext, unref, withCtx, createVNode, createTextVNode, computed, createBlock, openBlock, Fragment, renderList, createCommentVNode, toDisplayString, withModifiers, withDirectives, vModelText, vModelSelect, vModelCheckbox, reactive, vModelDynamic, withKeys, watch, onMounted, onUnmounted, nextTick, defineComponent, renderSlot, resolveComponent, createSSRApp, h as h$1 } from "vue";
+import { ref, mergeProps, useSSRContext, unref, withCtx, createVNode, createTextVNode, computed, createBlock, openBlock, Fragment, renderList, createCommentVNode, toDisplayString, withModifiers, withDirectives, vModelText, vModelSelect, vModelCheckbox, reactive, vModelDynamic, withKeys, watch, defineComponent, renderSlot, onMounted, onUnmounted, nextTick, resolveComponent, createSSRApp, h as h$1 } from "vue";
 import { ssrRenderAttrs, ssrIncludeBooleanAttr, ssrRenderAttr, ssrInterpolate, ssrRenderList, ssrRenderComponent, ssrLooseContain, ssrRenderClass, ssrRenderStyle, ssrRenderSlot, ssrLooseEqual, ssrRenderDynamicModel, ssrGetDynamicModelProps } from "vue/server-renderer";
 import { useForm, Link, router, Head, usePage, createInertiaApp } from "@inertiajs/vue3";
-import { ArrowLeft, X, Upload, Plus, Edit, BarChart3, Star, Download, Users, CheckCircle, Clock, DollarSign, Search, TrendingUp, Play, Mail, Phone, MapPin } from "lucide-vue-next";
-import { cva } from "class-variance-authority";
-import { Primitive, Label, useForwardPropsEmits, TabsRoot, TabsContent, TabsList, useForwardProps, TabsTrigger, DialogRoot, DialogClose, DialogOverlay, DialogPortal, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "reka-ui";
+import { ArrowLeft, X, Upload, Plus, Edit, BarChart3, EyeOff, Eye, Copy, CheckCircle, CircleOff, Star, Download, Users, Clock, DollarSign, Search, TrendingUp, Play, Mail, Phone, MapPin } from "lucide-vue-next";
+import { useForwardPropsEmits, DialogRoot, DialogClose, DialogOverlay, DialogPortal, DialogContent, useForwardProps, DialogDescription, DialogTitle, DialogTrigger, Primitive, Label, TabsRoot, TabsContent, TabsList, TabsTrigger } from "reka-ui";
+import { reactiveOmit, useVModel } from "@vueuse/core";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { useVModel, reactiveOmit } from "@vueuse/core";
+import { cva } from "class-variance-authority";
 import Hls from "hls.js";
 import axios from "axios";
 import { renderToString } from "@vue/server-renderer";
@@ -4172,7 +4172,528 @@ const __vite_glob_0_20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: _sfc_main$V
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$U = {
+const _sfc_main$U = /* @__PURE__ */ defineComponent({
+  __name: "Dialog",
+  __ssrInlineRender: true,
+  props: {
+    open: { type: Boolean },
+    defaultOpen: { type: Boolean },
+    modal: { type: Boolean }
+  },
+  emits: ["update:open"],
+  setup(__props, { emit: __emit }) {
+    const props = __props;
+    const emits = __emit;
+    const forwarded = useForwardPropsEmits(props, emits);
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogRoot), mergeProps({ "data-slot": "dialog" }, unref(forwarded), _attrs), {
+        default: withCtx((slotProps, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            ssrRenderSlot(_ctx.$slots, "default", slotProps, null, _push2, _parent2, _scopeId);
+          } else {
+            return [
+              renderSlot(_ctx.$slots, "default", slotProps)
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$U = _sfc_main$U.setup;
+_sfc_main$U.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/Dialog.vue");
+  return _sfc_setup$U ? _sfc_setup$U(props, ctx) : void 0;
+};
+const _sfc_main$T = /* @__PURE__ */ defineComponent({
+  __name: "DialogClose",
+  __ssrInlineRender: true,
+  props: {
+    asChild: { type: Boolean },
+    as: {}
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogClose), mergeProps({ "data-slot": "dialog-close" }, props, _attrs), {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
+          } else {
+            return [
+              renderSlot(_ctx.$slots, "default")
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$T = _sfc_main$T.setup;
+_sfc_main$T.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogClose.vue");
+  return _sfc_setup$T ? _sfc_setup$T(props, ctx) : void 0;
+};
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+const _sfc_main$S = /* @__PURE__ */ defineComponent({
+  __name: "DialogOverlay",
+  __ssrInlineRender: true,
+  props: {
+    forceMount: { type: Boolean },
+    asChild: { type: Boolean },
+    as: {},
+    class: {}
+  },
+  setup(__props) {
+    const props = __props;
+    const delegatedProps = reactiveOmit(props, "class");
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogOverlay), mergeProps({ "data-slot": "dialog-overlay" }, unref(delegatedProps), {
+        class: unref(cn)("data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80", props.class)
+      }, _attrs), {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
+          } else {
+            return [
+              renderSlot(_ctx.$slots, "default")
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$S = _sfc_main$S.setup;
+_sfc_main$S.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogOverlay.vue");
+  return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
+};
+const _sfc_main$R = /* @__PURE__ */ defineComponent({
+  ...{
+    inheritAttrs: false
+  },
+  __name: "DialogContent",
+  __ssrInlineRender: true,
+  props: {
+    forceMount: { type: Boolean },
+    disableOutsidePointerEvents: { type: Boolean },
+    asChild: { type: Boolean },
+    as: {},
+    class: {},
+    showCloseButton: { type: Boolean, default: true }
+  },
+  emits: ["escapeKeyDown", "pointerDownOutside", "focusOutside", "interactOutside", "openAutoFocus", "closeAutoFocus"],
+  setup(__props, { emit: __emit }) {
+    const props = __props;
+    const emits = __emit;
+    const delegatedProps = reactiveOmit(props, "class");
+    const forwarded = useForwardPropsEmits(delegatedProps, emits);
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogPortal), _attrs, {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(ssrRenderComponent(_sfc_main$S, null, null, _parent2, _scopeId));
+            _push2(ssrRenderComponent(unref(DialogContent), mergeProps({ "data-slot": "dialog-content" }, { ..._ctx.$attrs, ...unref(forwarded) }, {
+              class: unref(cn)(
+                "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
+                props.class
+              )
+            }), {
+              default: withCtx((_22, _push3, _parent3, _scopeId2) => {
+                if (_push3) {
+                  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push3, _parent3, _scopeId2);
+                  if (__props.showCloseButton) {
+                    _push3(ssrRenderComponent(unref(DialogClose), {
+                      "data-slot": "dialog-close",
+                      class: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+                    }, {
+                      default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                        if (_push4) {
+                          _push4(ssrRenderComponent(unref(X), null, null, _parent4, _scopeId3));
+                          _push4(`<span class="sr-only"${_scopeId3}>Close</span>`);
+                        } else {
+                          return [
+                            createVNode(unref(X)),
+                            createVNode("span", { class: "sr-only" }, "Close")
+                          ];
+                        }
+                      }),
+                      _: 1
+                    }, _parent3, _scopeId2));
+                  } else {
+                    _push3(`<!---->`);
+                  }
+                } else {
+                  return [
+                    renderSlot(_ctx.$slots, "default"),
+                    __props.showCloseButton ? (openBlock(), createBlock(unref(DialogClose), {
+                      key: 0,
+                      "data-slot": "dialog-close",
+                      class: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+                    }, {
+                      default: withCtx(() => [
+                        createVNode(unref(X)),
+                        createVNode("span", { class: "sr-only" }, "Close")
+                      ]),
+                      _: 1
+                    })) : createCommentVNode("", true)
+                  ];
+                }
+              }),
+              _: 3
+            }, _parent2, _scopeId));
+          } else {
+            return [
+              createVNode(_sfc_main$S),
+              createVNode(unref(DialogContent), mergeProps({ "data-slot": "dialog-content" }, { ..._ctx.$attrs, ...unref(forwarded) }, {
+                class: unref(cn)(
+                  "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
+                  props.class
+                )
+              }), {
+                default: withCtx(() => [
+                  renderSlot(_ctx.$slots, "default"),
+                  __props.showCloseButton ? (openBlock(), createBlock(unref(DialogClose), {
+                    key: 0,
+                    "data-slot": "dialog-close",
+                    class: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+                  }, {
+                    default: withCtx(() => [
+                      createVNode(unref(X)),
+                      createVNode("span", { class: "sr-only" }, "Close")
+                    ]),
+                    _: 1
+                  })) : createCommentVNode("", true)
+                ]),
+                _: 3
+              }, 16, ["class"])
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$R = _sfc_main$R.setup;
+_sfc_main$R.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogContent.vue");
+  return _sfc_setup$R ? _sfc_setup$R(props, ctx) : void 0;
+};
+const _sfc_main$Q = /* @__PURE__ */ defineComponent({
+  __name: "DialogDescription",
+  __ssrInlineRender: true,
+  props: {
+    asChild: { type: Boolean },
+    as: {},
+    class: {}
+  },
+  setup(__props) {
+    const props = __props;
+    const delegatedProps = reactiveOmit(props, "class");
+    const forwardedProps = useForwardProps(delegatedProps);
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogDescription), mergeProps({ "data-slot": "dialog-description" }, unref(forwardedProps), {
+        class: unref(cn)("text-muted-foreground text-sm", props.class)
+      }, _attrs), {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
+          } else {
+            return [
+              renderSlot(_ctx.$slots, "default")
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$Q = _sfc_main$Q.setup;
+_sfc_main$Q.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogDescription.vue");
+  return _sfc_setup$Q ? _sfc_setup$Q(props, ctx) : void 0;
+};
+const _sfc_main$P = /* @__PURE__ */ defineComponent({
+  __name: "DialogFooter",
+  __ssrInlineRender: true,
+  props: {
+    class: {}
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(`<div${ssrRenderAttrs(mergeProps({
+        "data-slot": "dialog-footer",
+        class: unref(cn)("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", props.class)
+      }, _attrs))}>`);
+      ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+      _push(`</div>`);
+    };
+  }
+});
+const _sfc_setup$P = _sfc_main$P.setup;
+_sfc_main$P.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogFooter.vue");
+  return _sfc_setup$P ? _sfc_setup$P(props, ctx) : void 0;
+};
+const _sfc_main$O = /* @__PURE__ */ defineComponent({
+  __name: "DialogHeader",
+  __ssrInlineRender: true,
+  props: {
+    class: {}
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(`<div${ssrRenderAttrs(mergeProps({
+        "data-slot": "dialog-header",
+        class: unref(cn)("flex flex-col gap-2 text-center sm:text-left", props.class)
+      }, _attrs))}>`);
+      ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+      _push(`</div>`);
+    };
+  }
+});
+const _sfc_setup$O = _sfc_main$O.setup;
+_sfc_main$O.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogHeader.vue");
+  return _sfc_setup$O ? _sfc_setup$O(props, ctx) : void 0;
+};
+const _sfc_main$N = /* @__PURE__ */ defineComponent({
+  ...{
+    inheritAttrs: false
+  },
+  __name: "DialogScrollContent",
+  __ssrInlineRender: true,
+  props: {
+    forceMount: { type: Boolean },
+    disableOutsidePointerEvents: { type: Boolean },
+    asChild: { type: Boolean },
+    as: {},
+    class: {}
+  },
+  emits: ["escapeKeyDown", "pointerDownOutside", "focusOutside", "interactOutside", "openAutoFocus", "closeAutoFocus"],
+  setup(__props, { emit: __emit }) {
+    const props = __props;
+    const emits = __emit;
+    const delegatedProps = reactiveOmit(props, "class");
+    const forwarded = useForwardPropsEmits(delegatedProps, emits);
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogPortal), _attrs, {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(ssrRenderComponent(unref(DialogOverlay), { class: "fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" }, {
+              default: withCtx((_22, _push3, _parent3, _scopeId2) => {
+                if (_push3) {
+                  _push3(ssrRenderComponent(unref(DialogContent), mergeProps({
+                    class: unref(cn)(
+                      "relative z-50 grid w-full max-w-lg my-8 gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full",
+                      props.class
+                    )
+                  }, { ..._ctx.$attrs, ...unref(forwarded) }, {
+                    onPointerDownOutside: (event) => {
+                      const originalEvent = event.detail.originalEvent;
+                      const target = originalEvent.target;
+                      if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
+                        event.preventDefault();
+                      }
+                    }
+                  }), {
+                    default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                      if (_push4) {
+                        ssrRenderSlot(_ctx.$slots, "default", {}, null, _push4, _parent4, _scopeId3);
+                        _push4(ssrRenderComponent(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
+                          default: withCtx((_4, _push5, _parent5, _scopeId4) => {
+                            if (_push5) {
+                              _push5(ssrRenderComponent(unref(X), { class: "w-4 h-4" }, null, _parent5, _scopeId4));
+                              _push5(`<span class="sr-only"${_scopeId4}>Close</span>`);
+                            } else {
+                              return [
+                                createVNode(unref(X), { class: "w-4 h-4" }),
+                                createVNode("span", { class: "sr-only" }, "Close")
+                              ];
+                            }
+                          }),
+                          _: 1
+                        }, _parent4, _scopeId3));
+                      } else {
+                        return [
+                          renderSlot(_ctx.$slots, "default"),
+                          createVNode(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
+                            default: withCtx(() => [
+                              createVNode(unref(X), { class: "w-4 h-4" }),
+                              createVNode("span", { class: "sr-only" }, "Close")
+                            ]),
+                            _: 1
+                          })
+                        ];
+                      }
+                    }),
+                    _: 3
+                  }, _parent3, _scopeId2));
+                } else {
+                  return [
+                    createVNode(unref(DialogContent), mergeProps({
+                      class: unref(cn)(
+                        "relative z-50 grid w-full max-w-lg my-8 gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full",
+                        props.class
+                      )
+                    }, { ..._ctx.$attrs, ...unref(forwarded) }, {
+                      onPointerDownOutside: (event) => {
+                        const originalEvent = event.detail.originalEvent;
+                        const target = originalEvent.target;
+                        if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
+                          event.preventDefault();
+                        }
+                      }
+                    }), {
+                      default: withCtx(() => [
+                        renderSlot(_ctx.$slots, "default"),
+                        createVNode(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
+                          default: withCtx(() => [
+                            createVNode(unref(X), { class: "w-4 h-4" }),
+                            createVNode("span", { class: "sr-only" }, "Close")
+                          ]),
+                          _: 1
+                        })
+                      ]),
+                      _: 3
+                    }, 16, ["class", "onPointerDownOutside"])
+                  ];
+                }
+              }),
+              _: 3
+            }, _parent2, _scopeId));
+          } else {
+            return [
+              createVNode(unref(DialogOverlay), { class: "fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" }, {
+                default: withCtx(() => [
+                  createVNode(unref(DialogContent), mergeProps({
+                    class: unref(cn)(
+                      "relative z-50 grid w-full max-w-lg my-8 gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full",
+                      props.class
+                    )
+                  }, { ..._ctx.$attrs, ...unref(forwarded) }, {
+                    onPointerDownOutside: (event) => {
+                      const originalEvent = event.detail.originalEvent;
+                      const target = originalEvent.target;
+                      if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
+                        event.preventDefault();
+                      }
+                    }
+                  }), {
+                    default: withCtx(() => [
+                      renderSlot(_ctx.$slots, "default"),
+                      createVNode(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
+                        default: withCtx(() => [
+                          createVNode(unref(X), { class: "w-4 h-4" }),
+                          createVNode("span", { class: "sr-only" }, "Close")
+                        ]),
+                        _: 1
+                      })
+                    ]),
+                    _: 3
+                  }, 16, ["class", "onPointerDownOutside"])
+                ]),
+                _: 3
+              })
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$N = _sfc_main$N.setup;
+_sfc_main$N.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogScrollContent.vue");
+  return _sfc_setup$N ? _sfc_setup$N(props, ctx) : void 0;
+};
+const _sfc_main$M = /* @__PURE__ */ defineComponent({
+  __name: "DialogTitle",
+  __ssrInlineRender: true,
+  props: {
+    asChild: { type: Boolean },
+    as: {},
+    class: {}
+  },
+  setup(__props) {
+    const props = __props;
+    const delegatedProps = reactiveOmit(props, "class");
+    const forwardedProps = useForwardProps(delegatedProps);
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogTitle), mergeProps({ "data-slot": "dialog-title" }, unref(forwardedProps), {
+        class: unref(cn)("text-lg leading-none font-semibold", props.class)
+      }, _attrs), {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
+          } else {
+            return [
+              renderSlot(_ctx.$slots, "default")
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$M = _sfc_main$M.setup;
+_sfc_main$M.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogTitle.vue");
+  return _sfc_setup$M ? _sfc_setup$M(props, ctx) : void 0;
+};
+const _sfc_main$L = /* @__PURE__ */ defineComponent({
+  __name: "DialogTrigger",
+  __ssrInlineRender: true,
+  props: {
+    asChild: { type: Boolean },
+    as: {}
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(DialogTrigger), mergeProps({ "data-slot": "dialog-trigger" }, props, _attrs), {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
+          } else {
+            return [
+              renderSlot(_ctx.$slots, "default")
+            ];
+          }
+        }),
+        _: 3
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup$L = _sfc_main$L.setup;
+_sfc_main$L.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogTrigger.vue");
+  return _sfc_setup$L ? _sfc_setup$L(props, ctx) : void 0;
+};
+const _sfc_main$K = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -4197,14 +4718,150 @@ const _sfc_main$U = {
       discount_percentage: 5,
       description: ""
     });
+    const createDialogOpen = ref(false);
+    const expandedRows = ref({});
+    const filters = reactive({
+      search: "",
+      status: "all",
+      type: "all",
+      movieId: "all",
+      startDate: "",
+      sort: "newest"
+    });
+    const getActivityTimestamp = (code) => {
+      const latestUsage = code.stats?.recent_uses?.[0]?.used_at;
+      const fallbackCreated = code.created_at;
+      const source = latestUsage || fallbackCreated;
+      if (!source) {
+        return null;
+      }
+      const parsed = new Date(source).getTime();
+      return Number.isNaN(parsed) ? null : parsed;
+    };
+    const filteredCodes = computed(() => props.codes.filter((code) => {
+      const movieId = code.movie?.id || code.stats.movie?.id;
+      const codeType = movieId ? "movie" : "global";
+      const activityTimestamp = getActivityTimestamp(code);
+      const searchTarget = [
+        code.code,
+        code.description,
+        code.creator?.name,
+        code.creator?.email,
+        code.movie?.title,
+        code.stats.movie?.title
+      ].filter(Boolean).join(" ").toLowerCase();
+      if (filters.search && !searchTarget.includes(filters.search.toLowerCase())) {
+        return false;
+      }
+      if (filters.status === "active" && !code.is_active) {
+        return false;
+      }
+      if (filters.status === "inactive" && code.is_active) {
+        return false;
+      }
+      if (filters.type !== "all" && codeType !== filters.type) {
+        return false;
+      }
+      if (filters.movieId === "global" && movieId) {
+        return false;
+      }
+      if (filters.movieId !== "all" && filters.movieId !== "global" && String(movieId || "") !== filters.movieId) {
+        return false;
+      }
+      if (filters.startDate) {
+        const startDate = (/* @__PURE__ */ new Date(`${filters.startDate}T00:00:00`)).getTime();
+        if (!activityTimestamp || activityTimestamp < startDate) {
+          return false;
+        }
+      }
+      return true;
+    }));
+    const sortedFilteredCodes = computed(() => {
+      const rows = [...filteredCodes.value];
+      const byCode = (a2, b2) => (a2.code || "").localeCompare(b2.code || "");
+      const byActivity = (a2, b2) => (getActivityTimestamp(a2) || 0) - (getActivityTimestamp(b2) || 0);
+      const byUses = (a2, b2) => (a2.stats?.total_uses || 0) - (b2.stats?.total_uses || 0);
+      const byRevenue = (a2, b2) => Number(a2.stats?.total_revenue || 0) - Number(b2.stats?.total_revenue || 0);
+      switch (filters.sort) {
+        case "oldest":
+          return rows.sort(byActivity);
+        case "most_uses":
+          return rows.sort((a2, b2) => byUses(b2, a2));
+        case "most_revenue":
+          return rows.sort((a2, b2) => byRevenue(b2, a2));
+        case "code_az":
+          return rows.sort(byCode);
+        case "code_za":
+          return rows.sort((a2, b2) => byCode(b2, a2));
+        case "newest":
+        default:
+          return rows.sort((a2, b2) => byActivity(b2, a2));
+      }
+    });
+    const isExpanded = (codeId) => Boolean(expandedRows.value[codeId]);
+    const toggleExpanded = (codeId) => {
+      expandedRows.value = {
+        ...expandedRows.value,
+        [codeId]: !expandedRows.value[codeId]
+      };
+    };
+    const resetFilters = () => {
+      filters.search = "";
+      filters.status = "all";
+      filters.type = "all";
+      filters.movieId = "all";
+      filters.startDate = "";
+      filters.sort = "newest";
+    };
+    const loadFiltersFromUrl = () => {
+      if (typeof window === "undefined") {
+        return;
+      }
+      const params = new URLSearchParams(window.location.search);
+      filters.search = params.get("search") || "";
+      filters.status = params.get("status") || "all";
+      filters.type = params.get("type") || "all";
+      filters.movieId = params.get("movieId") || "all";
+      filters.startDate = params.get("startDate") || "";
+      filters.sort = params.get("sort") || "newest";
+    };
+    const syncFiltersToUrl = () => {
+      if (typeof window === "undefined") {
+        return;
+      }
+      const params = new URLSearchParams();
+      if (filters.search) params.set("search", filters.search);
+      if (filters.status !== "all") params.set("status", filters.status);
+      if (filters.type !== "all") params.set("type", filters.type);
+      if (filters.movieId !== "all") params.set("movieId", filters.movieId);
+      if (filters.startDate) params.set("startDate", filters.startDate);
+      if (filters.sort !== "newest") params.set("sort", filters.sort);
+      const query = params.toString();
+      const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+      window.history.replaceState({}, "", nextUrl);
+    };
+    onMounted(() => {
+      loadFiltersFromUrl();
+    });
+    watch(
+      () => ({ ...filters }),
+      () => {
+        syncFiltersToUrl();
+      },
+      { deep: true }
+    );
+    const resetForm = () => {
+      form.movie_id = props.movies[0]?.id ?? null;
+      form.code = "";
+      form.discount_percentage = 5;
+      form.description = "";
+    };
     const createCode = () => {
       router.post("/admin/referral-codes", form, {
         preserveScroll: true,
         onSuccess: () => {
-          form.movie_id = props.movies[0]?.id ?? null;
-          form.code = "";
-          form.discount_percentage = 5;
-          form.description = "";
+          resetForm();
+          createDialogOpen.value = false;
         }
       });
     };
@@ -4215,6 +4872,15 @@ const _sfc_main$U = {
     };
     const copyLink = async (value) => {
       await navigator.clipboard.writeText(value);
+    };
+    const getCodeType = (code) => code.movie?.id || code.stats.movie?.id ? "Movie" : "Global";
+    const getScopeLabel = (code) => code.movie?.title || code.stats.movie?.title || "Entire system";
+    const getScopeMeta = (code) => {
+      const movieId = code.movie?.id || code.stats.movie?.id;
+      if (movieId) {
+        return `Movie ID ${movieId}`;
+      }
+      return "Applies to every checkout";
     };
     const formatAmount = (value) => Number(value || 0).toFixed(2);
     const formatDate = (value) => {
@@ -4228,7 +4894,7 @@ const _sfc_main$U = {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(ssrRenderComponent(unref(Head), { title: "Referral Codes" }, null, _parent2, _scopeId));
-            _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"${_scopeId}><div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"${_scopeId}><div${_scopeId}><h1 class="text-3xl font-bold text-foreground"${_scopeId}>Referral Codes</h1><p class="text-muted-foreground"${_scopeId}>User referral codes are global. Admin-created referral codes are bound to a specific movie.</p></div>`);
+            _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"${_scopeId}><div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"${_scopeId}><div${_scopeId}><h1 class="text-3xl font-bold text-foreground"${_scopeId}>Referral Codes</h1><p class="text-muted-foreground"${_scopeId}>User referral codes are global. Admin-created referral codes are bound to a specific movie.</p></div><div class="flex flex-wrap items-center gap-3"${_scopeId}><button type="button" class="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"${_scopeId}> Create Referral Code </button>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: "/admin/page-content",
               class: "inline-flex items-center rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
@@ -4244,80 +4910,460 @@ const _sfc_main$U = {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(`</div></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8"${_scopeId}>`);
+            _push2(`</div></div></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8"${_scopeId}>`);
             if (_ctx.$page.props.flash?.success) {
               _push2(`<div class="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"${_scopeId}>${ssrInterpolate(_ctx.$page.props.flash.success)}</div>`);
             } else {
               _push2(`<!---->`);
             }
-            _push2(`<div class="grid gap-6 md:grid-cols-2 xl:grid-cols-5"${_scopeId}><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Movies Available</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.movies.length)}</p><p class="mt-1 text-xs text-muted-foreground"${_scopeId}>Admin codes target these DB movie records</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Total Codes</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.total_codes)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Active Codes</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.active_codes)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Referral Uses</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.total_uses)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Revenue From Referrals</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(__props.summary.total_revenue))}</p><p class="mt-1 text-xs text-muted-foreground"${_scopeId}>Discounts given: GHS ${ssrInterpolate(formatAmount(__props.summary.total_discount_given))}</p></div></div><div class="grid gap-8 xl:grid-cols-[340px_minmax(0,1fr)]"${_scopeId}><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><h2 class="text-xl font-semibold text-foreground"${_scopeId}>Create Code</h2><p class="mt-1 text-sm text-muted-foreground"${_scopeId}>Pick a movie for this admin referral code.</p><form class="mt-6 space-y-4"${_scopeId}><div${_scopeId}><label for="movie_id" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Target Movie</label><select id="movie_id" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}><option${ssrRenderAttr("value", null)} disabled${ssrIncludeBooleanAttr(Array.isArray(form.movie_id) ? ssrLooseContain(form.movie_id, null) : ssrLooseEqual(form.movie_id, null)) ? " selected" : ""}${_scopeId}>Select movie...</option><!--[-->`);
+            _push2(`<div class="grid gap-6 md:grid-cols-2 xl:grid-cols-5"${_scopeId}><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Movies Available</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.movies.length)}</p><p class="mt-1 text-xs text-muted-foreground"${_scopeId}>Admin codes target these DB movie records</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Total Codes</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.total_codes)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Active Codes</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.active_codes)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Referral Uses</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.total_uses)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Revenue From Referrals</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(__props.summary.total_revenue))}</p><p class="mt-1 text-xs text-muted-foreground"${_scopeId}>Discounts given: GHS ${ssrInterpolate(formatAmount(__props.summary.total_discount_given))}</p></div></div><div class="rounded-lg border border-border bg-card shadow-sm"${_scopeId}><div class="flex flex-col gap-2 border-b border-border px-6 py-5 md:flex-row md:items-center md:justify-between"${_scopeId}><div${_scopeId}><h2 class="text-xl font-semibold text-foreground"${_scopeId}>Referral Codes Table</h2><p class="text-sm text-muted-foreground"${_scopeId}>High-level performance stays visible. Expand a row when you need creator, link, and recent-use details.</p></div><p class="text-sm text-muted-foreground"${_scopeId}>${ssrInterpolate(filteredCodes.value.length)} of ${ssrInterpolate(__props.codes.length)} code${ssrInterpolate(__props.codes.length === 1 ? "" : "s")}</p></div><div class="grid gap-3 border-b border-border px-6 py-4 md:grid-cols-6"${_scopeId}><div${_scopeId}><label for="filter_search" class="mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"${_scopeId}>Search</label><input id="filter_search"${ssrRenderAttr("value", filters.search)} type="text" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Code, description, creator"${_scopeId}></div><div${_scopeId}><label for="filter_status" class="mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"${_scopeId}>Status</label><select id="filter_status" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}><option value="all"${ssrIncludeBooleanAttr(Array.isArray(filters.status) ? ssrLooseContain(filters.status, "all") : ssrLooseEqual(filters.status, "all")) ? " selected" : ""}${_scopeId}>All statuses</option><option value="active"${ssrIncludeBooleanAttr(Array.isArray(filters.status) ? ssrLooseContain(filters.status, "active") : ssrLooseEqual(filters.status, "active")) ? " selected" : ""}${_scopeId}>Active</option><option value="inactive"${ssrIncludeBooleanAttr(Array.isArray(filters.status) ? ssrLooseContain(filters.status, "inactive") : ssrLooseEqual(filters.status, "inactive")) ? " selected" : ""}${_scopeId}>Inactive</option></select></div><div${_scopeId}><label for="filter_type" class="mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"${_scopeId}>Type</label><select id="filter_type" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}><option value="all"${ssrIncludeBooleanAttr(Array.isArray(filters.type) ? ssrLooseContain(filters.type, "all") : ssrLooseEqual(filters.type, "all")) ? " selected" : ""}${_scopeId}>All types</option><option value="movie"${ssrIncludeBooleanAttr(Array.isArray(filters.type) ? ssrLooseContain(filters.type, "movie") : ssrLooseEqual(filters.type, "movie")) ? " selected" : ""}${_scopeId}>Movie</option><option value="global"${ssrIncludeBooleanAttr(Array.isArray(filters.type) ? ssrLooseContain(filters.type, "global") : ssrLooseEqual(filters.type, "global")) ? " selected" : ""}${_scopeId}>Global</option></select></div><div${_scopeId}><label for="filter_movie" class="mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"${_scopeId}>Movie Scope</label><div class="flex items-center gap-2"${_scopeId}><select id="filter_movie" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}><option value="all"${ssrIncludeBooleanAttr(Array.isArray(filters.movieId) ? ssrLooseContain(filters.movieId, "all") : ssrLooseEqual(filters.movieId, "all")) ? " selected" : ""}${_scopeId}>All movies</option><option value="global"${ssrIncludeBooleanAttr(Array.isArray(filters.movieId) ? ssrLooseContain(filters.movieId, "global") : ssrLooseEqual(filters.movieId, "global")) ? " selected" : ""}${_scopeId}>Global only</option><!--[-->`);
             ssrRenderList(__props.movies, (movie) => {
-              _push2(`<option${ssrRenderAttr("value", movie.id)}${ssrIncludeBooleanAttr(Array.isArray(form.movie_id) ? ssrLooseContain(form.movie_id, movie.id) : ssrLooseEqual(form.movie_id, movie.id)) ? " selected" : ""}${_scopeId}>${ssrInterpolate(movie.title)} (ID ${ssrInterpolate(movie.id)}) </option>`);
+              _push2(`<option${ssrRenderAttr("value", String(movie.id))}${ssrIncludeBooleanAttr(Array.isArray(filters.movieId) ? ssrLooseContain(filters.movieId, String(movie.id)) : ssrLooseEqual(filters.movieId, String(movie.id))) ? " selected" : ""}${_scopeId}>${ssrInterpolate(movie.title)}</option>`);
             });
-            _push2(`<!--]--></select></div><div${_scopeId}><label for="code" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Code</label><input id="code"${ssrRenderAttr("value", form.code)} type="text" maxlength="50" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary" placeholder="ACCRA2026"${_scopeId}></div><div${_scopeId}><label for="discount_percentage" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Discount %</label><input id="discount_percentage"${ssrRenderAttr("value", form.discount_percentage)} type="number" min="0" max="100" step="0.1" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}></div><div${_scopeId}><label for="description" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Description</label><textarea id="description" rows="3" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Creator promo for selected movie"${_scopeId}>${ssrInterpolate(form.description)}</textarea></div><button type="submit" class="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"${_scopeId}> Create Referral Code </button></form></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"${_scopeId}><div${_scopeId}><h2 class="text-xl font-semibold text-foreground"${_scopeId}>Existing Codes</h2><p class="text-sm text-muted-foreground"${_scopeId}>Each code metrics are scoped to its bound movie.</p></div></div>`);
+            _push2(`<!--]--></select><button type="button" class="shrink-0 rounded-md bg-muted px-3 py-2 text-xs font-medium text-foreground transition hover:bg-accent"${_scopeId}> Reset </button></div></div><div${_scopeId}><label for="filter_start_date" class="mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"${_scopeId}>Activity From</label><input id="filter_start_date"${ssrRenderAttr("value", filters.startDate)} type="date" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}></div><div${_scopeId}><label for="filter_sort" class="mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"${_scopeId}>Sort</label><select id="filter_sort" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}><option value="newest"${ssrIncludeBooleanAttr(Array.isArray(filters.sort) ? ssrLooseContain(filters.sort, "newest") : ssrLooseEqual(filters.sort, "newest")) ? " selected" : ""}${_scopeId}>Newest</option><option value="oldest"${ssrIncludeBooleanAttr(Array.isArray(filters.sort) ? ssrLooseContain(filters.sort, "oldest") : ssrLooseEqual(filters.sort, "oldest")) ? " selected" : ""}${_scopeId}>Oldest</option><option value="most_uses"${ssrIncludeBooleanAttr(Array.isArray(filters.sort) ? ssrLooseContain(filters.sort, "most_uses") : ssrLooseEqual(filters.sort, "most_uses")) ? " selected" : ""}${_scopeId}>Most Uses</option><option value="most_revenue"${ssrIncludeBooleanAttr(Array.isArray(filters.sort) ? ssrLooseContain(filters.sort, "most_revenue") : ssrLooseEqual(filters.sort, "most_revenue")) ? " selected" : ""}${_scopeId}>Most Revenue</option><option value="code_az"${ssrIncludeBooleanAttr(Array.isArray(filters.sort) ? ssrLooseContain(filters.sort, "code_az") : ssrLooseEqual(filters.sort, "code_az")) ? " selected" : ""}${_scopeId}>Code A-Z</option><option value="code_za"${ssrIncludeBooleanAttr(Array.isArray(filters.sort) ? ssrLooseContain(filters.sort, "code_za") : ssrLooseEqual(filters.sort, "code_za")) ? " selected" : ""}${_scopeId}>Code Z-A</option></select></div></div>`);
             if (__props.codes.length === 0) {
-              _push2(`<div class="mt-6 rounded-md border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground"${_scopeId}> No referral codes created yet. </div>`);
+              _push2(`<div class="px-6 py-10 text-center text-sm text-muted-foreground"${_scopeId}> No referral codes created yet. </div>`);
+            } else if (filteredCodes.value.length === 0) {
+              _push2(`<div class="px-6 py-10 text-center text-sm text-muted-foreground"${_scopeId}> No referral codes match your current filters. </div>`);
             } else {
-              _push2(`<div class="mt-6 space-y-4"${_scopeId}><!--[-->`);
-              ssrRenderList(__props.codes, (code) => {
-                _push2(`<div class="rounded-lg border border-border bg-background/40 p-5"${_scopeId}><div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between"${_scopeId}><div class="space-y-2"${_scopeId}><div class="flex flex-wrap items-center gap-3"${_scopeId}><h3 class="text-lg font-semibold text-foreground"${_scopeId}>${ssrInterpolate(code.code)}</h3><span class="${ssrRenderClass([code.is_active ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground", "rounded-full px-2.5 py-1 text-xs font-medium"])}"${_scopeId}>${ssrInterpolate(code.is_active ? "Active" : "Inactive")}</span><span class="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"${_scopeId}>${ssrInterpolate(code.discount_percentage)}% off </span></div>`);
+              _push2(`<div class="overflow-x-auto"${_scopeId}><table class="min-w-full divide-y divide-border"${_scopeId}><thead class="bg-muted/40"${_scopeId}><tr class="text-left text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}><th class="px-6 py-3 font-medium"${_scopeId}>Code</th><th class="px-6 py-3 font-medium"${_scopeId}>Type</th><th class="px-6 py-3 font-medium"${_scopeId}>Scope</th><th class="px-6 py-3 font-medium"${_scopeId}>Performance</th><th class="px-6 py-3 font-medium"${_scopeId}>Actions</th></tr></thead><tbody class="divide-y divide-border"${_scopeId}><!--[-->`);
+              ssrRenderList(sortedFilteredCodes.value, (code) => {
+                _push2(`<!--[--><tr class="align-top text-sm text-foreground"${_scopeId}><td class="px-6 py-4"${_scopeId}><div class="space-y-2"${_scopeId}><div class="flex flex-wrap items-center gap-2"${_scopeId}><span class="font-semibold text-foreground"${_scopeId}>${ssrInterpolate(code.code)}</span><span class="${ssrRenderClass([code.is_active ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground", "rounded-full px-2.5 py-1 text-[11px] font-medium"])}"${_scopeId}>${ssrInterpolate(code.is_active ? "Active" : "Inactive")}</span></div>`);
                 if (code.description) {
-                  _push2(`<p class="text-sm text-muted-foreground"${_scopeId}>${ssrInterpolate(code.description)}</p>`);
+                  _push2(`<p class="max-w-xs text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(code.description)}</p>`);
                 } else {
                   _push2(`<!---->`);
                 }
-                _push2(`<p class="text-xs text-muted-foreground"${_scopeId}> Applies to: <span class="font-medium text-foreground"${_scopeId}>${ssrInterpolate(code.movie?.title || code.stats.movie?.title || "Global")}</span>`);
-                if (code.movie?.id || code.stats.movie?.id) {
-                  _push2(`<span${_scopeId}>(ID ${ssrInterpolate(code.movie?.id || code.stats.movie?.id)})</span>`);
+                _push2(`</div></td><td class="px-6 py-4"${_scopeId}><div class="space-y-1"${_scopeId}><p class="font-medium text-foreground"${_scopeId}>${ssrInterpolate(getCodeType(code))}</p><p class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(code.discount_percentage)}% discount</p></div></td><td class="px-6 py-4"${_scopeId}><div class="space-y-1"${_scopeId}><p class="font-medium text-foreground"${_scopeId}>${ssrInterpolate(getScopeLabel(code))}</p><p class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(getScopeMeta(code))}</p></div></td><td class="px-6 py-4"${_scopeId}><div class="flex max-w-xs flex-wrap gap-2 text-xs"${_scopeId}><span class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 font-medium text-foreground"${_scopeId}> U: ${ssrInterpolate(code.stats.total_uses)}</span><span class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 font-medium text-foreground"${_scopeId}> S: ${ssrInterpolate(code.stats.unique_users)}</span><span class="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 font-medium text-primary"${_scopeId}> R: GHS ${ssrInterpolate(formatAmount(code.stats.total_revenue))}</span></div></td><td class="px-6 py-4"${_scopeId}><div class="flex flex-wrap items-center gap-2"${_scopeId}><button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-foreground transition hover:bg-accent"${ssrRenderAttr("title", isExpanded(code.id) ? "Hide details" : "View details")}${ssrRenderAttr("aria-label", isExpanded(code.id) ? "Hide details" : "View details")}${_scopeId}>`);
+                if (isExpanded(code.id)) {
+                  _push2(ssrRenderComponent(unref(EyeOff), { class: "h-4 w-4" }, null, _parent2, _scopeId));
                 } else {
-                  _push2(`<!---->`);
+                  _push2(ssrRenderComponent(unref(Eye), { class: "h-4 w-4" }, null, _parent2, _scopeId));
                 }
-                _push2(`</p><p class="text-xs text-muted-foreground"${_scopeId}> Created by ${ssrInterpolate(code.creator?.name || "Unknown")} `);
-                if (code.creator?.email) {
-                  _push2(`<span${_scopeId}>(${ssrInterpolate(code.creator.email)})</span>`);
-                } else {
-                  _push2(`<!---->`);
-                }
-                _push2(`</p><div class="flex flex-col gap-2 pt-2 lg:flex-row lg:items-center"${_scopeId}><input${ssrRenderAttr("value", code.link)} readonly class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"${_scopeId}><button type="button" class="rounded-md bg-muted px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"${_scopeId}> Copy Link </button></div></div><div class="flex shrink-0 gap-3"${_scopeId}>`);
+                _push2(`</button><button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-muted text-foreground transition hover:bg-accent" title="Copy referral link" aria-label="Copy referral link"${_scopeId}>`);
+                _push2(ssrRenderComponent(unref(Copy), { class: "h-4 w-4" }, null, _parent2, _scopeId));
+                _push2(`</button>`);
                 if (!code.is_active) {
-                  _push2(`<button type="button" class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"${_scopeId}> Activate </button>`);
+                  _push2(`<button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground transition hover:opacity-90" title="Activate code" aria-label="Activate code"${_scopeId}>`);
+                  _push2(ssrRenderComponent(unref(CheckCircle), { class: "h-4 w-4" }, null, _parent2, _scopeId));
+                  _push2(`</button>`);
                 } else {
-                  _push2(`<button type="button" class="rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-700"${_scopeId}> Deactivate </button>`);
+                  _push2(`<button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-600 text-white transition hover:bg-amber-700" title="Deactivate code" aria-label="Deactivate code"${_scopeId}>`);
+                  _push2(ssrRenderComponent(unref(CircleOff), { class: "h-4 w-4" }, null, _parent2, _scopeId));
+                  _push2(`</button>`);
                 }
-                _push2(`</div></div><div class="mt-5 grid gap-4 md:grid-cols-4"${_scopeId}><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Uses</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>${ssrInterpolate(code.stats.total_uses)}</p></div><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Unique Users</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>${ssrInterpolate(code.stats.unique_users)}</p></div><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Revenue</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(code.stats.total_revenue))}</p></div><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Discount Given</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(code.stats.total_discount_given))}</p></div></div><div class="mt-5"${_scopeId}><h4 class="text-sm font-medium text-foreground"${_scopeId}>Recent Uses</h4>`);
-                if (code.stats.recent_uses.length === 0) {
-                  _push2(`<div class="mt-2 text-sm text-muted-foreground"${_scopeId}> No successful referrals recorded for this movie yet. </div>`);
+                _push2(`</div></td></tr>`);
+                if (isExpanded(code.id)) {
+                  _push2(`<tr class="bg-muted/20"${_scopeId}><td colspan="5" class="px-6 py-5"${_scopeId}><div class="grid gap-5 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)]"${_scopeId}><div class="space-y-4"${_scopeId}><div class="rounded-lg border border-border bg-background p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Referral Link</p><input${ssrRenderAttr("value", code.link)} readonly class="mt-3 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"${_scopeId}></div><div class="rounded-lg border border-border bg-background p-4 text-sm"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Owner</p><p class="mt-2 font-medium text-foreground"${_scopeId}>${ssrInterpolate(code.creator?.name || "Unknown")}</p><p class="text-muted-foreground"${_scopeId}>${ssrInterpolate(code.creator?.email || "No email available")}</p></div><div class="rounded-lg border border-border bg-background p-4 text-sm"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Discount Given</p><p class="mt-2 font-semibold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(code.stats.total_discount_given))}</p></div></div><div class="rounded-lg border border-border bg-background p-4"${_scopeId}><div class="flex items-center justify-between gap-3"${_scopeId}><h3 class="text-sm font-medium text-foreground"${_scopeId}>Recent Uses</h3><p class="text-xs text-muted-foreground"${_scopeId}>Last ${ssrInterpolate(code.stats.recent_uses.length)} record${ssrInterpolate(code.stats.recent_uses.length === 1 ? "" : "s")}</p></div>`);
+                  if (code.stats.recent_uses.length === 0) {
+                    _push2(`<div class="mt-3 text-sm text-muted-foreground"${_scopeId}> No successful referrals recorded for this code yet. </div>`);
+                  } else {
+                    _push2(`<div class="mt-4 overflow-x-auto"${_scopeId}><table class="w-full min-w-[540px]"${_scopeId}><thead${_scopeId}><tr class="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}><th class="py-2 pr-4"${_scopeId}>User</th><th class="py-2 pr-4"${_scopeId}>Payment</th><th class="py-2 pr-4"${_scopeId}>Discount</th><th class="py-2"${_scopeId}>Used</th></tr></thead><tbody${_scopeId}><!--[-->`);
+                    ssrRenderList(code.stats.recent_uses, (usage) => {
+                      _push2(`<tr class="border-b border-border/60 text-sm text-foreground"${_scopeId}><td class="py-3 pr-4"${_scopeId}><div${_scopeId}>${ssrInterpolate(usage.user_name || "Unknown")}</div><div class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(usage.user_email || "No email")}</div></td><td class="py-3 pr-4"${_scopeId}>GHS ${ssrInterpolate(formatAmount(usage.payment_amount))}</td><td class="py-3 pr-4"${_scopeId}>GHS ${ssrInterpolate(formatAmount(usage.discount_applied))}</td><td class="py-3"${_scopeId}>${ssrInterpolate(formatDate(usage.used_at))}</td></tr>`);
+                    });
+                    _push2(`<!--]--></tbody></table></div>`);
+                  }
+                  _push2(`</div></div></td></tr>`);
                 } else {
-                  _push2(`<div class="mt-3 overflow-x-auto"${_scopeId}><table class="w-full min-w-[640px]"${_scopeId}><thead${_scopeId}><tr class="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}><th class="py-2 pr-4"${_scopeId}>User</th><th class="py-2 pr-4"${_scopeId}>Payment</th><th class="py-2 pr-4"${_scopeId}>Discount</th><th class="py-2 pr-4"${_scopeId}>Movie</th><th class="py-2"${_scopeId}>Used</th></tr></thead><tbody${_scopeId}><!--[-->`);
-                  ssrRenderList(code.stats.recent_uses, (usage) => {
-                    _push2(`<tr class="border-b border-border/60 text-sm text-foreground"${_scopeId}><td class="py-3 pr-4"${_scopeId}><div${_scopeId}>${ssrInterpolate(usage.user_name || "Unknown")}</div><div class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(usage.user_email || "No email")}</div></td><td class="py-3 pr-4"${_scopeId}>GHS ${ssrInterpolate(formatAmount(usage.payment_amount))}</td><td class="py-3 pr-4"${_scopeId}>GHS ${ssrInterpolate(formatAmount(usage.discount_applied))}</td><td class="py-3 pr-4"${_scopeId}>${ssrInterpolate(usage.movie_id || code.movie?.id || code.stats.movie?.id || "N/A")}</td><td class="py-3"${_scopeId}>${ssrInterpolate(formatDate(usage.used_at))}</td></tr>`);
-                  });
-                  _push2(`<!--]--></tbody></table></div>`);
+                  _push2(`<!---->`);
                 }
-                _push2(`</div></div>`);
+                _push2(`<!--]-->`);
               });
-              _push2(`<!--]--></div>`);
+              _push2(`<!--]--></tbody></table></div>`);
             }
-            _push2(`</div></div></div>`);
+            _push2(`</div></div>`);
+            _push2(ssrRenderComponent(unref(_sfc_main$U), {
+              open: createDialogOpen.value,
+              "onUpdate:open": ($event) => createDialogOpen.value = $event
+            }, {
+              default: withCtx((_3, _push3, _parent3, _scopeId2) => {
+                if (_push3) {
+                  _push3(ssrRenderComponent(unref(_sfc_main$R), { class: "sm:max-w-xl" }, {
+                    default: withCtx((_4, _push4, _parent4, _scopeId3) => {
+                      if (_push4) {
+                        _push4(ssrRenderComponent(unref(_sfc_main$O), null, {
+                          default: withCtx((_5, _push5, _parent5, _scopeId4) => {
+                            if (_push5) {
+                              _push5(ssrRenderComponent(unref(_sfc_main$M), null, {
+                                default: withCtx((_6, _push6, _parent6, _scopeId5) => {
+                                  if (_push6) {
+                                    _push6(`Create Referral Code`);
+                                  } else {
+                                    return [
+                                      createTextVNode("Create Referral Code")
+                                    ];
+                                  }
+                                }),
+                                _: 1
+                              }, _parent5, _scopeId4));
+                              _push5(ssrRenderComponent(unref(_sfc_main$Q), null, {
+                                default: withCtx((_6, _push6, _parent6, _scopeId5) => {
+                                  if (_push6) {
+                                    _push6(`Pick a movie for this admin referral code and save it without leaving the table view.`);
+                                  } else {
+                                    return [
+                                      createTextVNode("Pick a movie for this admin referral code and save it without leaving the table view.")
+                                    ];
+                                  }
+                                }),
+                                _: 1
+                              }, _parent5, _scopeId4));
+                            } else {
+                              return [
+                                createVNode(unref(_sfc_main$M), null, {
+                                  default: withCtx(() => [
+                                    createTextVNode("Create Referral Code")
+                                  ]),
+                                  _: 1
+                                }),
+                                createVNode(unref(_sfc_main$Q), null, {
+                                  default: withCtx(() => [
+                                    createTextVNode("Pick a movie for this admin referral code and save it without leaving the table view.")
+                                  ]),
+                                  _: 1
+                                })
+                              ];
+                            }
+                          }),
+                          _: 1
+                        }, _parent4, _scopeId3));
+                        _push4(`<form class="space-y-4"${_scopeId3}><div${_scopeId3}><label for="movie_id" class="mb-2 block text-sm font-medium text-foreground"${_scopeId3}>Target Movie</label><select id="movie_id" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId3}><option${ssrRenderAttr("value", null)} disabled${ssrIncludeBooleanAttr(Array.isArray(form.movie_id) ? ssrLooseContain(form.movie_id, null) : ssrLooseEqual(form.movie_id, null)) ? " selected" : ""}${_scopeId3}>Select movie...</option><!--[-->`);
+                        ssrRenderList(__props.movies, (movie) => {
+                          _push4(`<option${ssrRenderAttr("value", movie.id)}${ssrIncludeBooleanAttr(Array.isArray(form.movie_id) ? ssrLooseContain(form.movie_id, movie.id) : ssrLooseEqual(form.movie_id, movie.id)) ? " selected" : ""}${_scopeId3}>${ssrInterpolate(movie.title)} (ID ${ssrInterpolate(movie.id)}) </option>`);
+                        });
+                        _push4(`<!--]--></select>`);
+                        if (_ctx.$page.props.errors?.movie_id) {
+                          _push4(`<div class="mt-1 text-sm text-red-600"${_scopeId3}>${ssrInterpolate(_ctx.$page.props.errors.movie_id)}</div>`);
+                        } else {
+                          _push4(`<!---->`);
+                        }
+                        _push4(`</div><div${_scopeId3}><label for="code" class="mb-2 block text-sm font-medium text-foreground"${_scopeId3}>Code</label><input id="code"${ssrRenderAttr("value", form.code)} type="text" maxlength="50" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary" placeholder="ACCRA2026"${_scopeId3}>`);
+                        if (_ctx.$page.props.errors?.code) {
+                          _push4(`<div class="mt-1 text-sm text-red-600"${_scopeId3}>${ssrInterpolate(_ctx.$page.props.errors.code)}</div>`);
+                        } else {
+                          _push4(`<!---->`);
+                        }
+                        _push4(`</div><div${_scopeId3}><label for="discount_percentage" class="mb-2 block text-sm font-medium text-foreground"${_scopeId3}>Discount %</label><input id="discount_percentage"${ssrRenderAttr("value", form.discount_percentage)} type="number" min="0" max="100" step="0.1" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId3}>`);
+                        if (_ctx.$page.props.errors?.discount_percentage) {
+                          _push4(`<div class="mt-1 text-sm text-red-600"${_scopeId3}>${ssrInterpolate(_ctx.$page.props.errors.discount_percentage)}</div>`);
+                        } else {
+                          _push4(`<!---->`);
+                        }
+                        _push4(`</div><div${_scopeId3}><label for="description" class="mb-2 block text-sm font-medium text-foreground"${_scopeId3}>Description</label><textarea id="description" rows="3" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Creator promo for selected movie"${_scopeId3}>${ssrInterpolate(form.description)}</textarea>`);
+                        if (_ctx.$page.props.errors?.description) {
+                          _push4(`<div class="mt-1 text-sm text-red-600"${_scopeId3}>${ssrInterpolate(_ctx.$page.props.errors.description)}</div>`);
+                        } else {
+                          _push4(`<!---->`);
+                        }
+                        _push4(`</div><div class="flex justify-end gap-3 pt-2"${_scopeId3}><button type="button" class="rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"${_scopeId3}> Cancel </button><button type="submit" class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"${_scopeId3}> Create Referral Code </button></div></form>`);
+                      } else {
+                        return [
+                          createVNode(unref(_sfc_main$O), null, {
+                            default: withCtx(() => [
+                              createVNode(unref(_sfc_main$M), null, {
+                                default: withCtx(() => [
+                                  createTextVNode("Create Referral Code")
+                                ]),
+                                _: 1
+                              }),
+                              createVNode(unref(_sfc_main$Q), null, {
+                                default: withCtx(() => [
+                                  createTextVNode("Pick a movie for this admin referral code and save it without leaving the table view.")
+                                ]),
+                                _: 1
+                              })
+                            ]),
+                            _: 1
+                          }),
+                          createVNode("form", {
+                            class: "space-y-4",
+                            onSubmit: withModifiers(createCode, ["prevent"])
+                          }, [
+                            createVNode("div", null, [
+                              createVNode("label", {
+                                for: "movie_id",
+                                class: "mb-2 block text-sm font-medium text-foreground"
+                              }, "Target Movie"),
+                              withDirectives(createVNode("select", {
+                                id: "movie_id",
+                                "onUpdate:modelValue": ($event) => form.movie_id = $event,
+                                class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                              }, [
+                                createVNode("option", {
+                                  value: null,
+                                  disabled: ""
+                                }, "Select movie..."),
+                                (openBlock(true), createBlock(Fragment, null, renderList(__props.movies, (movie) => {
+                                  return openBlock(), createBlock("option", {
+                                    key: movie.id,
+                                    value: movie.id
+                                  }, toDisplayString(movie.title) + " (ID " + toDisplayString(movie.id) + ") ", 9, ["value"]);
+                                }), 128))
+                              ], 8, ["onUpdate:modelValue"]), [
+                                [
+                                  vModelSelect,
+                                  form.movie_id,
+                                  void 0,
+                                  { number: true }
+                                ]
+                              ]),
+                              _ctx.$page.props.errors?.movie_id ? (openBlock(), createBlock("div", {
+                                key: 0,
+                                class: "mt-1 text-sm text-red-600"
+                              }, toDisplayString(_ctx.$page.props.errors.movie_id), 1)) : createCommentVNode("", true)
+                            ]),
+                            createVNode("div", null, [
+                              createVNode("label", {
+                                for: "code",
+                                class: "mb-2 block text-sm font-medium text-foreground"
+                              }, "Code"),
+                              withDirectives(createVNode("input", {
+                                id: "code",
+                                "onUpdate:modelValue": ($event) => form.code = $event,
+                                type: "text",
+                                maxlength: "50",
+                                class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                                placeholder: "ACCRA2026"
+                              }, null, 8, ["onUpdate:modelValue"]), [
+                                [vModelText, form.code]
+                              ]),
+                              _ctx.$page.props.errors?.code ? (openBlock(), createBlock("div", {
+                                key: 0,
+                                class: "mt-1 text-sm text-red-600"
+                              }, toDisplayString(_ctx.$page.props.errors.code), 1)) : createCommentVNode("", true)
+                            ]),
+                            createVNode("div", null, [
+                              createVNode("label", {
+                                for: "discount_percentage",
+                                class: "mb-2 block text-sm font-medium text-foreground"
+                              }, "Discount %"),
+                              withDirectives(createVNode("input", {
+                                id: "discount_percentage",
+                                "onUpdate:modelValue": ($event) => form.discount_percentage = $event,
+                                type: "number",
+                                min: "0",
+                                max: "100",
+                                step: "0.1",
+                                class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                              }, null, 8, ["onUpdate:modelValue"]), [
+                                [
+                                  vModelText,
+                                  form.discount_percentage,
+                                  void 0,
+                                  { number: true }
+                                ]
+                              ]),
+                              _ctx.$page.props.errors?.discount_percentage ? (openBlock(), createBlock("div", {
+                                key: 0,
+                                class: "mt-1 text-sm text-red-600"
+                              }, toDisplayString(_ctx.$page.props.errors.discount_percentage), 1)) : createCommentVNode("", true)
+                            ]),
+                            createVNode("div", null, [
+                              createVNode("label", {
+                                for: "description",
+                                class: "mb-2 block text-sm font-medium text-foreground"
+                              }, "Description"),
+                              withDirectives(createVNode("textarea", {
+                                id: "description",
+                                "onUpdate:modelValue": ($event) => form.description = $event,
+                                rows: "3",
+                                class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                                placeholder: "Creator promo for selected movie"
+                              }, null, 8, ["onUpdate:modelValue"]), [
+                                [vModelText, form.description]
+                              ]),
+                              _ctx.$page.props.errors?.description ? (openBlock(), createBlock("div", {
+                                key: 0,
+                                class: "mt-1 text-sm text-red-600"
+                              }, toDisplayString(_ctx.$page.props.errors.description), 1)) : createCommentVNode("", true)
+                            ]),
+                            createVNode("div", { class: "flex justify-end gap-3 pt-2" }, [
+                              createVNode("button", {
+                                type: "button",
+                                class: "rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent",
+                                onClick: ($event) => createDialogOpen.value = false
+                              }, " Cancel ", 8, ["onClick"]),
+                              createVNode("button", {
+                                type: "submit",
+                                class: "rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+                              }, " Create Referral Code ")
+                            ])
+                          ], 32)
+                        ];
+                      }
+                    }),
+                    _: 1
+                  }, _parent3, _scopeId2));
+                } else {
+                  return [
+                    createVNode(unref(_sfc_main$R), { class: "sm:max-w-xl" }, {
+                      default: withCtx(() => [
+                        createVNode(unref(_sfc_main$O), null, {
+                          default: withCtx(() => [
+                            createVNode(unref(_sfc_main$M), null, {
+                              default: withCtx(() => [
+                                createTextVNode("Create Referral Code")
+                              ]),
+                              _: 1
+                            }),
+                            createVNode(unref(_sfc_main$Q), null, {
+                              default: withCtx(() => [
+                                createTextVNode("Pick a movie for this admin referral code and save it without leaving the table view.")
+                              ]),
+                              _: 1
+                            })
+                          ]),
+                          _: 1
+                        }),
+                        createVNode("form", {
+                          class: "space-y-4",
+                          onSubmit: withModifiers(createCode, ["prevent"])
+                        }, [
+                          createVNode("div", null, [
+                            createVNode("label", {
+                              for: "movie_id",
+                              class: "mb-2 block text-sm font-medium text-foreground"
+                            }, "Target Movie"),
+                            withDirectives(createVNode("select", {
+                              id: "movie_id",
+                              "onUpdate:modelValue": ($event) => form.movie_id = $event,
+                              class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                            }, [
+                              createVNode("option", {
+                                value: null,
+                                disabled: ""
+                              }, "Select movie..."),
+                              (openBlock(true), createBlock(Fragment, null, renderList(__props.movies, (movie) => {
+                                return openBlock(), createBlock("option", {
+                                  key: movie.id,
+                                  value: movie.id
+                                }, toDisplayString(movie.title) + " (ID " + toDisplayString(movie.id) + ") ", 9, ["value"]);
+                              }), 128))
+                            ], 8, ["onUpdate:modelValue"]), [
+                              [
+                                vModelSelect,
+                                form.movie_id,
+                                void 0,
+                                { number: true }
+                              ]
+                            ]),
+                            _ctx.$page.props.errors?.movie_id ? (openBlock(), createBlock("div", {
+                              key: 0,
+                              class: "mt-1 text-sm text-red-600"
+                            }, toDisplayString(_ctx.$page.props.errors.movie_id), 1)) : createCommentVNode("", true)
+                          ]),
+                          createVNode("div", null, [
+                            createVNode("label", {
+                              for: "code",
+                              class: "mb-2 block text-sm font-medium text-foreground"
+                            }, "Code"),
+                            withDirectives(createVNode("input", {
+                              id: "code",
+                              "onUpdate:modelValue": ($event) => form.code = $event,
+                              type: "text",
+                              maxlength: "50",
+                              class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                              placeholder: "ACCRA2026"
+                            }, null, 8, ["onUpdate:modelValue"]), [
+                              [vModelText, form.code]
+                            ]),
+                            _ctx.$page.props.errors?.code ? (openBlock(), createBlock("div", {
+                              key: 0,
+                              class: "mt-1 text-sm text-red-600"
+                            }, toDisplayString(_ctx.$page.props.errors.code), 1)) : createCommentVNode("", true)
+                          ]),
+                          createVNode("div", null, [
+                            createVNode("label", {
+                              for: "discount_percentage",
+                              class: "mb-2 block text-sm font-medium text-foreground"
+                            }, "Discount %"),
+                            withDirectives(createVNode("input", {
+                              id: "discount_percentage",
+                              "onUpdate:modelValue": ($event) => form.discount_percentage = $event,
+                              type: "number",
+                              min: "0",
+                              max: "100",
+                              step: "0.1",
+                              class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                            }, null, 8, ["onUpdate:modelValue"]), [
+                              [
+                                vModelText,
+                                form.discount_percentage,
+                                void 0,
+                                { number: true }
+                              ]
+                            ]),
+                            _ctx.$page.props.errors?.discount_percentage ? (openBlock(), createBlock("div", {
+                              key: 0,
+                              class: "mt-1 text-sm text-red-600"
+                            }, toDisplayString(_ctx.$page.props.errors.discount_percentage), 1)) : createCommentVNode("", true)
+                          ]),
+                          createVNode("div", null, [
+                            createVNode("label", {
+                              for: "description",
+                              class: "mb-2 block text-sm font-medium text-foreground"
+                            }, "Description"),
+                            withDirectives(createVNode("textarea", {
+                              id: "description",
+                              "onUpdate:modelValue": ($event) => form.description = $event,
+                              rows: "3",
+                              class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                              placeholder: "Creator promo for selected movie"
+                            }, null, 8, ["onUpdate:modelValue"]), [
+                              [vModelText, form.description]
+                            ]),
+                            _ctx.$page.props.errors?.description ? (openBlock(), createBlock("div", {
+                              key: 0,
+                              class: "mt-1 text-sm text-red-600"
+                            }, toDisplayString(_ctx.$page.props.errors.description), 1)) : createCommentVNode("", true)
+                          ]),
+                          createVNode("div", { class: "flex justify-end gap-3 pt-2" }, [
+                            createVNode("button", {
+                              type: "button",
+                              class: "rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent",
+                              onClick: ($event) => createDialogOpen.value = false
+                            }, " Cancel ", 8, ["onClick"]),
+                            createVNode("button", {
+                              type: "submit",
+                              class: "rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+                            }, " Create Referral Code ")
+                          ])
+                        ], 32)
+                      ]),
+                      _: 1
+                    })
+                  ];
+                }
+              }),
+              _: 1
+            }, _parent2, _scopeId));
           } else {
             return [
               createVNode(unref(Head), { title: "Referral Codes" }),
               createVNode("div", { class: "bg-card border-b border-border shadow-sm" }, [
                 createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" }, [
-                  createVNode("div", { class: "flex flex-col gap-2 md:flex-row md:items-center md:justify-between" }, [
+                  createVNode("div", { class: "flex flex-col gap-3 md:flex-row md:items-center md:justify-between" }, [
                     createVNode("div", null, [
                       createVNode("h1", { class: "text-3xl font-bold text-foreground" }, "Referral Codes"),
                       createVNode("p", { class: "text-muted-foreground" }, "User referral codes are global. Admin-created referral codes are bound to a specific movie.")
                     ]),
-                    createVNode(unref(Link), {
-                      href: "/admin/page-content",
-                      class: "inline-flex items-center rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
-                    }, {
-                      default: withCtx(() => [
-                        createTextVNode(" Back to Movie Details ")
-                      ]),
-                      _: 1
-                    })
+                    createVNode("div", { class: "flex flex-wrap items-center gap-3" }, [
+                      createVNode("button", {
+                        type: "button",
+                        class: "inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90",
+                        onClick: ($event) => createDialogOpen.value = true
+                      }, " Create Referral Code ", 8, ["onClick"]),
+                      createVNode(unref(Link), {
+                        href: "/admin/page-content",
+                        class: "inline-flex items-center rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+                      }, {
+                        default: withCtx(() => [
+                          createTextVNode(" Back to Movie Details ")
+                        ]),
+                        _: 1
+                      })
+                    ])
                   ])
                 ])
               ]),
@@ -4350,233 +5396,457 @@ const _sfc_main$U = {
                     createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, "Discounts given: GHS " + toDisplayString(formatAmount(__props.summary.total_discount_given)), 1)
                   ])
                 ]),
-                createVNode("div", { class: "grid gap-8 xl:grid-cols-[340px_minmax(0,1fr)]" }, [
-                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
-                    createVNode("h2", { class: "text-xl font-semibold text-foreground" }, "Create Code"),
-                    createVNode("p", { class: "mt-1 text-sm text-muted-foreground" }, "Pick a movie for this admin referral code."),
-                    createVNode("form", {
-                      class: "mt-6 space-y-4",
-                      onSubmit: withModifiers(createCode, ["prevent"])
-                    }, [
-                      createVNode("div", null, [
-                        createVNode("label", {
-                          for: "movie_id",
-                          class: "mb-2 block text-sm font-medium text-foreground"
-                        }, "Target Movie"),
+                createVNode("div", { class: "rounded-lg border border-border bg-card shadow-sm" }, [
+                  createVNode("div", { class: "flex flex-col gap-2 border-b border-border px-6 py-5 md:flex-row md:items-center md:justify-between" }, [
+                    createVNode("div", null, [
+                      createVNode("h2", { class: "text-xl font-semibold text-foreground" }, "Referral Codes Table"),
+                      createVNode("p", { class: "text-sm text-muted-foreground" }, "High-level performance stays visible. Expand a row when you need creator, link, and recent-use details.")
+                    ]),
+                    createVNode("p", { class: "text-sm text-muted-foreground" }, toDisplayString(filteredCodes.value.length) + " of " + toDisplayString(__props.codes.length) + " code" + toDisplayString(__props.codes.length === 1 ? "" : "s"), 1)
+                  ]),
+                  createVNode("div", { class: "grid gap-3 border-b border-border px-6 py-4 md:grid-cols-6" }, [
+                    createVNode("div", null, [
+                      createVNode("label", {
+                        for: "filter_search",
+                        class: "mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                      }, "Search"),
+                      withDirectives(createVNode("input", {
+                        id: "filter_search",
+                        "onUpdate:modelValue": ($event) => filters.search = $event,
+                        type: "text",
+                        class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                        placeholder: "Code, description, creator"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [vModelText, filters.search]
+                      ])
+                    ]),
+                    createVNode("div", null, [
+                      createVNode("label", {
+                        for: "filter_status",
+                        class: "mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                      }, "Status"),
+                      withDirectives(createVNode("select", {
+                        id: "filter_status",
+                        "onUpdate:modelValue": ($event) => filters.status = $event,
+                        class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      }, [
+                        createVNode("option", { value: "all" }, "All statuses"),
+                        createVNode("option", { value: "active" }, "Active"),
+                        createVNode("option", { value: "inactive" }, "Inactive")
+                      ], 8, ["onUpdate:modelValue"]), [
+                        [vModelSelect, filters.status]
+                      ])
+                    ]),
+                    createVNode("div", null, [
+                      createVNode("label", {
+                        for: "filter_type",
+                        class: "mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                      }, "Type"),
+                      withDirectives(createVNode("select", {
+                        id: "filter_type",
+                        "onUpdate:modelValue": ($event) => filters.type = $event,
+                        class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      }, [
+                        createVNode("option", { value: "all" }, "All types"),
+                        createVNode("option", { value: "movie" }, "Movie"),
+                        createVNode("option", { value: "global" }, "Global")
+                      ], 8, ["onUpdate:modelValue"]), [
+                        [vModelSelect, filters.type]
+                      ])
+                    ]),
+                    createVNode("div", null, [
+                      createVNode("label", {
+                        for: "filter_movie",
+                        class: "mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                      }, "Movie Scope"),
+                      createVNode("div", { class: "flex items-center gap-2" }, [
                         withDirectives(createVNode("select", {
-                          id: "movie_id",
-                          "onUpdate:modelValue": ($event) => form.movie_id = $event,
-                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                          id: "filter_movie",
+                          "onUpdate:modelValue": ($event) => filters.movieId = $event,
+                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                         }, [
-                          createVNode("option", {
-                            value: null,
-                            disabled: ""
-                          }, "Select movie..."),
+                          createVNode("option", { value: "all" }, "All movies"),
+                          createVNode("option", { value: "global" }, "Global only"),
                           (openBlock(true), createBlock(Fragment, null, renderList(__props.movies, (movie) => {
                             return openBlock(), createBlock("option", {
                               key: movie.id,
-                              value: movie.id
-                            }, toDisplayString(movie.title) + " (ID " + toDisplayString(movie.id) + ") ", 9, ["value"]);
+                              value: String(movie.id)
+                            }, toDisplayString(movie.title), 9, ["value"]);
                           }), 128))
                         ], 8, ["onUpdate:modelValue"]), [
-                          [
-                            vModelSelect,
-                            form.movie_id,
-                            void 0,
-                            { number: true }
-                          ]
-                        ])
-                      ]),
-                      createVNode("div", null, [
-                        createVNode("label", {
-                          for: "code",
-                          class: "mb-2 block text-sm font-medium text-foreground"
-                        }, "Code"),
-                        withDirectives(createVNode("input", {
-                          id: "code",
-                          "onUpdate:modelValue": ($event) => form.code = $event,
-                          type: "text",
-                          maxlength: "50",
-                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
-                          placeholder: "ACCRA2026"
-                        }, null, 8, ["onUpdate:modelValue"]), [
-                          [vModelText, form.code]
-                        ])
-                      ]),
-                      createVNode("div", null, [
-                        createVNode("label", {
-                          for: "discount_percentage",
-                          class: "mb-2 block text-sm font-medium text-foreground"
-                        }, "Discount %"),
-                        withDirectives(createVNode("input", {
-                          id: "discount_percentage",
-                          "onUpdate:modelValue": ($event) => form.discount_percentage = $event,
-                          type: "number",
-                          min: "0",
-                          max: "100",
-                          step: "0.1",
-                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                        }, null, 8, ["onUpdate:modelValue"]), [
-                          [
-                            vModelText,
-                            form.discount_percentage,
-                            void 0,
-                            { number: true }
-                          ]
-                        ])
-                      ]),
-                      createVNode("div", null, [
-                        createVNode("label", {
-                          for: "description",
-                          class: "mb-2 block text-sm font-medium text-foreground"
-                        }, "Description"),
-                        withDirectives(createVNode("textarea", {
-                          id: "description",
-                          "onUpdate:modelValue": ($event) => form.description = $event,
-                          rows: "3",
-                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
-                          placeholder: "Creator promo for selected movie"
-                        }, null, 8, ["onUpdate:modelValue"]), [
-                          [vModelText, form.description]
-                        ])
-                      ]),
-                      createVNode("button", {
-                        type: "submit",
-                        class: "inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
-                      }, " Create Referral Code ")
-                    ], 32)
-                  ]),
-                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
-                    createVNode("div", { class: "flex flex-col gap-2 md:flex-row md:items-center md:justify-between" }, [
-                      createVNode("div", null, [
-                        createVNode("h2", { class: "text-xl font-semibold text-foreground" }, "Existing Codes"),
-                        createVNode("p", { class: "text-sm text-muted-foreground" }, "Each code metrics are scoped to its bound movie.")
+                          [vModelSelect, filters.movieId]
+                        ]),
+                        createVNode("button", {
+                          type: "button",
+                          class: "shrink-0 rounded-md bg-muted px-3 py-2 text-xs font-medium text-foreground transition hover:bg-accent",
+                          onClick: resetFilters
+                        }, " Reset ")
                       ])
                     ]),
-                    __props.codes.length === 0 ? (openBlock(), createBlock("div", {
-                      key: 0,
-                      class: "mt-6 rounded-md border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground"
-                    }, " No referral codes created yet. ")) : (openBlock(), createBlock("div", {
-                      key: 1,
-                      class: "mt-6 space-y-4"
-                    }, [
-                      (openBlock(true), createBlock(Fragment, null, renderList(__props.codes, (code) => {
-                        return openBlock(), createBlock("div", {
-                          key: code.id,
-                          class: "rounded-lg border border-border bg-background/40 p-5"
-                        }, [
-                          createVNode("div", { class: "flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between" }, [
-                            createVNode("div", { class: "space-y-2" }, [
-                              createVNode("div", { class: "flex flex-wrap items-center gap-3" }, [
-                                createVNode("h3", { class: "text-lg font-semibold text-foreground" }, toDisplayString(code.code), 1),
-                                createVNode("span", {
-                                  class: ["rounded-full px-2.5 py-1 text-xs font-medium", code.is_active ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"]
-                                }, toDisplayString(code.is_active ? "Active" : "Inactive"), 3),
-                                createVNode("span", { class: "rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary" }, toDisplayString(code.discount_percentage) + "% off ", 1)
+                    createVNode("div", null, [
+                      createVNode("label", {
+                        for: "filter_start_date",
+                        class: "mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                      }, "Activity From"),
+                      withDirectives(createVNode("input", {
+                        id: "filter_start_date",
+                        "onUpdate:modelValue": ($event) => filters.startDate = $event,
+                        type: "date",
+                        class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [vModelText, filters.startDate]
+                      ])
+                    ]),
+                    createVNode("div", null, [
+                      createVNode("label", {
+                        for: "filter_sort",
+                        class: "mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                      }, "Sort"),
+                      withDirectives(createVNode("select", {
+                        id: "filter_sort",
+                        "onUpdate:modelValue": ($event) => filters.sort = $event,
+                        class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      }, [
+                        createVNode("option", { value: "newest" }, "Newest"),
+                        createVNode("option", { value: "oldest" }, "Oldest"),
+                        createVNode("option", { value: "most_uses" }, "Most Uses"),
+                        createVNode("option", { value: "most_revenue" }, "Most Revenue"),
+                        createVNode("option", { value: "code_az" }, "Code A-Z"),
+                        createVNode("option", { value: "code_za" }, "Code Z-A")
+                      ], 8, ["onUpdate:modelValue"]), [
+                        [vModelSelect, filters.sort]
+                      ])
+                    ])
+                  ]),
+                  __props.codes.length === 0 ? (openBlock(), createBlock("div", {
+                    key: 0,
+                    class: "px-6 py-10 text-center text-sm text-muted-foreground"
+                  }, " No referral codes created yet. ")) : filteredCodes.value.length === 0 ? (openBlock(), createBlock("div", {
+                    key: 1,
+                    class: "px-6 py-10 text-center text-sm text-muted-foreground"
+                  }, " No referral codes match your current filters. ")) : (openBlock(), createBlock("div", {
+                    key: 2,
+                    class: "overflow-x-auto"
+                  }, [
+                    createVNode("table", { class: "min-w-full divide-y divide-border" }, [
+                      createVNode("thead", { class: "bg-muted/40" }, [
+                        createVNode("tr", { class: "text-left text-xs uppercase tracking-wide text-muted-foreground" }, [
+                          createVNode("th", { class: "px-6 py-3 font-medium" }, "Code"),
+                          createVNode("th", { class: "px-6 py-3 font-medium" }, "Type"),
+                          createVNode("th", { class: "px-6 py-3 font-medium" }, "Scope"),
+                          createVNode("th", { class: "px-6 py-3 font-medium" }, "Performance"),
+                          createVNode("th", { class: "px-6 py-3 font-medium" }, "Actions")
+                        ])
+                      ]),
+                      createVNode("tbody", { class: "divide-y divide-border" }, [
+                        (openBlock(true), createBlock(Fragment, null, renderList(sortedFilteredCodes.value, (code) => {
+                          return openBlock(), createBlock(Fragment, {
+                            key: code.id
+                          }, [
+                            createVNode("tr", { class: "align-top text-sm text-foreground" }, [
+                              createVNode("td", { class: "px-6 py-4" }, [
+                                createVNode("div", { class: "space-y-2" }, [
+                                  createVNode("div", { class: "flex flex-wrap items-center gap-2" }, [
+                                    createVNode("span", { class: "font-semibold text-foreground" }, toDisplayString(code.code), 1),
+                                    createVNode("span", {
+                                      class: ["rounded-full px-2.5 py-1 text-[11px] font-medium", code.is_active ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"]
+                                    }, toDisplayString(code.is_active ? "Active" : "Inactive"), 3)
+                                  ]),
+                                  code.description ? (openBlock(), createBlock("p", {
+                                    key: 0,
+                                    class: "max-w-xs text-xs text-muted-foreground"
+                                  }, toDisplayString(code.description), 1)) : createCommentVNode("", true)
+                                ])
                               ]),
-                              code.description ? (openBlock(), createBlock("p", {
-                                key: 0,
-                                class: "text-sm text-muted-foreground"
-                              }, toDisplayString(code.description), 1)) : createCommentVNode("", true),
-                              createVNode("p", { class: "text-xs text-muted-foreground" }, [
-                                createTextVNode(" Applies to: "),
-                                createVNode("span", { class: "font-medium text-foreground" }, toDisplayString(code.movie?.title || code.stats.movie?.title || "Global"), 1),
-                                code.movie?.id || code.stats.movie?.id ? (openBlock(), createBlock("span", { key: 0 }, "(ID " + toDisplayString(code.movie?.id || code.stats.movie?.id) + ")", 1)) : createCommentVNode("", true)
+                              createVNode("td", { class: "px-6 py-4" }, [
+                                createVNode("div", { class: "space-y-1" }, [
+                                  createVNode("p", { class: "font-medium text-foreground" }, toDisplayString(getCodeType(code)), 1),
+                                  createVNode("p", { class: "text-xs text-muted-foreground" }, toDisplayString(code.discount_percentage) + "% discount", 1)
+                                ])
                               ]),
-                              createVNode("p", { class: "text-xs text-muted-foreground" }, [
-                                createTextVNode(" Created by " + toDisplayString(code.creator?.name || "Unknown") + " ", 1),
-                                code.creator?.email ? (openBlock(), createBlock("span", { key: 0 }, "(" + toDisplayString(code.creator.email) + ")", 1)) : createCommentVNode("", true)
+                              createVNode("td", { class: "px-6 py-4" }, [
+                                createVNode("div", { class: "space-y-1" }, [
+                                  createVNode("p", { class: "font-medium text-foreground" }, toDisplayString(getScopeLabel(code)), 1),
+                                  createVNode("p", { class: "text-xs text-muted-foreground" }, toDisplayString(getScopeMeta(code)), 1)
+                                ])
                               ]),
-                              createVNode("div", { class: "flex flex-col gap-2 pt-2 lg:flex-row lg:items-center" }, [
-                                createVNode("input", {
-                                  value: code.link,
-                                  readonly: "",
-                                  class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
-                                }, null, 8, ["value"]),
-                                createVNode("button", {
-                                  type: "button",
-                                  class: "rounded-md bg-muted px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent",
-                                  onClick: ($event) => copyLink(code.link)
-                                }, " Copy Link ", 8, ["onClick"])
-                              ])
-                            ]),
-                            createVNode("div", { class: "flex shrink-0 gap-3" }, [
-                              !code.is_active ? (openBlock(), createBlock("button", {
-                                key: 0,
-                                type: "button",
-                                class: "rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90",
-                                onClick: ($event) => toggleCode(code, true)
-                              }, " Activate ", 8, ["onClick"])) : (openBlock(), createBlock("button", {
-                                key: 1,
-                                type: "button",
-                                class: "rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-700",
-                                onClick: ($event) => toggleCode(code, false)
-                              }, " Deactivate ", 8, ["onClick"]))
-                            ])
-                          ]),
-                          createVNode("div", { class: "mt-5 grid gap-4 md:grid-cols-4" }, [
-                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
-                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Uses"),
-                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, toDisplayString(code.stats.total_uses), 1)
-                            ]),
-                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
-                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Unique Users"),
-                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, toDisplayString(code.stats.unique_users), 1)
-                            ]),
-                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
-                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Revenue"),
-                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, "GHS " + toDisplayString(formatAmount(code.stats.total_revenue)), 1)
-                            ]),
-                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
-                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Discount Given"),
-                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, "GHS " + toDisplayString(formatAmount(code.stats.total_discount_given)), 1)
-                            ])
-                          ]),
-                          createVNode("div", { class: "mt-5" }, [
-                            createVNode("h4", { class: "text-sm font-medium text-foreground" }, "Recent Uses"),
-                            code.stats.recent_uses.length === 0 ? (openBlock(), createBlock("div", {
-                              key: 0,
-                              class: "mt-2 text-sm text-muted-foreground"
-                            }, " No successful referrals recorded for this movie yet. ")) : (openBlock(), createBlock("div", {
-                              key: 1,
-                              class: "mt-3 overflow-x-auto"
-                            }, [
-                              createVNode("table", { class: "w-full min-w-[640px]" }, [
-                                createVNode("thead", null, [
-                                  createVNode("tr", { class: "border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground" }, [
-                                    createVNode("th", { class: "py-2 pr-4" }, "User"),
-                                    createVNode("th", { class: "py-2 pr-4" }, "Payment"),
-                                    createVNode("th", { class: "py-2 pr-4" }, "Discount"),
-                                    createVNode("th", { class: "py-2 pr-4" }, "Movie"),
-                                    createVNode("th", { class: "py-2" }, "Used")
-                                  ])
-                                ]),
-                                createVNode("tbody", null, [
-                                  (openBlock(true), createBlock(Fragment, null, renderList(code.stats.recent_uses, (usage) => {
-                                    return openBlock(), createBlock("tr", {
-                                      key: usage.id,
-                                      class: "border-b border-border/60 text-sm text-foreground"
-                                    }, [
-                                      createVNode("td", { class: "py-3 pr-4" }, [
-                                        createVNode("div", null, toDisplayString(usage.user_name || "Unknown"), 1),
-                                        createVNode("div", { class: "text-xs text-muted-foreground" }, toDisplayString(usage.user_email || "No email"), 1)
-                                      ]),
-                                      createVNode("td", { class: "py-3 pr-4" }, "GHS " + toDisplayString(formatAmount(usage.payment_amount)), 1),
-                                      createVNode("td", { class: "py-3 pr-4" }, "GHS " + toDisplayString(formatAmount(usage.discount_applied)), 1),
-                                      createVNode("td", { class: "py-3 pr-4" }, toDisplayString(usage.movie_id || code.movie?.id || code.stats.movie?.id || "N/A"), 1),
-                                      createVNode("td", { class: "py-3" }, toDisplayString(formatDate(usage.used_at)), 1)
-                                    ]);
-                                  }), 128))
+                              createVNode("td", { class: "px-6 py-4" }, [
+                                createVNode("div", { class: "flex max-w-xs flex-wrap gap-2 text-xs" }, [
+                                  createVNode("span", { class: "inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 font-medium text-foreground" }, " U: " + toDisplayString(code.stats.total_uses), 1),
+                                  createVNode("span", { class: "inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 font-medium text-foreground" }, " S: " + toDisplayString(code.stats.unique_users), 1),
+                                  createVNode("span", { class: "inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 font-medium text-primary" }, " R: GHS " + toDisplayString(formatAmount(code.stats.total_revenue)), 1)
+                                ])
+                              ]),
+                              createVNode("td", { class: "px-6 py-4" }, [
+                                createVNode("div", { class: "flex flex-wrap items-center gap-2" }, [
+                                  createVNode("button", {
+                                    type: "button",
+                                    class: "inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-foreground transition hover:bg-accent",
+                                    onClick: ($event) => toggleExpanded(code.id),
+                                    title: isExpanded(code.id) ? "Hide details" : "View details",
+                                    "aria-label": isExpanded(code.id) ? "Hide details" : "View details"
+                                  }, [
+                                    isExpanded(code.id) ? (openBlock(), createBlock(unref(EyeOff), {
+                                      key: 0,
+                                      class: "h-4 w-4"
+                                    })) : (openBlock(), createBlock(unref(Eye), {
+                                      key: 1,
+                                      class: "h-4 w-4"
+                                    }))
+                                  ], 8, ["onClick", "title", "aria-label"]),
+                                  createVNode("button", {
+                                    type: "button",
+                                    class: "inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-muted text-foreground transition hover:bg-accent",
+                                    onClick: ($event) => copyLink(code.link),
+                                    title: "Copy referral link",
+                                    "aria-label": "Copy referral link"
+                                  }, [
+                                    createVNode(unref(Copy), { class: "h-4 w-4" })
+                                  ], 8, ["onClick"]),
+                                  !code.is_active ? (openBlock(), createBlock("button", {
+                                    key: 0,
+                                    type: "button",
+                                    class: "inline-flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground transition hover:opacity-90",
+                                    onClick: ($event) => toggleCode(code, true),
+                                    title: "Activate code",
+                                    "aria-label": "Activate code"
+                                  }, [
+                                    createVNode(unref(CheckCircle), { class: "h-4 w-4" })
+                                  ], 8, ["onClick"])) : (openBlock(), createBlock("button", {
+                                    key: 1,
+                                    type: "button",
+                                    class: "inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-600 text-white transition hover:bg-amber-700",
+                                    onClick: ($event) => toggleCode(code, false),
+                                    title: "Deactivate code",
+                                    "aria-label": "Deactivate code"
+                                  }, [
+                                    createVNode(unref(CircleOff), { class: "h-4 w-4" })
+                                  ], 8, ["onClick"]))
                                 ])
                               ])
-                            ]))
-                          ])
-                        ]);
-                      }), 128))
-                    ]))
-                  ])
+                            ]),
+                            isExpanded(code.id) ? (openBlock(), createBlock("tr", {
+                              key: 0,
+                              class: "bg-muted/20"
+                            }, [
+                              createVNode("td", {
+                                colspan: "5",
+                                class: "px-6 py-5"
+                              }, [
+                                createVNode("div", { class: "grid gap-5 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)]" }, [
+                                  createVNode("div", { class: "space-y-4" }, [
+                                    createVNode("div", { class: "rounded-lg border border-border bg-background p-4" }, [
+                                      createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Referral Link"),
+                                      createVNode("input", {
+                                        value: code.link,
+                                        readonly: "",
+                                        class: "mt-3 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"
+                                      }, null, 8, ["value"])
+                                    ]),
+                                    createVNode("div", { class: "rounded-lg border border-border bg-background p-4 text-sm" }, [
+                                      createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Owner"),
+                                      createVNode("p", { class: "mt-2 font-medium text-foreground" }, toDisplayString(code.creator?.name || "Unknown"), 1),
+                                      createVNode("p", { class: "text-muted-foreground" }, toDisplayString(code.creator?.email || "No email available"), 1)
+                                    ]),
+                                    createVNode("div", { class: "rounded-lg border border-border bg-background p-4 text-sm" }, [
+                                      createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Discount Given"),
+                                      createVNode("p", { class: "mt-2 font-semibold text-foreground" }, "GHS " + toDisplayString(formatAmount(code.stats.total_discount_given)), 1)
+                                    ])
+                                  ]),
+                                  createVNode("div", { class: "rounded-lg border border-border bg-background p-4" }, [
+                                    createVNode("div", { class: "flex items-center justify-between gap-3" }, [
+                                      createVNode("h3", { class: "text-sm font-medium text-foreground" }, "Recent Uses"),
+                                      createVNode("p", { class: "text-xs text-muted-foreground" }, "Last " + toDisplayString(code.stats.recent_uses.length) + " record" + toDisplayString(code.stats.recent_uses.length === 1 ? "" : "s"), 1)
+                                    ]),
+                                    code.stats.recent_uses.length === 0 ? (openBlock(), createBlock("div", {
+                                      key: 0,
+                                      class: "mt-3 text-sm text-muted-foreground"
+                                    }, " No successful referrals recorded for this code yet. ")) : (openBlock(), createBlock("div", {
+                                      key: 1,
+                                      class: "mt-4 overflow-x-auto"
+                                    }, [
+                                      createVNode("table", { class: "w-full min-w-[540px]" }, [
+                                        createVNode("thead", null, [
+                                          createVNode("tr", { class: "border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground" }, [
+                                            createVNode("th", { class: "py-2 pr-4" }, "User"),
+                                            createVNode("th", { class: "py-2 pr-4" }, "Payment"),
+                                            createVNode("th", { class: "py-2 pr-4" }, "Discount"),
+                                            createVNode("th", { class: "py-2" }, "Used")
+                                          ])
+                                        ]),
+                                        createVNode("tbody", null, [
+                                          (openBlock(true), createBlock(Fragment, null, renderList(code.stats.recent_uses, (usage) => {
+                                            return openBlock(), createBlock("tr", {
+                                              key: usage.id,
+                                              class: "border-b border-border/60 text-sm text-foreground"
+                                            }, [
+                                              createVNode("td", { class: "py-3 pr-4" }, [
+                                                createVNode("div", null, toDisplayString(usage.user_name || "Unknown"), 1),
+                                                createVNode("div", { class: "text-xs text-muted-foreground" }, toDisplayString(usage.user_email || "No email"), 1)
+                                              ]),
+                                              createVNode("td", { class: "py-3 pr-4" }, "GHS " + toDisplayString(formatAmount(usage.payment_amount)), 1),
+                                              createVNode("td", { class: "py-3 pr-4" }, "GHS " + toDisplayString(formatAmount(usage.discount_applied)), 1),
+                                              createVNode("td", { class: "py-3" }, toDisplayString(formatDate(usage.used_at)), 1)
+                                            ]);
+                                          }), 128))
+                                        ])
+                                      ])
+                                    ]))
+                                  ])
+                                ])
+                              ])
+                            ])) : createCommentVNode("", true)
+                          ], 64);
+                        }), 128))
+                      ])
+                    ])
+                  ]))
                 ])
-              ])
+              ]),
+              createVNode(unref(_sfc_main$U), {
+                open: createDialogOpen.value,
+                "onUpdate:open": ($event) => createDialogOpen.value = $event
+              }, {
+                default: withCtx(() => [
+                  createVNode(unref(_sfc_main$R), { class: "sm:max-w-xl" }, {
+                    default: withCtx(() => [
+                      createVNode(unref(_sfc_main$O), null, {
+                        default: withCtx(() => [
+                          createVNode(unref(_sfc_main$M), null, {
+                            default: withCtx(() => [
+                              createTextVNode("Create Referral Code")
+                            ]),
+                            _: 1
+                          }),
+                          createVNode(unref(_sfc_main$Q), null, {
+                            default: withCtx(() => [
+                              createTextVNode("Pick a movie for this admin referral code and save it without leaving the table view.")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        _: 1
+                      }),
+                      createVNode("form", {
+                        class: "space-y-4",
+                        onSubmit: withModifiers(createCode, ["prevent"])
+                      }, [
+                        createVNode("div", null, [
+                          createVNode("label", {
+                            for: "movie_id",
+                            class: "mb-2 block text-sm font-medium text-foreground"
+                          }, "Target Movie"),
+                          withDirectives(createVNode("select", {
+                            id: "movie_id",
+                            "onUpdate:modelValue": ($event) => form.movie_id = $event,
+                            class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                          }, [
+                            createVNode("option", {
+                              value: null,
+                              disabled: ""
+                            }, "Select movie..."),
+                            (openBlock(true), createBlock(Fragment, null, renderList(__props.movies, (movie) => {
+                              return openBlock(), createBlock("option", {
+                                key: movie.id,
+                                value: movie.id
+                              }, toDisplayString(movie.title) + " (ID " + toDisplayString(movie.id) + ") ", 9, ["value"]);
+                            }), 128))
+                          ], 8, ["onUpdate:modelValue"]), [
+                            [
+                              vModelSelect,
+                              form.movie_id,
+                              void 0,
+                              { number: true }
+                            ]
+                          ]),
+                          _ctx.$page.props.errors?.movie_id ? (openBlock(), createBlock("div", {
+                            key: 0,
+                            class: "mt-1 text-sm text-red-600"
+                          }, toDisplayString(_ctx.$page.props.errors.movie_id), 1)) : createCommentVNode("", true)
+                        ]),
+                        createVNode("div", null, [
+                          createVNode("label", {
+                            for: "code",
+                            class: "mb-2 block text-sm font-medium text-foreground"
+                          }, "Code"),
+                          withDirectives(createVNode("input", {
+                            id: "code",
+                            "onUpdate:modelValue": ($event) => form.code = $event,
+                            type: "text",
+                            maxlength: "50",
+                            class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                            placeholder: "ACCRA2026"
+                          }, null, 8, ["onUpdate:modelValue"]), [
+                            [vModelText, form.code]
+                          ]),
+                          _ctx.$page.props.errors?.code ? (openBlock(), createBlock("div", {
+                            key: 0,
+                            class: "mt-1 text-sm text-red-600"
+                          }, toDisplayString(_ctx.$page.props.errors.code), 1)) : createCommentVNode("", true)
+                        ]),
+                        createVNode("div", null, [
+                          createVNode("label", {
+                            for: "discount_percentage",
+                            class: "mb-2 block text-sm font-medium text-foreground"
+                          }, "Discount %"),
+                          withDirectives(createVNode("input", {
+                            id: "discount_percentage",
+                            "onUpdate:modelValue": ($event) => form.discount_percentage = $event,
+                            type: "number",
+                            min: "0",
+                            max: "100",
+                            step: "0.1",
+                            class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                          }, null, 8, ["onUpdate:modelValue"]), [
+                            [
+                              vModelText,
+                              form.discount_percentage,
+                              void 0,
+                              { number: true }
+                            ]
+                          ]),
+                          _ctx.$page.props.errors?.discount_percentage ? (openBlock(), createBlock("div", {
+                            key: 0,
+                            class: "mt-1 text-sm text-red-600"
+                          }, toDisplayString(_ctx.$page.props.errors.discount_percentage), 1)) : createCommentVNode("", true)
+                        ]),
+                        createVNode("div", null, [
+                          createVNode("label", {
+                            for: "description",
+                            class: "mb-2 block text-sm font-medium text-foreground"
+                          }, "Description"),
+                          withDirectives(createVNode("textarea", {
+                            id: "description",
+                            "onUpdate:modelValue": ($event) => form.description = $event,
+                            rows: "3",
+                            class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                            placeholder: "Creator promo for selected movie"
+                          }, null, 8, ["onUpdate:modelValue"]), [
+                            [vModelText, form.description]
+                          ]),
+                          _ctx.$page.props.errors?.description ? (openBlock(), createBlock("div", {
+                            key: 0,
+                            class: "mt-1 text-sm text-red-600"
+                          }, toDisplayString(_ctx.$page.props.errors.description), 1)) : createCommentVNode("", true)
+                        ]),
+                        createVNode("div", { class: "flex justify-end gap-3 pt-2" }, [
+                          createVNode("button", {
+                            type: "button",
+                            class: "rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent",
+                            onClick: ($event) => createDialogOpen.value = false
+                          }, " Cancel ", 8, ["onClick"]),
+                          createVNode("button", {
+                            type: "submit",
+                            class: "rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+                          }, " Create Referral Code ")
+                        ])
+                      ], 32)
+                    ]),
+                    _: 1
+                  })
+                ]),
+                _: 1
+              }, 8, ["open", "onUpdate:open"])
             ];
           }
         }),
@@ -4585,17 +5855,17 @@ const _sfc_main$U = {
     };
   }
 };
-const _sfc_setup$U = _sfc_main$U.setup;
-_sfc_main$U.setup = (props, ctx) => {
+const _sfc_setup$K = _sfc_main$K.setup;
+_sfc_main$K.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Referrals/Index.vue");
-  return _sfc_setup$U ? _sfc_setup$U(props, ctx) : void 0;
+  return _sfc_setup$K ? _sfc_setup$K(props, ctx) : void 0;
 };
 const __vite_glob_0_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$U
+  default: _sfc_main$K
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$T = {
+const _sfc_main$J = {
   __name: "Create",
   __ssrInlineRender: true,
   setup(__props) {
@@ -4675,17 +5945,17 @@ const _sfc_main$T = {
     };
   }
 };
-const _sfc_setup$T = _sfc_main$T.setup;
-_sfc_main$T.setup = (props, ctx) => {
+const _sfc_setup$J = _sfc_main$J.setup;
+_sfc_main$J.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Create.vue");
-  return _sfc_setup$T ? _sfc_setup$T(props, ctx) : void 0;
+  return _sfc_setup$J ? _sfc_setup$J(props, ctx) : void 0;
 };
 const __vite_glob_0_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$T
+  default: _sfc_main$J
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$S = {
+const _sfc_main$I = {
   __name: "Edit",
   __ssrInlineRender: true,
   props: {
@@ -4769,17 +6039,17 @@ const _sfc_main$S = {
     };
   }
 };
-const _sfc_setup$S = _sfc_main$S.setup;
-_sfc_main$S.setup = (props, ctx) => {
+const _sfc_setup$I = _sfc_main$I.setup;
+_sfc_main$I.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Edit.vue");
-  return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
+  return _sfc_setup$I ? _sfc_setup$I(props, ctx) : void 0;
 };
 const __vite_glob_0_23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$S
+  default: _sfc_main$I
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$R = {
+const _sfc_main$H = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -4983,17 +6253,17 @@ const _sfc_main$R = {
     };
   }
 };
-const _sfc_setup$R = _sfc_main$R.setup;
-_sfc_main$R.setup = (props, ctx) => {
+const _sfc_setup$H = _sfc_main$H.setup;
+_sfc_main$H.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Index.vue");
-  return _sfc_setup$R ? _sfc_setup$R(props, ctx) : void 0;
+  return _sfc_setup$H ? _sfc_setup$H(props, ctx) : void 0;
 };
 const __vite_glob_0_24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$R
+  default: _sfc_main$H
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$Q = {
+const _sfc_main$G = {
   __name: "Show",
   __ssrInlineRender: true,
   props: {
@@ -5052,17 +6322,17 @@ const _sfc_main$Q = {
     };
   }
 };
-const _sfc_setup$Q = _sfc_main$Q.setup;
-_sfc_main$Q.setup = (props, ctx) => {
+const _sfc_setup$G = _sfc_main$G.setup;
+_sfc_main$G.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Show.vue");
-  return _sfc_setup$Q ? _sfc_setup$Q(props, ctx) : void 0;
+  return _sfc_setup$G ? _sfc_setup$G(props, ctx) : void 0;
 };
 const __vite_glob_0_25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$Q
+  default: _sfc_main$G
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$P = {
+const _sfc_main$F = {
   __name: "Settings",
   __ssrInlineRender: true,
   props: {
@@ -5691,17 +6961,17 @@ const _sfc_main$P = {
     };
   }
 };
-const _sfc_setup$P = _sfc_main$P.setup;
-_sfc_main$P.setup = (props, ctx) => {
+const _sfc_setup$F = _sfc_main$F.setup;
+_sfc_main$F.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Settings.vue");
-  return _sfc_setup$P ? _sfc_setup$P(props, ctx) : void 0;
+  return _sfc_setup$F ? _sfc_setup$F(props, ctx) : void 0;
 };
 const __vite_glob_0_26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$P
+  default: _sfc_main$F
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$O = {
+const _sfc_main$E = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -5961,17 +7231,17 @@ const _sfc_main$O = {
     };
   }
 };
-const _sfc_setup$O = _sfc_main$O.setup;
-_sfc_main$O.setup = (props, ctx) => {
+const _sfc_setup$E = _sfc_main$E.setup;
+_sfc_main$E.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Sms/Index.vue");
-  return _sfc_setup$O ? _sfc_setup$O(props, ctx) : void 0;
+  return _sfc_setup$E ? _sfc_setup$E(props, ctx) : void 0;
 };
 const __vite_glob_0_27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$O
+  default: _sfc_main$E
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$N = {
+const _sfc_main$D = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -6354,17 +7624,17 @@ const _sfc_main$N = {
     };
   }
 };
-const _sfc_setup$N = _sfc_main$N.setup;
-_sfc_main$N.setup = (props, ctx) => {
+const _sfc_setup$D = _sfc_main$D.setup;
+_sfc_main$D.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Subscribers/Index.vue");
-  return _sfc_setup$N ? _sfc_setup$N(props, ctx) : void 0;
+  return _sfc_setup$D ? _sfc_setup$D(props, ctx) : void 0;
 };
 const __vite_glob_0_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$N
+  default: _sfc_main$D
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$M = {
+const _sfc_main$C = {
   __name: "WatchAnalytics",
   __ssrInlineRender: true,
   props: {
@@ -6691,17 +7961,17 @@ const _sfc_main$M = {
     };
   }
 };
-const _sfc_setup$M = _sfc_main$M.setup;
-_sfc_main$M.setup = (props, ctx) => {
+const _sfc_setup$C = _sfc_main$C.setup;
+_sfc_main$C.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/WatchAnalytics.vue");
-  return _sfc_setup$M ? _sfc_setup$M(props, ctx) : void 0;
+  return _sfc_setup$C ? _sfc_setup$C(props, ctx) : void 0;
 };
 const __vite_glob_0_29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$M
+  default: _sfc_main$C
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$L = {
+const _sfc_main$B = {
   __name: "ConfirmPassword",
   __ssrInlineRender: true,
   setup(__props) {
@@ -6725,17 +7995,17 @@ const _sfc_main$L = {
     };
   }
 };
-const _sfc_setup$L = _sfc_main$L.setup;
-_sfc_main$L.setup = (props, ctx) => {
+const _sfc_setup$B = _sfc_main$B.setup;
+_sfc_main$B.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/ConfirmPassword.vue");
-  return _sfc_setup$L ? _sfc_setup$L(props, ctx) : void 0;
+  return _sfc_setup$B ? _sfc_setup$B(props, ctx) : void 0;
 };
 const __vite_glob_0_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$L
+  default: _sfc_main$B
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$K = {
+const _sfc_main$A = {
   __name: "ForgotPassword",
   __ssrInlineRender: true,
   setup(__props) {
@@ -6775,17 +8045,17 @@ const _sfc_main$K = {
     };
   }
 };
-const _sfc_setup$K = _sfc_main$K.setup;
-_sfc_main$K.setup = (props, ctx) => {
+const _sfc_setup$A = _sfc_main$A.setup;
+_sfc_main$A.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/ForgotPassword.vue");
-  return _sfc_setup$K ? _sfc_setup$K(props, ctx) : void 0;
+  return _sfc_setup$A ? _sfc_setup$A(props, ctx) : void 0;
 };
 const __vite_glob_0_31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$K
+  default: _sfc_main$A
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$J = {
+const _sfc_main$z = {
   __name: "Login",
   __ssrInlineRender: true,
   setup(__props) {
@@ -6835,17 +8105,17 @@ const _sfc_main$J = {
     };
   }
 };
-const _sfc_setup$J = _sfc_main$J.setup;
-_sfc_main$J.setup = (props, ctx) => {
+const _sfc_setup$z = _sfc_main$z.setup;
+_sfc_main$z.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/Login.vue");
-  return _sfc_setup$J ? _sfc_setup$J(props, ctx) : void 0;
+  return _sfc_setup$z ? _sfc_setup$z(props, ctx) : void 0;
 };
 const __vite_glob_0_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$J
+  default: _sfc_main$z
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$I = {
+const _sfc_main$y = {
   __name: "Register",
   __ssrInlineRender: true,
   setup(__props) {
@@ -6933,17 +8203,17 @@ const _sfc_main$I = {
     };
   }
 };
-const _sfc_setup$I = _sfc_main$I.setup;
-_sfc_main$I.setup = (props, ctx) => {
+const _sfc_setup$y = _sfc_main$y.setup;
+_sfc_main$y.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/Register.vue");
-  return _sfc_setup$I ? _sfc_setup$I(props, ctx) : void 0;
+  return _sfc_setup$y ? _sfc_setup$y(props, ctx) : void 0;
 };
 const __vite_glob_0_33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$I
+  default: _sfc_main$y
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$H = {
+const _sfc_main$x = {
   __name: "ResetPassword",
   __ssrInlineRender: true,
   props: {
@@ -6987,17 +8257,17 @@ const _sfc_main$H = {
     };
   }
 };
-const _sfc_setup$H = _sfc_main$H.setup;
-_sfc_main$H.setup = (props, ctx) => {
+const _sfc_setup$x = _sfc_main$x.setup;
+_sfc_main$x.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/ResetPassword.vue");
-  return _sfc_setup$H ? _sfc_setup$H(props, ctx) : void 0;
+  return _sfc_setup$x ? _sfc_setup$x(props, ctx) : void 0;
 };
 const __vite_glob_0_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$H
+  default: _sfc_main$x
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$G = {
+const _sfc_main$w = {
   __name: "TwoFactorChallenge",
   __ssrInlineRender: true,
   setup(__props) {
@@ -7047,17 +8317,17 @@ const _sfc_main$G = {
     };
   }
 };
-const _sfc_setup$G = _sfc_main$G.setup;
-_sfc_main$G.setup = (props, ctx) => {
+const _sfc_setup$w = _sfc_main$w.setup;
+_sfc_main$w.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/TwoFactorChallenge.vue");
-  return _sfc_setup$G ? _sfc_setup$G(props, ctx) : void 0;
+  return _sfc_setup$w ? _sfc_setup$w(props, ctx) : void 0;
 };
 const __vite_glob_0_35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$G
+  default: _sfc_main$w
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$F = {
+const _sfc_main$v = {
   __name: "VerifyEmail",
   __ssrInlineRender: true,
   setup(__props) {
@@ -7075,18 +8345,18 @@ const _sfc_main$F = {
     };
   }
 };
-const _sfc_setup$F = _sfc_main$F.setup;
-_sfc_main$F.setup = (props, ctx) => {
+const _sfc_setup$v = _sfc_main$v.setup;
+_sfc_main$v.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/VerifyEmail.vue");
-  return _sfc_setup$F ? _sfc_setup$F(props, ctx) : void 0;
+  return _sfc_setup$v ? _sfc_setup$v(props, ctx) : void 0;
 };
 const __vite_glob_0_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$F
+  default: _sfc_main$v
 }, Symbol.toStringTag, { value: "Module" }));
 const logo = "/plf_logo_light.png";
-const _sfc_main$E = {
+const _sfc_main$u = {
   __name: "PublicHeader",
   __ssrInlineRender: true,
   setup(__props) {
@@ -7586,13 +8856,13 @@ const _sfc_main$E = {
     };
   }
 };
-const _sfc_setup$E = _sfc_main$E.setup;
-_sfc_main$E.setup = (props, ctx) => {
+const _sfc_setup$u = _sfc_main$u.setup;
+_sfc_main$u.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/PublicHeader.vue");
-  return _sfc_setup$E ? _sfc_setup$E(props, ctx) : void 0;
+  return _sfc_setup$u ? _sfc_setup$u(props, ctx) : void 0;
 };
-const _sfc_main$D = {
+const _sfc_main$t = {
   __name: "PublicFooter",
   __ssrInlineRender: true,
   setup(__props) {
@@ -7678,11 +8948,11 @@ const _sfc_main$D = {
     };
   }
 };
-const _sfc_setup$D = _sfc_main$D.setup;
-_sfc_main$D.setup = (props, ctx) => {
+const _sfc_setup$t = _sfc_main$t.setup;
+_sfc_main$t.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/PublicFooter.vue");
-  return _sfc_setup$D ? _sfc_setup$D(props, ctx) : void 0;
+  return _sfc_setup$t ? _sfc_setup$t(props, ctx) : void 0;
 };
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
@@ -7691,7 +8961,7 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$C = {
+const _sfc_main$s = {
   __name: "ContactBubble",
   __ssrInlineRender: true,
   setup(__props) {
@@ -7791,39 +9061,36 @@ const _sfc_main$C = {
     };
   }
 };
-const _sfc_setup$C = _sfc_main$C.setup;
-_sfc_main$C.setup = (props, ctx) => {
+const _sfc_setup$s = _sfc_main$s.setup;
+_sfc_main$s.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ContactBubble.vue");
-  return _sfc_setup$C ? _sfc_setup$C(props, ctx) : void 0;
+  return _sfc_setup$s ? _sfc_setup$s(props, ctx) : void 0;
 };
-const ContactBubble = /* @__PURE__ */ _export_sfc(_sfc_main$C, [["__scopeId", "data-v-32a25ce8"]]);
-const _sfc_main$B = {
+const ContactBubble = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["__scopeId", "data-v-32a25ce8"]]);
+const _sfc_main$r = {
   __name: "PublicLayout",
   __ssrInlineRender: true,
   setup(__props) {
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-white dark:bg-gray-900" }, _attrs))}>`);
-      _push(ssrRenderComponent(_sfc_main$E, null, null, _parent));
+      _push(ssrRenderComponent(_sfc_main$u, null, null, _parent));
       _push(`<main class="pt-20">`);
       ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
       _push(`</main>`);
-      _push(ssrRenderComponent(_sfc_main$D, null, null, _parent));
+      _push(ssrRenderComponent(_sfc_main$t, null, null, _parent));
       _push(ssrRenderComponent(ContactBubble, null, null, _parent));
       _push(`</div>`);
     };
   }
 };
-const _sfc_setup$B = _sfc_main$B.setup;
-_sfc_main$B.setup = (props, ctx) => {
+const _sfc_setup$r = _sfc_main$r.setup;
+_sfc_main$r.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Layouts/PublicLayout.vue");
-  return _sfc_setup$B ? _sfc_setup$B(props, ctx) : void 0;
+  return _sfc_setup$r ? _sfc_setup$r(props, ctx) : void 0;
 };
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
-const _sfc_main$A = /* @__PURE__ */ defineComponent({
+const _sfc_main$q = /* @__PURE__ */ defineComponent({
   __name: "Button",
   __ssrInlineRender: true,
   props: {
@@ -7856,11 +9123,11 @@ const _sfc_main$A = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$A = _sfc_main$A.setup;
-_sfc_main$A.setup = (props, ctx) => {
+const _sfc_setup$q = _sfc_main$q.setup;
+_sfc_main$q.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/button/Button.vue");
-  return _sfc_setup$A ? _sfc_setup$A(props, ctx) : void 0;
+  return _sfc_setup$q ? _sfc_setup$q(props, ctx) : void 0;
 };
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -7889,7 +9156,7 @@ const buttonVariants = cva(
     }
   }
 );
-const _sfc_main$z = /* @__PURE__ */ defineComponent({
+const _sfc_main$p = /* @__PURE__ */ defineComponent({
   __name: "Input",
   __ssrInlineRender: true,
   props: {
@@ -7919,13 +9186,13 @@ const _sfc_main$z = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$z = _sfc_main$z.setup;
-_sfc_main$z.setup = (props, ctx) => {
+const _sfc_setup$p = _sfc_main$p.setup;
+_sfc_main$p.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/input/Input.vue");
-  return _sfc_setup$z ? _sfc_setup$z(props, ctx) : void 0;
+  return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
 };
-const _sfc_main$y = /* @__PURE__ */ defineComponent({
+const _sfc_main$o = /* @__PURE__ */ defineComponent({
   __name: "Label",
   __ssrInlineRender: true,
   props: {
@@ -7958,13 +9225,13 @@ const _sfc_main$y = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$y = _sfc_main$y.setup;
-_sfc_main$y.setup = (props, ctx) => {
+const _sfc_setup$o = _sfc_main$o.setup;
+_sfc_main$o.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/label/Label.vue");
-  return _sfc_setup$y ? _sfc_setup$y(props, ctx) : void 0;
+  return _sfc_setup$o ? _sfc_setup$o(props, ctx) : void 0;
 };
-const _sfc_main$x = /* @__PURE__ */ defineComponent({
+const _sfc_main$n = /* @__PURE__ */ defineComponent({
   __name: "Textarea",
   __ssrInlineRender: true,
   props: {
@@ -7988,13 +9255,13 @@ const _sfc_main$x = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$x = _sfc_main$x.setup;
-_sfc_main$x.setup = (props, ctx) => {
+const _sfc_setup$n = _sfc_main$n.setup;
+_sfc_main$n.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/textarea/Textarea.vue");
-  return _sfc_setup$x ? _sfc_setup$x(props, ctx) : void 0;
+  return _sfc_setup$n ? _sfc_setup$n(props, ctx) : void 0;
 };
-const _sfc_main$w = /* @__PURE__ */ defineComponent({
+const _sfc_main$m = /* @__PURE__ */ defineComponent({
   __name: "Card",
   __ssrInlineRender: true,
   props: {
@@ -8015,13 +9282,13 @@ const _sfc_main$w = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$w = _sfc_main$w.setup;
-_sfc_main$w.setup = (props, ctx) => {
+const _sfc_setup$m = _sfc_main$m.setup;
+_sfc_main$m.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/card/Card.vue");
-  return _sfc_setup$w ? _sfc_setup$w(props, ctx) : void 0;
+  return _sfc_setup$m ? _sfc_setup$m(props, ctx) : void 0;
 };
-const _sfc_main$v = /* @__PURE__ */ defineComponent({
+const _sfc_main$l = /* @__PURE__ */ defineComponent({
   __name: "CardAction",
   __ssrInlineRender: true,
   props: {
@@ -8039,13 +9306,13 @@ const _sfc_main$v = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$v = _sfc_main$v.setup;
-_sfc_main$v.setup = (props, ctx) => {
+const _sfc_setup$l = _sfc_main$l.setup;
+_sfc_main$l.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/card/CardAction.vue");
-  return _sfc_setup$v ? _sfc_setup$v(props, ctx) : void 0;
+  return _sfc_setup$l ? _sfc_setup$l(props, ctx) : void 0;
 };
-const _sfc_main$u = /* @__PURE__ */ defineComponent({
+const _sfc_main$k = /* @__PURE__ */ defineComponent({
   __name: "CardContent",
   __ssrInlineRender: true,
   props: {
@@ -8063,13 +9330,13 @@ const _sfc_main$u = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$u = _sfc_main$u.setup;
-_sfc_main$u.setup = (props, ctx) => {
+const _sfc_setup$k = _sfc_main$k.setup;
+_sfc_main$k.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/card/CardContent.vue");
-  return _sfc_setup$u ? _sfc_setup$u(props, ctx) : void 0;
+  return _sfc_setup$k ? _sfc_setup$k(props, ctx) : void 0;
 };
-const _sfc_main$t = /* @__PURE__ */ defineComponent({
+const _sfc_main$j = /* @__PURE__ */ defineComponent({
   __name: "CardDescription",
   __ssrInlineRender: true,
   props: {
@@ -8087,13 +9354,13 @@ const _sfc_main$t = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$t = _sfc_main$t.setup;
-_sfc_main$t.setup = (props, ctx) => {
+const _sfc_setup$j = _sfc_main$j.setup;
+_sfc_main$j.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/card/CardDescription.vue");
-  return _sfc_setup$t ? _sfc_setup$t(props, ctx) : void 0;
+  return _sfc_setup$j ? _sfc_setup$j(props, ctx) : void 0;
 };
-const _sfc_main$s = /* @__PURE__ */ defineComponent({
+const _sfc_main$i = /* @__PURE__ */ defineComponent({
   __name: "CardFooter",
   __ssrInlineRender: true,
   props: {
@@ -8111,13 +9378,13 @@ const _sfc_main$s = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$s = _sfc_main$s.setup;
-_sfc_main$s.setup = (props, ctx) => {
+const _sfc_setup$i = _sfc_main$i.setup;
+_sfc_main$i.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/card/CardFooter.vue");
-  return _sfc_setup$s ? _sfc_setup$s(props, ctx) : void 0;
+  return _sfc_setup$i ? _sfc_setup$i(props, ctx) : void 0;
 };
-const _sfc_main$r = /* @__PURE__ */ defineComponent({
+const _sfc_main$h = /* @__PURE__ */ defineComponent({
   __name: "CardHeader",
   __ssrInlineRender: true,
   props: {
@@ -8135,13 +9402,13 @@ const _sfc_main$r = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$r = _sfc_main$r.setup;
-_sfc_main$r.setup = (props, ctx) => {
+const _sfc_setup$h = _sfc_main$h.setup;
+_sfc_main$h.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/card/CardHeader.vue");
-  return _sfc_setup$r ? _sfc_setup$r(props, ctx) : void 0;
+  return _sfc_setup$h ? _sfc_setup$h(props, ctx) : void 0;
 };
-const _sfc_main$q = /* @__PURE__ */ defineComponent({
+const _sfc_main$g = /* @__PURE__ */ defineComponent({
   __name: "CardTitle",
   __ssrInlineRender: true,
   props: {
@@ -8159,13 +9426,13 @@ const _sfc_main$q = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$q = _sfc_main$q.setup;
-_sfc_main$q.setup = (props, ctx) => {
+const _sfc_setup$g = _sfc_main$g.setup;
+_sfc_main$g.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/card/CardTitle.vue");
-  return _sfc_setup$q ? _sfc_setup$q(props, ctx) : void 0;
+  return _sfc_setup$g ? _sfc_setup$g(props, ctx) : void 0;
 };
-const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
+const _sfc_main$f = /* @__PURE__ */ Object.assign({ layout: _sfc_main$r }, {
   __name: "Contact",
   __ssrInlineRender: true,
   props: {
@@ -8263,13 +9530,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
     return (_ctx, _push, _parent, _attrs) => {
       const _component_Link = resolveComponent("Link");
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background" }, _attrs))}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="text-center mb-12"><h1 class="text-4xl font-bold text-foreground mb-8">Contact Us</h1><p class="text-xl text-muted-foreground max-w-3xl mx-auto"> Get in touch with the &quot;A Crazy Day in Accra&quot; team. We&#39;d love to hear from you! </p></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-12">`);
-      _push(ssrRenderComponent(unref(_sfc_main$w), null, {
+      _push(ssrRenderComponent(unref(_sfc_main$m), null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$r), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$q), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$g), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Send us a message`);
@@ -8281,7 +9548,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$t), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$j), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(` Fill out the form below and we&#39;ll get back to you as soon as possible. `);
@@ -8295,13 +9562,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$q), null, {
+                    createVNode(unref(_sfc_main$g), null, {
                       default: withCtx(() => [
                         createTextVNode("Send us a message")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$t), null, {
+                    createVNode(unref(_sfc_main$j), null, {
                       default: withCtx(() => [
                         createTextVNode(" Fill out the form below and we'll get back to you as soon as possible. ")
                       ]),
@@ -8312,11 +9579,11 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(_sfc_main$u), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$k), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
                   _push3(`<form class="space-y-6"${_scopeId2}><div class="grid grid-cols-1 sm:grid-cols-2 gap-4"${_scopeId2}><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "name" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "name" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Name *`);
@@ -8328,7 +9595,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "name",
                     modelValue: form.name,
                     "onUpdate:modelValue": ($event) => form.name = $event,
@@ -8341,7 +9608,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "email" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "email" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Email *`);
@@ -8353,7 +9620,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "email",
                     type: "email",
                     modelValue: form.email,
@@ -8367,7 +9634,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div></div><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "subject" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "subject" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Subject *`);
@@ -8379,7 +9646,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "subject",
                     modelValue: form.subject,
                     "onUpdate:modelValue": ($event) => form.subject = $event,
@@ -8392,7 +9659,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "message" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "message" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Message *`);
@@ -8404,7 +9671,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$x), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$n), {
                     id: "message",
                     modelValue: form.message,
                     "onUpdate:modelValue": ($event) => form.message = $event,
@@ -8418,7 +9685,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$q), {
                     type: "submit",
                     disabled: isSubmitting.value,
                     class: "w-full"
@@ -8447,13 +9714,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }, [
                       createVNode("div", { class: "grid grid-cols-1 sm:grid-cols-2 gap-4" }, [
                         createVNode("div", { class: "space-y-2" }, [
-                          createVNode(unref(_sfc_main$y), { for: "name" }, {
+                          createVNode(unref(_sfc_main$o), { for: "name" }, {
                             default: withCtx(() => [
                               createTextVNode("Name *")
                             ]),
                             _: 1
                           }),
-                          createVNode(unref(_sfc_main$z), {
+                          createVNode(unref(_sfc_main$p), {
                             id: "name",
                             modelValue: form.name,
                             "onUpdate:modelValue": ($event) => form.name = $event,
@@ -8466,13 +9733,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           }, toDisplayString(errors.name), 1)) : createCommentVNode("", true)
                         ]),
                         createVNode("div", { class: "space-y-2" }, [
-                          createVNode(unref(_sfc_main$y), { for: "email" }, {
+                          createVNode(unref(_sfc_main$o), { for: "email" }, {
                             default: withCtx(() => [
                               createTextVNode("Email *")
                             ]),
                             _: 1
                           }),
-                          createVNode(unref(_sfc_main$z), {
+                          createVNode(unref(_sfc_main$p), {
                             id: "email",
                             type: "email",
                             modelValue: form.email,
@@ -8487,13 +9754,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         ])
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "subject" }, {
+                        createVNode(unref(_sfc_main$o), { for: "subject" }, {
                           default: withCtx(() => [
                             createTextVNode("Subject *")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "subject",
                           modelValue: form.subject,
                           "onUpdate:modelValue": ($event) => form.subject = $event,
@@ -8506,13 +9773,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, toDisplayString(errors.subject), 1)) : createCommentVNode("", true)
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "message" }, {
+                        createVNode(unref(_sfc_main$o), { for: "message" }, {
                           default: withCtx(() => [
                             createTextVNode("Message *")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$x), {
+                        createVNode(unref(_sfc_main$n), {
                           id: "message",
                           modelValue: form.message,
                           "onUpdate:modelValue": ($event) => form.message = $event,
@@ -8525,7 +9792,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           class: "text-sm text-red-600"
                         }, toDisplayString(errors.message), 1)) : createCommentVNode("", true)
                       ]),
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         type: "submit",
                         disabled: isSubmitting.value,
                         class: "w-full"
@@ -8543,15 +9810,15 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$r), null, {
+              createVNode(unref(_sfc_main$h), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$q), null, {
+                  createVNode(unref(_sfc_main$g), null, {
                     default: withCtx(() => [
                       createTextVNode("Send us a message")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$t), null, {
+                  createVNode(unref(_sfc_main$j), null, {
                     default: withCtx(() => [
                       createTextVNode(" Fill out the form below and we'll get back to you as soon as possible. ")
                     ]),
@@ -8560,7 +9827,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 ]),
                 _: 1
               }),
-              createVNode(unref(_sfc_main$u), null, {
+              createVNode(unref(_sfc_main$k), null, {
                 default: withCtx(() => [
                   createVNode("form", {
                     onSubmit: withModifiers(submitForm, ["prevent"]),
@@ -8568,13 +9835,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, [
                     createVNode("div", { class: "grid grid-cols-1 sm:grid-cols-2 gap-4" }, [
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "name" }, {
+                        createVNode(unref(_sfc_main$o), { for: "name" }, {
                           default: withCtx(() => [
                             createTextVNode("Name *")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "name",
                           modelValue: form.name,
                           "onUpdate:modelValue": ($event) => form.name = $event,
@@ -8587,13 +9854,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, toDisplayString(errors.name), 1)) : createCommentVNode("", true)
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "email" }, {
+                        createVNode(unref(_sfc_main$o), { for: "email" }, {
                           default: withCtx(() => [
                             createTextVNode("Email *")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "email",
                           type: "email",
                           modelValue: form.email,
@@ -8608,13 +9875,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       ])
                     ]),
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "subject" }, {
+                      createVNode(unref(_sfc_main$o), { for: "subject" }, {
                         default: withCtx(() => [
                           createTextVNode("Subject *")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "subject",
                         modelValue: form.subject,
                         "onUpdate:modelValue": ($event) => form.subject = $event,
@@ -8627,13 +9894,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       }, toDisplayString(errors.subject), 1)) : createCommentVNode("", true)
                     ]),
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "message" }, {
+                      createVNode(unref(_sfc_main$o), { for: "message" }, {
                         default: withCtx(() => [
                           createTextVNode("Message *")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$x), {
+                      createVNode(unref(_sfc_main$n), {
                         id: "message",
                         modelValue: form.message,
                         "onUpdate:modelValue": ($event) => form.message = $event,
@@ -8646,7 +9913,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         class: "text-sm text-red-600"
                       }, toDisplayString(errors.message), 1)) : createCommentVNode("", true)
                     ]),
-                    createVNode(unref(_sfc_main$A), {
+                    createVNode(unref(_sfc_main$q), {
                       type: "submit",
                       disabled: isSubmitting.value,
                       class: "w-full"
@@ -8666,13 +9933,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
         _: 1
       }, _parent));
       _push(`<div class="space-y-8">`);
-      _push(ssrRenderComponent(unref(_sfc_main$w), null, {
+      _push(ssrRenderComponent(unref(_sfc_main$m), null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$r), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$q), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$g), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Get in Touch`);
@@ -8684,7 +9951,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$t), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$j), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(` Multiple ways to reach out to our team `);
@@ -8698,13 +9965,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$q), null, {
+                    createVNode(unref(_sfc_main$g), null, {
                       default: withCtx(() => [
                         createTextVNode("Get in Touch")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$t), null, {
+                    createVNode(unref(_sfc_main$j), null, {
                       default: withCtx(() => [
                         createTextVNode(" Multiple ways to reach out to our team ")
                       ]),
@@ -8715,7 +9982,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(_sfc_main$u), { class: "space-y-4" }, {
+            _push2(ssrRenderComponent(unref(_sfc_main$k), { class: "space-y-4" }, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
                   _push3(`<div class="flex items-center space-x-3"${_scopeId2}>`);
@@ -8755,15 +10022,15 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$r), null, {
+              createVNode(unref(_sfc_main$h), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$q), null, {
+                  createVNode(unref(_sfc_main$g), null, {
                     default: withCtx(() => [
                       createTextVNode("Get in Touch")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$t), null, {
+                  createVNode(unref(_sfc_main$j), null, {
                     default: withCtx(() => [
                       createTextVNode(" Multiple ways to reach out to our team ")
                     ]),
@@ -8772,7 +10039,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 ]),
                 _: 1
               }),
-              createVNode(unref(_sfc_main$u), { class: "space-y-4" }, {
+              createVNode(unref(_sfc_main$k), { class: "space-y-4" }, {
                 default: withCtx(() => [
                   createVNode("div", { class: "flex items-center space-x-3" }, [
                     createVNode(unref(Mail), { class: "h-5 w-5 text-muted-foreground" }),
@@ -8803,13 +10070,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(unref(_sfc_main$w), null, {
+      _push(ssrRenderComponent(unref(_sfc_main$m), null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$r), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$q), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$g), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Follow Us`);
@@ -8821,7 +10088,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$t), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$j), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(` Stay updated with the latest news and behind-the-scenes content `);
@@ -8835,13 +10102,13 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$q), null, {
+                    createVNode(unref(_sfc_main$g), null, {
                       default: withCtx(() => [
                         createTextVNode("Follow Us")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$t), null, {
+                    createVNode(unref(_sfc_main$j), null, {
                       default: withCtx(() => [
                         createTextVNode(" Stay updated with the latest news and behind-the-scenes content ")
                       ]),
@@ -8852,11 +10119,11 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(_sfc_main$u), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$k), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
                   _push3(`<div class="flex space-x-4"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$q), {
                     variant: "outline",
                     size: "sm"
                   }, {
@@ -8872,7 +10139,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$q), {
                     variant: "outline",
                     size: "sm"
                   }, {
@@ -8888,7 +10155,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$q), {
                     variant: "outline",
                     size: "sm"
                   }, {
@@ -8908,7 +10175,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 } else {
                   return [
                     createVNode("div", { class: "flex space-x-4" }, [
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         variant: "outline",
                         size: "sm"
                       }, {
@@ -8918,7 +10185,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         variant: "outline",
                         size: "sm"
                       }, {
@@ -8928,7 +10195,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         variant: "outline",
                         size: "sm"
                       }, {
@@ -8946,15 +10213,15 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$r), null, {
+              createVNode(unref(_sfc_main$h), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$q), null, {
+                  createVNode(unref(_sfc_main$g), null, {
                     default: withCtx(() => [
                       createTextVNode("Follow Us")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$t), null, {
+                  createVNode(unref(_sfc_main$j), null, {
                     default: withCtx(() => [
                       createTextVNode(" Stay updated with the latest news and behind-the-scenes content ")
                     ]),
@@ -8963,10 +10230,10 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 ]),
                 _: 1
               }),
-              createVNode(unref(_sfc_main$u), null, {
+              createVNode(unref(_sfc_main$k), null, {
                 default: withCtx(() => [
                   createVNode("div", { class: "flex space-x-4" }, [
-                    createVNode(unref(_sfc_main$A), {
+                    createVNode(unref(_sfc_main$q), {
                       variant: "outline",
                       size: "sm"
                     }, {
@@ -8976,7 +10243,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$A), {
+                    createVNode(unref(_sfc_main$q), {
                       variant: "outline",
                       size: "sm"
                     }, {
@@ -8986,7 +10253,7 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$A), {
+                    createVNode(unref(_sfc_main$q), {
                       variant: "outline",
                       size: "sm"
                     }, {
@@ -9040,17 +10307,17 @@ const _sfc_main$p = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
     };
   }
 });
-const _sfc_setup$p = _sfc_main$p.setup;
-_sfc_main$p.setup = (props, ctx) => {
+const _sfc_setup$f = _sfc_main$f.setup;
+_sfc_main$f.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Contact.vue");
-  return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
+  return _sfc_setup$f ? _sfc_setup$f(props, ctx) : void 0;
 };
 const __vite_glob_0_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$p
+  default: _sfc_main$f
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$o = /* @__PURE__ */ defineComponent({
+const _sfc_main$e = /* @__PURE__ */ defineComponent({
   __name: "Tabs",
   __ssrInlineRender: true,
   props: {
@@ -9088,13 +10355,13 @@ const _sfc_main$o = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$o = _sfc_main$o.setup;
-_sfc_main$o.setup = (props, ctx) => {
+const _sfc_setup$e = _sfc_main$e.setup;
+_sfc_main$e.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/tabs/Tabs.vue");
-  return _sfc_setup$o ? _sfc_setup$o(props, ctx) : void 0;
+  return _sfc_setup$e ? _sfc_setup$e(props, ctx) : void 0;
 };
-const _sfc_main$n = /* @__PURE__ */ defineComponent({
+const _sfc_main$d = /* @__PURE__ */ defineComponent({
   __name: "TabsContent",
   __ssrInlineRender: true,
   props: {
@@ -9126,13 +10393,13 @@ const _sfc_main$n = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$n = _sfc_main$n.setup;
-_sfc_main$n.setup = (props, ctx) => {
+const _sfc_setup$d = _sfc_main$d.setup;
+_sfc_main$d.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/tabs/TabsContent.vue");
-  return _sfc_setup$n ? _sfc_setup$n(props, ctx) : void 0;
+  return _sfc_setup$d ? _sfc_setup$d(props, ctx) : void 0;
 };
-const _sfc_main$m = /* @__PURE__ */ defineComponent({
+const _sfc_main$c = /* @__PURE__ */ defineComponent({
   __name: "TabsList",
   __ssrInlineRender: true,
   props: {
@@ -9165,13 +10432,13 @@ const _sfc_main$m = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$m = _sfc_main$m.setup;
-_sfc_main$m.setup = (props, ctx) => {
+const _sfc_setup$c = _sfc_main$c.setup;
+_sfc_main$c.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/tabs/TabsList.vue");
-  return _sfc_setup$m ? _sfc_setup$m(props, ctx) : void 0;
+  return _sfc_setup$c ? _sfc_setup$c(props, ctx) : void 0;
 };
-const _sfc_main$l = /* @__PURE__ */ defineComponent({
+const _sfc_main$b = /* @__PURE__ */ defineComponent({
   __name: "TabsTrigger",
   __ssrInlineRender: true,
   props: {
@@ -9207,531 +10474,13 @@ const _sfc_main$l = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$l = _sfc_main$l.setup;
-_sfc_main$l.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/tabs/TabsTrigger.vue");
-  return _sfc_setup$l ? _sfc_setup$l(props, ctx) : void 0;
-};
-const _sfc_main$k = /* @__PURE__ */ defineComponent({
-  __name: "Dialog",
-  __ssrInlineRender: true,
-  props: {
-    open: { type: Boolean },
-    defaultOpen: { type: Boolean },
-    modal: { type: Boolean }
-  },
-  emits: ["update:open"],
-  setup(__props, { emit: __emit }) {
-    const props = __props;
-    const emits = __emit;
-    const forwarded = useForwardPropsEmits(props, emits);
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogRoot), mergeProps({ "data-slot": "dialog" }, unref(forwarded), _attrs), {
-        default: withCtx((slotProps, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            ssrRenderSlot(_ctx.$slots, "default", slotProps, null, _push2, _parent2, _scopeId);
-          } else {
-            return [
-              renderSlot(_ctx.$slots, "default", slotProps)
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
-const _sfc_setup$k = _sfc_main$k.setup;
-_sfc_main$k.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/Dialog.vue");
-  return _sfc_setup$k ? _sfc_setup$k(props, ctx) : void 0;
-};
-const _sfc_main$j = /* @__PURE__ */ defineComponent({
-  __name: "DialogClose",
-  __ssrInlineRender: true,
-  props: {
-    asChild: { type: Boolean },
-    as: {}
-  },
-  setup(__props) {
-    const props = __props;
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogClose), mergeProps({ "data-slot": "dialog-close" }, props, _attrs), {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
-          } else {
-            return [
-              renderSlot(_ctx.$slots, "default")
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
-const _sfc_setup$j = _sfc_main$j.setup;
-_sfc_main$j.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogClose.vue");
-  return _sfc_setup$j ? _sfc_setup$j(props, ctx) : void 0;
-};
-const _sfc_main$i = /* @__PURE__ */ defineComponent({
-  __name: "DialogOverlay",
-  __ssrInlineRender: true,
-  props: {
-    forceMount: { type: Boolean },
-    asChild: { type: Boolean },
-    as: {},
-    class: {}
-  },
-  setup(__props) {
-    const props = __props;
-    const delegatedProps = reactiveOmit(props, "class");
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogOverlay), mergeProps({ "data-slot": "dialog-overlay" }, unref(delegatedProps), {
-        class: unref(cn)("data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80", props.class)
-      }, _attrs), {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
-          } else {
-            return [
-              renderSlot(_ctx.$slots, "default")
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
-const _sfc_setup$i = _sfc_main$i.setup;
-_sfc_main$i.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogOverlay.vue");
-  return _sfc_setup$i ? _sfc_setup$i(props, ctx) : void 0;
-};
-const _sfc_main$h = /* @__PURE__ */ defineComponent({
-  ...{
-    inheritAttrs: false
-  },
-  __name: "DialogContent",
-  __ssrInlineRender: true,
-  props: {
-    forceMount: { type: Boolean },
-    disableOutsidePointerEvents: { type: Boolean },
-    asChild: { type: Boolean },
-    as: {},
-    class: {},
-    showCloseButton: { type: Boolean, default: true }
-  },
-  emits: ["escapeKeyDown", "pointerDownOutside", "focusOutside", "interactOutside", "openAutoFocus", "closeAutoFocus"],
-  setup(__props, { emit: __emit }) {
-    const props = __props;
-    const emits = __emit;
-    const delegatedProps = reactiveOmit(props, "class");
-    const forwarded = useForwardPropsEmits(delegatedProps, emits);
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogPortal), _attrs, {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(ssrRenderComponent(_sfc_main$i, null, null, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(DialogContent), mergeProps({ "data-slot": "dialog-content" }, { ..._ctx.$attrs, ...unref(forwarded) }, {
-              class: unref(cn)(
-                "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
-                props.class
-              )
-            }), {
-              default: withCtx((_22, _push3, _parent3, _scopeId2) => {
-                if (_push3) {
-                  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push3, _parent3, _scopeId2);
-                  if (__props.showCloseButton) {
-                    _push3(ssrRenderComponent(unref(DialogClose), {
-                      "data-slot": "dialog-close",
-                      class: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-                    }, {
-                      default: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                        if (_push4) {
-                          _push4(ssrRenderComponent(unref(X), null, null, _parent4, _scopeId3));
-                          _push4(`<span class="sr-only"${_scopeId3}>Close</span>`);
-                        } else {
-                          return [
-                            createVNode(unref(X)),
-                            createVNode("span", { class: "sr-only" }, "Close")
-                          ];
-                        }
-                      }),
-                      _: 1
-                    }, _parent3, _scopeId2));
-                  } else {
-                    _push3(`<!---->`);
-                  }
-                } else {
-                  return [
-                    renderSlot(_ctx.$slots, "default"),
-                    __props.showCloseButton ? (openBlock(), createBlock(unref(DialogClose), {
-                      key: 0,
-                      "data-slot": "dialog-close",
-                      class: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-                    }, {
-                      default: withCtx(() => [
-                        createVNode(unref(X)),
-                        createVNode("span", { class: "sr-only" }, "Close")
-                      ]),
-                      _: 1
-                    })) : createCommentVNode("", true)
-                  ];
-                }
-              }),
-              _: 3
-            }, _parent2, _scopeId));
-          } else {
-            return [
-              createVNode(_sfc_main$i),
-              createVNode(unref(DialogContent), mergeProps({ "data-slot": "dialog-content" }, { ..._ctx.$attrs, ...unref(forwarded) }, {
-                class: unref(cn)(
-                  "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
-                  props.class
-                )
-              }), {
-                default: withCtx(() => [
-                  renderSlot(_ctx.$slots, "default"),
-                  __props.showCloseButton ? (openBlock(), createBlock(unref(DialogClose), {
-                    key: 0,
-                    "data-slot": "dialog-close",
-                    class: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-                  }, {
-                    default: withCtx(() => [
-                      createVNode(unref(X)),
-                      createVNode("span", { class: "sr-only" }, "Close")
-                    ]),
-                    _: 1
-                  })) : createCommentVNode("", true)
-                ]),
-                _: 3
-              }, 16, ["class"])
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
-const _sfc_setup$h = _sfc_main$h.setup;
-_sfc_main$h.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogContent.vue");
-  return _sfc_setup$h ? _sfc_setup$h(props, ctx) : void 0;
-};
-const _sfc_main$g = /* @__PURE__ */ defineComponent({
-  __name: "DialogDescription",
-  __ssrInlineRender: true,
-  props: {
-    asChild: { type: Boolean },
-    as: {},
-    class: {}
-  },
-  setup(__props) {
-    const props = __props;
-    const delegatedProps = reactiveOmit(props, "class");
-    const forwardedProps = useForwardProps(delegatedProps);
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogDescription), mergeProps({ "data-slot": "dialog-description" }, unref(forwardedProps), {
-        class: unref(cn)("text-muted-foreground text-sm", props.class)
-      }, _attrs), {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
-          } else {
-            return [
-              renderSlot(_ctx.$slots, "default")
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
-const _sfc_setup$g = _sfc_main$g.setup;
-_sfc_main$g.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogDescription.vue");
-  return _sfc_setup$g ? _sfc_setup$g(props, ctx) : void 0;
-};
-const _sfc_main$f = /* @__PURE__ */ defineComponent({
-  __name: "DialogFooter",
-  __ssrInlineRender: true,
-  props: {
-    class: {}
-  },
-  setup(__props) {
-    const props = __props;
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({
-        "data-slot": "dialog-footer",
-        class: unref(cn)("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", props.class)
-      }, _attrs))}>`);
-      ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-      _push(`</div>`);
-    };
-  }
-});
-const _sfc_setup$f = _sfc_main$f.setup;
-_sfc_main$f.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogFooter.vue");
-  return _sfc_setup$f ? _sfc_setup$f(props, ctx) : void 0;
-};
-const _sfc_main$e = /* @__PURE__ */ defineComponent({
-  __name: "DialogHeader",
-  __ssrInlineRender: true,
-  props: {
-    class: {}
-  },
-  setup(__props) {
-    const props = __props;
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({
-        "data-slot": "dialog-header",
-        class: unref(cn)("flex flex-col gap-2 text-center sm:text-left", props.class)
-      }, _attrs))}>`);
-      ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-      _push(`</div>`);
-    };
-  }
-});
-const _sfc_setup$e = _sfc_main$e.setup;
-_sfc_main$e.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogHeader.vue");
-  return _sfc_setup$e ? _sfc_setup$e(props, ctx) : void 0;
-};
-const _sfc_main$d = /* @__PURE__ */ defineComponent({
-  ...{
-    inheritAttrs: false
-  },
-  __name: "DialogScrollContent",
-  __ssrInlineRender: true,
-  props: {
-    forceMount: { type: Boolean },
-    disableOutsidePointerEvents: { type: Boolean },
-    asChild: { type: Boolean },
-    as: {},
-    class: {}
-  },
-  emits: ["escapeKeyDown", "pointerDownOutside", "focusOutside", "interactOutside", "openAutoFocus", "closeAutoFocus"],
-  setup(__props, { emit: __emit }) {
-    const props = __props;
-    const emits = __emit;
-    const delegatedProps = reactiveOmit(props, "class");
-    const forwarded = useForwardPropsEmits(delegatedProps, emits);
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogPortal), _attrs, {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(ssrRenderComponent(unref(DialogOverlay), { class: "fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" }, {
-              default: withCtx((_22, _push3, _parent3, _scopeId2) => {
-                if (_push3) {
-                  _push3(ssrRenderComponent(unref(DialogContent), mergeProps({
-                    class: unref(cn)(
-                      "relative z-50 grid w-full max-w-lg my-8 gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full",
-                      props.class
-                    )
-                  }, { ..._ctx.$attrs, ...unref(forwarded) }, {
-                    onPointerDownOutside: (event) => {
-                      const originalEvent = event.detail.originalEvent;
-                      const target = originalEvent.target;
-                      if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
-                        event.preventDefault();
-                      }
-                    }
-                  }), {
-                    default: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                      if (_push4) {
-                        ssrRenderSlot(_ctx.$slots, "default", {}, null, _push4, _parent4, _scopeId3);
-                        _push4(ssrRenderComponent(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
-                          default: withCtx((_4, _push5, _parent5, _scopeId4) => {
-                            if (_push5) {
-                              _push5(ssrRenderComponent(unref(X), { class: "w-4 h-4" }, null, _parent5, _scopeId4));
-                              _push5(`<span class="sr-only"${_scopeId4}>Close</span>`);
-                            } else {
-                              return [
-                                createVNode(unref(X), { class: "w-4 h-4" }),
-                                createVNode("span", { class: "sr-only" }, "Close")
-                              ];
-                            }
-                          }),
-                          _: 1
-                        }, _parent4, _scopeId3));
-                      } else {
-                        return [
-                          renderSlot(_ctx.$slots, "default"),
-                          createVNode(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
-                            default: withCtx(() => [
-                              createVNode(unref(X), { class: "w-4 h-4" }),
-                              createVNode("span", { class: "sr-only" }, "Close")
-                            ]),
-                            _: 1
-                          })
-                        ];
-                      }
-                    }),
-                    _: 3
-                  }, _parent3, _scopeId2));
-                } else {
-                  return [
-                    createVNode(unref(DialogContent), mergeProps({
-                      class: unref(cn)(
-                        "relative z-50 grid w-full max-w-lg my-8 gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full",
-                        props.class
-                      )
-                    }, { ..._ctx.$attrs, ...unref(forwarded) }, {
-                      onPointerDownOutside: (event) => {
-                        const originalEvent = event.detail.originalEvent;
-                        const target = originalEvent.target;
-                        if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
-                          event.preventDefault();
-                        }
-                      }
-                    }), {
-                      default: withCtx(() => [
-                        renderSlot(_ctx.$slots, "default"),
-                        createVNode(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
-                          default: withCtx(() => [
-                            createVNode(unref(X), { class: "w-4 h-4" }),
-                            createVNode("span", { class: "sr-only" }, "Close")
-                          ]),
-                          _: 1
-                        })
-                      ]),
-                      _: 3
-                    }, 16, ["class", "onPointerDownOutside"])
-                  ];
-                }
-              }),
-              _: 3
-            }, _parent2, _scopeId));
-          } else {
-            return [
-              createVNode(unref(DialogOverlay), { class: "fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" }, {
-                default: withCtx(() => [
-                  createVNode(unref(DialogContent), mergeProps({
-                    class: unref(cn)(
-                      "relative z-50 grid w-full max-w-lg my-8 gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full",
-                      props.class
-                    )
-                  }, { ..._ctx.$attrs, ...unref(forwarded) }, {
-                    onPointerDownOutside: (event) => {
-                      const originalEvent = event.detail.originalEvent;
-                      const target = originalEvent.target;
-                      if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
-                        event.preventDefault();
-                      }
-                    }
-                  }), {
-                    default: withCtx(() => [
-                      renderSlot(_ctx.$slots, "default"),
-                      createVNode(unref(DialogClose), { class: "absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary" }, {
-                        default: withCtx(() => [
-                          createVNode(unref(X), { class: "w-4 h-4" }),
-                          createVNode("span", { class: "sr-only" }, "Close")
-                        ]),
-                        _: 1
-                      })
-                    ]),
-                    _: 3
-                  }, 16, ["class", "onPointerDownOutside"])
-                ]),
-                _: 3
-              })
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
-const _sfc_setup$d = _sfc_main$d.setup;
-_sfc_main$d.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogScrollContent.vue");
-  return _sfc_setup$d ? _sfc_setup$d(props, ctx) : void 0;
-};
-const _sfc_main$c = /* @__PURE__ */ defineComponent({
-  __name: "DialogTitle",
-  __ssrInlineRender: true,
-  props: {
-    asChild: { type: Boolean },
-    as: {},
-    class: {}
-  },
-  setup(__props) {
-    const props = __props;
-    const delegatedProps = reactiveOmit(props, "class");
-    const forwardedProps = useForwardProps(delegatedProps);
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogTitle), mergeProps({ "data-slot": "dialog-title" }, unref(forwardedProps), {
-        class: unref(cn)("text-lg leading-none font-semibold", props.class)
-      }, _attrs), {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
-          } else {
-            return [
-              renderSlot(_ctx.$slots, "default")
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
-const _sfc_setup$c = _sfc_main$c.setup;
-_sfc_main$c.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogTitle.vue");
-  return _sfc_setup$c ? _sfc_setup$c(props, ctx) : void 0;
-};
-const _sfc_main$b = /* @__PURE__ */ defineComponent({
-  __name: "DialogTrigger",
-  __ssrInlineRender: true,
-  props: {
-    asChild: { type: Boolean },
-    as: {}
-  },
-  setup(__props) {
-    const props = __props;
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(DialogTrigger), mergeProps({ "data-slot": "dialog-trigger" }, props, _attrs), {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
-          } else {
-            return [
-              renderSlot(_ctx.$slots, "default")
-            ];
-          }
-        }),
-        _: 3
-      }, _parent));
-    };
-  }
-});
 const _sfc_setup$b = _sfc_main$b.setup;
 _sfc_main$b.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/dialog/DialogTrigger.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ui/tabs/TabsTrigger.vue");
   return _sfc_setup$b ? _sfc_setup$b(props, ctx) : void 0;
 };
-const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
+const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$r }, {
   __name: "Gallery",
   __ssrInlineRender: true,
   props: {
@@ -9773,17 +10522,17 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
     };
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background" }, _attrs))}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Behind the Scenes</h1><p class="text-xl text-muted-foreground max-w-2xl mx-auto"> Explore exclusive behind-the-scenes content, cast interviews, making-of footage, and production moments </p></div>`);
-      _push(ssrRenderComponent(unref(_sfc_main$o), {
+      _push(ssrRenderComponent(unref(_sfc_main$e), {
         modelValue: activeCategory.value,
         "onUpdate:modelValue": ($event) => activeCategory.value = $event,
         class: "mb-8"
       }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$m), { class: "grid w-full max-w-3xl mx-auto grid-cols-3 md:grid-cols-6" }, {
+            _push2(ssrRenderComponent(unref(_sfc_main$c), { class: "grid w-full max-w-3xl mx-auto grid-cols-3 md:grid-cols-6" }, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$l), { value: "all" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$b), { value: "all" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`All`);
@@ -9795,7 +10544,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$l), { value: "behind-the-scenes" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$b), { value: "behind-the-scenes" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`BTS`);
@@ -9807,7 +10556,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$l), { value: "cast-interviews" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$b), { value: "cast-interviews" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Interviews`);
@@ -9819,7 +10568,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$l), { value: "making-of" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$b), { value: "making-of" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Making Of`);
@@ -9831,7 +10580,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$l), { value: "film-stills" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$b), { value: "film-stills" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Stills`);
@@ -9843,7 +10592,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$l), { value: "production" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$b), { value: "production" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Production`);
@@ -9857,37 +10606,37 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$l), { value: "all" }, {
+                    createVNode(unref(_sfc_main$b), { value: "all" }, {
                       default: withCtx(() => [
                         createTextVNode("All")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$l), { value: "behind-the-scenes" }, {
+                    createVNode(unref(_sfc_main$b), { value: "behind-the-scenes" }, {
                       default: withCtx(() => [
                         createTextVNode("BTS")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$l), { value: "cast-interviews" }, {
+                    createVNode(unref(_sfc_main$b), { value: "cast-interviews" }, {
                       default: withCtx(() => [
                         createTextVNode("Interviews")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$l), { value: "making-of" }, {
+                    createVNode(unref(_sfc_main$b), { value: "making-of" }, {
                       default: withCtx(() => [
                         createTextVNode("Making Of")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$l), { value: "film-stills" }, {
+                    createVNode(unref(_sfc_main$b), { value: "film-stills" }, {
                       default: withCtx(() => [
                         createTextVNode("Stills")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$l), { value: "production" }, {
+                    createVNode(unref(_sfc_main$b), { value: "production" }, {
                       default: withCtx(() => [
                         createTextVNode("Production")
                       ]),
@@ -9900,39 +10649,39 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$m), { class: "grid w-full max-w-3xl mx-auto grid-cols-3 md:grid-cols-6" }, {
+              createVNode(unref(_sfc_main$c), { class: "grid w-full max-w-3xl mx-auto grid-cols-3 md:grid-cols-6" }, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$l), { value: "all" }, {
+                  createVNode(unref(_sfc_main$b), { value: "all" }, {
                     default: withCtx(() => [
                       createTextVNode("All")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$l), { value: "behind-the-scenes" }, {
+                  createVNode(unref(_sfc_main$b), { value: "behind-the-scenes" }, {
                     default: withCtx(() => [
                       createTextVNode("BTS")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$l), { value: "cast-interviews" }, {
+                  createVNode(unref(_sfc_main$b), { value: "cast-interviews" }, {
                     default: withCtx(() => [
                       createTextVNode("Interviews")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$l), { value: "making-of" }, {
+                  createVNode(unref(_sfc_main$b), { value: "making-of" }, {
                     default: withCtx(() => [
                       createTextVNode("Making Of")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$l), { value: "film-stills" }, {
+                  createVNode(unref(_sfc_main$b), { value: "film-stills" }, {
                     default: withCtx(() => [
                       createTextVNode("Stills")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$l), { value: "production" }, {
+                  createVNode(unref(_sfc_main$b), { value: "production" }, {
                     default: withCtx(() => [
                       createTextVNode("Production")
                     ]),
@@ -9962,19 +10711,19 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
         _push(`<!--]--></div>`);
       }
       _push(`</div>`);
-      _push(ssrRenderComponent(unref(_sfc_main$k), {
+      _push(ssrRenderComponent(unref(_sfc_main$U), {
         open: lightboxOpen.value,
         "onUpdate:open": ($event) => lightboxOpen.value = $event
       }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$h), { class: "max-w-4xl" }, {
+            _push2(ssrRenderComponent(unref(_sfc_main$R), { class: "max-w-4xl" }, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$e), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$O), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(ssrRenderComponent(unref(_sfc_main$c), null, {
+                        _push4(ssrRenderComponent(unref(_sfc_main$M), null, {
                           default: withCtx((_5, _push5, _parent5, _scopeId4) => {
                             if (_push5) {
                               _push5(`${ssrInterpolate(selectedImage.value?.title)}`);
@@ -9987,7 +10736,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           _: 1
                         }, _parent4, _scopeId3));
                         if (selectedImage.value?.description) {
-                          _push4(ssrRenderComponent(unref(_sfc_main$g), null, {
+                          _push4(ssrRenderComponent(unref(_sfc_main$Q), null, {
                             default: withCtx((_5, _push5, _parent5, _scopeId4) => {
                               if (_push5) {
                                 _push5(`${ssrInterpolate(selectedImage.value.description)}`);
@@ -10004,13 +10753,13 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }
                       } else {
                         return [
-                          createVNode(unref(_sfc_main$c), null, {
+                          createVNode(unref(_sfc_main$M), null, {
                             default: withCtx(() => [
                               createTextVNode(toDisplayString(selectedImage.value?.title), 1)
                             ]),
                             _: 1
                           }),
-                          selectedImage.value?.description ? (openBlock(), createBlock(unref(_sfc_main$g), { key: 0 }, {
+                          selectedImage.value?.description ? (openBlock(), createBlock(unref(_sfc_main$Q), { key: 0 }, {
                             default: withCtx(() => [
                               createTextVNode(toDisplayString(selectedImage.value.description), 1)
                             ]),
@@ -10028,10 +10777,10 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$f), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$P), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(ssrRenderComponent(unref(_sfc_main$A), {
+                        _push4(ssrRenderComponent(unref(_sfc_main$q), {
                           variant: "outline",
                           onClick: previousImage,
                           disabled: lightboxIndex.value === 0
@@ -10047,7 +10796,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           }),
                           _: 1
                         }, _parent4, _scopeId3));
-                        _push4(ssrRenderComponent(unref(_sfc_main$A), {
+                        _push4(ssrRenderComponent(unref(_sfc_main$q), {
                           variant: "outline",
                           onClick: nextImage,
                           disabled: lightboxIndex.value === filteredImages.value.length - 1
@@ -10065,7 +10814,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, _parent4, _scopeId3));
                       } else {
                         return [
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             variant: "outline",
                             onClick: previousImage,
                             disabled: lightboxIndex.value === 0
@@ -10075,7 +10824,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                             ]),
                             _: 1
                           }, 8, ["disabled"]),
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             variant: "outline",
                             onClick: nextImage,
                             disabled: lightboxIndex.value === filteredImages.value.length - 1
@@ -10092,15 +10841,15 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$e), null, {
+                    createVNode(unref(_sfc_main$O), null, {
                       default: withCtx(() => [
-                        createVNode(unref(_sfc_main$c), null, {
+                        createVNode(unref(_sfc_main$M), null, {
                           default: withCtx(() => [
                             createTextVNode(toDisplayString(selectedImage.value?.title), 1)
                           ]),
                           _: 1
                         }),
-                        selectedImage.value?.description ? (openBlock(), createBlock(unref(_sfc_main$g), { key: 0 }, {
+                        selectedImage.value?.description ? (openBlock(), createBlock(unref(_sfc_main$Q), { key: 0 }, {
                           default: withCtx(() => [
                             createTextVNode(toDisplayString(selectedImage.value.description), 1)
                           ]),
@@ -10117,9 +10866,9 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         class: "w-full h-auto max-h-[70vh] object-contain rounded-lg"
                       }, null, 8, ["src", "alt"])) : createCommentVNode("", true)
                     ]),
-                    createVNode(unref(_sfc_main$f), null, {
+                    createVNode(unref(_sfc_main$P), null, {
                       default: withCtx(() => [
-                        createVNode(unref(_sfc_main$A), {
+                        createVNode(unref(_sfc_main$q), {
                           variant: "outline",
                           onClick: previousImage,
                           disabled: lightboxIndex.value === 0
@@ -10129,7 +10878,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           ]),
                           _: 1
                         }, 8, ["disabled"]),
-                        createVNode(unref(_sfc_main$A), {
+                        createVNode(unref(_sfc_main$q), {
                           variant: "outline",
                           onClick: nextImage,
                           disabled: lightboxIndex.value === filteredImages.value.length - 1
@@ -10149,17 +10898,17 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$h), { class: "max-w-4xl" }, {
+              createVNode(unref(_sfc_main$R), { class: "max-w-4xl" }, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$e), null, {
+                  createVNode(unref(_sfc_main$O), null, {
                     default: withCtx(() => [
-                      createVNode(unref(_sfc_main$c), null, {
+                      createVNode(unref(_sfc_main$M), null, {
                         default: withCtx(() => [
                           createTextVNode(toDisplayString(selectedImage.value?.title), 1)
                         ]),
                         _: 1
                       }),
-                      selectedImage.value?.description ? (openBlock(), createBlock(unref(_sfc_main$g), { key: 0 }, {
+                      selectedImage.value?.description ? (openBlock(), createBlock(unref(_sfc_main$Q), { key: 0 }, {
                         default: withCtx(() => [
                           createTextVNode(toDisplayString(selectedImage.value.description), 1)
                         ]),
@@ -10176,9 +10925,9 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       class: "w-full h-auto max-h-[70vh] object-contain rounded-lg"
                     }, null, 8, ["src", "alt"])) : createCommentVNode("", true)
                   ]),
-                  createVNode(unref(_sfc_main$f), null, {
+                  createVNode(unref(_sfc_main$P), null, {
                     default: withCtx(() => [
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         variant: "outline",
                         onClick: previousImage,
                         disabled: lightboxIndex.value === 0
@@ -10188,7 +10937,7 @@ const _sfc_main$a = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         ]),
                         _: 1
                       }, 8, ["disabled"]),
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         variant: "outline",
                         onClick: nextImage,
                         disabled: lightboxIndex.value === filteredImages.value.length - 1
@@ -10224,7 +10973,7 @@ const __vite_glob_0_38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   default: _sfc_main$a
 }, Symbol.toStringTag, { value: "Module" }));
 const _sfc_main$9 = /* @__PURE__ */ Object.assign({
-  layout: _sfc_main$B
+  layout: _sfc_main$r
 }, {
   __name: "Index",
   __ssrInlineRender: true,
@@ -10630,7 +11379,7 @@ const __vite_glob_0_39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
 }, Symbol.toStringTag, { value: "Module" }));
 const defaultPoster = "/movie_poster.jpg";
 const defaultBackdrop = "/movie_poster_2.jpg";
-const _sfc_main$8 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
+const _sfc_main$8 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$r }, {
   __name: "Information",
   __ssrInlineRender: true,
   props: {
@@ -11037,7 +11786,7 @@ const __vite_glob_0_42 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: _sfc_main$6
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$5 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
+const _sfc_main$5 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$r }, {
   __name: "Privacy",
   __ssrInlineRender: true,
   setup(__props) {
@@ -11088,7 +11837,7 @@ const __vite_glob_0_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: _sfc_main$5
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
+const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$r }, {
   __name: "Edit",
   __ssrInlineRender: true,
   props: {
@@ -11180,13 +11929,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
     });
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background" }, _attrs))}><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="mb-8 flex items-center justify-between"><div><h1 class="text-3xl font-bold text-foreground">Profile Settings</h1><p class="mt-2 text-muted-foreground">Manage your account settings and preferences</p></div><a href="/profile/payments" class="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors font-medium"> Payment History </a></div>`);
-      _push(ssrRenderComponent(unref(_sfc_main$w), { class: "mb-6" }, {
+      _push(ssrRenderComponent(unref(_sfc_main$m), { class: "mb-6" }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$r), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$q), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$g), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Profile Information`);
@@ -11198,7 +11947,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$t), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$j), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Update your account&#39;s profile information and email address.`);
@@ -11212,13 +11961,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$q), null, {
+                    createVNode(unref(_sfc_main$g), null, {
                       default: withCtx(() => [
                         createTextVNode("Profile Information")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$t), null, {
+                    createVNode(unref(_sfc_main$j), null, {
                       default: withCtx(() => [
                         createTextVNode("Update your account's profile information and email address.")
                       ]),
@@ -11229,11 +11978,11 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(_sfc_main$u), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$k), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
                   _push3(`<form class="space-y-4"${_scopeId2}><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "name" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "name" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Name`);
@@ -11245,7 +11994,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "name",
                     modelValue: unref(profileForm).name,
                     "onUpdate:modelValue": ($event) => unref(profileForm).name = $event,
@@ -11258,7 +12007,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "email" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "email" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Email (optional)`);
@@ -11270,7 +12019,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "email",
                     type: "email",
                     modelValue: unref(profileForm).email,
@@ -11284,7 +12033,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "phone" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "phone" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Phone Number`);
@@ -11296,7 +12045,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "phone",
                     modelValue: unref(profileForm).phone_number,
                     "onUpdate:modelValue": ($event) => unref(profileForm).phone_number = $event,
@@ -11309,7 +12058,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$q), {
                     type: "submit",
                     disabled: unref(profileForm).processing
                   }, {
@@ -11332,13 +12081,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       class: "space-y-4"
                     }, [
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "name" }, {
+                        createVNode(unref(_sfc_main$o), { for: "name" }, {
                           default: withCtx(() => [
                             createTextVNode("Name")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "name",
                           modelValue: unref(profileForm).name,
                           "onUpdate:modelValue": ($event) => unref(profileForm).name = $event,
@@ -11351,13 +12100,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, toDisplayString(unref(profileForm).errors.name), 1)) : createCommentVNode("", true)
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "email" }, {
+                        createVNode(unref(_sfc_main$o), { for: "email" }, {
                           default: withCtx(() => [
                             createTextVNode("Email (optional)")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "email",
                           type: "email",
                           modelValue: unref(profileForm).email,
@@ -11371,13 +12120,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, toDisplayString(unref(profileForm).errors.email), 1)) : createCommentVNode("", true)
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "phone" }, {
+                        createVNode(unref(_sfc_main$o), { for: "phone" }, {
                           default: withCtx(() => [
                             createTextVNode("Phone Number")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "phone",
                           modelValue: unref(profileForm).phone_number,
                           "onUpdate:modelValue": ($event) => unref(profileForm).phone_number = $event,
@@ -11389,7 +12138,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           class: "text-sm text-red-600"
                         }, toDisplayString(unref(profileForm).errors.phone_number), 1)) : createCommentVNode("", true)
                       ]),
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         type: "submit",
                         disabled: unref(profileForm).processing
                       }, {
@@ -11406,15 +12155,15 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$r), null, {
+              createVNode(unref(_sfc_main$h), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$q), null, {
+                  createVNode(unref(_sfc_main$g), null, {
                     default: withCtx(() => [
                       createTextVNode("Profile Information")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$t), null, {
+                  createVNode(unref(_sfc_main$j), null, {
                     default: withCtx(() => [
                       createTextVNode("Update your account's profile information and email address.")
                     ]),
@@ -11423,20 +12172,20 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 ]),
                 _: 1
               }),
-              createVNode(unref(_sfc_main$u), null, {
+              createVNode(unref(_sfc_main$k), null, {
                 default: withCtx(() => [
                   createVNode("form", {
                     onSubmit: withModifiers(updateProfile, ["prevent"]),
                     class: "space-y-4"
                   }, [
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "name" }, {
+                      createVNode(unref(_sfc_main$o), { for: "name" }, {
                         default: withCtx(() => [
                           createTextVNode("Name")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "name",
                         modelValue: unref(profileForm).name,
                         "onUpdate:modelValue": ($event) => unref(profileForm).name = $event,
@@ -11449,13 +12198,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       }, toDisplayString(unref(profileForm).errors.name), 1)) : createCommentVNode("", true)
                     ]),
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "email" }, {
+                      createVNode(unref(_sfc_main$o), { for: "email" }, {
                         default: withCtx(() => [
                           createTextVNode("Email (optional)")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "email",
                         type: "email",
                         modelValue: unref(profileForm).email,
@@ -11469,13 +12218,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       }, toDisplayString(unref(profileForm).errors.email), 1)) : createCommentVNode("", true)
                     ]),
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "phone" }, {
+                      createVNode(unref(_sfc_main$o), { for: "phone" }, {
                         default: withCtx(() => [
                           createTextVNode("Phone Number")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "phone",
                         modelValue: unref(profileForm).phone_number,
                         "onUpdate:modelValue": ($event) => unref(profileForm).phone_number = $event,
@@ -11487,7 +12236,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         class: "text-sm text-red-600"
                       }, toDisplayString(unref(profileForm).errors.phone_number), 1)) : createCommentVNode("", true)
                     ]),
-                    createVNode(unref(_sfc_main$A), {
+                    createVNode(unref(_sfc_main$q), {
                       type: "submit",
                       disabled: unref(profileForm).processing
                     }, {
@@ -11505,13 +12254,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(unref(_sfc_main$w), { class: "mb-6" }, {
+      _push(ssrRenderComponent(unref(_sfc_main$m), { class: "mb-6" }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$r), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$q), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$g), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Update Password`);
@@ -11523,7 +12272,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$t), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$j), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Ensure your account is using a long, random password to stay secure.`);
@@ -11537,13 +12286,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$q), null, {
+                    createVNode(unref(_sfc_main$g), null, {
                       default: withCtx(() => [
                         createTextVNode("Update Password")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$t), null, {
+                    createVNode(unref(_sfc_main$j), null, {
                       default: withCtx(() => [
                         createTextVNode("Ensure your account is using a long, random password to stay secure.")
                       ]),
@@ -11554,11 +12303,11 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(_sfc_main$u), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$k), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
                   _push3(`<form class="space-y-4"${_scopeId2}><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "current_password" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "current_password" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Current Password`);
@@ -11570,7 +12319,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "current_password",
                     type: "password",
                     modelValue: unref(passwordForm).current_password,
@@ -11584,7 +12333,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "password" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "password" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`New Password`);
@@ -11596,7 +12345,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "password",
                     type: "password",
                     modelValue: unref(passwordForm).password,
@@ -11610,7 +12359,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "password_confirmation" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "password_confirmation" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Confirm Password`);
@@ -11622,7 +12371,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "password_confirmation",
                     type: "password",
                     modelValue: unref(passwordForm).password_confirmation,
@@ -11630,7 +12379,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     required: ""
                   }, null, _parent3, _scopeId2));
                   _push3(`</div>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$q), {
                     type: "submit",
                     disabled: unref(passwordForm).processing
                   }, {
@@ -11653,13 +12402,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       class: "space-y-4"
                     }, [
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "current_password" }, {
+                        createVNode(unref(_sfc_main$o), { for: "current_password" }, {
                           default: withCtx(() => [
                             createTextVNode("Current Password")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "current_password",
                           type: "password",
                           modelValue: unref(passwordForm).current_password,
@@ -11673,13 +12422,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, toDisplayString(unref(passwordForm).errors.current_password), 1)) : createCommentVNode("", true)
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "password" }, {
+                        createVNode(unref(_sfc_main$o), { for: "password" }, {
                           default: withCtx(() => [
                             createTextVNode("New Password")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "password",
                           type: "password",
                           modelValue: unref(passwordForm).password,
@@ -11693,13 +12442,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, toDisplayString(unref(passwordForm).errors.password), 1)) : createCommentVNode("", true)
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "password_confirmation" }, {
+                        createVNode(unref(_sfc_main$o), { for: "password_confirmation" }, {
                           default: withCtx(() => [
                             createTextVNode("Confirm Password")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "password_confirmation",
                           type: "password",
                           modelValue: unref(passwordForm).password_confirmation,
@@ -11707,7 +12456,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           required: ""
                         }, null, 8, ["modelValue", "onUpdate:modelValue"])
                       ]),
-                      createVNode(unref(_sfc_main$A), {
+                      createVNode(unref(_sfc_main$q), {
                         type: "submit",
                         disabled: unref(passwordForm).processing
                       }, {
@@ -11724,15 +12473,15 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$r), null, {
+              createVNode(unref(_sfc_main$h), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$q), null, {
+                  createVNode(unref(_sfc_main$g), null, {
                     default: withCtx(() => [
                       createTextVNode("Update Password")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$t), null, {
+                  createVNode(unref(_sfc_main$j), null, {
                     default: withCtx(() => [
                       createTextVNode("Ensure your account is using a long, random password to stay secure.")
                     ]),
@@ -11741,20 +12490,20 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 ]),
                 _: 1
               }),
-              createVNode(unref(_sfc_main$u), null, {
+              createVNode(unref(_sfc_main$k), null, {
                 default: withCtx(() => [
                   createVNode("form", {
                     onSubmit: withModifiers(updatePassword, ["prevent"]),
                     class: "space-y-4"
                   }, [
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "current_password" }, {
+                      createVNode(unref(_sfc_main$o), { for: "current_password" }, {
                         default: withCtx(() => [
                           createTextVNode("Current Password")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "current_password",
                         type: "password",
                         modelValue: unref(passwordForm).current_password,
@@ -11768,13 +12517,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       }, toDisplayString(unref(passwordForm).errors.current_password), 1)) : createCommentVNode("", true)
                     ]),
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "password" }, {
+                      createVNode(unref(_sfc_main$o), { for: "password" }, {
                         default: withCtx(() => [
                           createTextVNode("New Password")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "password",
                         type: "password",
                         modelValue: unref(passwordForm).password,
@@ -11788,13 +12537,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       }, toDisplayString(unref(passwordForm).errors.password), 1)) : createCommentVNode("", true)
                     ]),
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "password_confirmation" }, {
+                      createVNode(unref(_sfc_main$o), { for: "password_confirmation" }, {
                         default: withCtx(() => [
                           createTextVNode("Confirm Password")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "password_confirmation",
                         type: "password",
                         modelValue: unref(passwordForm).password_confirmation,
@@ -11802,7 +12551,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         required: ""
                       }, null, 8, ["modelValue", "onUpdate:modelValue"])
                     ]),
-                    createVNode(unref(_sfc_main$A), {
+                    createVNode(unref(_sfc_main$q), {
                       type: "submit",
                       disabled: unref(passwordForm).processing
                     }, {
@@ -11820,16 +12569,16 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(unref(_sfc_main$w), {
+      _push(ssrRenderComponent(unref(_sfc_main$m), {
         id: "my-referral",
         class: "mb-6"
       }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$r), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$q), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$g), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`My Referral`);
@@ -11841,7 +12590,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$t), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$j), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Share your referral code or link to invite others.`);
@@ -11855,13 +12604,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$q), null, {
+                    createVNode(unref(_sfc_main$g), null, {
                       default: withCtx(() => [
                         createTextVNode("My Referral")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$t), null, {
+                    createVNode(unref(_sfc_main$j), null, {
                       default: withCtx(() => [
                         createTextVNode("Share your referral code or link to invite others.")
                       ]),
@@ -11872,7 +12621,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(_sfc_main$u), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$k), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
                   if (loadingReferral.value) {
@@ -11881,7 +12630,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<div class="text-sm text-red-600"${_scopeId2}>${ssrInterpolate(referralError.value)}</div>`);
                   } else {
                     _push3(`<div class="space-y-4"${_scopeId2}><div class="space-y-2"${_scopeId2}>`);
-                    _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "referral-code" }, {
+                    _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "referral-code" }, {
                       default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                         if (_push4) {
                           _push4(`Referral Code`);
@@ -11894,12 +12643,12 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       _: 1
                     }, _parent3, _scopeId2));
                     _push3(`<div class="flex gap-2"${_scopeId2}>`);
-                    _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                    _push3(ssrRenderComponent(unref(_sfc_main$p), {
                       id: "referral-code",
                       "model-value": referral.value.code,
                       readonly: ""
                     }, null, _parent3, _scopeId2));
-                    _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                    _push3(ssrRenderComponent(unref(_sfc_main$q), {
                       type: "button",
                       variant: "outline",
                       onClick: ($event) => copyText(referral.value.code)
@@ -11916,7 +12665,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       _: 1
                     }, _parent3, _scopeId2));
                     _push3(`</div></div><div class="space-y-2"${_scopeId2}>`);
-                    _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "referral-link" }, {
+                    _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "referral-link" }, {
                       default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                         if (_push4) {
                           _push4(`Referral Link`);
@@ -11929,12 +12678,12 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       _: 1
                     }, _parent3, _scopeId2));
                     _push3(`<div class="flex gap-2"${_scopeId2}>`);
-                    _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                    _push3(ssrRenderComponent(unref(_sfc_main$p), {
                       id: "referral-link",
                       "model-value": referral.value.link,
                       readonly: ""
                     }, null, _parent3, _scopeId2));
-                    _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                    _push3(ssrRenderComponent(unref(_sfc_main$q), {
                       type: "button",
                       variant: "outline",
                       onClick: ($event) => copyText(referral.value.link)
@@ -11975,19 +12724,19 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       class: "space-y-4"
                     }, [
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "referral-code" }, {
+                        createVNode(unref(_sfc_main$o), { for: "referral-code" }, {
                           default: withCtx(() => [
                             createTextVNode("Referral Code")
                           ]),
                           _: 1
                         }),
                         createVNode("div", { class: "flex gap-2" }, [
-                          createVNode(unref(_sfc_main$z), {
+                          createVNode(unref(_sfc_main$p), {
                             id: "referral-code",
                             "model-value": referral.value.code,
                             readonly: ""
                           }, null, 8, ["model-value"]),
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             type: "button",
                             variant: "outline",
                             onClick: ($event) => copyText(referral.value.code)
@@ -12000,19 +12749,19 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         ])
                       ]),
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "referral-link" }, {
+                        createVNode(unref(_sfc_main$o), { for: "referral-link" }, {
                           default: withCtx(() => [
                             createTextVNode("Referral Link")
                           ]),
                           _: 1
                         }),
                         createVNode("div", { class: "flex gap-2" }, [
-                          createVNode(unref(_sfc_main$z), {
+                          createVNode(unref(_sfc_main$p), {
                             id: "referral-link",
                             "model-value": referral.value.link,
                             readonly: ""
                           }, null, 8, ["model-value"]),
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             type: "button",
                             variant: "outline",
                             onClick: ($event) => copyText(referral.value.link)
@@ -12067,15 +12816,15 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$r), null, {
+              createVNode(unref(_sfc_main$h), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$q), null, {
+                  createVNode(unref(_sfc_main$g), null, {
                     default: withCtx(() => [
                       createTextVNode("My Referral")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$t), null, {
+                  createVNode(unref(_sfc_main$j), null, {
                     default: withCtx(() => [
                       createTextVNode("Share your referral code or link to invite others.")
                     ]),
@@ -12084,7 +12833,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 ]),
                 _: 1
               }),
-              createVNode(unref(_sfc_main$u), null, {
+              createVNode(unref(_sfc_main$k), null, {
                 default: withCtx(() => [
                   loadingReferral.value ? (openBlock(), createBlock("div", {
                     key: 0,
@@ -12097,19 +12846,19 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     class: "space-y-4"
                   }, [
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "referral-code" }, {
+                      createVNode(unref(_sfc_main$o), { for: "referral-code" }, {
                         default: withCtx(() => [
                           createTextVNode("Referral Code")
                         ]),
                         _: 1
                       }),
                       createVNode("div", { class: "flex gap-2" }, [
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "referral-code",
                           "model-value": referral.value.code,
                           readonly: ""
                         }, null, 8, ["model-value"]),
-                        createVNode(unref(_sfc_main$A), {
+                        createVNode(unref(_sfc_main$q), {
                           type: "button",
                           variant: "outline",
                           onClick: ($event) => copyText(referral.value.code)
@@ -12122,19 +12871,19 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       ])
                     ]),
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "referral-link" }, {
+                      createVNode(unref(_sfc_main$o), { for: "referral-link" }, {
                         default: withCtx(() => [
                           createTextVNode("Referral Link")
                         ]),
                         _: 1
                       }),
                       createVNode("div", { class: "flex gap-2" }, [
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "referral-link",
                           "model-value": referral.value.link,
                           readonly: ""
                         }, null, 8, ["model-value"]),
-                        createVNode(unref(_sfc_main$A), {
+                        createVNode(unref(_sfc_main$q), {
                           type: "button",
                           variant: "outline",
                           onClick: ($event) => copyText(referral.value.link)
@@ -12190,13 +12939,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(unref(_sfc_main$w), { class: "border-red-600" }, {
+      _push(ssrRenderComponent(unref(_sfc_main$m), { class: "border-red-600" }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$r), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$q), { class: "text-red-600" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$g), { class: "text-red-600" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Delete Account`);
@@ -12208,7 +12957,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$t), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$j), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Permanently delete your account and all associated data.`);
@@ -12222,13 +12971,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   }, _parent3, _scopeId2));
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$q), { class: "text-red-600" }, {
+                    createVNode(unref(_sfc_main$g), { class: "text-red-600" }, {
                       default: withCtx(() => [
                         createTextVNode("Delete Account")
                       ]),
                       _: 1
                     }),
-                    createVNode(unref(_sfc_main$t), null, {
+                    createVNode(unref(_sfc_main$j), null, {
                       default: withCtx(() => [
                         createTextVNode("Permanently delete your account and all associated data.")
                       ]),
@@ -12239,11 +12988,11 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(ssrRenderComponent(unref(_sfc_main$u), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$k), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
                   _push3(`<p class="text-sm text-muted-foreground mb-4"${_scopeId2}> Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain. </p>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$A), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$q), {
                     variant: "destructive",
                     onClick: ($event) => showDeleteModal.value = true
                   }, {
@@ -12261,7 +13010,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 } else {
                   return [
                     createVNode("p", { class: "text-sm text-muted-foreground mb-4" }, " Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain. "),
-                    createVNode(unref(_sfc_main$A), {
+                    createVNode(unref(_sfc_main$q), {
                       variant: "destructive",
                       onClick: ($event) => showDeleteModal.value = true
                     }, {
@@ -12277,15 +13026,15 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$r), null, {
+              createVNode(unref(_sfc_main$h), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$q), { class: "text-red-600" }, {
+                  createVNode(unref(_sfc_main$g), { class: "text-red-600" }, {
                     default: withCtx(() => [
                       createTextVNode("Delete Account")
                     ]),
                     _: 1
                   }),
-                  createVNode(unref(_sfc_main$t), null, {
+                  createVNode(unref(_sfc_main$j), null, {
                     default: withCtx(() => [
                       createTextVNode("Permanently delete your account and all associated data.")
                     ]),
@@ -12294,10 +13043,10 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                 ]),
                 _: 1
               }),
-              createVNode(unref(_sfc_main$u), null, {
+              createVNode(unref(_sfc_main$k), null, {
                 default: withCtx(() => [
                   createVNode("p", { class: "text-sm text-muted-foreground mb-4" }, " Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain. "),
-                  createVNode(unref(_sfc_main$A), {
+                  createVNode(unref(_sfc_main$q), {
                     variant: "destructive",
                     onClick: ($event) => showDeleteModal.value = true
                   }, {
@@ -12314,19 +13063,19 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(unref(_sfc_main$k), {
+      _push(ssrRenderComponent(unref(_sfc_main$U), {
         open: showDeleteModal.value,
         "onUpdate:open": ($event) => showDeleteModal.value = $event
       }, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(ssrRenderComponent(unref(_sfc_main$h), null, {
+            _push2(ssrRenderComponent(unref(_sfc_main$R), null, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(ssrRenderComponent(unref(_sfc_main$e), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$O), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(ssrRenderComponent(unref(_sfc_main$c), null, {
+                        _push4(ssrRenderComponent(unref(_sfc_main$M), null, {
                           default: withCtx((_5, _push5, _parent5, _scopeId4) => {
                             if (_push5) {
                               _push5(`Are you sure you want to delete your account?`);
@@ -12338,7 +13087,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           }),
                           _: 1
                         }, _parent4, _scopeId3));
-                        _push4(ssrRenderComponent(unref(_sfc_main$g), null, {
+                        _push4(ssrRenderComponent(unref(_sfc_main$Q), null, {
                           default: withCtx((_5, _push5, _parent5, _scopeId4) => {
                             if (_push5) {
                               _push5(` This action cannot be undone. This will permanently delete your account and remove your data from our servers. `);
@@ -12352,13 +13101,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, _parent4, _scopeId3));
                       } else {
                         return [
-                          createVNode(unref(_sfc_main$c), null, {
+                          createVNode(unref(_sfc_main$M), null, {
                             default: withCtx(() => [
                               createTextVNode("Are you sure you want to delete your account?")
                             ]),
                             _: 1
                           }),
-                          createVNode(unref(_sfc_main$g), null, {
+                          createVNode(unref(_sfc_main$Q), null, {
                             default: withCtx(() => [
                               createTextVNode(" This action cannot be undone. This will permanently delete your account and remove your data from our servers. ")
                             ]),
@@ -12370,7 +13119,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _: 1
                   }, _parent3, _scopeId2));
                   _push3(`<form class="space-y-4"${_scopeId2}><div class="space-y-2"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$y), { for: "delete_password" }, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$o), { for: "delete_password" }, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
                         _push4(`Password`);
@@ -12382,7 +13131,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     }),
                     _: 1
                   }, _parent3, _scopeId2));
-                  _push3(ssrRenderComponent(unref(_sfc_main$z), {
+                  _push3(ssrRenderComponent(unref(_sfc_main$p), {
                     id: "delete_password",
                     type: "password",
                     modelValue: unref(deleteForm).password,
@@ -12397,10 +13146,10 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     _push3(`<!---->`);
                   }
                   _push3(`</div>`);
-                  _push3(ssrRenderComponent(unref(_sfc_main$f), null, {
+                  _push3(ssrRenderComponent(unref(_sfc_main$P), null, {
                     default: withCtx((_4, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(ssrRenderComponent(unref(_sfc_main$A), {
+                        _push4(ssrRenderComponent(unref(_sfc_main$q), {
                           type: "button",
                           variant: "outline",
                           onClick: ($event) => showDeleteModal.value = false
@@ -12416,7 +13165,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           }),
                           _: 1
                         }, _parent4, _scopeId3));
-                        _push4(ssrRenderComponent(unref(_sfc_main$A), {
+                        _push4(ssrRenderComponent(unref(_sfc_main$q), {
                           type: "submit",
                           variant: "destructive",
                           disabled: unref(deleteForm).processing
@@ -12434,7 +13183,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         }, _parent4, _scopeId3));
                       } else {
                         return [
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             type: "button",
                             variant: "outline",
                             onClick: ($event) => showDeleteModal.value = false
@@ -12444,7 +13193,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                             ]),
                             _: 1
                           }, 8, ["onClick"]),
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             type: "submit",
                             variant: "destructive",
                             disabled: unref(deleteForm).processing
@@ -12462,15 +13211,15 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                   _push3(`</form>`);
                 } else {
                   return [
-                    createVNode(unref(_sfc_main$e), null, {
+                    createVNode(unref(_sfc_main$O), null, {
                       default: withCtx(() => [
-                        createVNode(unref(_sfc_main$c), null, {
+                        createVNode(unref(_sfc_main$M), null, {
                           default: withCtx(() => [
                             createTextVNode("Are you sure you want to delete your account?")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$g), null, {
+                        createVNode(unref(_sfc_main$Q), null, {
                           default: withCtx(() => [
                             createTextVNode(" This action cannot be undone. This will permanently delete your account and remove your data from our servers. ")
                           ]),
@@ -12484,13 +13233,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                       class: "space-y-4"
                     }, [
                       createVNode("div", { class: "space-y-2" }, [
-                        createVNode(unref(_sfc_main$y), { for: "delete_password" }, {
+                        createVNode(unref(_sfc_main$o), { for: "delete_password" }, {
                           default: withCtx(() => [
                             createTextVNode("Password")
                           ]),
                           _: 1
                         }),
-                        createVNode(unref(_sfc_main$z), {
+                        createVNode(unref(_sfc_main$p), {
                           id: "delete_password",
                           type: "password",
                           modelValue: unref(deleteForm).password,
@@ -12504,9 +13253,9 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           class: "text-sm text-red-600"
                         }, toDisplayString(unref(deleteForm).errors.password), 1)) : createCommentVNode("", true)
                       ]),
-                      createVNode(unref(_sfc_main$f), null, {
+                      createVNode(unref(_sfc_main$P), null, {
                         default: withCtx(() => [
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             type: "button",
                             variant: "outline",
                             onClick: ($event) => showDeleteModal.value = false
@@ -12516,7 +13265,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                             ]),
                             _: 1
                           }, 8, ["onClick"]),
-                          createVNode(unref(_sfc_main$A), {
+                          createVNode(unref(_sfc_main$q), {
                             type: "submit",
                             variant: "destructive",
                             disabled: unref(deleteForm).processing
@@ -12537,17 +13286,17 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
             }, _parent2, _scopeId));
           } else {
             return [
-              createVNode(unref(_sfc_main$h), null, {
+              createVNode(unref(_sfc_main$R), null, {
                 default: withCtx(() => [
-                  createVNode(unref(_sfc_main$e), null, {
+                  createVNode(unref(_sfc_main$O), null, {
                     default: withCtx(() => [
-                      createVNode(unref(_sfc_main$c), null, {
+                      createVNode(unref(_sfc_main$M), null, {
                         default: withCtx(() => [
                           createTextVNode("Are you sure you want to delete your account?")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$g), null, {
+                      createVNode(unref(_sfc_main$Q), null, {
                         default: withCtx(() => [
                           createTextVNode(" This action cannot be undone. This will permanently delete your account and remove your data from our servers. ")
                         ]),
@@ -12561,13 +13310,13 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                     class: "space-y-4"
                   }, [
                     createVNode("div", { class: "space-y-2" }, [
-                      createVNode(unref(_sfc_main$y), { for: "delete_password" }, {
+                      createVNode(unref(_sfc_main$o), { for: "delete_password" }, {
                         default: withCtx(() => [
                           createTextVNode("Password")
                         ]),
                         _: 1
                       }),
-                      createVNode(unref(_sfc_main$z), {
+                      createVNode(unref(_sfc_main$p), {
                         id: "delete_password",
                         type: "password",
                         modelValue: unref(deleteForm).password,
@@ -12581,9 +13330,9 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                         class: "text-sm text-red-600"
                       }, toDisplayString(unref(deleteForm).errors.password), 1)) : createCommentVNode("", true)
                     ]),
-                    createVNode(unref(_sfc_main$f), null, {
+                    createVNode(unref(_sfc_main$P), null, {
                       default: withCtx(() => [
-                        createVNode(unref(_sfc_main$A), {
+                        createVNode(unref(_sfc_main$q), {
                           type: "button",
                           variant: "outline",
                           onClick: ($event) => showDeleteModal.value = false
@@ -12593,7 +13342,7 @@ const _sfc_main$4 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
                           ]),
                           _: 1
                         }, 8, ["onClick"]),
-                        createVNode(unref(_sfc_main$A), {
+                        createVNode(unref(_sfc_main$q), {
                           type: "submit",
                           variant: "destructive",
                           disabled: unref(deleteForm).processing
@@ -12676,7 +13425,7 @@ const _sfc_main$3 = {
       alert("Receipt download for payment #" + payment.reference);
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$B, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$r, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="min-h-screen bg-background py-12"${_scopeId}><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="mb-8"${_scopeId}><h1 class="text-3xl font-bold text-foreground mb-2"${_scopeId}>Payment History</h1><p class="text-muted-foreground"${_scopeId}>View your transaction history and download receipts</p></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"${_scopeId}><div class="bg-card border border-border rounded-lg p-6 shadow"${_scopeId}><p class="text-sm text-muted-foreground mb-2"${_scopeId}>Total Spent</p><p class="text-3xl font-bold text-foreground"${_scopeId}>₵${ssrInterpolate(totalSpent.value)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow"${_scopeId}><p class="text-sm text-muted-foreground mb-2"${_scopeId}>Successful Payments</p><p class="text-3xl font-bold text-green-500"${_scopeId}>${ssrInterpolate(successfulCount.value)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow"${_scopeId}><p class="text-sm text-muted-foreground mb-2"${_scopeId}>Access Status</p><p class="${ssrRenderClass([__props.hasAccess ? "text-green-500" : "text-muted-foreground", "text-3xl font-bold"])}"${_scopeId}>${ssrInterpolate(__props.hasAccess ? "Active" : "Inactive")}</p></div></div><div class="bg-card border border-border rounded-lg shadow-lg overflow-hidden"${_scopeId}>`);
@@ -13014,7 +13763,7 @@ const __vite_glob_0_46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: _sfc_main$2
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$1 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$B }, {
+const _sfc_main$1 = /* @__PURE__ */ Object.assign({ layout: _sfc_main$r }, {
   __name: "Terms",
   __ssrInlineRender: true,
   setup(__props) {
