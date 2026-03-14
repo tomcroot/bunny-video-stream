@@ -39,12 +39,43 @@ stopwaitsecs=3600"
   fi
 }
 
+ensure_scheduler() {
+  FILE="$CONF_DIR/laravel-scheduler.conf"
+
+  DESIRED_CONF="[program:laravel-scheduler]
+process_name=%(program_name)s
+command=php $APP_DIR/artisan schedule:work
+autostart=true
+autorestart=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/var/log/laravel-scheduler.log
+stopwaitsecs=30"
+
+  if [ -f "$FILE" ]; then
+    CURRENT_HASH=$(sudo sha256sum "$FILE" | awk '{print $1}')
+    DESIRED_HASH=$(echo "$DESIRED_CONF" | sha256sum | awk '{print $1}')
+
+    if [ "$CURRENT_HASH" != "$DESIRED_HASH" ]; then
+      echo "🔄 Updating scheduler config"
+      echo "$DESIRED_CONF" | sudo tee "$FILE" > /dev/null
+    else
+      echo "✅ Scheduler config already correct"
+    fi
+  else
+    echo "➕ Creating scheduler config"
+    echo "$DESIRED_CONF" | sudo tee "$FILE" > /dev/null
+  fi
+}
+
 # Priority queues for critical operations
 # OTP workers DISABLED - kept for reference only
 # ensure_worker otp "otp" 2
 ensure_worker payments "payments" 1
 ensure_worker emails "emails" 1
 ensure_worker default "default" 1
+ensure_scheduler
 
 sudo supervisorctl reread
 sudo supervisorctl update
@@ -53,5 +84,6 @@ sudo supervisorctl update
 sudo supervisorctl restart laravel-payments:* || true
 sudo supervisorctl restart laravel-emails:* || true
 sudo supervisorctl restart laravel-default:* || true
+sudo supervisorctl restart laravel-scheduler || true
 
-echo "✅ Named Redis queue workers verified and running"
+echo "✅ Named Redis queue workers and scheduler verified and running"

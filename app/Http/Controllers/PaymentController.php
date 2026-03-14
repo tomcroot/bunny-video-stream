@@ -18,6 +18,40 @@ use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
+    private function dispatchPaymentSuccessEmail(Payment $payment, Subscription $subscription, string $source): void
+    {
+        try {
+            // Runs after the HTTP response in the same request lifecycle, so it does not depend on queue workers.
+            SendPaymentSuccessEmailJob::dispatchAfterResponse($payment->id, $subscription->id);
+
+            Log::info("{$source}: Payment success email scheduled after response", [
+                'payment_id' => $payment->id,
+                'subscription_id' => $subscription->id,
+            ]);
+        } catch (\Exception $e) {
+            Log::warning("{$source}: dispatchAfterResponse failed, trying synchronous fallback", [
+                'payment_id' => $payment->id,
+                'subscription_id' => $subscription->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            try {
+                SendPaymentSuccessEmailJob::dispatchSync($payment->id, $subscription->id);
+
+                Log::info("{$source}: Payment success email sent synchronously", [
+                    'payment_id' => $payment->id,
+                    'subscription_id' => $subscription->id,
+                ]);
+            } catch (\Exception $syncException) {
+                Log::error("{$source}: Failed to send payment success email", [
+                    'payment_id' => $payment->id,
+                    'subscription_id' => $subscription->id,
+                    'error' => $syncException->getMessage(),
+                ]);
+            }
+        }
+    }
+
     public function successPage(Request $request)
     {
         $reference = (string) $request->query('reference', '');
@@ -307,29 +341,7 @@ class PaymentController extends Controller
                         }
                     }
 
-                    // Send payment success email
-                    if (config('app.env') === 'production') {
-                        // Queue in production (when workers are running)
-                        SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
-                        Log::info('Payment success email job dispatched to queue', [
-                            'payment_id' => $payment->id,
-                            'subscription_id' => $subscription->id,
-                        ]);
-                    } else {
-                        // Avoid blocking callback in development; run after response is sent.
-                        try {
-                            SendPaymentSuccessEmailJob::dispatchAfterResponse($payment->id, $subscription->id);
-                            Log::info('Payment success email scheduled after response', [
-                                'payment_id' => $payment->id,
-                                'subscription_id' => $subscription->id,
-                            ]);
-                        } catch (\Exception $e) {
-                            Log::error('Failed to send payment success email', [
-                                'payment_id' => $payment->id,
-                                'error' => $e->getMessage(),
-                            ]);
-                        }
-                    }
+                    $this->dispatchPaymentSuccessEmail($payment, $subscription, 'Callback');
                 } catch (\Exception $e) {
                     Log::error('Failed to create subscription or send email', [
                         'payment_id' => $payment->id,
@@ -466,29 +478,7 @@ class PaymentController extends Controller
                         }
                     }
 
-                    // Send payment success email
-                    if (config('app.env') === 'production') {
-                        // Queue in production (when workers are running)
-                        SendPaymentSuccessEmailJob::dispatch($payment->id, $subscription->id)->onQueue('payments');
-                        Log::info('Webhook: Payment success email job dispatched to queue', [
-                            'payment_id' => $payment->id,
-                            'subscription_id' => $subscription->id,
-                        ]);
-                    } else {
-                        // Send immediately in development (no queue workers)
-                        try {
-                            SendPaymentSuccessEmailJob::dispatchSync($payment->id, $subscription->id);
-                            Log::info('Webhook: Payment success email sent synchronously', [
-                                'payment_id' => $payment->id,
-                                'subscription_id' => $subscription->id,
-                            ]);
-                        } catch (\Exception $e) {
-                            Log::error('Webhook: Failed to send payment success email', [
-                                'payment_id' => $payment->id,
-                                'error' => $e->getMessage(),
-                            ]);
-                        }
-                    }
+                    $this->dispatchPaymentSuccessEmail($payment, $subscription, 'Webhook');
                 } catch (\Exception $e) {
                     Log::error('Webhook: Failed to create subscription', [
                         'payment_id' => $payment->id,

@@ -13,9 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withCommands([
         \App\Console\Commands\ReconcilePendingPayments::class,
     ])
-    ->withSchedule(function ($schedule) {
-        $schedule->command('payments:reconcile --age=15')->everyFifteenMinutes();
-    })
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             \App\Http\Middleware\SecurityHeaders::class,
