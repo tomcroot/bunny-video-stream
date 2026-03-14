@@ -161,7 +161,7 @@
                 <!-- User Info -->
                 <td class="px-4 py-3">
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <span class="text-sm font-medium text-primary">{{ getInitials(user.name) }}</span>
                     </div>
                     <div>

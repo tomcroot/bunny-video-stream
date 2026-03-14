@@ -2823,7 +2823,7 @@ const _sfc_main$11 = {
       _push(ssrRenderComponent(_sfc_main$1b, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(`<div class="py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto"${_scopeId}><div class="mb-8 text-center"${_scopeId}><div class="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4"${_scopeId}><svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"${_scopeId}></path></svg></div><h1 class="text-3xl font-bold text-foreground"${_scopeId}> Developer Access Required </h1><p class="mt-2 text-muted-foreground"${_scopeId}> Environment settings require developer verification to access. </p></div><div class="bg-card rounded-lg shadow-md overflow-hidden"${_scopeId}><div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4"${_scopeId}><h2 class="text-xl font-semibold text-white"${_scopeId}> Verify Your Identity </h2></div><div class="p-6"${_scopeId}>`);
+            _push2(`<div class="py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto"${_scopeId}><div class="mb-8 text-center"${_scopeId}><div class="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4"${_scopeId}><svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"${_scopeId}></path></svg></div><h1 class="text-3xl font-bold text-foreground"${_scopeId}> Developer Access Required </h1><p class="mt-2 text-muted-foreground"${_scopeId}> Environment settings require developer verification to access. </p></div><div class="bg-card rounded-lg shadow-md overflow-hidden"${_scopeId}><div class="bg-linear-to-r from-red-600 to-red-700 px-6 py-4"${_scopeId}><h2 class="text-xl font-semibold text-white"${_scopeId}> Verify Your Identity </h2></div><div class="p-6"${_scopeId}>`);
             if (errorMessage.value) {
               _push2(`<div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md"${_scopeId}>${ssrInterpolate(errorMessage.value)}</div>`);
             } else {
@@ -2861,7 +2861,7 @@ const _sfc_main$11 = {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(`</div><div class="mt-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded"${_scopeId}><div class="flex"${_scopeId}><div class="flex-shrink-0"${_scopeId}><svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"${_scopeId}><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"${_scopeId}></path></svg></div><div class="ml-3"${_scopeId}><h3 class="text-sm font-medium text-yellow-800"${_scopeId}> Security Notice </h3><div class="mt-2 text-sm text-yellow-700"${_scopeId}><p${_scopeId}> Environment settings contain sensitive application configuration including API keys, database credentials, and service secrets. Access is restricted to authorized developers only. </p></div></div></div></div></div>`);
+            _push2(`</div><div class="mt-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded"${_scopeId}><div class="flex"${_scopeId}><div class="shrink-0"${_scopeId}><svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"${_scopeId}><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"${_scopeId}></path></svg></div><div class="ml-3"${_scopeId}><h3 class="text-sm font-medium text-yellow-800"${_scopeId}> Security Notice </h3><div class="mt-2 text-sm text-yellow-700"${_scopeId}><p${_scopeId}> Environment settings contain sensitive application configuration including API keys, database credentials, and service secrets. Access is restricted to authorized developers only. </p></div></div></div></div></div>`);
           } else {
             return [
               createVNode("div", { class: "py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto" }, [
@@ -2885,7 +2885,7 @@ const _sfc_main$11 = {
                   createVNode("p", { class: "mt-2 text-muted-foreground" }, " Environment settings require developer verification to access. ")
                 ]),
                 createVNode("div", { class: "bg-card rounded-lg shadow-md overflow-hidden" }, [
-                  createVNode("div", { class: "bg-gradient-to-r from-red-600 to-red-700 px-6 py-4" }, [
+                  createVNode("div", { class: "bg-linear-to-r from-red-600 to-red-700 px-6 py-4" }, [
                     createVNode("h2", { class: "text-xl font-semibold text-white" }, " Verify Your Identity ")
                   ]),
                   createVNode("div", { class: "p-6" }, [
@@ -2952,7 +2952,7 @@ const _sfc_main$11 = {
                 ]),
                 createVNode("div", { class: "mt-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded" }, [
                   createVNode("div", { class: "flex" }, [
-                    createVNode("div", { class: "flex-shrink-0" }, [
+                    createVNode("div", { class: "shrink-0" }, [
                       (openBlock(), createBlock("svg", {
                         class: "h-5 w-5 text-yellow-400",
                         viewBox: "0 0 20 20",
@@ -7505,7 +7505,7 @@ const _sfc_main$D = {
             }
             _push2(`<!--[-->`);
             ssrRenderList(__props.users.data, (user) => {
-              _push2(`<tr class="border-b border-border hover:bg-muted/30 transition-colors"${_scopeId}><td class="px-4 py-3"${_scopeId}><div class="flex items-center gap-3"${_scopeId}><div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"${_scopeId}><span class="text-sm font-medium text-primary"${_scopeId}>${ssrInterpolate(getInitials(user.name))}</span></div><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>${ssrInterpolate(user.name || "No Name")}</p><p class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(user.email || "No email")}</p></div></div></td><td class="px-4 py-3"${_scopeId}>`);
+              _push2(`<tr class="border-b border-border hover:bg-muted/30 transition-colors"${_scopeId}><td class="px-4 py-3"${_scopeId}><div class="flex items-center gap-3"${_scopeId}><div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0"${_scopeId}><span class="text-sm font-medium text-primary"${_scopeId}>${ssrInterpolate(getInitials(user.name))}</span></div><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>${ssrInterpolate(user.name || "No Name")}</p><p class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(user.email || "No email")}</p></div></div></td><td class="px-4 py-3"${_scopeId}>`);
               if (user.phone_number) {
                 _push2(`<span class="text-foreground"${_scopeId}>${ssrInterpolate(user.phone_number)}</span>`);
               } else {
@@ -7704,7 +7704,7 @@ const _sfc_main$D = {
                           }, [
                             createVNode("td", { class: "px-4 py-3" }, [
                               createVNode("div", { class: "flex items-center gap-3" }, [
-                                createVNode("div", { class: "w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0" }, [
+                                createVNode("div", { class: "w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0" }, [
                                   createVNode("span", { class: "text-sm font-medium text-primary" }, toDisplayString(getInitials(user.name)), 1)
                                 ]),
                                 createVNode("div", null, [
@@ -7887,7 +7887,7 @@ const _sfc_main$C = {
             if (__props.viewersByDay.length > 0) {
               _push2(`<div class="h-64"${_scopeId}><div class="flex items-end h-48 gap-1"${_scopeId}><!--[-->`);
               ssrRenderList(__props.viewersByDay, (day, index) => {
-                _push2(`<div class="flex-1 flex flex-col items-center"${_scopeId}><div class="w-full bg-blue-500 rounded-t transition-all hover:bg-blue-600" style="${ssrRenderStyle({ height: `${getBarHeight(day.viewers, maxViewers.value)}%` })}"${ssrRenderAttr("title", `${day.date}: ${day.viewers} viewers`)}${_scopeId}></div></div>`);
+                _push2(`<div class="flex-1 flex flex-col items-center"${_scopeId}><div class="w-full bg-blue-500 rounded-t transition-all hover:bg-blue-600" style="${ssrRenderStyle({ blockSize: `${getBarHeight(day.viewers, maxViewers.value)}%` })}"${ssrRenderAttr("title", `${day.date}: ${day.viewers} viewers`)}${_scopeId}></div></div>`);
               });
               _push2(`<!--]--></div><div class="flex justify-between text-xs text-muted-foreground mt-2"${_scopeId}><span${_scopeId}>${ssrInterpolate(__props.viewersByDay[0]?.date)}</span><span${_scopeId}>${ssrInterpolate(__props.viewersByDay[__props.viewersByDay.length - 1]?.date)}</span></div></div>`);
             } else {
@@ -7895,11 +7895,11 @@ const _sfc_main$C = {
             }
             _push2(`</div><div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h3 class="text-lg font-semibold text-foreground mb-4"${_scopeId}>Watch Progress Distribution</h3><div class="space-y-3"${_scopeId}><!--[-->`);
             ssrRenderList(__props.watchDistribution, (item, index) => {
-              _push2(`<div class="flex items-center gap-3"${_scopeId}><span class="text-sm text-muted-foreground w-20"${_scopeId}>${ssrInterpolate(item.range)}</span><div class="flex-1 h-6 bg-muted rounded overflow-hidden"${_scopeId}><div class="${ssrRenderClass([getDistributionColor(index), "h-full rounded transition-all"])}" style="${ssrRenderStyle({ width: `${getDistributionWidth(item.count)}%` })}"${_scopeId}></div></div><span class="text-sm font-medium text-foreground w-12 text-right"${_scopeId}>${ssrInterpolate(item.count)}</span></div>`);
+              _push2(`<div class="flex items-center gap-3"${_scopeId}><span class="text-sm text-muted-foreground w-20"${_scopeId}>${ssrInterpolate(item.range)}</span><div class="flex-1 h-6 bg-muted rounded overflow-hidden"${_scopeId}><div class="${ssrRenderClass([getDistributionColor(index), "h-full rounded transition-all"])}" style="${ssrRenderStyle({ inlineSize: `${getDistributionWidth(item.count)}%` })}"${_scopeId}></div></div><span class="text-sm font-medium text-foreground w-12 text-right"${_scopeId}>${ssrInterpolate(item.count)}</span></div>`);
             });
             _push2(`<!--]--></div></div></div><div class="bg-card rounded-lg shadow border border-border p-6 mb-8"${_scopeId}><h3 class="text-lg font-semibold text-foreground mb-4"${_scopeId}>Viewing Pattern by Hour</h3><div class="h-32 flex items-end gap-1"${_scopeId}><!--[-->`);
             ssrRenderList(__props.hourlyPattern, (hour, index) => {
-              _push2(`<div class="flex-1 flex flex-col items-center"${_scopeId}><div class="w-full bg-purple-500 rounded-t transition-all hover:bg-purple-600" style="${ssrRenderStyle({ height: `${getBarHeight(hour.views, maxHourlyViews.value)}%` })}"${ssrRenderAttr("title", `${hour.hour}: ${hour.views} views`)}${_scopeId}></div></div>`);
+              _push2(`<div class="flex-1 flex flex-col items-center"${_scopeId}><div class="w-full bg-purple-500 rounded-t transition-all hover:bg-purple-600" style="${ssrRenderStyle({ blockSize: `${getBarHeight(hour.views, maxHourlyViews.value)}%` })}"${ssrRenderAttr("title", `${hour.hour}: ${hour.views} views`)}${_scopeId}></div></div>`);
             });
             _push2(`<!--]--></div><div class="flex justify-between text-xs text-muted-foreground mt-2"${_scopeId}><span${_scopeId}>00:00</span><span${_scopeId}>06:00</span><span${_scopeId}>12:00</span><span${_scopeId}>18:00</span><span${_scopeId}>23:00</span></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-6"${_scopeId}><div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h3 class="text-lg font-semibold text-foreground mb-4"${_scopeId}>Top Viewers</h3><div class="overflow-x-auto"${_scopeId}><table class="w-full"${_scopeId}><thead${_scopeId}><tr class="border-b border-border"${_scopeId}><th class="text-left text-sm font-medium text-muted-foreground py-2"${_scopeId}>User</th><th class="text-left text-sm font-medium text-muted-foreground py-2"${_scopeId}>Watch Time</th><th class="text-left text-sm font-medium text-muted-foreground py-2"${_scopeId}>Last Active</th></tr></thead><tbody${_scopeId}><!--[-->`);
             ssrRenderList(__props.topViewers, (viewer) => {
@@ -7913,9 +7913,9 @@ const _sfc_main$C = {
             }
             _push2(`</div></div><div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h3 class="text-lg font-semibold text-foreground mb-4"${_scopeId}>Recent Activity</h3><div class="space-y-3 max-h-96 overflow-y-auto"${_scopeId}><!--[-->`);
             ssrRenderList(__props.recentActivity, (activity, index) => {
-              _push2(`<div class="flex items-center gap-3 p-3 bg-muted/30 rounded-lg"${_scopeId}><div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0"${_scopeId}>`);
+              _push2(`<div class="flex items-center gap-3 p-3 bg-muted/30 rounded-lg"${_scopeId}><div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0"${_scopeId}>`);
               _push2(ssrRenderComponent(unref(Play), { class: "w-4 h-4 text-primary" }, null, _parent2, _scopeId));
-              _push2(`</div><div class="flex-1 min-w-0"${_scopeId}><p class="text-sm font-medium text-foreground truncate"${_scopeId}>${ssrInterpolate(activity.user)}</p><p class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(activity.current_time)} watched</p></div><div class="text-right flex-shrink-0"${_scopeId}><div class="w-16 h-2 bg-muted rounded-full overflow-hidden"${_scopeId}><div class="h-full bg-green-500 rounded-full" style="${ssrRenderStyle({ width: `${activity.progress}%` })}"${_scopeId}></div></div><p class="text-xs text-muted-foreground mt-1"${_scopeId}>${ssrInterpolate(activity.progress)}%</p></div></div>`);
+              _push2(`</div><div class="flex-1 min-w-0"${_scopeId}><p class="text-sm font-medium text-foreground truncate"${_scopeId}>${ssrInterpolate(activity.user)}</p><p class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(activity.current_time)} watched</p></div><div class="text-right shrink-0"${_scopeId}><div class="w-16 h-2 bg-muted rounded-full overflow-hidden"${_scopeId}><div class="h-full bg-green-500 rounded-full" style="${ssrRenderStyle({ inlineSize: `${activity.progress}%` })}"${_scopeId}></div></div><p class="text-xs text-muted-foreground mt-1"${_scopeId}>${ssrInterpolate(activity.progress)}%</p></div></div>`);
             });
             _push2(`<!--]-->`);
             if (__props.recentActivity.length === 0) {
@@ -8009,7 +8009,7 @@ const _sfc_main$C = {
                           }, [
                             createVNode("div", {
                               class: "w-full bg-blue-500 rounded-t transition-all hover:bg-blue-600",
-                              style: { height: `${getBarHeight(day.viewers, maxViewers.value)}%` },
+                              style: { blockSize: `${getBarHeight(day.viewers, maxViewers.value)}%` },
                               title: `${day.date}: ${day.viewers} viewers`
                             }, null, 12, ["title"])
                           ]);
@@ -8036,7 +8036,7 @@ const _sfc_main$C = {
                           createVNode("div", { class: "flex-1 h-6 bg-muted rounded overflow-hidden" }, [
                             createVNode("div", {
                               class: ["h-full rounded transition-all", getDistributionColor(index)],
-                              style: { width: `${getDistributionWidth(item.count)}%` }
+                              style: { inlineSize: `${getDistributionWidth(item.count)}%` }
                             }, null, 6)
                           ]),
                           createVNode("span", { class: "text-sm font-medium text-foreground w-12 text-right" }, toDisplayString(item.count), 1)
@@ -8055,7 +8055,7 @@ const _sfc_main$C = {
                       }, [
                         createVNode("div", {
                           class: "w-full bg-purple-500 rounded-t transition-all hover:bg-purple-600",
-                          style: { height: `${getBarHeight(hour.views, maxHourlyViews.value)}%` },
+                          style: { blockSize: `${getBarHeight(hour.views, maxHourlyViews.value)}%` },
                           title: `${hour.hour}: ${hour.views} views`
                         }, null, 12, ["title"])
                       ]);
@@ -8111,18 +8111,18 @@ const _sfc_main$C = {
                           key: index,
                           class: "flex items-center gap-3 p-3 bg-muted/30 rounded-lg"
                         }, [
-                          createVNode("div", { class: "w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0" }, [
+                          createVNode("div", { class: "w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0" }, [
                             createVNode(unref(Play), { class: "w-4 h-4 text-primary" })
                           ]),
                           createVNode("div", { class: "flex-1 min-w-0" }, [
                             createVNode("p", { class: "text-sm font-medium text-foreground truncate" }, toDisplayString(activity.user), 1),
                             createVNode("p", { class: "text-xs text-muted-foreground" }, toDisplayString(activity.current_time) + " watched", 1)
                           ]),
-                          createVNode("div", { class: "text-right flex-shrink-0" }, [
+                          createVNode("div", { class: "text-right shrink-0" }, [
                             createVNode("div", { class: "w-16 h-2 bg-muted rounded-full overflow-hidden" }, [
                               createVNode("div", {
                                 class: "h-full bg-green-500 rounded-full",
-                                style: { width: `${activity.progress}%` }
+                                style: { inlineSize: `${activity.progress}%` }
                               }, null, 4)
                             ]),
                             createVNode("p", { class: "text-xs text-muted-foreground mt-1" }, toDisplayString(activity.progress) + "%", 1)

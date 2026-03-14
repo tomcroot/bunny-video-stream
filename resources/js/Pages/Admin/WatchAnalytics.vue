@@ -90,7 +90,7 @@
               >
                 <div
                   class="w-full bg-blue-500 rounded-t transition-all hover:bg-blue-600"
-                  :style="{ height: `${getBarHeight(day.viewers, maxViewers)}%` }"
+                  :style="{ blockSize: `${getBarHeight(day.viewers, maxViewers)}%` }"
                   :title="`${day.date}: ${day.viewers} viewers`"
                 ></div>
               </div>
@@ -115,7 +115,7 @@
                 <div
                   class="h-full rounded transition-all"
                   :class="getDistributionColor(index)"
-                  :style="{ width: `${getDistributionWidth(item.count)}%` }"
+                  :style="{ inlineSize: `${getDistributionWidth(item.count)}%` }"
                 ></div>
               </div>
               <span class="text-sm font-medium text-foreground w-12 text-right">{{ item.count }}</span>
@@ -135,7 +135,7 @@
           >
             <div
               class="w-full bg-purple-500 rounded-t transition-all hover:bg-purple-600"
-              :style="{ height: `${getBarHeight(hour.views, maxHourlyViews)}%` }"
+              :style="{ blockSize: `${getBarHeight(hour.views, maxHourlyViews)}%` }"
               :title="`${hour.hour}: ${hour.views} views`"
             ></div>
           </div>
@@ -189,18 +189,18 @@
               :key="index"
               class="flex items-center gap-3 p-3 bg-muted/30 rounded-lg"
             >
-              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
                 <Play class="w-4 h-4 text-primary" />
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-foreground truncate">{{ activity.user }}</p>
                 <p class="text-xs text-muted-foreground">{{ activity.current_time }} watched</p>
               </div>
-              <div class="text-right flex-shrink-0">
+              <div class="text-right shrink-0">
                 <div class="w-16 h-2 bg-muted rounded-full overflow-hidden">
                   <div
                     class="h-full bg-green-500 rounded-full"
-                    :style="{ width: `${activity.progress}%` }"
+                    :style="{ inlineSize: `${activity.progress}%` }"
                   ></div>
                 </div>
                 <p class="text-xs text-muted-foreground mt-1">{{ activity.progress }}%</p>

@@ -33,7 +33,7 @@
 
             <!-- Verification Card -->
             <div class="bg-card rounded-lg shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
+                <div class="bg-linear-to-r from-red-600 to-red-700 px-6 py-4">
                     <h2 class="text-xl font-semibold text-white">
                         Verify Your Identity
                     </h2>
@@ -183,7 +183,7 @@
                 class="mt-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded"
             >
                 <div class="flex">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <svg
                             class="h-5 w-5 text-yellow-400"
                             viewBox="0 0 20 20"
