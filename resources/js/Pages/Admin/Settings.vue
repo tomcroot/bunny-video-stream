@@ -1,10 +1,10 @@
 <template>
   <Head title="Settings" />
   <AdminLayout>
-    <div class="bg-white shadow">
+    <div class="bg-card border-b border-border shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <h1 class="text-3xl font-bold text-gray-900">Database Settings</h1>
-        <p class="mt-1 text-gray-600">Manage key site features and configurations</p>
+        <h1 class="text-3xl font-bold text-foreground">Database Settings</h1>
+        <p class="mt-1 text-muted-foreground">Manage key site features and configurations</p>
 
         <!-- Environment Info Banner -->
         <div class="mt-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
@@ -40,16 +40,16 @@
         </div>
 
         <!-- Link to Environment Settings -->
-        <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p class="text-sm text-yellow-800 mb-2">
+        <div class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <p class="text-sm text-amber-900 mb-2">
             <strong>Need to Edit API Keys or Database Credentials?</strong>
           </p>
-          <p class="text-xs text-yellow-700 mb-3">
+          <p class="text-xs text-amber-800 mb-3">
             These are runtime database settings. For .env configuration (API keys, database credentials, email/SMS settings, payment keys, etc.), use the Environment Settings page.
           </p>
           <Link
             href="/admin/env-settings"
-            class="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 text-sm font-medium transition-colors"
+            class="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium transition-colors"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -63,93 +63,93 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <form @submit.prevent="handleSubmit" class="space-y-8">
-        <div v-if="showSuccess" class="rounded-md bg-green-50 p-4">
+        <div v-if="showSuccess" class="rounded-md border border-green-200 bg-green-50 p-4">
           <p class="text-sm font-medium text-green-800">Settings saved successfully!</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Premiere Settings</h2>
+        <div class="bg-card rounded-lg shadow border border-border p-6">
+          <h2 class="text-xl font-semibold text-foreground mb-6">Premiere Settings</h2>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Premiere Date & Time
               </label>
               <input
                 v-model="formData.premiere_date"
                 type="datetime-local"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
               />
-              <p class="mt-1 text-xs text-gray-500">
+              <p class="mt-1 text-xs text-muted-foreground">
                 Format: ISO 8601 (e.g., 2025-12-10T06:00:00Z)
               </p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Feature Controls</h2>
+        <div class="bg-card rounded-lg shadow border border-border p-6">
+          <h2 class="text-xl font-semibold text-foreground mb-6">Feature Controls</h2>
           <div class="space-y-4">
-            <div class="flex items-center justify-between py-3 border-b border-gray-200">
+            <div class="flex items-center justify-between py-3 border-b border-border">
               <div>
-                <p class="font-medium text-gray-900">Contact Form</p>
-                <p class="text-sm text-gray-500">Allow visitors to submit contact requests</p>
+                <p class="font-medium text-foreground">Contact Form</p>
+                <p class="text-sm text-muted-foreground">Allow visitors to submit contact requests</p>
               </div>
               <button
                 type="button"
                 @click="toggleSetting('enable_contact_form')"
                 :class="[
-                  formData.enable_contact_form ? 'bg-red-600' : 'bg-gray-300',
-                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                  formData.enable_contact_form ? 'bg-primary' : 'bg-muted',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
                 ]"
               >
                 <span
                   :class="[
                     formData.enable_contact_form ? 'translate-x-5' : 'translate-x-0',
-                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200'
                   ]"
                 />
               </button>
             </div>
 
-            <div class="flex items-center justify-between py-3 border-b border-gray-200">
+            <div class="flex items-center justify-between py-3 border-b border-border">
               <div>
-                <p class="font-medium text-gray-900">Reviews</p>
-                <p class="text-sm text-gray-500">Allow visitors to submit reviews</p>
+                <p class="font-medium text-foreground">Reviews</p>
+                <p class="text-sm text-muted-foreground">Allow visitors to submit reviews</p>
               </div>
               <button
                 type="button"
                 @click="toggleSetting('enable_reviews')"
                 :class="[
-                  formData.enable_reviews ? 'bg-red-600' : 'bg-gray-300',
-                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                  formData.enable_reviews ? 'bg-primary' : 'bg-muted',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
                 ]"
               >
                 <span
                   :class="[
                     formData.enable_reviews ? 'translate-x-5' : 'translate-x-0',
-                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200'
                   ]"
                 />
               </button>
             </div>
 
-            <div class="flex items-center justify-between py-3 border-b border-gray-200">
+            <div class="flex items-center justify-between py-3 border-b border-border">
               <div>
-                <p class="font-medium text-gray-900">Require Review Approval</p>
-                <p class="text-sm text-gray-500">Moderate reviews before publishing</p>
+                <p class="font-medium text-foreground">Require Review Approval</p>
+                <p class="text-sm text-muted-foreground">Moderate reviews before publishing</p>
               </div>
               <button
                 type="button"
                 @click="toggleSetting('reviews_require_approval')"
                 :class="[
-                  formData.reviews_require_approval ? 'bg-red-600' : 'bg-gray-300',
-                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                  formData.reviews_require_approval ? 'bg-primary' : 'bg-muted',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
                 ]"
               >
                 <span
                   :class="[
                     formData.reviews_require_approval ? 'translate-x-5' : 'translate-x-0',
-                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200'
                   ]"
                 />
               </button>
@@ -157,21 +157,21 @@
 
             <div class="flex items-center justify-between py-3">
               <div>
-                <p class="font-medium text-gray-900">Maintenance Mode</p>
-                <p class="text-sm text-gray-500">Show maintenance page to visitors</p>
+                <p class="font-medium text-foreground">Maintenance Mode</p>
+                <p class="text-sm text-muted-foreground">Show maintenance page to visitors</p>
               </div>
               <button
                 type="button"
                 @click="toggleSetting('maintenance_mode')"
                 :class="[
-                  formData.maintenance_mode ? 'bg-yellow-600' : 'bg-gray-300',
-                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                  formData.maintenance_mode ? 'bg-amber-600' : 'bg-muted',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
                 ]"
               >
                 <span
                   :class="[
                     formData.maintenance_mode ? 'translate-x-5' : 'translate-x-0',
-                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200'
                   ]"
                 />
               </button>
@@ -179,13 +179,13 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Additional Settings</h2>
+        <div class="bg-card rounded-lg shadow border border-border p-6">
+          <h2 class="text-xl font-semibold text-foreground mb-6">Additional Settings</h2>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Site Title
-                <span v-if="!formData.site_title" class="ml-2 text-xs text-gray-500">
+                <span v-if="!formData.site_title" class="ml-2 text-xs text-muted-foreground">
                   (Using .env: {{ envInfo?.app_name }})
                 </span>
               </label>
@@ -193,37 +193,37 @@
                 v-model="formData.site_title"
                 type="text"
                 :placeholder="envInfo?.app_name || 'A Crazy Day in Accra'"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
               />
-              <p class="mt-1 text-xs text-gray-500">
+              <p class="mt-1 text-xs text-muted-foreground">
                 Leave empty to use APP_NAME from .env
               </p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Site Description
               </label>
               <textarea
                 v-model="formData.site_description"
                 rows="3"
                 placeholder="A gripping thriller set in Accra..."
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
               />
-              <p class="mt-1 text-xs text-gray-500">
+              <p class="mt-1 text-xs text-muted-foreground">
                 SEO meta description for your site
               </p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Contact Settings</h2>
+        <div class="bg-card rounded-lg shadow border border-border p-6">
+          <h2 class="text-xl font-semibold text-foreground mb-6">Contact Settings</h2>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Contact Email Address
-                <span v-if="!formData.contact_email" class="ml-2 text-xs text-gray-500">
+                <span v-if="!formData.contact_email" class="ml-2 text-xs text-muted-foreground">
                   (Using .env: {{ envInfo?.mail_from }})
                 </span>
               </label>
@@ -231,15 +231,15 @@
                 v-model="formData.contact_email"
                 type="email"
                 :placeholder="envInfo?.mail_from || 'contact@example.com'"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
               />
-              <p class="mt-1 text-xs text-gray-500">
+              <p class="mt-1 text-xs text-muted-foreground">
                 Email to receive contact form submissions (defaults to MAIL_FROM_ADDRESS)
               </p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Max File Upload Size (MB)
               </label>
               <input
@@ -247,64 +247,64 @@
                 type="number"
                 min="1"
                 max="500"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <p class="mt-1 text-xs text-gray-500">
+              <p class="mt-1 text-xs text-muted-foreground">
                 Maximum file size allowed for uploads
               </p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Referral Settings</h2>
+        <div class="bg-card rounded-lg shadow border border-border p-6">
+          <h2 class="text-xl font-semibold text-foreground mb-6">Referral Settings</h2>
           <div class="space-y-4">
-            <div class="flex items-center justify-between py-3 border-b border-gray-200">
+            <div class="flex items-center justify-between py-3 border-b border-border">
               <div>
-                <p class="font-medium text-gray-900">Enable Referral System</p>
-                <p class="text-sm text-gray-500">Globally enable or disable referrals</p>
+                <p class="font-medium text-foreground">Enable Referral System</p>
+                <p class="text-sm text-muted-foreground">Globally enable or disable referrals</p>
               </div>
               <button
                 type="button"
                 @click="toggleSetting('referral_system_enabled')"
                 :class="[
-                  formData.referral_system_enabled ? 'bg-red-600' : 'bg-gray-300',
-                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                  formData.referral_system_enabled ? 'bg-primary' : 'bg-muted',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
                 ]"
               >
                 <span
                   :class="[
                     formData.referral_system_enabled ? 'translate-x-5' : 'translate-x-0',
-                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200'
                   ]"
                 />
               </button>
             </div>
 
-            <div class="flex items-center justify-between py-3 border-b border-gray-200">
+            <div class="flex items-center justify-between py-3 border-b border-border">
               <div>
-                <p class="font-medium text-gray-900">Auto-Created Codes Active</p>
-                <p class="text-sm text-gray-500">New user referral codes will be active by default</p>
+                <p class="font-medium text-foreground">Auto-Created Codes Active</p>
+                <p class="text-sm text-muted-foreground">New user referral codes will be active by default</p>
               </div>
               <button
                 type="button"
                 @click="toggleSetting('referral_default_code_active')"
                 :class="[
-                  formData.referral_default_code_active ? 'bg-red-600' : 'bg-gray-300',
-                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+                  formData.referral_default_code_active ? 'bg-primary' : 'bg-muted',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
                 ]"
               >
                 <span
                   :class="[
                     formData.referral_default_code_active ? 'translate-x-5' : 'translate-x-0',
-                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200'
                   ]"
                 />
               </button>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Default Discount Percentage
               </label>
               <input
@@ -313,12 +313,12 @@
                 step="0.1"
                 min="0"
                 max="100"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Max Allowed Discount Percentage
               </label>
               <input
@@ -327,13 +327,13 @@
                 step="0.1"
                 min="1"
                 max="100"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-foreground mb-2">
                   Min Code Length
                 </label>
                 <input
@@ -341,11 +341,11 @@
                   type="number"
                   min="4"
                   max="12"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                  class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-foreground mb-2">
                   Max Code Length
                 </label>
                 <input
@@ -353,20 +353,20 @@
                   type="number"
                   min="4"
                   max="12"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                  class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-foreground mb-2">
                 Referral Link Path
               </label>
               <input
                 v-model="formData.referral_link_path"
                 type="text"
                 placeholder="/ref"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
               />
             </div>
           </div>
@@ -375,13 +375,13 @@
         <div class="flex gap-3">
           <button
             type="submit"
-            class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium"
+            class="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 font-medium transition"
           >
             Save Settings
           </button>
           <Link
             href="/admin"
-            class="px-6 py-2 bg-gray-200 text-gray-900 rounded-md hover:bg-gray-300 font-medium"
+            class="px-6 py-2 bg-muted text-foreground rounded-md hover:bg-accent font-medium transition"
           >
             Back to Dashboard
           </Link>

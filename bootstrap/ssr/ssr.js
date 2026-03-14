@@ -11,7 +11,7 @@ import Hls from "hls.js";
 import axios from "axios";
 import { renderToString } from "@vue/server-renderer";
 import createServer from "@inertiajs/vue3/server";
-const _sfc_main$1e = {
+const _sfc_main$1f = {
   __name: "TwoFactorSettings",
   __ssrInlineRender: true,
   props: {
@@ -103,17 +103,17 @@ const _sfc_main$1e = {
     };
   }
 };
-const _sfc_setup$1e = _sfc_main$1e.setup;
-_sfc_main$1e.setup = (props, ctx) => {
+const _sfc_setup$1f = _sfc_main$1f.setup;
+_sfc_main$1f.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Account/TwoFactorSettings.vue");
-  return _sfc_setup$1e ? _sfc_setup$1e(props, ctx) : void 0;
+  return _sfc_setup$1f ? _sfc_setup$1f(props, ctx) : void 0;
 };
 const __vite_glob_0_0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$1e
+  default: _sfc_main$1f
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$1d = {
+const _sfc_main$1e = {
   __name: "Create",
   __ssrInlineRender: true,
   setup(__props) {
@@ -221,17 +221,17 @@ const _sfc_main$1d = {
     };
   }
 };
-const _sfc_setup$1d = _sfc_main$1d.setup;
-_sfc_main$1d.setup = (props, ctx) => {
+const _sfc_setup$1e = _sfc_main$1e.setup;
+_sfc_main$1e.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Banners/Create.vue");
-  return _sfc_setup$1d ? _sfc_setup$1d(props, ctx) : void 0;
+  return _sfc_setup$1e ? _sfc_setup$1e(props, ctx) : void 0;
 };
 const __vite_glob_0_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$1d
+  default: _sfc_main$1e
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$1c = {
+const _sfc_main$1d = {
   __name: "ImageUpload",
   __ssrInlineRender: true,
   props: {
@@ -303,13 +303,13 @@ const _sfc_main$1c = {
     };
   }
 };
-const _sfc_setup$1c = _sfc_main$1c.setup;
-_sfc_main$1c.setup = (props, ctx) => {
+const _sfc_setup$1d = _sfc_main$1d.setup;
+_sfc_main$1d.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/ImageUpload.vue");
-  return _sfc_setup$1c ? _sfc_setup$1c(props, ctx) : void 0;
+  return _sfc_setup$1d ? _sfc_setup$1d(props, ctx) : void 0;
 };
-const _sfc_main$1b = {
+const _sfc_main$1c = {
   __name: "Edit",
   __ssrInlineRender: true,
   props: {
@@ -372,7 +372,7 @@ const _sfc_main$1b = {
         _push(`<!---->`);
       }
       _push(`</div><div><label class="block text-sm font-medium text-foreground mb-2"> Thumbnail Image </label>`);
-      _push(ssrRenderComponent(_sfc_main$1c, {
+      _push(ssrRenderComponent(_sfc_main$1d, {
         modelValue: unref(form).thumbnail_url,
         "onUpdate:modelValue": ($event) => unref(form).thumbnail_url = $event,
         folder: "banners",
@@ -436,17 +436,17 @@ const _sfc_main$1b = {
     };
   }
 };
-const _sfc_setup$1b = _sfc_main$1b.setup;
-_sfc_main$1b.setup = (props, ctx) => {
+const _sfc_setup$1c = _sfc_main$1c.setup;
+_sfc_main$1c.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Banners/Edit.vue");
-  return _sfc_setup$1b ? _sfc_setup$1b(props, ctx) : void 0;
+  return _sfc_setup$1c ? _sfc_setup$1c(props, ctx) : void 0;
 };
 const __vite_glob_0_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$1b
+  default: _sfc_main$1c
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$1a = {
+const _sfc_main$1b = {
   __name: "AdminLayout",
   __ssrInlineRender: true,
   setup(__props) {
@@ -528,6 +528,21 @@ const _sfc_main$1a = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(unref(Link), {
+        href: "/admin/referral-codes",
+        class: "text-muted-foreground hover:text-foreground transition-colors"
+      }, {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`Referrals`);
+          } else {
+            return [
+              createTextVNode("Referrals")
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+      _push(ssrRenderComponent(unref(Link), {
         href: "/admin/page-content",
         class: "text-muted-foreground hover:text-foreground transition-colors"
       }, {
@@ -595,13 +610,13 @@ const _sfc_main$1a = {
     };
   }
 };
-const _sfc_setup$1a = _sfc_main$1a.setup;
-_sfc_main$1a.setup = (props, ctx) => {
+const _sfc_setup$1b = _sfc_main$1b.setup;
+_sfc_main$1b.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Layouts/AdminLayout.vue");
-  return _sfc_setup$1a ? _sfc_setup$1a(props, ctx) : void 0;
+  return _sfc_setup$1b ? _sfc_setup$1b(props, ctx) : void 0;
 };
-const _sfc_main$19 = {
+const _sfc_main$1a = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -616,7 +631,7 @@ const _sfc_main$19 = {
       }
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Manage Banners</h1><p class="text-muted-foreground"${_scopeId}>Hero banners for the homepage</p></div>`);
@@ -797,17 +812,17 @@ const _sfc_main$19 = {
     };
   }
 };
-const _sfc_setup$19 = _sfc_main$19.setup;
-_sfc_main$19.setup = (props, ctx) => {
+const _sfc_setup$1a = _sfc_main$1a.setup;
+_sfc_main$1a.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Banners/Index.vue");
-  return _sfc_setup$19 ? _sfc_setup$19(props, ctx) : void 0;
+  return _sfc_setup$1a ? _sfc_setup$1a(props, ctx) : void 0;
 };
 const __vite_glob_0_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$19
+  default: _sfc_main$1a
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$18 = {
+const _sfc_main$19 = {
   __name: "Show",
   __ssrInlineRender: true,
   props: {
@@ -870,17 +885,17 @@ const _sfc_main$18 = {
     };
   }
 };
-const _sfc_setup$18 = _sfc_main$18.setup;
-_sfc_main$18.setup = (props, ctx) => {
+const _sfc_setup$19 = _sfc_main$19.setup;
+_sfc_main$19.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Banners/Show.vue");
-  return _sfc_setup$18 ? _sfc_setup$18(props, ctx) : void 0;
+  return _sfc_setup$19 ? _sfc_setup$19(props, ctx) : void 0;
 };
 const __vite_glob_0_4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$18
+  default: _sfc_main$19
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$17 = {
+const _sfc_main$18 = {
   __name: "Create",
   __ssrInlineRender: true,
   setup(__props) {
@@ -910,7 +925,7 @@ const _sfc_main$17 = {
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<!--[-->`);
       _push(ssrRenderComponent(unref(Head), { title: "Add Cast/Crew Member" }, null, _parent));
-      _push(ssrRenderComponent(_sfc_main$1a, null, {
+      _push(ssrRenderComponent(_sfc_main$1b, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Add Cast/Crew Member</h1><p class="text-muted-foreground"${_scopeId}>Add a new cast or crew member</p></div>`);
@@ -962,7 +977,7 @@ const _sfc_main$17 = {
               _push2(`<!---->`);
             }
             _push2(`</div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Profile Photo </label>`);
-            _push2(ssrRenderComponent(_sfc_main$1c, {
+            _push2(ssrRenderComponent(_sfc_main$1d, {
               modelValue: unref(form).image_url,
               "onUpdate:modelValue": ($event) => unref(form).image_url = $event,
               folder: "cast",
@@ -1133,7 +1148,7 @@ const _sfc_main$17 = {
                       ]),
                       createVNode("div", null, [
                         createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Profile Photo "),
-                        createVNode(_sfc_main$1c, {
+                        createVNode(_sfc_main$1d, {
                           modelValue: unref(form).image_url,
                           "onUpdate:modelValue": ($event) => unref(form).image_url = $event,
                           folder: "cast",
@@ -1225,17 +1240,17 @@ const _sfc_main$17 = {
     };
   }
 };
-const _sfc_setup$17 = _sfc_main$17.setup;
-_sfc_main$17.setup = (props, ctx) => {
+const _sfc_setup$18 = _sfc_main$18.setup;
+_sfc_main$18.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/CastCrew/Create.vue");
-  return _sfc_setup$17 ? _sfc_setup$17(props, ctx) : void 0;
+  return _sfc_setup$18 ? _sfc_setup$18(props, ctx) : void 0;
 };
 const __vite_glob_0_5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$17
+  default: _sfc_main$18
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$16 = {
+const _sfc_main$17 = {
   __name: "Edit",
   __ssrInlineRender: true,
   props: {
@@ -1267,7 +1282,7 @@ const _sfc_main$16 = {
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<!--[-->`);
       _push(ssrRenderComponent(unref(Head), { title: "Edit Cast/Crew Member" }, null, _parent));
-      _push(ssrRenderComponent(_sfc_main$1a, null, {
+      _push(ssrRenderComponent(_sfc_main$1b, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Edit Cast/Crew Member</h1><p class="text-muted-foreground"${_scopeId}>Update member details</p></div>`);
@@ -1319,7 +1334,7 @@ const _sfc_main$16 = {
               _push2(`<!---->`);
             }
             _push2(`</div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Profile Photo </label>`);
-            _push2(ssrRenderComponent(_sfc_main$1c, {
+            _push2(ssrRenderComponent(_sfc_main$1d, {
               modelValue: unref(form).image_url,
               "onUpdate:modelValue": ($event) => unref(form).image_url = $event,
               folder: "cast",
@@ -1490,7 +1505,7 @@ const _sfc_main$16 = {
                       ]),
                       createVNode("div", null, [
                         createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Profile Photo "),
-                        createVNode(_sfc_main$1c, {
+                        createVNode(_sfc_main$1d, {
                           modelValue: unref(form).image_url,
                           "onUpdate:modelValue": ($event) => unref(form).image_url = $event,
                           folder: "cast",
@@ -1582,17 +1597,17 @@ const _sfc_main$16 = {
     };
   }
 };
-const _sfc_setup$16 = _sfc_main$16.setup;
-_sfc_main$16.setup = (props, ctx) => {
+const _sfc_setup$17 = _sfc_main$17.setup;
+_sfc_main$17.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/CastCrew/Edit.vue");
-  return _sfc_setup$16 ? _sfc_setup$16(props, ctx) : void 0;
+  return _sfc_setup$17 ? _sfc_setup$17(props, ctx) : void 0;
 };
 const __vite_glob_0_6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$16
+  default: _sfc_main$17
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$15 = {
+const _sfc_main$16 = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -1616,7 +1631,7 @@ const _sfc_main$15 = {
       }
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Manage Cast &amp; Crew</h1><p class="text-muted-foreground"${_scopeId}>All cast and crew members</p></div>`);
@@ -1802,17 +1817,17 @@ const _sfc_main$15 = {
     };
   }
 };
-const _sfc_setup$15 = _sfc_main$15.setup;
-_sfc_main$15.setup = (props, ctx) => {
+const _sfc_setup$16 = _sfc_main$16.setup;
+_sfc_main$16.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/CastCrew/Index.vue");
-  return _sfc_setup$15 ? _sfc_setup$15(props, ctx) : void 0;
+  return _sfc_setup$16 ? _sfc_setup$16(props, ctx) : void 0;
 };
 const __vite_glob_0_7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$15
+  default: _sfc_main$16
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$14 = {
+const _sfc_main$15 = {
   __name: "Show",
   __ssrInlineRender: true,
   props: {
@@ -1869,17 +1884,17 @@ const _sfc_main$14 = {
     };
   }
 };
-const _sfc_setup$14 = _sfc_main$14.setup;
-_sfc_main$14.setup = (props, ctx) => {
+const _sfc_setup$15 = _sfc_main$15.setup;
+_sfc_main$15.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/CastCrew/Show.vue");
-  return _sfc_setup$14 ? _sfc_setup$14(props, ctx) : void 0;
+  return _sfc_setup$15 ? _sfc_setup$15(props, ctx) : void 0;
 };
 const __vite_glob_0_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$14
+  default: _sfc_main$15
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$13 = {
+const _sfc_main$14 = {
   __name: "Dashboard",
   __ssrInlineRender: true,
   props: {
@@ -1940,17 +1955,17 @@ const _sfc_main$13 = {
     };
   }
 };
-const _sfc_setup$13 = _sfc_main$13.setup;
-_sfc_main$13.setup = (props, ctx) => {
+const _sfc_setup$14 = _sfc_main$14.setup;
+_sfc_main$14.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Dashboard.vue");
-  return _sfc_setup$13 ? _sfc_setup$13(props, ctx) : void 0;
+  return _sfc_setup$14 ? _sfc_setup$14(props, ctx) : void 0;
 };
 const __vite_glob_0_9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$13
+  default: _sfc_main$14
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$12 = {
+const _sfc_main$13 = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -2008,7 +2023,7 @@ const _sfc_main$12 = {
       });
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="max-w-6xl mx-auto py-10 space-y-8"${_scopeId}>`);
@@ -2279,17 +2294,17 @@ const _sfc_main$12 = {
     };
   }
 };
-const _sfc_setup$12 = _sfc_main$12.setup;
-_sfc_main$12.setup = (props, ctx) => {
+const _sfc_setup$13 = _sfc_main$13.setup;
+_sfc_main$13.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Email/Index.vue");
-  return _sfc_setup$12 ? _sfc_setup$12(props, ctx) : void 0;
+  return _sfc_setup$13 ? _sfc_setup$13(props, ctx) : void 0;
 };
 const __vite_glob_0_10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$12
+  default: _sfc_main$13
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$11 = {
+const _sfc_main$12 = {
   __name: "EnvSettings",
   __ssrInlineRender: true,
   props: {
@@ -2337,7 +2352,7 @@ const _sfc_main$11 = {
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<!--[-->`);
       _push(ssrRenderComponent(unref(Head), { title: "Environment Settings" }, null, _parent));
-      _push(ssrRenderComponent(_sfc_main$1a, null, {
+      _push(ssrRenderComponent(_sfc_main$1b, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"${_scopeId}><div class="mb-8"${_scopeId}><h1 class="text-3xl font-bold text-foreground"${_scopeId}> Environment Settings </h1><p class="mt-2 text-muted-foreground"${_scopeId}> Configure your application environment variables. Changes require application restart. </p></div>`);
@@ -2564,17 +2579,17 @@ const _sfc_main$11 = {
     };
   }
 };
-const _sfc_setup$11 = _sfc_main$11.setup;
-_sfc_main$11.setup = (props, ctx) => {
+const _sfc_setup$12 = _sfc_main$12.setup;
+_sfc_main$12.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/EnvSettings.vue");
-  return _sfc_setup$11 ? _sfc_setup$11(props, ctx) : void 0;
+  return _sfc_setup$12 ? _sfc_setup$12(props, ctx) : void 0;
 };
 const __vite_glob_0_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$11
+  default: _sfc_main$12
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$10 = {
+const _sfc_main$11 = {
   __name: "EnvSettingsLocked",
   __ssrInlineRender: true,
   props: {
@@ -2621,7 +2636,7 @@ const _sfc_main$10 = {
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<!--[-->`);
       _push(ssrRenderComponent(unref(Head), { title: "Verify Access - Environment Settings" }, null, _parent));
-      _push(ssrRenderComponent(_sfc_main$1a, null, {
+      _push(ssrRenderComponent(_sfc_main$1b, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto"${_scopeId}><div class="mb-8 text-center"${_scopeId}><div class="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4"${_scopeId}><svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"${_scopeId}></path></svg></div><h1 class="text-3xl font-bold text-foreground"${_scopeId}> Developer Access Required </h1><p class="mt-2 text-muted-foreground"${_scopeId}> Environment settings require developer verification to access. </p></div><div class="bg-card rounded-lg shadow-md overflow-hidden"${_scopeId}><div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4"${_scopeId}><h2 class="text-xl font-semibold text-white"${_scopeId}> Verify Your Identity </h2></div><div class="p-6"${_scopeId}>`);
@@ -2784,17 +2799,17 @@ const _sfc_main$10 = {
     };
   }
 };
-const _sfc_setup$10 = _sfc_main$10.setup;
-_sfc_main$10.setup = (props, ctx) => {
+const _sfc_setup$11 = _sfc_main$11.setup;
+_sfc_main$11.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/EnvSettingsLocked.vue");
-  return _sfc_setup$10 ? _sfc_setup$10(props, ctx) : void 0;
+  return _sfc_setup$11 ? _sfc_setup$11(props, ctx) : void 0;
 };
 const __vite_glob_0_12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$10
+  default: _sfc_main$11
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$$ = {
+const _sfc_main$10 = {
   __name: "Create",
   __ssrInlineRender: true,
   setup(__props) {
@@ -2821,7 +2836,7 @@ const _sfc_main$$ = {
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<!--[-->`);
       _push(ssrRenderComponent(unref(Head), { title: "Add Gallery Image" }, null, _parent));
-      _push(ssrRenderComponent(_sfc_main$1a, null, {
+      _push(ssrRenderComponent(_sfc_main$1b, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Add Gallery Image</h1><p class="text-muted-foreground"${_scopeId}>Add a new image to the gallery</p></div>`);
@@ -2855,7 +2870,7 @@ const _sfc_main$$ = {
               _push2(`<!---->`);
             }
             _push2(`</div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Image * </label>`);
-            _push2(ssrRenderComponent(_sfc_main$1c, {
+            _push2(ssrRenderComponent(_sfc_main$1d, {
               modelValue: unref(form).image_url,
               "onUpdate:modelValue": ($event) => unref(form).image_url = $event,
               folder: "gallery",
@@ -2964,7 +2979,7 @@ const _sfc_main$$ = {
                       ]),
                       createVNode("div", null, [
                         createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Image * "),
-                        createVNode(_sfc_main$1c, {
+                        createVNode(_sfc_main$1d, {
                           modelValue: unref(form).image_url,
                           "onUpdate:modelValue": ($event) => unref(form).image_url = $event,
                           folder: "gallery",
@@ -3063,17 +3078,17 @@ const _sfc_main$$ = {
     };
   }
 };
-const _sfc_setup$$ = _sfc_main$$.setup;
-_sfc_main$$.setup = (props, ctx) => {
+const _sfc_setup$10 = _sfc_main$10.setup;
+_sfc_main$10.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Gallery/Create.vue");
-  return _sfc_setup$$ ? _sfc_setup$$(props, ctx) : void 0;
+  return _sfc_setup$10 ? _sfc_setup$10(props, ctx) : void 0;
 };
 const __vite_glob_0_13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$$
+  default: _sfc_main$10
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$_ = {
+const _sfc_main$$ = {
   __name: "Edit",
   __ssrInlineRender: true,
   props: {
@@ -3125,7 +3140,7 @@ const _sfc_main$_ = {
         _push(`<!---->`);
       }
       _push(`</div><div><label class="block text-sm font-medium text-foreground mb-2"> Gallery Image * </label>`);
-      _push(ssrRenderComponent(_sfc_main$1c, {
+      _push(ssrRenderComponent(_sfc_main$1d, {
         modelValue: unref(form).image_url,
         "onUpdate:modelValue": ($event) => unref(form).image_url = $event,
         folder: "gallery",
@@ -3170,17 +3185,17 @@ const _sfc_main$_ = {
     };
   }
 };
-const _sfc_setup$_ = _sfc_main$_.setup;
-_sfc_main$_.setup = (props, ctx) => {
+const _sfc_setup$$ = _sfc_main$$.setup;
+_sfc_main$$.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Gallery/Edit.vue");
-  return _sfc_setup$_ ? _sfc_setup$_(props, ctx) : void 0;
+  return _sfc_setup$$ ? _sfc_setup$$(props, ctx) : void 0;
 };
 const __vite_glob_0_14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$_
+  default: _sfc_main$$
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$Z = {
+const _sfc_main$_ = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -3195,7 +3210,7 @@ const _sfc_main$Z = {
       }
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Manage Gallery</h1><p class="text-muted-foreground"${_scopeId}>Behind the scenes photos</p></div>`);
@@ -3359,17 +3374,17 @@ const _sfc_main$Z = {
     };
   }
 };
-const _sfc_setup$Z = _sfc_main$Z.setup;
-_sfc_main$Z.setup = (props, ctx) => {
+const _sfc_setup$_ = _sfc_main$_.setup;
+_sfc_main$_.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Gallery/Index.vue");
-  return _sfc_setup$Z ? _sfc_setup$Z(props, ctx) : void 0;
+  return _sfc_setup$_ ? _sfc_setup$_(props, ctx) : void 0;
 };
 const __vite_glob_0_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$Z
+  default: _sfc_main$_
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$Y = {
+const _sfc_main$Z = {
   __name: "Show",
   __ssrInlineRender: true,
   props: {
@@ -3420,17 +3435,17 @@ const _sfc_main$Y = {
     };
   }
 };
-const _sfc_setup$Y = _sfc_main$Y.setup;
-_sfc_main$Y.setup = (props, ctx) => {
+const _sfc_setup$Z = _sfc_main$Z.setup;
+_sfc_main$Z.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Gallery/Show.vue");
-  return _sfc_setup$Y ? _sfc_setup$Y(props, ctx) : void 0;
+  return _sfc_setup$Z ? _sfc_setup$Z(props, ctx) : void 0;
 };
 const __vite_glob_0_16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$Y
+  default: _sfc_main$Z
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$X = {
+const _sfc_main$Y = {
   __name: "Create",
   __ssrInlineRender: true,
   setup(__props) {
@@ -3563,17 +3578,17 @@ const _sfc_main$X = {
     };
   }
 };
-const _sfc_setup$X = _sfc_main$X.setup;
-_sfc_main$X.setup = (props, ctx) => {
+const _sfc_setup$Y = _sfc_main$Y.setup;
+_sfc_main$Y.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/PageContent/Create.vue");
-  return _sfc_setup$X ? _sfc_setup$X(props, ctx) : void 0;
+  return _sfc_setup$Y ? _sfc_setup$Y(props, ctx) : void 0;
 };
 const __vite_glob_0_17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$X
+  default: _sfc_main$Y
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$W = {
+const _sfc_main$X = {
   __name: "Edit",
   __ssrInlineRender: true,
   props: {
@@ -3638,7 +3653,7 @@ const _sfc_main$W = {
         _push(`<!---->`);
       }
       _push(`</div><div><label class="block text-sm font-medium text-foreground mb-2"> Poster Image </label>`);
-      _push(ssrRenderComponent(_sfc_main$1c, {
+      _push(ssrRenderComponent(_sfc_main$1d, {
         modelValue: unref(form).poster,
         "onUpdate:modelValue": ($event) => unref(form).poster = $event,
         folder: "posters",
@@ -3652,7 +3667,7 @@ const _sfc_main$W = {
         _push(`<!---->`);
       }
       _push(`<p class="mt-1 text-sm text-muted-foreground"> Upload a poster image or enter URL manually below. </p><input${ssrRenderAttr("value", unref(form).poster)} type="url" class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mt-2" placeholder="Or paste image URL..."></div><div><label class="block text-sm font-medium text-foreground mb-2"> Backdrop Image </label>`);
-      _push(ssrRenderComponent(_sfc_main$1c, {
+      _push(ssrRenderComponent(_sfc_main$1d, {
         modelValue: unref(form).backdrop,
         "onUpdate:modelValue": ($event) => unref(form).backdrop = $event,
         folder: "posters",
@@ -3710,7 +3725,7 @@ const _sfc_main$W = {
       _push(`</div><div class="border-t border-border pt-6"><h3 class="text-lg font-semibold text-foreground mb-4">Sponsors</h3><div class="space-y-4"><!--[-->`);
       ssrRenderList(unref(form).sponsors, (sponsor, index) => {
         _push(`<div class="p-4 border border-border rounded-md bg-muted/20"><div class="flex justify-between items-start mb-3"><span class="text-sm font-medium text-foreground">Sponsor ${ssrInterpolate(index + 1)}</span><button type="button" class="text-red-600 hover:text-red-700 text-sm"> Remove </button></div><div class="space-y-3"><div><label class="block text-sm font-medium text-foreground mb-1"> Sponsor Name * </label><input${ssrRenderAttr("value", sponsor.name)} type="text" class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="e.g., ABC Company" required></div><div><label class="block text-sm font-medium text-foreground mb-1"> Logo </label>`);
-        _push(ssrRenderComponent(_sfc_main$1c, {
+        _push(ssrRenderComponent(_sfc_main$1d, {
           modelValue: sponsor.logo_url,
           "onUpdate:modelValue": ($event) => sponsor.logo_url = $event,
           folder: "sponsors",
@@ -3746,17 +3761,17 @@ const _sfc_main$W = {
     };
   }
 };
-const _sfc_setup$W = _sfc_main$W.setup;
-_sfc_main$W.setup = (props, ctx) => {
+const _sfc_setup$X = _sfc_main$X.setup;
+_sfc_main$X.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/PageContent/Edit.vue");
-  return _sfc_setup$W ? _sfc_setup$W(props, ctx) : void 0;
+  return _sfc_setup$X ? _sfc_setup$X(props, ctx) : void 0;
 };
 const __vite_glob_0_18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$W
+  default: _sfc_main$X
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$V = {
+const _sfc_main$W = {
   __name: "Index",
   __ssrInlineRender: true,
   props: {
@@ -3775,7 +3790,7 @@ const _sfc_main$V = {
       }
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Movie Details</h1><p class="text-muted-foreground"${_scopeId}>Manage movie information for the information page</p></div><div class="flex gap-2"${_scopeId}>`);
@@ -4048,17 +4063,17 @@ const _sfc_main$V = {
     };
   }
 };
-const _sfc_setup$V = _sfc_main$V.setup;
-_sfc_main$V.setup = (props, ctx) => {
+const _sfc_setup$W = _sfc_main$W.setup;
+_sfc_main$W.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/PageContent/Index.vue");
-  return _sfc_setup$V ? _sfc_setup$V(props, ctx) : void 0;
+  return _sfc_setup$W ? _sfc_setup$W(props, ctx) : void 0;
 };
 const __vite_glob_0_19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: _sfc_main$V
+  default: _sfc_main$W
 }, Symbol.toStringTag, { value: "Module" }));
-const _sfc_main$U = {
+const _sfc_main$V = {
   __name: "Show",
   __ssrInlineRender: true,
   props: {
@@ -4147,13 +4162,436 @@ const _sfc_main$U = {
     };
   }
 };
+const _sfc_setup$V = _sfc_main$V.setup;
+_sfc_main$V.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/PageContent/Show.vue");
+  return _sfc_setup$V ? _sfc_setup$V(props, ctx) : void 0;
+};
+const __vite_glob_0_20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: _sfc_main$V
+}, Symbol.toStringTag, { value: "Module" }));
+const _sfc_main$U = {
+  __name: "Index",
+  __ssrInlineRender: true,
+  props: {
+    movies: {
+      type: Array,
+      default: () => []
+    },
+    summary: {
+      type: Object,
+      required: true
+    },
+    codes: {
+      type: Array,
+      default: () => []
+    }
+  },
+  setup(__props) {
+    const props = __props;
+    const form = reactive({
+      movie_id: props.movies[0]?.id ?? null,
+      code: "",
+      discount_percentage: 5,
+      description: ""
+    });
+    const createCode = () => {
+      router.post("/admin/referral-codes", form, {
+        preserveScroll: true,
+        onSuccess: () => {
+          form.movie_id = props.movies[0]?.id ?? null;
+          form.code = "";
+          form.discount_percentage = 5;
+          form.description = "";
+        }
+      });
+    };
+    const toggleCode = (code, shouldActivate) => {
+      router.patch(`/admin/referral-codes/${code.code}/${shouldActivate ? "activate" : "deactivate"}`, {}, {
+        preserveScroll: true
+      });
+    };
+    const copyLink = async (value) => {
+      await navigator.clipboard.writeText(value);
+    };
+    const formatAmount = (value) => Number(value || 0).toFixed(2);
+    const formatDate = (value) => {
+      if (!value) {
+        return "N/A";
+      }
+      return new Date(value).toLocaleString();
+    };
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(ssrRenderComponent(unref(Head), { title: "Referral Codes" }, null, _parent2, _scopeId));
+            _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"${_scopeId}><div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"${_scopeId}><div${_scopeId}><h1 class="text-3xl font-bold text-foreground"${_scopeId}>Referral Codes</h1><p class="text-muted-foreground"${_scopeId}>User referral codes are global. Admin-created referral codes are bound to a specific movie.</p></div>`);
+            _push2(ssrRenderComponent(unref(Link), {
+              href: "/admin/page-content",
+              class: "inline-flex items-center rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+            }, {
+              default: withCtx((_3, _push3, _parent3, _scopeId2) => {
+                if (_push3) {
+                  _push3(` Back to Movie Details `);
+                } else {
+                  return [
+                    createTextVNode(" Back to Movie Details ")
+                  ];
+                }
+              }),
+              _: 1
+            }, _parent2, _scopeId));
+            _push2(`</div></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8"${_scopeId}>`);
+            if (_ctx.$page.props.flash?.success) {
+              _push2(`<div class="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"${_scopeId}>${ssrInterpolate(_ctx.$page.props.flash.success)}</div>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`<div class="grid gap-6 md:grid-cols-2 xl:grid-cols-5"${_scopeId}><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Movies Available</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.movies.length)}</p><p class="mt-1 text-xs text-muted-foreground"${_scopeId}>Admin codes target these DB movie records</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Total Codes</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.total_codes)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Active Codes</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.active_codes)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Referral Uses</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(__props.summary.total_uses)}</p></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><p class="text-sm text-muted-foreground"${_scopeId}>Revenue From Referrals</p><p class="mt-2 text-2xl font-bold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(__props.summary.total_revenue))}</p><p class="mt-1 text-xs text-muted-foreground"${_scopeId}>Discounts given: GHS ${ssrInterpolate(formatAmount(__props.summary.total_discount_given))}</p></div></div><div class="grid gap-8 xl:grid-cols-[340px_minmax(0,1fr)]"${_scopeId}><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><h2 class="text-xl font-semibold text-foreground"${_scopeId}>Create Code</h2><p class="mt-1 text-sm text-muted-foreground"${_scopeId}>Pick a movie for this admin referral code.</p><form class="mt-6 space-y-4"${_scopeId}><div${_scopeId}><label for="movie_id" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Target Movie</label><select id="movie_id" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}><option${ssrRenderAttr("value", null)} disabled${ssrIncludeBooleanAttr(Array.isArray(form.movie_id) ? ssrLooseContain(form.movie_id, null) : ssrLooseEqual(form.movie_id, null)) ? " selected" : ""}${_scopeId}>Select movie...</option><!--[-->`);
+            ssrRenderList(__props.movies, (movie) => {
+              _push2(`<option${ssrRenderAttr("value", movie.id)}${ssrIncludeBooleanAttr(Array.isArray(form.movie_id) ? ssrLooseContain(form.movie_id, movie.id) : ssrLooseEqual(form.movie_id, movie.id)) ? " selected" : ""}${_scopeId}>${ssrInterpolate(movie.title)} (ID ${ssrInterpolate(movie.id)}) </option>`);
+            });
+            _push2(`<!--]--></select></div><div${_scopeId}><label for="code" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Code</label><input id="code"${ssrRenderAttr("value", form.code)} type="text" maxlength="50" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary" placeholder="ACCRA2026"${_scopeId}></div><div${_scopeId}><label for="discount_percentage" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Discount %</label><input id="discount_percentage"${ssrRenderAttr("value", form.discount_percentage)} type="number" min="0" max="100" step="0.1" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}></div><div${_scopeId}><label for="description" class="mb-2 block text-sm font-medium text-foreground"${_scopeId}>Description</label><textarea id="description" rows="3" class="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Creator promo for selected movie"${_scopeId}>${ssrInterpolate(form.description)}</textarea></div><button type="submit" class="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"${_scopeId}> Create Referral Code </button></form></div><div class="rounded-lg border border-border bg-card p-6 shadow-sm"${_scopeId}><div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"${_scopeId}><div${_scopeId}><h2 class="text-xl font-semibold text-foreground"${_scopeId}>Existing Codes</h2><p class="text-sm text-muted-foreground"${_scopeId}>Each code metrics are scoped to its bound movie.</p></div></div>`);
+            if (__props.codes.length === 0) {
+              _push2(`<div class="mt-6 rounded-md border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground"${_scopeId}> No referral codes created yet. </div>`);
+            } else {
+              _push2(`<div class="mt-6 space-y-4"${_scopeId}><!--[-->`);
+              ssrRenderList(__props.codes, (code) => {
+                _push2(`<div class="rounded-lg border border-border bg-background/40 p-5"${_scopeId}><div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between"${_scopeId}><div class="space-y-2"${_scopeId}><div class="flex flex-wrap items-center gap-3"${_scopeId}><h3 class="text-lg font-semibold text-foreground"${_scopeId}>${ssrInterpolate(code.code)}</h3><span class="${ssrRenderClass([code.is_active ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground", "rounded-full px-2.5 py-1 text-xs font-medium"])}"${_scopeId}>${ssrInterpolate(code.is_active ? "Active" : "Inactive")}</span><span class="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"${_scopeId}>${ssrInterpolate(code.discount_percentage)}% off </span></div>`);
+                if (code.description) {
+                  _push2(`<p class="text-sm text-muted-foreground"${_scopeId}>${ssrInterpolate(code.description)}</p>`);
+                } else {
+                  _push2(`<!---->`);
+                }
+                _push2(`<p class="text-xs text-muted-foreground"${_scopeId}> Applies to: <span class="font-medium text-foreground"${_scopeId}>${ssrInterpolate(code.movie?.title || code.stats.movie?.title || "Global")}</span>`);
+                if (code.movie?.id || code.stats.movie?.id) {
+                  _push2(`<span${_scopeId}>(ID ${ssrInterpolate(code.movie?.id || code.stats.movie?.id)})</span>`);
+                } else {
+                  _push2(`<!---->`);
+                }
+                _push2(`</p><p class="text-xs text-muted-foreground"${_scopeId}> Created by ${ssrInterpolate(code.creator?.name || "Unknown")} `);
+                if (code.creator?.email) {
+                  _push2(`<span${_scopeId}>(${ssrInterpolate(code.creator.email)})</span>`);
+                } else {
+                  _push2(`<!---->`);
+                }
+                _push2(`</p><div class="flex flex-col gap-2 pt-2 lg:flex-row lg:items-center"${_scopeId}><input${ssrRenderAttr("value", code.link)} readonly class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"${_scopeId}><button type="button" class="rounded-md bg-muted px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"${_scopeId}> Copy Link </button></div></div><div class="flex shrink-0 gap-3"${_scopeId}>`);
+                if (!code.is_active) {
+                  _push2(`<button type="button" class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"${_scopeId}> Activate </button>`);
+                } else {
+                  _push2(`<button type="button" class="rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-700"${_scopeId}> Deactivate </button>`);
+                }
+                _push2(`</div></div><div class="mt-5 grid gap-4 md:grid-cols-4"${_scopeId}><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Uses</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>${ssrInterpolate(code.stats.total_uses)}</p></div><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Unique Users</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>${ssrInterpolate(code.stats.unique_users)}</p></div><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Revenue</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(code.stats.total_revenue))}</p></div><div class="rounded-md border border-border bg-card p-4"${_scopeId}><p class="text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}>Discount Given</p><p class="mt-2 text-2xl font-semibold text-foreground"${_scopeId}>GHS ${ssrInterpolate(formatAmount(code.stats.total_discount_given))}</p></div></div><div class="mt-5"${_scopeId}><h4 class="text-sm font-medium text-foreground"${_scopeId}>Recent Uses</h4>`);
+                if (code.stats.recent_uses.length === 0) {
+                  _push2(`<div class="mt-2 text-sm text-muted-foreground"${_scopeId}> No successful referrals recorded for this movie yet. </div>`);
+                } else {
+                  _push2(`<div class="mt-3 overflow-x-auto"${_scopeId}><table class="w-full min-w-[640px]"${_scopeId}><thead${_scopeId}><tr class="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground"${_scopeId}><th class="py-2 pr-4"${_scopeId}>User</th><th class="py-2 pr-4"${_scopeId}>Payment</th><th class="py-2 pr-4"${_scopeId}>Discount</th><th class="py-2 pr-4"${_scopeId}>Movie</th><th class="py-2"${_scopeId}>Used</th></tr></thead><tbody${_scopeId}><!--[-->`);
+                  ssrRenderList(code.stats.recent_uses, (usage) => {
+                    _push2(`<tr class="border-b border-border/60 text-sm text-foreground"${_scopeId}><td class="py-3 pr-4"${_scopeId}><div${_scopeId}>${ssrInterpolate(usage.user_name || "Unknown")}</div><div class="text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(usage.user_email || "No email")}</div></td><td class="py-3 pr-4"${_scopeId}>GHS ${ssrInterpolate(formatAmount(usage.payment_amount))}</td><td class="py-3 pr-4"${_scopeId}>GHS ${ssrInterpolate(formatAmount(usage.discount_applied))}</td><td class="py-3 pr-4"${_scopeId}>${ssrInterpolate(usage.movie_id || code.movie?.id || code.stats.movie?.id || "N/A")}</td><td class="py-3"${_scopeId}>${ssrInterpolate(formatDate(usage.used_at))}</td></tr>`);
+                  });
+                  _push2(`<!--]--></tbody></table></div>`);
+                }
+                _push2(`</div></div>`);
+              });
+              _push2(`<!--]--></div>`);
+            }
+            _push2(`</div></div></div>`);
+          } else {
+            return [
+              createVNode(unref(Head), { title: "Referral Codes" }),
+              createVNode("div", { class: "bg-card border-b border-border shadow-sm" }, [
+                createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" }, [
+                  createVNode("div", { class: "flex flex-col gap-2 md:flex-row md:items-center md:justify-between" }, [
+                    createVNode("div", null, [
+                      createVNode("h1", { class: "text-3xl font-bold text-foreground" }, "Referral Codes"),
+                      createVNode("p", { class: "text-muted-foreground" }, "User referral codes are global. Admin-created referral codes are bound to a specific movie.")
+                    ]),
+                    createVNode(unref(Link), {
+                      href: "/admin/page-content",
+                      class: "inline-flex items-center rounded-md bg-muted px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+                    }, {
+                      default: withCtx(() => [
+                        createTextVNode(" Back to Movie Details ")
+                      ]),
+                      _: 1
+                    })
+                  ])
+                ])
+              ]),
+              createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8" }, [
+                _ctx.$page.props.flash?.success ? (openBlock(), createBlock("div", {
+                  key: 0,
+                  class: "rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
+                }, toDisplayString(_ctx.$page.props.flash.success), 1)) : createCommentVNode("", true),
+                createVNode("div", { class: "grid gap-6 md:grid-cols-2 xl:grid-cols-5" }, [
+                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground" }, "Movies Available"),
+                    createVNode("p", { class: "mt-2 text-2xl font-bold text-foreground" }, toDisplayString(__props.movies.length), 1),
+                    createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, "Admin codes target these DB movie records")
+                  ]),
+                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground" }, "Total Codes"),
+                    createVNode("p", { class: "mt-2 text-2xl font-bold text-foreground" }, toDisplayString(__props.summary.total_codes), 1)
+                  ]),
+                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground" }, "Active Codes"),
+                    createVNode("p", { class: "mt-2 text-2xl font-bold text-foreground" }, toDisplayString(__props.summary.active_codes), 1)
+                  ]),
+                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground" }, "Referral Uses"),
+                    createVNode("p", { class: "mt-2 text-2xl font-bold text-foreground" }, toDisplayString(__props.summary.total_uses), 1)
+                  ]),
+                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground" }, "Revenue From Referrals"),
+                    createVNode("p", { class: "mt-2 text-2xl font-bold text-foreground" }, "GHS " + toDisplayString(formatAmount(__props.summary.total_revenue)), 1),
+                    createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, "Discounts given: GHS " + toDisplayString(formatAmount(__props.summary.total_discount_given)), 1)
+                  ])
+                ]),
+                createVNode("div", { class: "grid gap-8 xl:grid-cols-[340px_minmax(0,1fr)]" }, [
+                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-foreground" }, "Create Code"),
+                    createVNode("p", { class: "mt-1 text-sm text-muted-foreground" }, "Pick a movie for this admin referral code."),
+                    createVNode("form", {
+                      class: "mt-6 space-y-4",
+                      onSubmit: withModifiers(createCode, ["prevent"])
+                    }, [
+                      createVNode("div", null, [
+                        createVNode("label", {
+                          for: "movie_id",
+                          class: "mb-2 block text-sm font-medium text-foreground"
+                        }, "Target Movie"),
+                        withDirectives(createVNode("select", {
+                          id: "movie_id",
+                          "onUpdate:modelValue": ($event) => form.movie_id = $event,
+                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        }, [
+                          createVNode("option", {
+                            value: null,
+                            disabled: ""
+                          }, "Select movie..."),
+                          (openBlock(true), createBlock(Fragment, null, renderList(__props.movies, (movie) => {
+                            return openBlock(), createBlock("option", {
+                              key: movie.id,
+                              value: movie.id
+                            }, toDisplayString(movie.title) + " (ID " + toDisplayString(movie.id) + ") ", 9, ["value"]);
+                          }), 128))
+                        ], 8, ["onUpdate:modelValue"]), [
+                          [
+                            vModelSelect,
+                            form.movie_id,
+                            void 0,
+                            { number: true }
+                          ]
+                        ])
+                      ]),
+                      createVNode("div", null, [
+                        createVNode("label", {
+                          for: "code",
+                          class: "mb-2 block text-sm font-medium text-foreground"
+                        }, "Code"),
+                        withDirectives(createVNode("input", {
+                          id: "code",
+                          "onUpdate:modelValue": ($event) => form.code = $event,
+                          type: "text",
+                          maxlength: "50",
+                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                          placeholder: "ACCRA2026"
+                        }, null, 8, ["onUpdate:modelValue"]), [
+                          [vModelText, form.code]
+                        ])
+                      ]),
+                      createVNode("div", null, [
+                        createVNode("label", {
+                          for: "discount_percentage",
+                          class: "mb-2 block text-sm font-medium text-foreground"
+                        }, "Discount %"),
+                        withDirectives(createVNode("input", {
+                          id: "discount_percentage",
+                          "onUpdate:modelValue": ($event) => form.discount_percentage = $event,
+                          type: "number",
+                          min: "0",
+                          max: "100",
+                          step: "0.1",
+                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        }, null, 8, ["onUpdate:modelValue"]), [
+                          [
+                            vModelText,
+                            form.discount_percentage,
+                            void 0,
+                            { number: true }
+                          ]
+                        ])
+                      ]),
+                      createVNode("div", null, [
+                        createVNode("label", {
+                          for: "description",
+                          class: "mb-2 block text-sm font-medium text-foreground"
+                        }, "Description"),
+                        withDirectives(createVNode("textarea", {
+                          id: "description",
+                          "onUpdate:modelValue": ($event) => form.description = $event,
+                          rows: "3",
+                          class: "w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary",
+                          placeholder: "Creator promo for selected movie"
+                        }, null, 8, ["onUpdate:modelValue"]), [
+                          [vModelText, form.description]
+                        ])
+                      ]),
+                      createVNode("button", {
+                        type: "submit",
+                        class: "inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+                      }, " Create Referral Code ")
+                    ], 32)
+                  ]),
+                  createVNode("div", { class: "rounded-lg border border-border bg-card p-6 shadow-sm" }, [
+                    createVNode("div", { class: "flex flex-col gap-2 md:flex-row md:items-center md:justify-between" }, [
+                      createVNode("div", null, [
+                        createVNode("h2", { class: "text-xl font-semibold text-foreground" }, "Existing Codes"),
+                        createVNode("p", { class: "text-sm text-muted-foreground" }, "Each code metrics are scoped to its bound movie.")
+                      ])
+                    ]),
+                    __props.codes.length === 0 ? (openBlock(), createBlock("div", {
+                      key: 0,
+                      class: "mt-6 rounded-md border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground"
+                    }, " No referral codes created yet. ")) : (openBlock(), createBlock("div", {
+                      key: 1,
+                      class: "mt-6 space-y-4"
+                    }, [
+                      (openBlock(true), createBlock(Fragment, null, renderList(__props.codes, (code) => {
+                        return openBlock(), createBlock("div", {
+                          key: code.id,
+                          class: "rounded-lg border border-border bg-background/40 p-5"
+                        }, [
+                          createVNode("div", { class: "flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between" }, [
+                            createVNode("div", { class: "space-y-2" }, [
+                              createVNode("div", { class: "flex flex-wrap items-center gap-3" }, [
+                                createVNode("h3", { class: "text-lg font-semibold text-foreground" }, toDisplayString(code.code), 1),
+                                createVNode("span", {
+                                  class: ["rounded-full px-2.5 py-1 text-xs font-medium", code.is_active ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"]
+                                }, toDisplayString(code.is_active ? "Active" : "Inactive"), 3),
+                                createVNode("span", { class: "rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary" }, toDisplayString(code.discount_percentage) + "% off ", 1)
+                              ]),
+                              code.description ? (openBlock(), createBlock("p", {
+                                key: 0,
+                                class: "text-sm text-muted-foreground"
+                              }, toDisplayString(code.description), 1)) : createCommentVNode("", true),
+                              createVNode("p", { class: "text-xs text-muted-foreground" }, [
+                                createTextVNode(" Applies to: "),
+                                createVNode("span", { class: "font-medium text-foreground" }, toDisplayString(code.movie?.title || code.stats.movie?.title || "Global"), 1),
+                                code.movie?.id || code.stats.movie?.id ? (openBlock(), createBlock("span", { key: 0 }, "(ID " + toDisplayString(code.movie?.id || code.stats.movie?.id) + ")", 1)) : createCommentVNode("", true)
+                              ]),
+                              createVNode("p", { class: "text-xs text-muted-foreground" }, [
+                                createTextVNode(" Created by " + toDisplayString(code.creator?.name || "Unknown") + " ", 1),
+                                code.creator?.email ? (openBlock(), createBlock("span", { key: 0 }, "(" + toDisplayString(code.creator.email) + ")", 1)) : createCommentVNode("", true)
+                              ]),
+                              createVNode("div", { class: "flex flex-col gap-2 pt-2 lg:flex-row lg:items-center" }, [
+                                createVNode("input", {
+                                  value: code.link,
+                                  readonly: "",
+                                  class: "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+                                }, null, 8, ["value"]),
+                                createVNode("button", {
+                                  type: "button",
+                                  class: "rounded-md bg-muted px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent",
+                                  onClick: ($event) => copyLink(code.link)
+                                }, " Copy Link ", 8, ["onClick"])
+                              ])
+                            ]),
+                            createVNode("div", { class: "flex shrink-0 gap-3" }, [
+                              !code.is_active ? (openBlock(), createBlock("button", {
+                                key: 0,
+                                type: "button",
+                                class: "rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90",
+                                onClick: ($event) => toggleCode(code, true)
+                              }, " Activate ", 8, ["onClick"])) : (openBlock(), createBlock("button", {
+                                key: 1,
+                                type: "button",
+                                class: "rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-700",
+                                onClick: ($event) => toggleCode(code, false)
+                              }, " Deactivate ", 8, ["onClick"]))
+                            ])
+                          ]),
+                          createVNode("div", { class: "mt-5 grid gap-4 md:grid-cols-4" }, [
+                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
+                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Uses"),
+                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, toDisplayString(code.stats.total_uses), 1)
+                            ]),
+                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
+                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Unique Users"),
+                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, toDisplayString(code.stats.unique_users), 1)
+                            ]),
+                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
+                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Revenue"),
+                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, "GHS " + toDisplayString(formatAmount(code.stats.total_revenue)), 1)
+                            ]),
+                            createVNode("div", { class: "rounded-md border border-border bg-card p-4" }, [
+                              createVNode("p", { class: "text-xs uppercase tracking-wide text-muted-foreground" }, "Discount Given"),
+                              createVNode("p", { class: "mt-2 text-2xl font-semibold text-foreground" }, "GHS " + toDisplayString(formatAmount(code.stats.total_discount_given)), 1)
+                            ])
+                          ]),
+                          createVNode("div", { class: "mt-5" }, [
+                            createVNode("h4", { class: "text-sm font-medium text-foreground" }, "Recent Uses"),
+                            code.stats.recent_uses.length === 0 ? (openBlock(), createBlock("div", {
+                              key: 0,
+                              class: "mt-2 text-sm text-muted-foreground"
+                            }, " No successful referrals recorded for this movie yet. ")) : (openBlock(), createBlock("div", {
+                              key: 1,
+                              class: "mt-3 overflow-x-auto"
+                            }, [
+                              createVNode("table", { class: "w-full min-w-[640px]" }, [
+                                createVNode("thead", null, [
+                                  createVNode("tr", { class: "border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground" }, [
+                                    createVNode("th", { class: "py-2 pr-4" }, "User"),
+                                    createVNode("th", { class: "py-2 pr-4" }, "Payment"),
+                                    createVNode("th", { class: "py-2 pr-4" }, "Discount"),
+                                    createVNode("th", { class: "py-2 pr-4" }, "Movie"),
+                                    createVNode("th", { class: "py-2" }, "Used")
+                                  ])
+                                ]),
+                                createVNode("tbody", null, [
+                                  (openBlock(true), createBlock(Fragment, null, renderList(code.stats.recent_uses, (usage) => {
+                                    return openBlock(), createBlock("tr", {
+                                      key: usage.id,
+                                      class: "border-b border-border/60 text-sm text-foreground"
+                                    }, [
+                                      createVNode("td", { class: "py-3 pr-4" }, [
+                                        createVNode("div", null, toDisplayString(usage.user_name || "Unknown"), 1),
+                                        createVNode("div", { class: "text-xs text-muted-foreground" }, toDisplayString(usage.user_email || "No email"), 1)
+                                      ]),
+                                      createVNode("td", { class: "py-3 pr-4" }, "GHS " + toDisplayString(formatAmount(usage.payment_amount)), 1),
+                                      createVNode("td", { class: "py-3 pr-4" }, "GHS " + toDisplayString(formatAmount(usage.discount_applied)), 1),
+                                      createVNode("td", { class: "py-3 pr-4" }, toDisplayString(usage.movie_id || code.movie?.id || code.stats.movie?.id || "N/A"), 1),
+                                      createVNode("td", { class: "py-3" }, toDisplayString(formatDate(usage.used_at)), 1)
+                                    ]);
+                                  }), 128))
+                                ])
+                              ])
+                            ]))
+                          ])
+                        ]);
+                      }), 128))
+                    ]))
+                  ])
+                ])
+              ])
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+    };
+  }
+};
 const _sfc_setup$U = _sfc_main$U.setup;
 _sfc_main$U.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/PageContent/Show.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Referrals/Index.vue");
   return _sfc_setup$U ? _sfc_setup$U(props, ctx) : void 0;
 };
-const __vite_glob_0_20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$U
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4243,7 +4681,7 @@ _sfc_main$T.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Create.vue");
   return _sfc_setup$T ? _sfc_setup$T(props, ctx) : void 0;
 };
-const __vite_glob_0_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$T
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4337,7 +4775,7 @@ _sfc_main$S.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Edit.vue");
   return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
 };
-const __vite_glob_0_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$S
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4361,7 +4799,7 @@ const _sfc_main$R = {
       }
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Manage Reviews</h1><p class="text-muted-foreground"${_scopeId}>Customer reviews and ratings</p></div>`);
@@ -4551,7 +4989,7 @@ _sfc_main$R.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Index.vue");
   return _sfc_setup$R ? _sfc_setup$R(props, ctx) : void 0;
 };
-const __vite_glob_0_23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$R
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4620,7 +5058,7 @@ _sfc_main$Q.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Reviews/Show.vue");
   return _sfc_setup$Q ? _sfc_setup$Q(props, ctx) : void 0;
 };
-const __vite_glob_0_24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$Q
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4715,13 +5153,13 @@ const _sfc_main$P = {
     return (_ctx, _push, _parent, _attrs) => {
       _push(`<!--[-->`);
       _push(ssrRenderComponent(unref(Head), { title: "Settings" }, null, _parent));
-      _push(ssrRenderComponent(_sfc_main$1a, null, {
+      _push(ssrRenderComponent(_sfc_main$1b, null, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(`<div class="bg-white shadow"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"${_scopeId}><h1 class="text-3xl font-bold text-gray-900"${_scopeId}>Database Settings</h1><p class="mt-1 text-gray-600"${_scopeId}>Manage key site features and configurations</p><div class="mt-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg"${_scopeId}><div class="flex items-start gap-3"${_scopeId}><svg class="w-6 h-6 text-blue-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"${_scopeId}></path></svg><div class="flex-1"${_scopeId}><p class="text-sm font-semibold text-blue-900 mb-2"${_scopeId}>Current Environment Configuration</p><div class="grid grid-cols-2 gap-3 text-xs"${_scopeId}><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Environment:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_env || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App Name:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_name || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App URL:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_url || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Mail From:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.mail_from || "N/A")}</span></div></div><p class="text-xs text-blue-700 mt-3"${_scopeId}> Some settings below use values from your .env file as defaults. Database settings override these defaults when saved. </p></div></div></div><div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg"${_scopeId}><p class="text-sm text-yellow-800 mb-2"${_scopeId}><strong${_scopeId}>Need to Edit API Keys or Database Credentials?</strong></p><p class="text-xs text-yellow-700 mb-3"${_scopeId}> These are runtime database settings. For .env configuration (API keys, database credentials, email/SMS settings, payment keys, etc.), use the Environment Settings page. </p>`);
+            _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"${_scopeId}><h1 class="text-3xl font-bold text-foreground"${_scopeId}>Database Settings</h1><p class="mt-1 text-muted-foreground"${_scopeId}>Manage key site features and configurations</p><div class="mt-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg"${_scopeId}><div class="flex items-start gap-3"${_scopeId}><svg class="w-6 h-6 text-blue-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"${_scopeId}></path></svg><div class="flex-1"${_scopeId}><p class="text-sm font-semibold text-blue-900 mb-2"${_scopeId}>Current Environment Configuration</p><div class="grid grid-cols-2 gap-3 text-xs"${_scopeId}><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Environment:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_env || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App Name:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_name || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>App URL:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.app_url || "N/A")}</span></div><div${_scopeId}><span class="text-blue-700 font-medium"${_scopeId}>Mail From:</span><span class="ml-2 text-blue-900"${_scopeId}>${ssrInterpolate(__props.envInfo?.mail_from || "N/A")}</span></div></div><p class="text-xs text-blue-700 mt-3"${_scopeId}> Some settings below use values from your .env file as defaults. Database settings override these defaults when saved. </p></div></div></div><div class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg"${_scopeId}><p class="text-sm text-amber-900 mb-2"${_scopeId}><strong${_scopeId}>Need to Edit API Keys or Database Credentials?</strong></p><p class="text-xs text-amber-800 mb-3"${_scopeId}> These are runtime database settings. For .env configuration (API keys, database credentials, email/SMS settings, payment keys, etc.), use the Environment Settings page. </p>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: "/admin/env-settings",
-              class: "inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 text-sm font-medium transition-colors"
+              class: "inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium transition-colors"
             }, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
@@ -4755,62 +5193,62 @@ const _sfc_main$P = {
             }, _parent2, _scopeId));
             _push2(`</div></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"${_scopeId}><form class="space-y-8"${_scopeId}>`);
             if (showSuccess.value) {
-              _push2(`<div class="rounded-md bg-green-50 p-4"${_scopeId}><p class="text-sm font-medium text-green-800"${_scopeId}>Settings saved successfully!</p></div>`);
+              _push2(`<div class="rounded-md border border-green-200 bg-green-50 p-4"${_scopeId}><p class="text-sm font-medium text-green-800"${_scopeId}>Settings saved successfully!</p></div>`);
             } else {
               _push2(`<!---->`);
             }
-            _push2(`<div class="bg-white rounded-lg shadow p-6"${_scopeId}><h2 class="text-xl font-semibold text-gray-900 mb-6"${_scopeId}>Premiere Settings</h2><div class="space-y-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Premiere Date &amp; Time </label><input${ssrRenderAttr("value", formData.premiere_date)} type="datetime-local" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Format: ISO 8601 (e.g., 2025-12-10T06:00:00Z) </p></div></div></div><div class="bg-white rounded-lg shadow p-6"${_scopeId}><h2 class="text-xl font-semibold text-gray-900 mb-6"${_scopeId}>Feature Controls</h2><div class="space-y-4"${_scopeId}><div class="flex items-center justify-between py-3 border-b border-gray-200"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Contact Form</p><p class="text-sm text-gray-500"${_scopeId}>Allow visitors to submit contact requests</p></div><button type="button" class="${ssrRenderClass([
-              formData.enable_contact_form ? "bg-red-600" : "bg-gray-300",
-              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            _push2(`<div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h2 class="text-xl font-semibold text-foreground mb-6"${_scopeId}>Premiere Settings</h2><div class="space-y-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Premiere Date &amp; Time </label><input${ssrRenderAttr("value", formData.premiere_date)} type="datetime-local" class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"${_scopeId}><p class="mt-1 text-xs text-muted-foreground"${_scopeId}> Format: ISO 8601 (e.g., 2025-12-10T06:00:00Z) </p></div></div></div><div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h2 class="text-xl font-semibold text-foreground mb-6"${_scopeId}>Feature Controls</h2><div class="space-y-4"${_scopeId}><div class="flex items-center justify-between py-3 border-b border-border"${_scopeId}><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>Contact Form</p><p class="text-sm text-muted-foreground"${_scopeId}>Allow visitors to submit contact requests</p></div><button type="button" class="${ssrRenderClass([
+              formData.enable_contact_form ? "bg-primary" : "bg-muted",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             ])}"${_scopeId}><span class="${ssrRenderClass([
               formData.enable_contact_form ? "translate-x-5" : "translate-x-0",
-              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
-            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3 border-b border-gray-200"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Reviews</p><p class="text-sm text-gray-500"${_scopeId}>Allow visitors to submit reviews</p></div><button type="button" class="${ssrRenderClass([
-              formData.enable_reviews ? "bg-red-600" : "bg-gray-300",
-              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3 border-b border-border"${_scopeId}><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>Reviews</p><p class="text-sm text-muted-foreground"${_scopeId}>Allow visitors to submit reviews</p></div><button type="button" class="${ssrRenderClass([
+              formData.enable_reviews ? "bg-primary" : "bg-muted",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             ])}"${_scopeId}><span class="${ssrRenderClass([
               formData.enable_reviews ? "translate-x-5" : "translate-x-0",
-              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
-            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3 border-b border-gray-200"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Require Review Approval</p><p class="text-sm text-gray-500"${_scopeId}>Moderate reviews before publishing</p></div><button type="button" class="${ssrRenderClass([
-              formData.reviews_require_approval ? "bg-red-600" : "bg-gray-300",
-              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3 border-b border-border"${_scopeId}><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>Require Review Approval</p><p class="text-sm text-muted-foreground"${_scopeId}>Moderate reviews before publishing</p></div><button type="button" class="${ssrRenderClass([
+              formData.reviews_require_approval ? "bg-primary" : "bg-muted",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             ])}"${_scopeId}><span class="${ssrRenderClass([
               formData.reviews_require_approval ? "translate-x-5" : "translate-x-0",
-              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
-            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Maintenance Mode</p><p class="text-sm text-gray-500"${_scopeId}>Show maintenance page to visitors</p></div><button type="button" class="${ssrRenderClass([
-              formData.maintenance_mode ? "bg-yellow-600" : "bg-gray-300",
-              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3"${_scopeId}><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>Maintenance Mode</p><p class="text-sm text-muted-foreground"${_scopeId}>Show maintenance page to visitors</p></div><button type="button" class="${ssrRenderClass([
+              formData.maintenance_mode ? "bg-amber-600" : "bg-muted",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             ])}"${_scopeId}><span class="${ssrRenderClass([
               formData.maintenance_mode ? "translate-x-5" : "translate-x-0",
-              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
-            ])}"${_scopeId}></span></button></div></div></div><div class="bg-white rounded-lg shadow p-6"${_scopeId}><h2 class="text-xl font-semibold text-gray-900 mb-6"${_scopeId}>Additional Settings</h2><div class="space-y-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Site Title `);
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div></div></div><div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h2 class="text-xl font-semibold text-foreground mb-6"${_scopeId}>Additional Settings</h2><div class="space-y-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Site Title `);
             if (!formData.site_title) {
-              _push2(`<span class="ml-2 text-xs text-gray-500"${_scopeId}> (Using .env: ${ssrInterpolate(__props.envInfo?.app_name)}) </span>`);
+              _push2(`<span class="ml-2 text-xs text-muted-foreground"${_scopeId}> (Using .env: ${ssrInterpolate(__props.envInfo?.app_name)}) </span>`);
             } else {
               _push2(`<!---->`);
             }
-            _push2(`</label><input${ssrRenderAttr("value", formData.site_title)} type="text"${ssrRenderAttr("placeholder", __props.envInfo?.app_name || "A Crazy Day in Accra")} class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Leave empty to use APP_NAME from .env </p></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Site Description </label><textarea rows="3" placeholder="A gripping thriller set in Accra..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}>${ssrInterpolate(formData.site_description)}</textarea><p class="mt-1 text-xs text-gray-500"${_scopeId}> SEO meta description for your site </p></div></div></div><div class="bg-white rounded-lg shadow p-6"${_scopeId}><h2 class="text-xl font-semibold text-gray-900 mb-6"${_scopeId}>Contact Settings</h2><div class="space-y-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Contact Email Address `);
+            _push2(`</label><input${ssrRenderAttr("value", formData.site_title)} type="text"${ssrRenderAttr("placeholder", __props.envInfo?.app_name || "A Crazy Day in Accra")} class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"${_scopeId}><p class="mt-1 text-xs text-muted-foreground"${_scopeId}> Leave empty to use APP_NAME from .env </p></div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Site Description </label><textarea rows="3" placeholder="A gripping thriller set in Accra..." class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"${_scopeId}>${ssrInterpolate(formData.site_description)}</textarea><p class="mt-1 text-xs text-muted-foreground"${_scopeId}> SEO meta description for your site </p></div></div></div><div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h2 class="text-xl font-semibold text-foreground mb-6"${_scopeId}>Contact Settings</h2><div class="space-y-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Contact Email Address `);
             if (!formData.contact_email) {
-              _push2(`<span class="ml-2 text-xs text-gray-500"${_scopeId}> (Using .env: ${ssrInterpolate(__props.envInfo?.mail_from)}) </span>`);
+              _push2(`<span class="ml-2 text-xs text-muted-foreground"${_scopeId}> (Using .env: ${ssrInterpolate(__props.envInfo?.mail_from)}) </span>`);
             } else {
               _push2(`<!---->`);
             }
-            _push2(`</label><input${ssrRenderAttr("value", formData.contact_email)} type="email"${ssrRenderAttr("placeholder", __props.envInfo?.mail_from || "contact@example.com")} class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Email to receive contact form submissions (defaults to MAIL_FROM_ADDRESS) </p></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Max File Upload Size (MB) </label><input${ssrRenderAttr("value", formData.max_file_upload_mb)} type="number" min="1" max="500" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}><p class="mt-1 text-xs text-gray-500"${_scopeId}> Maximum file size allowed for uploads </p></div></div></div><div class="bg-white rounded-lg shadow p-6"${_scopeId}><h2 class="text-xl font-semibold text-gray-900 mb-6"${_scopeId}>Referral Settings</h2><div class="space-y-4"${_scopeId}><div class="flex items-center justify-between py-3 border-b border-gray-200"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Enable Referral System</p><p class="text-sm text-gray-500"${_scopeId}>Globally enable or disable referrals</p></div><button type="button" class="${ssrRenderClass([
-              formData.referral_system_enabled ? "bg-red-600" : "bg-gray-300",
-              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            _push2(`</label><input${ssrRenderAttr("value", formData.contact_email)} type="email"${ssrRenderAttr("placeholder", __props.envInfo?.mail_from || "contact@example.com")} class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"${_scopeId}><p class="mt-1 text-xs text-muted-foreground"${_scopeId}> Email to receive contact form submissions (defaults to MAIL_FROM_ADDRESS) </p></div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Max File Upload Size (MB) </label><input${ssrRenderAttr("value", formData.max_file_upload_mb)} type="number" min="1" max="500" class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}><p class="mt-1 text-xs text-muted-foreground"${_scopeId}> Maximum file size allowed for uploads </p></div></div></div><div class="bg-card rounded-lg shadow border border-border p-6"${_scopeId}><h2 class="text-xl font-semibold text-foreground mb-6"${_scopeId}>Referral Settings</h2><div class="space-y-4"${_scopeId}><div class="flex items-center justify-between py-3 border-b border-border"${_scopeId}><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>Enable Referral System</p><p class="text-sm text-muted-foreground"${_scopeId}>Globally enable or disable referrals</p></div><button type="button" class="${ssrRenderClass([
+              formData.referral_system_enabled ? "bg-primary" : "bg-muted",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             ])}"${_scopeId}><span class="${ssrRenderClass([
               formData.referral_system_enabled ? "translate-x-5" : "translate-x-0",
-              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
-            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3 border-b border-gray-200"${_scopeId}><div${_scopeId}><p class="font-medium text-gray-900"${_scopeId}>Auto-Created Codes Active</p><p class="text-sm text-gray-500"${_scopeId}>New user referral codes will be active by default</p></div><button type="button" class="${ssrRenderClass([
-              formData.referral_default_code_active ? "bg-red-600" : "bg-gray-300",
-              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div><div class="flex items-center justify-between py-3 border-b border-border"${_scopeId}><div${_scopeId}><p class="font-medium text-foreground"${_scopeId}>Auto-Created Codes Active</p><p class="text-sm text-muted-foreground"${_scopeId}>New user referral codes will be active by default</p></div><button type="button" class="${ssrRenderClass([
+              formData.referral_default_code_active ? "bg-primary" : "bg-muted",
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             ])}"${_scopeId}><span class="${ssrRenderClass([
               formData.referral_default_code_active ? "translate-x-5" : "translate-x-0",
-              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
-            ])}"${_scopeId}></span></button></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Default Discount Percentage </label><input${ssrRenderAttr("value", formData.referral_default_discount_percentage)} type="number" step="0.1" min="0" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Max Allowed Discount Percentage </label><input${ssrRenderAttr("value", formData.referral_max_discount_percentage)} type="number" step="0.1" min="1" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Min Code Length </label><input${ssrRenderAttr("value", formData.referral_min_code_length)} type="number" min="4" max="12" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Max Code Length </label><input${ssrRenderAttr("value", formData.referral_max_code_length)} type="number" min="4" max="12" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div></div><div${_scopeId}><label class="block text-sm font-medium text-gray-700 mb-2"${_scopeId}> Referral Link Path </label><input${ssrRenderAttr("value", formData.referral_link_path)} type="text" placeholder="/ref" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"${_scopeId}></div></div></div><div class="flex gap-3"${_scopeId}><button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium"${_scopeId}> Save Settings </button>`);
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
+            ])}"${_scopeId}></span></button></div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Default Discount Percentage </label><input${ssrRenderAttr("value", formData.referral_default_discount_percentage)} type="number" step="0.1" min="0" max="100" class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}></div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Max Allowed Discount Percentage </label><input${ssrRenderAttr("value", formData.referral_max_discount_percentage)} type="number" step="0.1" min="1" max="100" class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"${_scopeId}><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Min Code Length </label><input${ssrRenderAttr("value", formData.referral_min_code_length)} type="number" min="4" max="12" class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}></div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Max Code Length </label><input${ssrRenderAttr("value", formData.referral_max_code_length)} type="number" min="4" max="12" class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"${_scopeId}></div></div><div${_scopeId}><label class="block text-sm font-medium text-foreground mb-2"${_scopeId}> Referral Link Path </label><input${ssrRenderAttr("value", formData.referral_link_path)} type="text" placeholder="/ref" class="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"${_scopeId}></div></div></div><div class="flex gap-3"${_scopeId}><button type="submit" class="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 font-medium transition"${_scopeId}> Save Settings </button>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: "/admin",
-              class: "px-6 py-2 bg-gray-200 text-gray-900 rounded-md hover:bg-gray-300 font-medium"
+              class: "px-6 py-2 bg-muted text-foreground rounded-md hover:bg-accent font-medium transition"
             }, {
               default: withCtx((_3, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
@@ -4826,10 +5264,10 @@ const _sfc_main$P = {
             _push2(`</div></form></div>`);
           } else {
             return [
-              createVNode("div", { class: "bg-white shadow" }, [
+              createVNode("div", { class: "bg-card border-b border-border shadow-sm" }, [
                 createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" }, [
-                  createVNode("h1", { class: "text-3xl font-bold text-gray-900" }, "Database Settings"),
-                  createVNode("p", { class: "mt-1 text-gray-600" }, "Manage key site features and configurations"),
+                  createVNode("h1", { class: "text-3xl font-bold text-foreground" }, "Database Settings"),
+                  createVNode("p", { class: "mt-1 text-muted-foreground" }, "Manage key site features and configurations"),
                   createVNode("div", { class: "mt-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg" }, [
                     createVNode("div", { class: "flex items-start gap-3" }, [
                       (openBlock(), createBlock("svg", {
@@ -4869,14 +5307,14 @@ const _sfc_main$P = {
                       ])
                     ])
                   ]),
-                  createVNode("div", { class: "mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg" }, [
-                    createVNode("p", { class: "text-sm text-yellow-800 mb-2" }, [
+                  createVNode("div", { class: "mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg" }, [
+                    createVNode("p", { class: "text-sm text-amber-900 mb-2" }, [
                       createVNode("strong", null, "Need to Edit API Keys or Database Credentials?")
                     ]),
-                    createVNode("p", { class: "text-xs text-yellow-700 mb-3" }, " These are runtime database settings. For .env configuration (API keys, database credentials, email/SMS settings, payment keys, etc.), use the Environment Settings page. "),
+                    createVNode("p", { class: "text-xs text-amber-800 mb-3" }, " These are runtime database settings. For .env configuration (API keys, database credentials, email/SMS settings, payment keys, etc.), use the Environment Settings page. "),
                     createVNode(unref(Link), {
                       href: "/admin/env-settings",
-                      class: "inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 text-sm font-medium transition-colors"
+                      class: "inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium transition-colors"
                     }, {
                       default: withCtx(() => [
                         (openBlock(), createBlock("svg", {
@@ -4912,179 +5350,179 @@ const _sfc_main$P = {
                 }, [
                   showSuccess.value ? (openBlock(), createBlock("div", {
                     key: 0,
-                    class: "rounded-md bg-green-50 p-4"
+                    class: "rounded-md border border-green-200 bg-green-50 p-4"
                   }, [
                     createVNode("p", { class: "text-sm font-medium text-green-800" }, "Settings saved successfully!")
                   ])) : createCommentVNode("", true),
-                  createVNode("div", { class: "bg-white rounded-lg shadow p-6" }, [
-                    createVNode("h2", { class: "text-xl font-semibold text-gray-900 mb-6" }, "Premiere Settings"),
+                  createVNode("div", { class: "bg-card rounded-lg shadow border border-border p-6" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-foreground mb-6" }, "Premiere Settings"),
                     createVNode("div", { class: "space-y-4" }, [
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Premiere Date & Time "),
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Premiere Date & Time "),
                         withDirectives(createVNode("input", {
                           "onUpdate:modelValue": ($event) => formData.premiere_date = $event,
                           type: "datetime-local",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
                         }, null, 8, ["onUpdate:modelValue"]), [
                           [vModelText, formData.premiere_date]
                         ]),
-                        createVNode("p", { class: "mt-1 text-xs text-gray-500" }, " Format: ISO 8601 (e.g., 2025-12-10T06:00:00Z) ")
+                        createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, " Format: ISO 8601 (e.g., 2025-12-10T06:00:00Z) ")
                       ])
                     ])
                   ]),
-                  createVNode("div", { class: "bg-white rounded-lg shadow p-6" }, [
-                    createVNode("h2", { class: "text-xl font-semibold text-gray-900 mb-6" }, "Feature Controls"),
+                  createVNode("div", { class: "bg-card rounded-lg shadow border border-border p-6" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-foreground mb-6" }, "Feature Controls"),
                     createVNode("div", { class: "space-y-4" }, [
-                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-gray-200" }, [
+                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-border" }, [
                         createVNode("div", null, [
-                          createVNode("p", { class: "font-medium text-gray-900" }, "Contact Form"),
-                          createVNode("p", { class: "text-sm text-gray-500" }, "Allow visitors to submit contact requests")
+                          createVNode("p", { class: "font-medium text-foreground" }, "Contact Form"),
+                          createVNode("p", { class: "text-sm text-muted-foreground" }, "Allow visitors to submit contact requests")
                         ]),
                         createVNode("button", {
                           type: "button",
                           onClick: ($event) => toggleSetting("enable_contact_form"),
                           class: [
-                            formData.enable_contact_form ? "bg-red-600" : "bg-gray-300",
-                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            formData.enable_contact_form ? "bg-primary" : "bg-muted",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                           ]
                         }, [
                           createVNode("span", {
                             class: [
                               formData.enable_contact_form ? "translate-x-5" : "translate-x-0",
-                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
                             ]
                           }, null, 2)
                         ], 10, ["onClick"])
                       ]),
-                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-gray-200" }, [
+                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-border" }, [
                         createVNode("div", null, [
-                          createVNode("p", { class: "font-medium text-gray-900" }, "Reviews"),
-                          createVNode("p", { class: "text-sm text-gray-500" }, "Allow visitors to submit reviews")
+                          createVNode("p", { class: "font-medium text-foreground" }, "Reviews"),
+                          createVNode("p", { class: "text-sm text-muted-foreground" }, "Allow visitors to submit reviews")
                         ]),
                         createVNode("button", {
                           type: "button",
                           onClick: ($event) => toggleSetting("enable_reviews"),
                           class: [
-                            formData.enable_reviews ? "bg-red-600" : "bg-gray-300",
-                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            formData.enable_reviews ? "bg-primary" : "bg-muted",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                           ]
                         }, [
                           createVNode("span", {
                             class: [
                               formData.enable_reviews ? "translate-x-5" : "translate-x-0",
-                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
                             ]
                           }, null, 2)
                         ], 10, ["onClick"])
                       ]),
-                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-gray-200" }, [
+                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-border" }, [
                         createVNode("div", null, [
-                          createVNode("p", { class: "font-medium text-gray-900" }, "Require Review Approval"),
-                          createVNode("p", { class: "text-sm text-gray-500" }, "Moderate reviews before publishing")
+                          createVNode("p", { class: "font-medium text-foreground" }, "Require Review Approval"),
+                          createVNode("p", { class: "text-sm text-muted-foreground" }, "Moderate reviews before publishing")
                         ]),
                         createVNode("button", {
                           type: "button",
                           onClick: ($event) => toggleSetting("reviews_require_approval"),
                           class: [
-                            formData.reviews_require_approval ? "bg-red-600" : "bg-gray-300",
-                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            formData.reviews_require_approval ? "bg-primary" : "bg-muted",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                           ]
                         }, [
                           createVNode("span", {
                             class: [
                               formData.reviews_require_approval ? "translate-x-5" : "translate-x-0",
-                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
                             ]
                           }, null, 2)
                         ], 10, ["onClick"])
                       ]),
                       createVNode("div", { class: "flex items-center justify-between py-3" }, [
                         createVNode("div", null, [
-                          createVNode("p", { class: "font-medium text-gray-900" }, "Maintenance Mode"),
-                          createVNode("p", { class: "text-sm text-gray-500" }, "Show maintenance page to visitors")
+                          createVNode("p", { class: "font-medium text-foreground" }, "Maintenance Mode"),
+                          createVNode("p", { class: "text-sm text-muted-foreground" }, "Show maintenance page to visitors")
                         ]),
                         createVNode("button", {
                           type: "button",
                           onClick: ($event) => toggleSetting("maintenance_mode"),
                           class: [
-                            formData.maintenance_mode ? "bg-yellow-600" : "bg-gray-300",
-                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            formData.maintenance_mode ? "bg-amber-600" : "bg-muted",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                           ]
                         }, [
                           createVNode("span", {
                             class: [
                               formData.maintenance_mode ? "translate-x-5" : "translate-x-0",
-                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
                             ]
                           }, null, 2)
                         ], 10, ["onClick"])
                       ])
                     ])
                   ]),
-                  createVNode("div", { class: "bg-white rounded-lg shadow p-6" }, [
-                    createVNode("h2", { class: "text-xl font-semibold text-gray-900 mb-6" }, "Additional Settings"),
+                  createVNode("div", { class: "bg-card rounded-lg shadow border border-border p-6" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-foreground mb-6" }, "Additional Settings"),
                     createVNode("div", { class: "space-y-4" }, [
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, [
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, [
                           createTextVNode(" Site Title "),
                           !formData.site_title ? (openBlock(), createBlock("span", {
                             key: 0,
-                            class: "ml-2 text-xs text-gray-500"
+                            class: "ml-2 text-xs text-muted-foreground"
                           }, " (Using .env: " + toDisplayString(__props.envInfo?.app_name) + ") ", 1)) : createCommentVNode("", true)
                         ]),
                         withDirectives(createVNode("input", {
                           "onUpdate:modelValue": ($event) => formData.site_title = $event,
                           type: "text",
                           placeholder: __props.envInfo?.app_name || "A Crazy Day in Accra",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
                         }, null, 8, ["onUpdate:modelValue", "placeholder"]), [
                           [vModelText, formData.site_title]
                         ]),
-                        createVNode("p", { class: "mt-1 text-xs text-gray-500" }, " Leave empty to use APP_NAME from .env ")
+                        createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, " Leave empty to use APP_NAME from .env ")
                       ]),
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Site Description "),
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Site Description "),
                         withDirectives(createVNode("textarea", {
                           "onUpdate:modelValue": ($event) => formData.site_description = $event,
                           rows: "3",
                           placeholder: "A gripping thriller set in Accra...",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
                         }, null, 8, ["onUpdate:modelValue"]), [
                           [vModelText, formData.site_description]
                         ]),
-                        createVNode("p", { class: "mt-1 text-xs text-gray-500" }, " SEO meta description for your site ")
+                        createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, " SEO meta description for your site ")
                       ])
                     ])
                   ]),
-                  createVNode("div", { class: "bg-white rounded-lg shadow p-6" }, [
-                    createVNode("h2", { class: "text-xl font-semibold text-gray-900 mb-6" }, "Contact Settings"),
+                  createVNode("div", { class: "bg-card rounded-lg shadow border border-border p-6" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-foreground mb-6" }, "Contact Settings"),
                     createVNode("div", { class: "space-y-4" }, [
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, [
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, [
                           createTextVNode(" Contact Email Address "),
                           !formData.contact_email ? (openBlock(), createBlock("span", {
                             key: 0,
-                            class: "ml-2 text-xs text-gray-500"
+                            class: "ml-2 text-xs text-muted-foreground"
                           }, " (Using .env: " + toDisplayString(__props.envInfo?.mail_from) + ") ", 1)) : createCommentVNode("", true)
                         ]),
                         withDirectives(createVNode("input", {
                           "onUpdate:modelValue": ($event) => formData.contact_email = $event,
                           type: "email",
                           placeholder: __props.envInfo?.mail_from || "contact@example.com",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
                         }, null, 8, ["onUpdate:modelValue", "placeholder"]), [
                           [vModelText, formData.contact_email]
                         ]),
-                        createVNode("p", { class: "mt-1 text-xs text-gray-500" }, " Email to receive contact form submissions (defaults to MAIL_FROM_ADDRESS) ")
+                        createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, " Email to receive contact form submissions (defaults to MAIL_FROM_ADDRESS) ")
                       ]),
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Max File Upload Size (MB) "),
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Max File Upload Size (MB) "),
                         withDirectives(createVNode("input", {
                           "onUpdate:modelValue": ($event) => formData.max_file_upload_mb = $event,
                           type: "number",
                           min: "1",
                           max: "500",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         }, null, 8, ["onUpdate:modelValue"]), [
                           [
                             vModelText,
@@ -5093,64 +5531,64 @@ const _sfc_main$P = {
                             { number: true }
                           ]
                         ]),
-                        createVNode("p", { class: "mt-1 text-xs text-gray-500" }, " Maximum file size allowed for uploads ")
+                        createVNode("p", { class: "mt-1 text-xs text-muted-foreground" }, " Maximum file size allowed for uploads ")
                       ])
                     ])
                   ]),
-                  createVNode("div", { class: "bg-white rounded-lg shadow p-6" }, [
-                    createVNode("h2", { class: "text-xl font-semibold text-gray-900 mb-6" }, "Referral Settings"),
+                  createVNode("div", { class: "bg-card rounded-lg shadow border border-border p-6" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-foreground mb-6" }, "Referral Settings"),
                     createVNode("div", { class: "space-y-4" }, [
-                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-gray-200" }, [
+                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-border" }, [
                         createVNode("div", null, [
-                          createVNode("p", { class: "font-medium text-gray-900" }, "Enable Referral System"),
-                          createVNode("p", { class: "text-sm text-gray-500" }, "Globally enable or disable referrals")
+                          createVNode("p", { class: "font-medium text-foreground" }, "Enable Referral System"),
+                          createVNode("p", { class: "text-sm text-muted-foreground" }, "Globally enable or disable referrals")
                         ]),
                         createVNode("button", {
                           type: "button",
                           onClick: ($event) => toggleSetting("referral_system_enabled"),
                           class: [
-                            formData.referral_system_enabled ? "bg-red-600" : "bg-gray-300",
-                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            formData.referral_system_enabled ? "bg-primary" : "bg-muted",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                           ]
                         }, [
                           createVNode("span", {
                             class: [
                               formData.referral_system_enabled ? "translate-x-5" : "translate-x-0",
-                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
                             ]
                           }, null, 2)
                         ], 10, ["onClick"])
                       ]),
-                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-gray-200" }, [
+                      createVNode("div", { class: "flex items-center justify-between py-3 border-b border-border" }, [
                         createVNode("div", null, [
-                          createVNode("p", { class: "font-medium text-gray-900" }, "Auto-Created Codes Active"),
-                          createVNode("p", { class: "text-sm text-gray-500" }, "New user referral codes will be active by default")
+                          createVNode("p", { class: "font-medium text-foreground" }, "Auto-Created Codes Active"),
+                          createVNode("p", { class: "text-sm text-muted-foreground" }, "New user referral codes will be active by default")
                         ]),
                         createVNode("button", {
                           type: "button",
                           onClick: ($event) => toggleSetting("referral_default_code_active"),
                           class: [
-                            formData.referral_default_code_active ? "bg-red-600" : "bg-gray-300",
-                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            formData.referral_default_code_active ? "bg-primary" : "bg-muted",
+                            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                           ]
                         }, [
                           createVNode("span", {
                             class: [
                               formData.referral_default_code_active ? "translate-x-5" : "translate-x-0",
-                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ease-in-out duration-200"
+                              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition ease-in-out duration-200"
                             ]
                           }, null, 2)
                         ], 10, ["onClick"])
                       ]),
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Default Discount Percentage "),
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Default Discount Percentage "),
                         withDirectives(createVNode("input", {
                           "onUpdate:modelValue": ($event) => formData.referral_default_discount_percentage = $event,
                           type: "number",
                           step: "0.1",
                           min: "0",
                           max: "100",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         }, null, 8, ["onUpdate:modelValue"]), [
                           [
                             vModelText,
@@ -5161,14 +5599,14 @@ const _sfc_main$P = {
                         ])
                       ]),
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Max Allowed Discount Percentage "),
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Max Allowed Discount Percentage "),
                         withDirectives(createVNode("input", {
                           "onUpdate:modelValue": ($event) => formData.referral_max_discount_percentage = $event,
                           type: "number",
                           step: "0.1",
                           min: "1",
                           max: "100",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         }, null, 8, ["onUpdate:modelValue"]), [
                           [
                             vModelText,
@@ -5180,13 +5618,13 @@ const _sfc_main$P = {
                       ]),
                       createVNode("div", { class: "grid grid-cols-1 md:grid-cols-2 gap-4" }, [
                         createVNode("div", null, [
-                          createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Min Code Length "),
+                          createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Min Code Length "),
                           withDirectives(createVNode("input", {
                             "onUpdate:modelValue": ($event) => formData.referral_min_code_length = $event,
                             type: "number",
                             min: "4",
                             max: "12",
-                            class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                           }, null, 8, ["onUpdate:modelValue"]), [
                             [
                               vModelText,
@@ -5197,13 +5635,13 @@ const _sfc_main$P = {
                           ])
                         ]),
                         createVNode("div", null, [
-                          createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Max Code Length "),
+                          createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Max Code Length "),
                           withDirectives(createVNode("input", {
                             "onUpdate:modelValue": ($event) => formData.referral_max_code_length = $event,
                             type: "number",
                             min: "4",
                             max: "12",
-                            class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                           }, null, 8, ["onUpdate:modelValue"]), [
                             [
                               vModelText,
@@ -5215,12 +5653,12 @@ const _sfc_main$P = {
                         ])
                       ]),
                       createVNode("div", null, [
-                        createVNode("label", { class: "block text-sm font-medium text-gray-700 mb-2" }, " Referral Link Path "),
+                        createVNode("label", { class: "block text-sm font-medium text-foreground mb-2" }, " Referral Link Path "),
                         withDirectives(createVNode("input", {
                           "onUpdate:modelValue": ($event) => formData.referral_link_path = $event,
                           type: "text",
                           placeholder: "/ref",
-                          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          class: "w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
                         }, null, 8, ["onUpdate:modelValue"]), [
                           [vModelText, formData.referral_link_path]
                         ])
@@ -5230,11 +5668,11 @@ const _sfc_main$P = {
                   createVNode("div", { class: "flex gap-3" }, [
                     createVNode("button", {
                       type: "submit",
-                      class: "px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium"
+                      class: "px-6 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 font-medium transition"
                     }, " Save Settings "),
                     createVNode(unref(Link), {
                       href: "/admin",
-                      class: "px-6 py-2 bg-gray-200 text-gray-900 rounded-md hover:bg-gray-300 font-medium"
+                      class: "px-6 py-2 bg-muted text-foreground rounded-md hover:bg-accent font-medium transition"
                     }, {
                       default: withCtx(() => [
                         createTextVNode(" Back to Dashboard ")
@@ -5259,7 +5697,7 @@ _sfc_main$P.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Settings.vue");
   return _sfc_setup$P ? _sfc_setup$P(props, ctx) : void 0;
 };
-const __vite_glob_0_25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$P
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5315,7 +5753,7 @@ const _sfc_main$O = {
       });
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="max-w-6xl mx-auto py-10 space-y-8"${_scopeId}>`);
@@ -5529,7 +5967,7 @@ _sfc_main$O.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Sms/Index.vue");
   return _sfc_setup$O ? _sfc_setup$O(props, ctx) : void 0;
 };
-const __vite_glob_0_26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$O
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5579,7 +6017,7 @@ const _sfc_main$N = {
       });
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Users &amp; Subscribers</h1><p class="text-muted-foreground"${_scopeId}>All registered users and their payment status</p></div><a${ssrRenderAttr("href", _ctx.route("admin.subscribers.export"))} class="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"${_scopeId}>`);
@@ -5922,7 +6360,7 @@ _sfc_main$N.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/Subscribers/Index.vue");
   return _sfc_setup$N ? _sfc_setup$N(props, ctx) : void 0;
 };
-const __vite_glob_0_27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$N
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5962,7 +6400,7 @@ const _sfc_main$M = {
       return colors[index] || "bg-blue-400";
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(_sfc_main$1a, _attrs, {
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
         default: withCtx((_2, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="bg-card border-b border-border shadow-sm"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}><div class="flex justify-between items-center py-4"${_scopeId}><div${_scopeId}><h1 class="text-2xl font-bold text-foreground"${_scopeId}>Watch Analytics</h1><p class="text-muted-foreground"${_scopeId}>View streaming statistics and viewer engagement</p></div>`);
@@ -6259,7 +6697,7 @@ _sfc_main$M.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Admin/WatchAnalytics.vue");
   return _sfc_setup$M ? _sfc_setup$M(props, ctx) : void 0;
 };
-const __vite_glob_0_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$M
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6293,7 +6731,7 @@ _sfc_main$L.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/ConfirmPassword.vue");
   return _sfc_setup$L ? _sfc_setup$L(props, ctx) : void 0;
 };
-const __vite_glob_0_29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$L
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6343,7 +6781,7 @@ _sfc_main$K.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/ForgotPassword.vue");
   return _sfc_setup$K ? _sfc_setup$K(props, ctx) : void 0;
 };
-const __vite_glob_0_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$K
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6403,7 +6841,7 @@ _sfc_main$J.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/Login.vue");
   return _sfc_setup$J ? _sfc_setup$J(props, ctx) : void 0;
 };
-const __vite_glob_0_31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$J
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6501,7 +6939,7 @@ _sfc_main$I.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/Register.vue");
   return _sfc_setup$I ? _sfc_setup$I(props, ctx) : void 0;
 };
-const __vite_glob_0_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$I
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6555,7 +6993,7 @@ _sfc_main$H.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/ResetPassword.vue");
   return _sfc_setup$H ? _sfc_setup$H(props, ctx) : void 0;
 };
-const __vite_glob_0_33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$H
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6615,7 +7053,7 @@ _sfc_main$G.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/TwoFactorChallenge.vue");
   return _sfc_setup$G ? _sfc_setup$G(props, ctx) : void 0;
 };
-const __vite_glob_0_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$G
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6643,7 +7081,7 @@ _sfc_main$F.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Auth/VerifyEmail.vue");
   return _sfc_setup$F ? _sfc_setup$F(props, ctx) : void 0;
 };
-const __vite_glob_0_35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$F
 }, Symbol.toStringTag, { value: "Module" }));
@@ -8608,7 +9046,7 @@ _sfc_main$p.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Contact.vue");
   return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
 };
-const __vite_glob_0_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$p
 }, Symbol.toStringTag, { value: "Module" }));
@@ -9781,7 +10219,7 @@ _sfc_main$a.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Gallery.vue");
   return _sfc_setup$a ? _sfc_setup$a(props, ctx) : void 0;
 };
-const __vite_glob_0_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$a
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10186,7 +10624,7 @@ _sfc_main$9.setup = (props, ctx) => {
   return _sfc_setup$9 ? _sfc_setup$9(props, ctx) : void 0;
 };
 const Index = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["__scopeId", "data-v-8b353967"]]);
-const __vite_glob_0_38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Index
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10419,7 +10857,7 @@ _sfc_main$8.setup = (props, ctx) => {
   return _sfc_setup$8 ? _sfc_setup$8(props, ctx) : void 0;
 };
 const Information = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["__scopeId", "data-v-9feea3bc"]]);
-const __vite_glob_0_39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_40 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Information
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10543,7 +10981,7 @@ _sfc_main$7.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Payment.vue");
   return _sfc_setup$7 ? _sfc_setup$7(props, ctx) : void 0;
 };
-const __vite_glob_0_40 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$7
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10595,7 +11033,7 @@ _sfc_main$6.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/PaymentSuccess.vue");
   return _sfc_setup$6 ? _sfc_setup$6(props, ctx) : void 0;
 };
-const __vite_glob_0_41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_42 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$6
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10646,7 +11084,7 @@ _sfc_main$5.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Privacy.vue");
   return _sfc_setup$5 ? _sfc_setup$5(props, ctx) : void 0;
 };
-const __vite_glob_0_42 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$5
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12187,7 +12625,7 @@ _sfc_main$4.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Profile/Edit.vue");
   return _sfc_setup$4 ? _sfc_setup$4(props, ctx) : void 0;
 };
-const __vite_glob_0_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_44 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$4
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12354,7 +12792,7 @@ _sfc_main$3.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Profile/Payments.vue");
   return _sfc_setup$3 ? _sfc_setup$3(props, ctx) : void 0;
 };
-const __vite_glob_0_44 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_45 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$3
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12572,7 +13010,7 @@ _sfc_main$2.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Streamer/Dashboard.vue");
   return _sfc_setup$2 ? _sfc_setup$2(props, ctx) : void 0;
 };
-const __vite_glob_0_45 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$2
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12591,7 +13029,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Terms.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __vite_glob_0_46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_47 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: _sfc_main$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13031,7 +13469,7 @@ _sfc_main.setup = (props, ctx) => {
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
 const Watch = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-00f46598"]]);
-const __vite_glob_0_47 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_48 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Watch
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13417,7 +13855,7 @@ createServer((page) => {
   return createInertiaApp({
     page,
     render: renderToString,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, /* @__PURE__ */ Object.assign({ "./Pages/Account/TwoFactorSettings.vue": __vite_glob_0_0, "./Pages/Admin/Banners/Create.vue": __vite_glob_0_1, "./Pages/Admin/Banners/Edit.vue": __vite_glob_0_2, "./Pages/Admin/Banners/Index.vue": __vite_glob_0_3, "./Pages/Admin/Banners/Show.vue": __vite_glob_0_4, "./Pages/Admin/CastCrew/Create.vue": __vite_glob_0_5, "./Pages/Admin/CastCrew/Edit.vue": __vite_glob_0_6, "./Pages/Admin/CastCrew/Index.vue": __vite_glob_0_7, "./Pages/Admin/CastCrew/Show.vue": __vite_glob_0_8, "./Pages/Admin/Dashboard.vue": __vite_glob_0_9, "./Pages/Admin/Email/Index.vue": __vite_glob_0_10, "./Pages/Admin/EnvSettings.vue": __vite_glob_0_11, "./Pages/Admin/EnvSettingsLocked.vue": __vite_glob_0_12, "./Pages/Admin/Gallery/Create.vue": __vite_glob_0_13, "./Pages/Admin/Gallery/Edit.vue": __vite_glob_0_14, "./Pages/Admin/Gallery/Index.vue": __vite_glob_0_15, "./Pages/Admin/Gallery/Show.vue": __vite_glob_0_16, "./Pages/Admin/PageContent/Create.vue": __vite_glob_0_17, "./Pages/Admin/PageContent/Edit.vue": __vite_glob_0_18, "./Pages/Admin/PageContent/Index.vue": __vite_glob_0_19, "./Pages/Admin/PageContent/Show.vue": __vite_glob_0_20, "./Pages/Admin/Reviews/Create.vue": __vite_glob_0_21, "./Pages/Admin/Reviews/Edit.vue": __vite_glob_0_22, "./Pages/Admin/Reviews/Index.vue": __vite_glob_0_23, "./Pages/Admin/Reviews/Show.vue": __vite_glob_0_24, "./Pages/Admin/Settings.vue": __vite_glob_0_25, "./Pages/Admin/Sms/Index.vue": __vite_glob_0_26, "./Pages/Admin/Subscribers/Index.vue": __vite_glob_0_27, "./Pages/Admin/WatchAnalytics.vue": __vite_glob_0_28, "./Pages/Auth/ConfirmPassword.vue": __vite_glob_0_29, "./Pages/Auth/ForgotPassword.vue": __vite_glob_0_30, "./Pages/Auth/Login.vue": __vite_glob_0_31, "./Pages/Auth/Register.vue": __vite_glob_0_32, "./Pages/Auth/ResetPassword.vue": __vite_glob_0_33, "./Pages/Auth/TwoFactorChallenge.vue": __vite_glob_0_34, "./Pages/Auth/VerifyEmail.vue": __vite_glob_0_35, "./Pages/Contact.vue": __vite_glob_0_36, "./Pages/Gallery.vue": __vite_glob_0_37, "./Pages/Index.vue": __vite_glob_0_38, "./Pages/Information.vue": __vite_glob_0_39, "./Pages/Payment.vue": __vite_glob_0_40, "./Pages/PaymentSuccess.vue": __vite_glob_0_41, "./Pages/Privacy.vue": __vite_glob_0_42, "./Pages/Profile/Edit.vue": __vite_glob_0_43, "./Pages/Profile/Payments.vue": __vite_glob_0_44, "./Pages/Streamer/Dashboard.vue": __vite_glob_0_45, "./Pages/Terms.vue": __vite_glob_0_46, "./Pages/Watch.vue": __vite_glob_0_47 })),
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, /* @__PURE__ */ Object.assign({ "./Pages/Account/TwoFactorSettings.vue": __vite_glob_0_0, "./Pages/Admin/Banners/Create.vue": __vite_glob_0_1, "./Pages/Admin/Banners/Edit.vue": __vite_glob_0_2, "./Pages/Admin/Banners/Index.vue": __vite_glob_0_3, "./Pages/Admin/Banners/Show.vue": __vite_glob_0_4, "./Pages/Admin/CastCrew/Create.vue": __vite_glob_0_5, "./Pages/Admin/CastCrew/Edit.vue": __vite_glob_0_6, "./Pages/Admin/CastCrew/Index.vue": __vite_glob_0_7, "./Pages/Admin/CastCrew/Show.vue": __vite_glob_0_8, "./Pages/Admin/Dashboard.vue": __vite_glob_0_9, "./Pages/Admin/Email/Index.vue": __vite_glob_0_10, "./Pages/Admin/EnvSettings.vue": __vite_glob_0_11, "./Pages/Admin/EnvSettingsLocked.vue": __vite_glob_0_12, "./Pages/Admin/Gallery/Create.vue": __vite_glob_0_13, "./Pages/Admin/Gallery/Edit.vue": __vite_glob_0_14, "./Pages/Admin/Gallery/Index.vue": __vite_glob_0_15, "./Pages/Admin/Gallery/Show.vue": __vite_glob_0_16, "./Pages/Admin/PageContent/Create.vue": __vite_glob_0_17, "./Pages/Admin/PageContent/Edit.vue": __vite_glob_0_18, "./Pages/Admin/PageContent/Index.vue": __vite_glob_0_19, "./Pages/Admin/PageContent/Show.vue": __vite_glob_0_20, "./Pages/Admin/Referrals/Index.vue": __vite_glob_0_21, "./Pages/Admin/Reviews/Create.vue": __vite_glob_0_22, "./Pages/Admin/Reviews/Edit.vue": __vite_glob_0_23, "./Pages/Admin/Reviews/Index.vue": __vite_glob_0_24, "./Pages/Admin/Reviews/Show.vue": __vite_glob_0_25, "./Pages/Admin/Settings.vue": __vite_glob_0_26, "./Pages/Admin/Sms/Index.vue": __vite_glob_0_27, "./Pages/Admin/Subscribers/Index.vue": __vite_glob_0_28, "./Pages/Admin/WatchAnalytics.vue": __vite_glob_0_29, "./Pages/Auth/ConfirmPassword.vue": __vite_glob_0_30, "./Pages/Auth/ForgotPassword.vue": __vite_glob_0_31, "./Pages/Auth/Login.vue": __vite_glob_0_32, "./Pages/Auth/Register.vue": __vite_glob_0_33, "./Pages/Auth/ResetPassword.vue": __vite_glob_0_34, "./Pages/Auth/TwoFactorChallenge.vue": __vite_glob_0_35, "./Pages/Auth/VerifyEmail.vue": __vite_glob_0_36, "./Pages/Contact.vue": __vite_glob_0_37, "./Pages/Gallery.vue": __vite_glob_0_38, "./Pages/Index.vue": __vite_glob_0_39, "./Pages/Information.vue": __vite_glob_0_40, "./Pages/Payment.vue": __vite_glob_0_41, "./Pages/PaymentSuccess.vue": __vite_glob_0_42, "./Pages/Privacy.vue": __vite_glob_0_43, "./Pages/Profile/Edit.vue": __vite_glob_0_44, "./Pages/Profile/Payments.vue": __vite_glob_0_45, "./Pages/Streamer/Dashboard.vue": __vite_glob_0_46, "./Pages/Terms.vue": __vite_glob_0_47, "./Pages/Watch.vue": __vite_glob_0_48 })),
     setup({ App, props, plugin }) {
       return createSSRApp({ render: () => h$1(App, props) }).use(plugin).use(_, Ziggy$1);
     }
