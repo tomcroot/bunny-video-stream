@@ -1,6 +1,6 @@
-import { ref, mergeProps, useSSRContext, unref, withCtx, createVNode, createTextVNode, computed, createBlock, openBlock, Fragment, renderList, createCommentVNode, toDisplayString, withModifiers, withDirectives, vModelText, vModelSelect, vModelCheckbox, reactive, vModelDynamic, withKeys, watch, defineComponent, renderSlot, onMounted, onUnmounted, nextTick, resolveComponent, createSSRApp, h as h$1 } from "vue";
+import { ref, mergeProps, useSSRContext, unref, withCtx, createVNode, createTextVNode, computed, onMounted, onUnmounted, createBlock, openBlock, Fragment, renderList, createCommentVNode, toDisplayString, withModifiers, withDirectives, vModelText, vModelSelect, vModelCheckbox, reactive, vModelDynamic, withKeys, watch, defineComponent, renderSlot, nextTick, resolveComponent, createSSRApp, h as h$1 } from "vue";
 import { ssrRenderAttrs, ssrIncludeBooleanAttr, ssrRenderAttr, ssrInterpolate, ssrRenderList, ssrRenderComponent, ssrLooseContain, ssrRenderClass, ssrRenderStyle, ssrRenderSlot, ssrLooseEqual, ssrRenderDynamicModel, ssrGetDynamicModelProps } from "vue/server-renderer";
-import { useForm, Link, router, Head, usePage, createInertiaApp } from "@inertiajs/vue3";
+import { useForm, Link, usePage, router, Head, createInertiaApp } from "@inertiajs/vue3";
 import { ArrowLeft, X, Upload, Plus, Edit, BarChart3, EyeOff, Eye, Copy, CheckCircle, CircleOff, Star, Download, Users, Clock, DollarSign, Search, TrendingUp, Play, Mail, Phone, MapPin } from "lucide-vue-next";
 import { useForwardPropsEmits, DialogRoot, DialogClose, DialogOverlay, DialogPortal, DialogContent, useForwardProps, DialogDescription, DialogTitle, DialogTrigger, Primitive, Label, TabsRoot, TabsContent, TabsList, TabsTrigger } from "reka-ui";
 import { reactiveOmit, useVModel } from "@vueuse/core";
@@ -450,8 +450,33 @@ const _sfc_main$1b = {
   __name: "AdminLayout",
   __ssrInlineRender: true,
   setup(__props) {
+    const page = usePage();
+    const userMenuOpen = ref(false);
+    const userMenuRef = ref(null);
+    const user = computed(() => page.props.auth?.user || {});
+    const userName = computed(() => user.value.name || "Admin User");
+    const userEmail = computed(() => user.value.email || "");
+    const userInitials = computed(() => {
+      const name = userName.value.trim();
+      if (!name) {
+        return "AU";
+      }
+      const parts = name.split(" ").filter(Boolean);
+      return parts.slice(0, 2).map((part) => part.charAt(0).toUpperCase()).join("");
+    });
+    const handleClickOutside = (event) => {
+      if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
+        userMenuOpen.value = false;
+      }
+    };
+    onMounted(() => {
+      document.addEventListener("click", handleClickOutside);
+    });
+    onUnmounted(() => {
+      document.removeEventListener("click", handleClickOutside);
+    });
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background" }, _attrs))}><div class="bg-card border-b border-border shadow-sm"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center py-4"><div class="text-xl font-bold text-foreground">Admin Dashboard</div><nav class="flex items-center space-x-6">`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background" }, _attrs))}><div class="bg-card border-b border-border shadow-sm"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center py-4"><div class="text-xl font-bold text-foreground">Dashboard</div><div class="flex items-center gap-6"><nav class="flex items-center space-x-6">`);
       _push(ssrRenderComponent(unref(Link), {
         href: "/admin",
         class: "text-muted-foreground hover:text-foreground font-semibold transition-colors"
@@ -542,69 +567,98 @@ const _sfc_main$1b = {
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: "/admin/page-content",
-        class: "text-muted-foreground hover:text-foreground transition-colors"
-      }, {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`Details`);
-          } else {
-            return [
-              createTextVNode("Details")
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: "/admin/subscribers",
-        class: "text-muted-foreground hover:text-foreground transition-colors"
-      }, {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`Subscribers`);
-          } else {
-            return [
-              createTextVNode("Subscribers")
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: "/admin/settings",
-        class: "text-muted-foreground hover:text-foreground transition-colors"
-      }, {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`Settings`);
-          } else {
-            return [
-              createTextVNode("Settings")
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: "/logout",
-        method: "post",
-        as: "button",
-        class: "text-red-500 hover:text-red-600 transition-colors"
-      }, {
-        default: withCtx((_2, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`Logout`);
-          } else {
-            return [
-              createTextVNode("Logout")
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(`</nav></div></div></div>`);
+      _push(`</nav><div class="relative"><button type="button" class="flex items-center gap-2 rounded-md px-2 py-1.5 text-foreground transition hover:bg-accent"><span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">${ssrInterpolate(userInitials.value)}</span><span class="max-w-[130px] truncate text-sm font-medium text-foreground">${ssrInterpolate(userName.value)}</span><svg class="${ssrRenderClass([{ "rotate-180": userMenuOpen.value }, "h-4 w-4 text-muted-foreground transition-transform duration-200"])}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>`);
+      if (userMenuOpen.value) {
+        _push(`<div class="absolute right-0 z-50 mt-2 w-64 rounded-lg border border-border bg-card py-2 shadow-xl"><div class="border-b border-border px-4 py-3"><p class="truncate text-sm font-semibold text-foreground">${ssrInterpolate(userName.value)}</p><p class="truncate text-xs text-muted-foreground">${ssrInterpolate(userEmail.value)}</p></div><div class="py-2"><p class="px-4 pb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Manage</p>`);
+        _push(ssrRenderComponent(unref(Link), {
+          href: "/admin/page-content",
+          class: "block px-4 py-2 text-sm text-foreground transition hover:bg-accent",
+          onClick: ($event) => userMenuOpen.value = false
+        }, {
+          default: withCtx((_2, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(` Movie Details `);
+            } else {
+              return [
+                createTextVNode(" Movie Details ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent));
+        _push(ssrRenderComponent(unref(Link), {
+          href: "/admin/subscribers",
+          class: "block px-4 py-2 text-sm text-foreground transition hover:bg-accent",
+          onClick: ($event) => userMenuOpen.value = false
+        }, {
+          default: withCtx((_2, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(` Subscribers `);
+            } else {
+              return [
+                createTextVNode(" Subscribers ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent));
+        _push(`</div><div class="border-t border-border py-2"><p class="px-4 pb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Configuration</p>`);
+        _push(ssrRenderComponent(unref(Link), {
+          href: "/admin/settings",
+          class: "block px-4 py-2 text-sm text-foreground transition hover:bg-accent",
+          onClick: ($event) => userMenuOpen.value = false
+        }, {
+          default: withCtx((_2, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(` Settings `);
+            } else {
+              return [
+                createTextVNode(" Settings ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent));
+        _push(ssrRenderComponent(unref(Link), {
+          href: "/admin/env-settings",
+          class: "block px-4 py-2 text-sm text-foreground transition hover:bg-accent",
+          onClick: ($event) => userMenuOpen.value = false
+        }, {
+          default: withCtx((_2, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(` Environment Config `);
+            } else {
+              return [
+                createTextVNode(" Environment Config ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent));
+        _push(`</div><div class="border-t border-border pt-2">`);
+        _push(ssrRenderComponent(unref(Link), {
+          href: "/logout",
+          method: "post",
+          as: "button",
+          class: "block w-full px-4 py-2 text-left text-sm text-red-600 transition hover:bg-red-50",
+          onClick: ($event) => userMenuOpen.value = false
+        }, {
+          default: withCtx((_2, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(` Logout `);
+            } else {
+              return [
+                createTextVNode(" Logout ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent));
+        _push(`</div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div></div></div></div></div>`);
       ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
       _push(`</div>`);
     };
@@ -1941,17 +1995,147 @@ const _sfc_main$14 = {
       });
     };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background" }, _attrs))}><div class="bg-card border-b border-border shadow-sm"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center py-4"><div class="text-xl font-bold text-foreground">Admin Dashboard</div><nav class="flex items-center space-x-6"><a href="/admin" class="text-muted-foreground hover:text-foreground font-semibold transition-colors">Dashboard</a><a href="/admin/banners" class="text-muted-foreground hover:text-foreground transition-colors">Banners</a><a href="/admin/cast-crew" class="text-muted-foreground hover:text-foreground transition-colors">Cast &amp; Crew</a><a href="/admin/gallery" class="text-muted-foreground hover:text-foreground transition-colors">Gallery</a><a href="/admin/reviews" class="text-muted-foreground hover:text-foreground transition-colors">Reviews</a><a href="/admin/page-content" class="text-muted-foreground hover:text-foreground transition-colors">Content</a><form method="POST" action="/logout" class="inline"><button type="submit" class="text-red-500 hover:text-red-600 transition-colors">Logout</button></form></nav></div></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="mb-12"><h1 class="text-4xl font-bold text-foreground mb-2">Admin Dashboard</h1><p class="text-muted-foreground">Overview of key metrics and analytics</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"><div class="bg-card border border-border rounded-lg p-6 shadow-lg"><p class="text-sm text-muted-foreground mb-2">Total Users</p><p class="text-3xl font-bold text-foreground">${ssrInterpolate(metrics.value.totalUsers)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"><p class="text-sm text-muted-foreground mb-2">Total Revenue</p><p class="text-3xl font-bold text-foreground">₵${ssrInterpolate(metrics.value.totalRevenue)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"><p class="text-sm text-muted-foreground mb-2">Completed Payments</p><p class="text-3xl font-bold text-green-500">${ssrInterpolate(metrics.value.completedPayments)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"><p class="text-sm text-muted-foreground mb-2">Pending Payments</p><p class="text-3xl font-bold text-yellow-500">${ssrInterpolate(metrics.value.pendingPayments)}</p></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"><div class="lg:col-span-2 bg-card border border-border rounded-lg p-6 shadow-lg"><h2 class="text-xl font-semibold text-foreground mb-6">Recent Transactions</h2>`);
-      if (recentPayments.value.length === 0) {
-        _push(`<div class="py-8 text-center text-muted-foreground"><p>No transactions yet.</p></div>`);
-      } else {
-        _push(`<div class="overflow-x-auto"><table class="w-full text-sm"><thead class="border-b border-border"><tr><th class="px-4 py-3 text-left font-semibold">User</th><th class="px-4 py-3 text-left font-semibold">Amount</th><th class="px-4 py-3 text-left font-semibold">Status</th><th class="px-4 py-3 text-left font-semibold">Date</th></tr></thead><tbody><!--[-->`);
-        ssrRenderList(recentPayments.value.slice(0, 5), (payment) => {
-          _push(`<tr class="border-b border-border hover:bg-muted/50 transition-colors"><td class="px-4 py-3">${ssrInterpolate(payment.user?.name || "User #" + payment.user_id)}</td><td class="px-4 py-3 font-semibold">₵${ssrInterpolate((payment.amount / 100).toFixed(2))}</td><td class="px-4 py-3"><span class="${ssrRenderClass([getStatusClass(payment.status), "px-2 py-1 rounded text-xs font-medium"])}">${ssrInterpolate(payment.status)}</span></td><td class="px-4 py-3 text-xs text-muted-foreground">${ssrInterpolate(formatDate(payment.created_at))}</td></tr>`);
-        });
-        _push(`<!--]--></tbody></table></div>`);
-      }
-      _push(`</div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"><h2 class="text-lg font-semibold text-foreground mb-4">Payment Status</h2><div class="space-y-4"><div class="flex items-center justify-between pb-3 border-b border-border"><span class="text-sm text-muted-foreground">Completed</span><span class="font-semibold text-green-500">${ssrInterpolate(metrics.value.completedPayments)}</span></div><div class="flex items-center justify-between pb-3 border-b border-border"><span class="text-sm text-muted-foreground">Pending</span><span class="font-semibold text-yellow-500">${ssrInterpolate(metrics.value.pendingPayments)}</span></div><div class="flex items-center justify-between"><span class="text-sm text-muted-foreground">Failed</span><span class="font-semibold text-red-500">${ssrInterpolate(metrics.value.failedPayments)}</span></div></div></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><a href="/admin/banners" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"><h2 class="text-2xl font-semibold text-foreground mb-2">Banners</h2><p class="text-muted-foreground">Manage hero banners and promotional content</p></a><a href="/admin/cast-crew" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"><h2 class="text-2xl font-semibold text-foreground mb-2">Cast &amp; Crew</h2><p class="text-muted-foreground">Manage cast members and crew information</p></a><a href="/admin/gallery" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"><h2 class="text-2xl font-semibold text-foreground mb-2">Gallery</h2><p class="text-muted-foreground">Upload and manage gallery images</p></a><a href="/admin/reviews" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"><h2 class="text-2xl font-semibold text-foreground mb-2">Reviews</h2><p class="text-muted-foreground">Moderate and approve user reviews</p></a><a href="/admin/page-content" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"><h2 class="text-2xl font-semibold text-foreground mb-2">Page Content</h2><p class="text-muted-foreground">Edit page sections and content</p></a></div></div></div>`);
+      _push(ssrRenderComponent(_sfc_main$1b, _attrs, {
+        default: withCtx((_2, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"${_scopeId}><div class="mb-12"${_scopeId}><h1 class="text-4xl font-bold text-foreground mb-2"${_scopeId}>Admin Dashboard</h1><p class="text-muted-foreground"${_scopeId}>Overview of key metrics and analytics</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"${_scopeId}><div class="bg-card border border-border rounded-lg p-6 shadow-lg"${_scopeId}><p class="text-sm text-muted-foreground mb-2"${_scopeId}>Total Users</p><p class="text-3xl font-bold text-foreground"${_scopeId}>${ssrInterpolate(metrics.value.totalUsers)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"${_scopeId}><p class="text-sm text-muted-foreground mb-2"${_scopeId}>Total Revenue</p><p class="text-3xl font-bold text-foreground"${_scopeId}>₵${ssrInterpolate(metrics.value.totalRevenue)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"${_scopeId}><p class="text-sm text-muted-foreground mb-2"${_scopeId}>Completed Payments</p><p class="text-3xl font-bold text-green-500"${_scopeId}>${ssrInterpolate(metrics.value.completedPayments)}</p></div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"${_scopeId}><p class="text-sm text-muted-foreground mb-2"${_scopeId}>Pending Payments</p><p class="text-3xl font-bold text-yellow-500"${_scopeId}>${ssrInterpolate(metrics.value.pendingPayments)}</p></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"${_scopeId}><div class="lg:col-span-2 bg-card border border-border rounded-lg p-6 shadow-lg"${_scopeId}><h2 class="text-xl font-semibold text-foreground mb-6"${_scopeId}>Recent Transactions</h2>`);
+            if (recentPayments.value.length === 0) {
+              _push2(`<div class="py-8 text-center text-muted-foreground"${_scopeId}><p${_scopeId}>No transactions yet.</p></div>`);
+            } else {
+              _push2(`<div class="overflow-x-auto"${_scopeId}><table class="w-full text-sm"${_scopeId}><thead class="border-b border-border"${_scopeId}><tr${_scopeId}><th class="px-4 py-3 text-left font-semibold"${_scopeId}>User</th><th class="px-4 py-3 text-left font-semibold"${_scopeId}>Amount</th><th class="px-4 py-3 text-left font-semibold"${_scopeId}>Status</th><th class="px-4 py-3 text-left font-semibold"${_scopeId}>Date</th></tr></thead><tbody${_scopeId}><!--[-->`);
+              ssrRenderList(recentPayments.value.slice(0, 5), (payment) => {
+                _push2(`<tr class="border-b border-border hover:bg-muted/50 transition-colors"${_scopeId}><td class="px-4 py-3"${_scopeId}>${ssrInterpolate(payment.user?.name || "User #" + payment.user_id)}</td><td class="px-4 py-3 font-semibold"${_scopeId}>₵${ssrInterpolate((payment.amount / 100).toFixed(2))}</td><td class="px-4 py-3"${_scopeId}><span class="${ssrRenderClass([getStatusClass(payment.status), "px-2 py-1 rounded text-xs font-medium"])}"${_scopeId}>${ssrInterpolate(payment.status)}</span></td><td class="px-4 py-3 text-xs text-muted-foreground"${_scopeId}>${ssrInterpolate(formatDate(payment.created_at))}</td></tr>`);
+              });
+              _push2(`<!--]--></tbody></table></div>`);
+            }
+            _push2(`</div><div class="bg-card border border-border rounded-lg p-6 shadow-lg"${_scopeId}><h2 class="text-lg font-semibold text-foreground mb-4"${_scopeId}>Payment Status</h2><div class="space-y-4"${_scopeId}><div class="flex items-center justify-between pb-3 border-b border-border"${_scopeId}><span class="text-sm text-muted-foreground"${_scopeId}>Completed</span><span class="font-semibold text-green-500"${_scopeId}>${ssrInterpolate(metrics.value.completedPayments)}</span></div><div class="flex items-center justify-between pb-3 border-b border-border"${_scopeId}><span class="text-sm text-muted-foreground"${_scopeId}>Pending</span><span class="font-semibold text-yellow-500"${_scopeId}>${ssrInterpolate(metrics.value.pendingPayments)}</span></div><div class="flex items-center justify-between"${_scopeId}><span class="text-sm text-muted-foreground"${_scopeId}>Failed</span><span class="font-semibold text-red-500"${_scopeId}>${ssrInterpolate(metrics.value.failedPayments)}</span></div></div></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"${_scopeId}><a href="/admin/banners" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"${_scopeId}><h2 class="text-2xl font-semibold text-foreground mb-2"${_scopeId}>Banners</h2><p class="text-muted-foreground"${_scopeId}>Manage hero banners and promotional content</p></a><a href="/admin/cast-crew" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"${_scopeId}><h2 class="text-2xl font-semibold text-foreground mb-2"${_scopeId}>Cast &amp; Crew</h2><p class="text-muted-foreground"${_scopeId}>Manage cast members and crew information</p></a><a href="/admin/gallery" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"${_scopeId}><h2 class="text-2xl font-semibold text-foreground mb-2"${_scopeId}>Gallery</h2><p class="text-muted-foreground"${_scopeId}>Upload and manage gallery images</p></a><a href="/admin/reviews" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"${_scopeId}><h2 class="text-2xl font-semibold text-foreground mb-2"${_scopeId}>Reviews</h2><p class="text-muted-foreground"${_scopeId}>Moderate and approve user reviews</p></a><a href="/admin/page-content" class="block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"${_scopeId}><h2 class="text-2xl font-semibold text-foreground mb-2"${_scopeId}>Page Content</h2><p class="text-muted-foreground"${_scopeId}>Edit page sections and content</p></a></div></div>`);
+          } else {
+            return [
+              createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" }, [
+                createVNode("div", { class: "mb-12" }, [
+                  createVNode("h1", { class: "text-4xl font-bold text-foreground mb-2" }, "Admin Dashboard"),
+                  createVNode("p", { class: "text-muted-foreground" }, "Overview of key metrics and analytics")
+                ]),
+                createVNode("div", { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" }, [
+                  createVNode("div", { class: "bg-card border border-border rounded-lg p-6 shadow-lg" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground mb-2" }, "Total Users"),
+                    createVNode("p", { class: "text-3xl font-bold text-foreground" }, toDisplayString(metrics.value.totalUsers), 1)
+                  ]),
+                  createVNode("div", { class: "bg-card border border-border rounded-lg p-6 shadow-lg" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground mb-2" }, "Total Revenue"),
+                    createVNode("p", { class: "text-3xl font-bold text-foreground" }, "₵" + toDisplayString(metrics.value.totalRevenue), 1)
+                  ]),
+                  createVNode("div", { class: "bg-card border border-border rounded-lg p-6 shadow-lg" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground mb-2" }, "Completed Payments"),
+                    createVNode("p", { class: "text-3xl font-bold text-green-500" }, toDisplayString(metrics.value.completedPayments), 1)
+                  ]),
+                  createVNode("div", { class: "bg-card border border-border rounded-lg p-6 shadow-lg" }, [
+                    createVNode("p", { class: "text-sm text-muted-foreground mb-2" }, "Pending Payments"),
+                    createVNode("p", { class: "text-3xl font-bold text-yellow-500" }, toDisplayString(metrics.value.pendingPayments), 1)
+                  ])
+                ]),
+                createVNode("div", { class: "grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8" }, [
+                  createVNode("div", { class: "lg:col-span-2 bg-card border border-border rounded-lg p-6 shadow-lg" }, [
+                    createVNode("h2", { class: "text-xl font-semibold text-foreground mb-6" }, "Recent Transactions"),
+                    recentPayments.value.length === 0 ? (openBlock(), createBlock("div", {
+                      key: 0,
+                      class: "py-8 text-center text-muted-foreground"
+                    }, [
+                      createVNode("p", null, "No transactions yet.")
+                    ])) : (openBlock(), createBlock("div", {
+                      key: 1,
+                      class: "overflow-x-auto"
+                    }, [
+                      createVNode("table", { class: "w-full text-sm" }, [
+                        createVNode("thead", { class: "border-b border-border" }, [
+                          createVNode("tr", null, [
+                            createVNode("th", { class: "px-4 py-3 text-left font-semibold" }, "User"),
+                            createVNode("th", { class: "px-4 py-3 text-left font-semibold" }, "Amount"),
+                            createVNode("th", { class: "px-4 py-3 text-left font-semibold" }, "Status"),
+                            createVNode("th", { class: "px-4 py-3 text-left font-semibold" }, "Date")
+                          ])
+                        ]),
+                        createVNode("tbody", null, [
+                          (openBlock(true), createBlock(Fragment, null, renderList(recentPayments.value.slice(0, 5), (payment) => {
+                            return openBlock(), createBlock("tr", {
+                              key: payment.id,
+                              class: "border-b border-border hover:bg-muted/50 transition-colors"
+                            }, [
+                              createVNode("td", { class: "px-4 py-3" }, toDisplayString(payment.user?.name || "User #" + payment.user_id), 1),
+                              createVNode("td", { class: "px-4 py-3 font-semibold" }, "₵" + toDisplayString((payment.amount / 100).toFixed(2)), 1),
+                              createVNode("td", { class: "px-4 py-3" }, [
+                                createVNode("span", {
+                                  class: [getStatusClass(payment.status), "px-2 py-1 rounded text-xs font-medium"]
+                                }, toDisplayString(payment.status), 3)
+                              ]),
+                              createVNode("td", { class: "px-4 py-3 text-xs text-muted-foreground" }, toDisplayString(formatDate(payment.created_at)), 1)
+                            ]);
+                          }), 128))
+                        ])
+                      ])
+                    ]))
+                  ]),
+                  createVNode("div", { class: "bg-card border border-border rounded-lg p-6 shadow-lg" }, [
+                    createVNode("h2", { class: "text-lg font-semibold text-foreground mb-4" }, "Payment Status"),
+                    createVNode("div", { class: "space-y-4" }, [
+                      createVNode("div", { class: "flex items-center justify-between pb-3 border-b border-border" }, [
+                        createVNode("span", { class: "text-sm text-muted-foreground" }, "Completed"),
+                        createVNode("span", { class: "font-semibold text-green-500" }, toDisplayString(metrics.value.completedPayments), 1)
+                      ]),
+                      createVNode("div", { class: "flex items-center justify-between pb-3 border-b border-border" }, [
+                        createVNode("span", { class: "text-sm text-muted-foreground" }, "Pending"),
+                        createVNode("span", { class: "font-semibold text-yellow-500" }, toDisplayString(metrics.value.pendingPayments), 1)
+                      ]),
+                      createVNode("div", { class: "flex items-center justify-between" }, [
+                        createVNode("span", { class: "text-sm text-muted-foreground" }, "Failed"),
+                        createVNode("span", { class: "font-semibold text-red-500" }, toDisplayString(metrics.value.failedPayments), 1)
+                      ])
+                    ])
+                  ])
+                ]),
+                createVNode("div", { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" }, [
+                  createVNode("a", {
+                    href: "/admin/banners",
+                    class: "block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
+                  }, [
+                    createVNode("h2", { class: "text-2xl font-semibold text-foreground mb-2" }, "Banners"),
+                    createVNode("p", { class: "text-muted-foreground" }, "Manage hero banners and promotional content")
+                  ]),
+                  createVNode("a", {
+                    href: "/admin/cast-crew",
+                    class: "block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
+                  }, [
+                    createVNode("h2", { class: "text-2xl font-semibold text-foreground mb-2" }, "Cast & Crew"),
+                    createVNode("p", { class: "text-muted-foreground" }, "Manage cast members and crew information")
+                  ]),
+                  createVNode("a", {
+                    href: "/admin/gallery",
+                    class: "block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
+                  }, [
+                    createVNode("h2", { class: "text-2xl font-semibold text-foreground mb-2" }, "Gallery"),
+                    createVNode("p", { class: "text-muted-foreground" }, "Upload and manage gallery images")
+                  ]),
+                  createVNode("a", {
+                    href: "/admin/reviews",
+                    class: "block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
+                  }, [
+                    createVNode("h2", { class: "text-2xl font-semibold text-foreground mb-2" }, "Reviews"),
+                    createVNode("p", { class: "text-muted-foreground" }, "Moderate and approve user reviews")
+                  ]),
+                  createVNode("a", {
+                    href: "/admin/page-content",
+                    class: "block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
+                  }, [
+                    createVNode("h2", { class: "text-2xl font-semibold text-foreground mb-2" }, "Page Content"),
+                    createVNode("p", { class: "text-muted-foreground" }, "Edit page sections and content")
+                  ])
+                ])
+              ])
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
     };
   }
 };
