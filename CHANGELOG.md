@@ -1,380 +1,65 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project are documented in this file.
 
-## [December 8, 2025]
-
-### Added
-
--   Added Promise Land Films logo images (light and dark versions) to public directory
--   Added official movie poster images to public directory (3 variations)
--   Integrated actual logos and posters throughout the application
--   Added "Remember Me" functionality for 30-day login sessions
--   Added password reset OTP functionality
-
-### Changed - Authentication System Overhaul
-
--   **Simplified Registration**: Single-form registration with email OR phone + password, followed by OTP verification
-    -   User enters: name, email/phone, password
-    -   System sends OTP to provided identifier
-    -   User verifies OTP to complete registration
-    -   Auto-login with 30-day session on successful verification
--   **Simplified Login**: Single-form login with email OR phone + password (removed OTP login option)
-    -   Accepts email or phone number in single input field
-    -   Standard password authentication
-    -   Optional "Remember Me" checkbox for 30-day session
--   **OTP Usage**: Now reserved for:
-    -   Registration verification (required)
-    -   Password reset flow (upcoming)
-    -   Removed OTP-only login option
--   **Admin Credentials**: Updated to:
-    -   Email: `info@acrazydayinaccra.com`
-    -   Password: `0538872908`
-    -   Phone: `0538872908` (normalized to `+233538872908`)
--   **Session Management**: Implemented 30-day "remember me" functionality using Laravel's remember token
-
-### Removed
-
--   Removed OTP-only login flow (verify() method from OtpController)
--   Removed `/otp/verify` route
--   Removed separate OTP and email/password sections from login form
--   Consolidated authentication to single standardized flow
-
-### Fixed
-
--   Fixed Vite build error by removing hardcoded `/images/movie-poster.jpg` import in Credits.vue
--   Replaced placeholder images with actual production assets
--   Fixed component import paths from uppercase `Components` to lowercase `components` directory
--   Fixed invalid CSS properties in Information.vue (replaced `ring` with proper `box-shadow`)
--   Added missing `Log` import to HomeController
--   Added defensive guards for MNotify SMS notifications (graceful fallback to email)
--   Added runtime checks for BunnyVideoService SDK method availability
--   Fixed TwoFactorAuthenticationController to handle missing provider methods
-
-### Changed
-
--   Updated registration flow: prioritized Sign Up over Login for new users in navigation (desktop and mobile)
--   Normalized Tailwind utility classes (`flex-shrink-0` → `shrink-0`)
--   Improved button hierarchy in header (Sign Up primary with red background, Login secondary)
--   Replaced text logo with Promise Land Films branded logo image in header
--   Replaced Unsplash placeholder images with official movie posters in login/register pages
--   Updated Information and Credits pages to use actual movie poster assets
-
-### Verified
-
--   **OTP System Confirmation**: OTP codes are sent via SMS to phone numbers (not email)
-    -   Primary authentication uses phone numbers through MNotify SMS service
-    -   Registration form requires phone number, email is optional
-    -   OTP codes are 6-digit codes valid for 5 minutes
-    -   Rate limiting: 3 OTP requests per phone number within 15 minutes
-
-### Added
-
--   Comprehensive `.gitignore` excluding all dev docs, analysis files, and temporary scripts
--   Production-ready file structure documented in `.gitignore` comments
--   Enhanced error handling for optional Laravel packages (MNotify, two-factor providers)
-
-### Infrastructure
-
--   Cleaned up development documentation files (gitignored but preserved locally)
--   Organized build artifacts and temporary files exclusion
--   Improved TypeScript config for Vite builds
-
-## [December 7, 2025]
-
-### Added
-
--   Admin settings system for managing premiere date and feature toggles
--   SiteSettings model with flexible key-value configuration storage
--   Settings migration and seeder with 9 default configurations
--   Admin Settings UI at `/admin/settings` for non-developers
--   Watch progress tracking for video resume functionality
--   Analytics integration combining local stats and Bunny CDN data
-
-### Changed
-
--   Premiere countdown now dynamically managed from admin panel
--   Contact form and reviews can be toggled from settings
--   Route renamed from `/information` to `/details`
-
-### Fixed
-
--   All component imports now use lowercase `components` directory
--   Build process stabilized with proper asset handling
+The format is inspired by Keep a Changelog and uses calendar dates.
 
 ## [Unreleased]
 
-### Updated
+### Docs
 
--   **Video URLs - Bunny CDN (HLS Streaming)**:
-    -   Updated banner seeder with Bunny CDN HLS playlist URLs
-    -   Trailer: `https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/playlist.m3u8` (HLS format)
-    -   Main Movie: `https://vz-6024b712-a89.b-cdn.net/41d7b1aa-fca0-49dd-bb64-ad881d0a4ff6/playlist.m3u8` (HLS format)
-    -   Thumbnail: `https://vz-6024b712-a89.b-cdn.net/643d70e3-19ee-4ae9-a2c9-ec20bf5742d9/thumbnail_d5a0c8c0.jpg` (JPEG image)
-    -   HLS format provides adaptive bitrate streaming for optimal video delivery
-    -   Thumbnail now uses Bunny CDN instead of Unsplash placeholder
+- Cleaned up markdown documentation set by removing obsolete audit/runbook files.
+- Rewrote `README.md` to be project-first and GitHub-friendly.
+- Added explicit changelog visibility in `README.md` with direct link and badge.
+
+## [2026-03-14]
 
 ### Added
 
--   **Two-Factor Authentication (2FA) Management**: Complete TOTP-based 2FA system
+- Payment success page fallback CTA so users can manually continue to watch if redirect timing fails.
+- Scheduler worker process configuration in `scripts/queue-workers.sh` (`schedule:work`).
 
-    -   New page: `Account/TwoFactorSettings.vue` for enabling/disabling 2FA
-    -   QR code generation for authenticator app setup (Google Authenticator, Authy, Microsoft Authenticator, etc.)
-    -   Manual secret key entry as fallback
-    -   Recovery codes display and copy functionality
-    -   New controller: `TwoFactorAuthenticationController` for managing 2FA lifecycle
-    -   Routes: `/account/two-factor` (settings), `/user/two-factor-authentication` (enable/disable), `/user/confirmed-two-factor-authentication` (confirm)
-    -   User model now includes `TwoFactorAuthenticatable` trait from Fortify
-    -   Fortify 2FA already configured in config/fortify.php
+### Changed
 
--   **Enhanced 2FA Login Challenge**: Improved `TwoFactorChallenge.vue` component
-
-    -   Tab-based interface for Authenticator Code or Recovery Code
-    -   Recovery code entry option for users who lost authenticator access
-    -   Better UX with clear instructions and validation feedback
-
--   **OTP-Based Registration**: Users can now register with Name + Phone + Password
-
-    -   Step 1: Enter name, phone, password, and click "Send Verification Code"
-    -   Step 2: Receive 6-digit OTP via SMS and enter to complete registration
-    -   Creates user account with provided password (not random)
-    -   New endpoint: `POST /otp/verify-register`
-
--   **Phone+Password Login Support**: Users can login with either:
-
-    -   Email + Password
-    -   Phone Number + Password
-    -   Phone + OTP (existing flow, auto-login)
-    -   Fortify authenticator customized to accept phone or email as username field
-    -   Phone numbers normalized automatically (0XXXXXXXXX → +233XXXXXXXXX)
-
--   **Subscription Model**: Created `Subscription` model with 365-day expiry tracking for video access
-
-    -   Fields: `user_id`, `movie_id`, `payment_id`, `expires_at`
-    -   Relationships: user(), movie(), payment()
-    -   Method: isActive() to check if subscription hasn't expired
-    -   Migration: `2025_12_05_212844_create_subscriptions_table`
-
--   **Payment Success Email**: Created `PaymentSuccessEmail` Mailable class
-
-    -   Queued email for async delivery
-    -   Includes payment details, movie info, access expiry date
-    -   Template: `resources/views/emails/payment-success.blade.php`
-
--   **Streamer Dashboard**: Created `Streamer/Dashboard.vue` component
-
-    -   Authenticated user home page with profile stats
-    -   Featured content grid (up to 6 active banners)
-    -   Quick access links to settings and watch history
-
--   **Payment Checkout Page**: Created `Payment.vue` component
-
-    -   Guest/auth payment form for video access
-    -   Payment method selection (card/mobile money)
-    -   Coupon code framework (ready for expansion)
-    -   Paystack payment integration
-
--   **StreamerDashboardController**: New controller for dashboard data
-
-    -   Fetches user info and featured banners
-    -   Route: `GET /dashboard`
-
--   **User Relationships**: Added to `User` model
-    -   `subscriptions()` relationship
-    -   `hasActiveSubscription($movieId)` method to check video access
-
-### Modified
-
--   **Register.vue**: Complete redesign for OTP-based registration
-
-    -   Two-step process: Form input → OTP verification
-    -   Simple and direct UI with clear feedback
-    -   Supports optional email field
-
--   **Login.vue**: Simplified login form
-
-    -   Single "Email or Phone" input field (accepts both)
-    -   OTP option moved to primary flow with tab
-    -   Password option as secondary with "Or log in with password" divider
-
--   **FortifyServiceProvider**: Custom authenticator for phone+password support
-
-    -   `Fortify::authenticateUsing()` callback checks if input is email or phone
-    -   Automatically normalizes phone numbers
-    -   Falls back to standard password verification
-
--   **OtpController**: Added new `verifyRegister()` method
-
-    -   Validates OTP and user input together
-    -   Creates user with provided name and password
-    -   Checks for duplicate phone/email before creation
-
--   **PaymentController**: Updated `webhook()` method
-
-    -   Now creates `Subscription` record on successful payment with 365-day expiry
-    -   Dispatches `PaymentSuccessEmail` to user after payment success
-    -   Added error logging for email failures
-        -   Imports: Added `PaymentSuccessEmail`, `Subscription`, `Mail`, `Log` facades
-
--   **Routes**: Disabled SMS/Email admin bulk pages
-
-    -   Commented out SMS/Email route groups
-    -   Added note: "SMS & Email routes disabled - automated emails/SMS triggered on payment events instead"
-    -   Added new routes: `/dashboard` (StreamerDashboardController), `/payment/checkout` (Payment.vue)
-
--   **Admin Dashboard** (`resources/js/Pages/Admin/Dashboard.vue`):
-    -   Removed SMS management card from grid
-    -   Removed Email management card from grid
-    -   Removed SMS navbar link
-    -   Removed Email navbar link
-    -   Retained: Banners, Cast & Crew, Gallery, Reviews, Content management
-
-### Database
-
--   Migration created: `create_subscriptions_table`
-    -   Fields: id, user_id (FK), movie_id (FK), payment_id (FK nullable), expires_at, timestamps
-    -   Indexes: expires_at (searchable for active checks)
-    -   Constraints: Unique (user_id, movie_id), cascading deletes
+- Hardened payment callback/webhook flow to make success-email dispatch resilient with after-response path and synchronous fallback.
+- Scheduled payment reconciliation cadence in `routes/console.php` and removed duplicate scheduling configuration.
+- Consolidated admin navigation into shared layout and simplified top-level nav grouping.
+- Refactored admin referral experience into compact table workflow with modal create flow and improved filtering/sorting behavior.
 
 ### Fixed
 
--   **OtpController Syntax Error**: Fixed missing closing brace for class (line 219)
+- Applied referral code movie scoping and duplicate prevention path with migration-backed support.
+- Removed unused React admin pages from Vue codebase.
+- Updated Tailwind utility usage in admin views for current lint/style expectations.
+- Updated smoke feature test to use stable health endpoint (`/up`) rather than DB-seeded homepage assumptions.
 
-    -   Error: `ParseError: Unclosed '{' on line 17`
-    -   Caused 500 errors on `/otp/send` endpoint
-    -   Required PHP-FPM restart to clear OPcache
-    -   Verified brace matching: 34 opening, 34 closing
+## [2025-12-08]
 
--   **Login.vue Error Handling**: Improved OTP flow error messages
+### Added
 
-    -   Added client-side phone validation (9-12 digits)
-    -   Better error messages for user feedback
-    -   Changed OTP validation from 4+ to full 6 digits required
-    -   Added console logging for debugging
-    -   Added success message with delay before redirect
+- Promise Land Films branding assets and poster assets integrated into the UI.
+- Remember-me session behavior and password-reset OTP support groundwork.
 
--   **Logout Functionality**: Added logout button to PublicLayout
+### Changed
 
-    -   Logout button appears in navbar when authenticated
-    -   Dashboard link added for logged-in users
-    -   Form submits to `/logout` with CSRF protection
-    -   Uses Fortify's built-in logout route
+- Authentication UX simplified to a single login path and streamlined registration verification flow.
+- UI and component import consistency improvements across public pages.
 
--   **Video/Banner UUID Route**: Added fallback route for video ID redirects
-    -   Route: `GET /{id}` where id is UUID or numeric
-    -   Automatically redirects to `/watch` page
-    -   Handles video IDs from banners (e.g., Bunny CDN video IDs)
-    -   Pattern: `[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}` or numeric IDs
+### Fixed
 
-### Build Status
+- Build stability and runtime safeguards for optional service providers and integrations.
 
--   ✓ `npm run build` passing (3057 modules, no errors)
--   ✓ All Vue components compiling correctly
--   ✓ No undefined prop warnings or console errors
+## [2025-12-07]
 
-### Architecture Changes
+### Added
 
--   **Event-Driven Email**: Replaced manual SMS/Email admin pages with automated payment success trigger
--   **Subscription Model**: 365-day video access tied to Payment record
--   **Access Control**: Video access now checked via Subscription expiry instead of Payment status alone
+- Admin settings management and dynamic premiere/date feature toggles.
+- Watch progress tracking and analytics foundations.
 
-### Configuration
+### Changed
 
--   **mNotify SMS Service**: Configured with API credentials in `.env`
-    -   `MNOTIFY_API_KEY` - API authentication key
-    -   `MNOTIFY_SENDER_ID` - SMS sender display name ("PL Films")
--   **Rate Limiting**:
-    -   OTP send: 3 attempts per 15 minutes per phone number
-    -   2FA login: 5 attempts per minute per user
--   **OTP Expiry**: 5 minutes cache storage
--   **Subscription Duration**: 365 days per payment
+- Public information route moved to `/details`.
 
-### Testing Guide
+### Fixed
 
-**OTP Login:**
-
-1. Navigate to `/login`
-2. Enter phone: `0244123456` or `+233244123456`
-3. Click "Send OTP" → Check SMS for 6-digit code
-4. Enter code → Click "Verify" → Logged in
-
-**Password Login:**
-
-1. Navigate to `/login`
-2. Enter email or phone + password
-3. Click "Log in" → Logged in
-
-**Registration:**
-
-1. Navigate to `/register`
-2. Fill: Name, Phone, Email (optional), Password
-3. Click "Next" → Check SMS for OTP
-4. Enter code → Click "Verify & Register" → Account created + logged in
-
-**2FA Setup:**
-
-1. Login → Navigate to `/account/two-factor`
-2. Click "Enable Two-Factor Authentication"
-3. Scan QR code with authenticator app
-4. Enter TOTP code to confirm
-5. Save recovery codes
-6. Logout and login again → 2FA challenge appears
-
-**Logout:**
-
-1. Click "Logout" button in navbar (when logged in)
-2. Redirected to home page as guest
-
-### Known Issues
-
--   **OPcache Persistence**: After fixing syntax errors in controllers, may require `brew services restart php` to clear OPcache
--   **CSRF Protection**: All OTP endpoints require CSRF token from web middleware
--   **Rate Limiting**: After 3 OTP attempts in 15 minutes, users must wait before requesting new codes
-
-### Debugging Notes
-
--   **Payment Callback Flow**:
-    -   Paystack redirects to `GET /payment?reference=...&trxref=...` after payment
-    -   Route handler: `PaymentController@callback`
-    -   Callback verifies payment status and redirects to home with status message
-    -   If redirect appears to 404, check: domain name (typos like "creazyday.test" vs "crazyday.test"), DNS resolution, and APP_URL in .env
-    -   PAYSTACK_CALLBACK_URL defaults to `{APP_URL}/payment`
-
-### Environment Configuration Audit
-
--   **Updated `.env.example`**: From 81 to 142 lines with comprehensive service documentation
-
-    -   Added all missing environment variables: BREVO_API_KEY, complete mNotify config, complete Paystack/Bunny details
-    -   Organized into logical sections: Core App, Database, Session/Cache, Email, Payments, SMS, Video CDN, Authentication
-    -   Added placeholder values and reference links for obtaining credentials from each service
-    -   Includes inline documentation explaining each service's purpose and required setup
-
--   **Created Documentation**:
-
-    -   `docs/ENVIRONMENT_CONFIGURATION.md` (1,200+ lines)
-        -   Comprehensive guide to all environment variables
-        -   Step-by-step setup for each service (Brevo, Paystack, mNotify, Bunny CDN, Fortify)
-        -   Local vs Staging vs Production environment configurations
-        -   Troubleshooting section for common issues
-        -   Useful command reference
-    -   `docs/DEPLOYMENT_ENV_CHECKLIST.md` (400+ lines)
-        -   Pre-deployment verification checklist for each service
-        -   Required vs optional variables table
-        -   Common issues and solutions
-        -   Post-deployment verification steps
-        -   Version control rules (.gitignore compliance)
-
--   **Verified Architecture**:
-
-    -   ✓ All config files use `env()` with sensible defaults
-    -   ✓ All app code uses `config()` indirection (no hardcoded secrets)
-    -   ✓ No secrets committed to Git (`.gitignore` properly configured for `.env`)
-    -   ✓ Service integrations: Paystack (payments), Brevo (email), mNotify (SMS), Bunny CDN (video), Fortify (auth)
-    -   ✓ Production-ready configuration structure with clear separation of concerns
-
--   **Security Best Practices**:
-    -   Documented key rotation schedule for all services
-    -   Verified secrets never hardcoded in application code
-    -   Verified `.env` excluded from version control
-    -   Added production vs development environment differences
-    -   Documented API key management and rotation procedures
+- Component import path consistency and frontend build reliability improvements.
